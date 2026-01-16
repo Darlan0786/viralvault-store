@@ -796,7 +796,76 @@
     .bundleItem{border:1px solid var(--line);border-radius:var(--radius2);background:rgba(255,255,255,.72);box-shadow:var(--shadow2);padding:12px}
     [data-theme="dark"] .bundleItem{background:rgba(18,22,35,.55)}
 
-  </style>
+  
+/* ===== Upgrade 38: UI/UX polish (buttons + layout) ===== */
+:root{
+  --btnH: 44px;
+  --gap: 10px;
+}
+.btn{
+  min-height: var(--btnH);
+  padding: 10px 14px;
+  border-radius: 14px;
+}
+.btn.accent{
+  box-shadow: 0 10px 26px rgba(0,0,0,.12);
+}
+.prodActions{
+  display:flex;
+  gap: var(--gap);
+  flex-wrap: wrap;
+}
+.prodActions .btn{ flex: 1 1 160px; }
+@media (max-width: 520px){
+  .prodActions .btn{ flex: 1 1 100%; }
+}
+/* Top navigation: wrap nicely */
+.tabs{
+  gap: 8px !important;
+  flex-wrap: wrap !important;
+}
+.tab{
+  border-radius: 999px !important;
+  padding: 10px 12px !important;
+  white-space: nowrap;
+}
+/* Section headers */
+.pHead{
+  align-items:center;
+}
+/* Cards alignment */
+.card, .panel{
+  border-radius: 22px !important;
+}
+/* Bottom quick actions (mobile) */
+#vvQuickBar{
+  position: fixed;
+  left: 12px;
+  right: 12px;
+  bottom: 12px;
+  z-index: 1200;
+  display: none;
+  gap: 10px;
+  padding: 10px;
+  border-radius: 18px;
+  background: rgba(255,255,255,.85);
+  border: 1px solid rgba(0,0,0,.08);
+  backdrop-filter: blur(10px);
+}
+@media (prefers-color-scheme: dark){
+  #vvQuickBar{
+    background: rgba(16,16,20,.75);
+    border-color: rgba(255,255,255,.08);
+  }
+}
+#vvQuickBar .btn{ flex:1; }
+@media (max-width: 720px){
+  #vvQuickBar{ display:flex; }
+  body{ padding-bottom: 92px; } /* space for bar */
+}
+/* ===== end Upgrade 38 ===== */
+
+</style>
 
 <style>
   /* FIX: quando um overlay invisível trava os cliques */
@@ -7241,6 +7310,27 @@ function adminClearFind(){
 }
 /* ===== end Upgrade 36 ===== */
 
+
+/* ===== Upgrade 38 JS: quick bar active hint ===== */
+(function(){
+  const old = window.setPage;
+  if(typeof old==="function"){
+    window.setPage = function(page){
+      const r = old.apply(this, arguments);
+      try{
+        const qb = document.getElementById("vvQuickBar");
+        if(qb){
+          [...qb.querySelectorAll("button")].forEach(b=>b.classList.remove("active"));
+          if(page==="catalog") qb.children[0].classList.add("active");
+          if(page==="verify") qb.children[1].classList.add("active");
+        }
+      }catch(e){}
+      return r;
+    }
+  }
+})();
+/* ===== end Upgrade 38 JS ===== */
+
 </script>
 
   <!-- Modal Produto -->
@@ -7303,6 +7393,14 @@ function adminClearFind(){
       </div>
       <div class="tiny muted" style="margin-top:10px" id="adminLockMsg">—</div>
     </div>
+  </div>
+
+
+  <!-- Upgrade 38: Mobile quick actions -->
+  <div id="vvQuickBar" aria-label="Acoes rapidas">
+    <button class="btn accent" onclick="setPage('catalog')">Catálogo</button>
+    <button class="btn" onclick="setPage('verify')">Verificar</button>
+    <button class="btn" onclick="openWhatsSupport()">Suporte</button>
   </div>
 
 </body>
