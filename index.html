@@ -912,6 +912,93 @@
   })();
 </script>
 
+
+<style>
+/* ===== Upgrade 40: emergency click fix =====
+   Força elementos clicáveis a receberem pointer events mesmo se algum CSS global estiver errado.
+*/
+html, body { pointer-events: auto !important; }
+a, button, input, textarea, select, label { pointer-events: auto !important; }
+button, a { touch-action: manipulation; }
+</style>
+<script>
+/* ===== Upgrade 40: emergency click fix (super agressivo + debug leve) ===== */
+(function(){
+  function vw(){ return Math.max(document.documentElement.clientWidth, window.innerWidth||0); }
+  function vh(){ return Math.max(document.documentElement.clientHeight, window.innerHeight||0); }
+
+  function coversViewport(el){
+    try{
+      const r = el.getBoundingClientRect();
+      return r.width >= vw()*0.9 && r.height >= vh()*0.9;
+    }catch(e){ return false; }
+  }
+
+  function isBadLayer(el){
+    if(!el || el===document.body || el===document.documentElement) return false;
+    try{
+      const st = getComputedStyle(el);
+      if(!(st.position==="fixed" || st.position==="absolute")) return false;
+      const z = parseInt(st.zIndex||"0",10);
+      if(!Number.isFinite(z) || z < 5) return false;
+      if(!coversViewport(el)) return false;
+
+      const hasInteractive = !!el.querySelector && !!el.querySelector("button,a,input,textarea,select");
+      const text = (el.innerText||"").trim();
+      const mostlyEmpty = text.length === 0 && !hasInteractive;
+
+      const op = parseFloat(st.opacity||"1");
+      const alpha = (st.backgroundColor||"").match(/rgba\([^,]+,[^,]+,[^,]+,\s*([0-9.]+)\)/i);
+      const bgA = alpha ? parseFloat(alpha[1]) : (st.backgroundColor==="transparent" ? 0 : 1);
+      const almostInvisible = op < 0.08 || bgA < 0.08 || st.visibility==="hidden";
+
+      return mostlyEmpty || almostInvisible;
+    }catch(e){ return false; }
+  }
+
+  function nukeBadLayers(){
+    const all = document.body ? document.body.querySelectorAll("*") : [];
+    let killed = 0;
+    for(const el of all){
+      if(isBadLayer(el)){
+        el.style.pointerEvents = "none";
+        el.style.display = "none";
+        el.setAttribute("data-vv-nuked","1");
+        killed++;
+      }
+    }
+    return killed;
+  }
+
+  function debugTap(){
+    try{
+      const x = Math.floor(window.innerWidth/2);
+      const y = Math.floor(window.innerHeight/2);
+      const el = document.elementFromPoint(x,y);
+      if(!el) return;
+      // mostra só se estiver bloqueando (camada grande)
+      if(isBadLayer(el) || coversViewport(el) && (getComputedStyle(el).position==="fixed")){
+        const id = el.id ? ("#" + el.id) : "";
+        const cls = el.className ? ("." + String(el.className).trim().split(/\s+/).slice(0,3).join(".")) : "";
+        if(window.toast) toast("Bloqueio detectado: " + el.tagName + id + cls + " (destravando…)");
+      }
+    }catch(e){}
+  }
+
+  window.addEventListener("load", () => {
+    // roda várias vezes
+    debugTap();
+    nukeBadLayers();
+    setTimeout(()=>{ debugTap(); nukeBadLayers(); }, 250);
+    setTimeout(()=>{ debugTap(); nukeBadLayers(); }, 900);
+    setTimeout(()=>{ debugTap(); nukeBadLayers(); }, 1800);
+    // qualquer toque tenta destravar de novo
+    document.addEventListener("pointerdown", () => { debugTap(); nukeBadLayers(); }, { passive:true });
+  });
+})();
+/* ===== end Upgrade 40 ===== */
+</script>
+
 </head>
 
 <body>
