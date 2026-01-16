@@ -7403,5 +7403,62 @@ function adminClearFind(){
     <button class="btn" onclick="openWhatsSupport()">Suporte</button>
   </div>
 
+
+<script>
+/* ===== Upgrade 39: click unblocker (agressivo, anti-overlay) =====
+   Se existir alguma camada transparente por cima travando toque,
+   este script identifica o elemento do topo no centro da tela e desarma.
+*/
+(function(){
+  function disarm(el){
+    if(!el || el === document.body || el === document.documentElement) return false;
+    try{
+      const st = getComputedStyle(el);
+      const r = el.getBoundingClientRect();
+      const vw = Math.max(document.documentElement.clientWidth, window.innerWidth||0);
+      const vh = Math.max(document.documentElement.clientHeight, window.innerHeight||0);
+      const covers = r.width >= vw*0.9 && r.height >= vh*0.9;
+      const z = parseInt(st.zIndex||"0",10);
+      const alpha = (st.backgroundColor||"").match(/rgba\([^,]+,[^,]+,[^,]+,\s*([0-9.]+)\)/i);
+      const bgA = alpha ? parseFloat(alpha[1]) : (st.backgroundColor==="transparent" ? 0 : 1);
+      const almostTransparent = (st.opacity === "0") || (parseFloat(st.opacity||"1") < 0.06) || (bgA < 0.06);
+      const weird = (st.position==="fixed" || st.position==="absolute") && z >= 10 && covers;
+      // Heurística: camada grande + topo + transparente/sem conteúdo -> desarma
+      const hasText = (el.innerText||"").trim().length > 0;
+      const hasInputs = !!el.querySelector && !!el.querySelector("button,a,input,textarea,select");
+      if(weird && (almostTransparent || (!hasText && !hasInputs))){
+        el.style.pointerEvents = "none";
+        el.style.userSelect = "none";
+        el.setAttribute("data-vv-disarmed","1");
+        return true;
+      }
+    }catch(e){}
+    return false;
+  }
+
+  function probe(){
+    const x = Math.floor(window.innerWidth/2);
+    const y = Math.floor(window.innerHeight/2);
+    const el = document.elementFromPoint(x,y);
+    if(disarm(el)) return true;
+    // tenta também subir na árvore
+    let p = el;
+    for(let i=0;i<6 && p;i++){
+      if(disarm(p)) return true;
+      p = p.parentElement;
+    }
+    return false;
+  }
+
+  window.addEventListener("load", () => {
+    // roda várias vezes
+    probe(); setTimeout(probe, 200); setTimeout(probe, 600); setTimeout(probe, 1200); setTimeout(probe, 2500);
+    // se ainda travar, qualquer toque tenta destravar de novo
+    document.addEventListener("pointerdown", () => { probe(); }, { passive:true });
+  });
+})();
+/* ===== end Upgrade 39 ===== */
+</script>
+
 </body>
 </html>
