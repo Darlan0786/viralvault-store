@@ -797,6 +797,52 @@
     [data-theme="dark"] .bundleItem{background:rgba(18,22,35,.55)}
 
   </style>
+
+<style>
+  /* FIX: quando um overlay invisível trava os cliques */
+  .vv-kill-overlay { pointer-events: none !important; }
+</style>
+<script>
+  // FIX: desarma camadas invisíveis que cobrem a tela e travam cliques
+  (function () {
+    function killOverlays() {
+      const vw = Math.max(document.documentElement.clientWidth, window.innerWidth || 0);
+      const vh = Math.max(document.documentElement.clientHeight, window.innerHeight || 0);
+
+      const els = document.body ? document.body.querySelectorAll("*") : [];
+      for (const el of els) {
+        const st = getComputedStyle(el);
+        if (st.pointerEvents === "none") continue;
+
+        const pos = st.position;
+        if (pos !== "fixed" && pos !== "absolute") continue;
+
+        const z = parseInt(st.zIndex || "0", 10);
+        if (!Number.isFinite(z) || z < 10) continue;
+
+        const r = el.getBoundingClientRect();
+        const covers = r.width >= vw * 0.95 && r.height >= vh * 0.95;
+        if (!covers) continue;
+
+        const invisible =
+          st.opacity === "0" ||
+          st.visibility === "hidden" ||
+          (st.backgroundColor === "rgba(0, 0, 0, 0)" && st.color === "rgba(0, 0, 0, 0)");
+
+        // Se tá cobrindo a tela e parece invisível -> mata o clique dela
+        if (invisible) el.classList.add("vv-kill-overlay");
+      }
+    }
+
+    window.addEventListener("load", () => {
+      killOverlays();
+      setTimeout(killOverlays, 300);
+      setTimeout(killOverlays, 900);
+      setTimeout(killOverlays, 2000);
+    });
+  })();
+</script>
+
 </head>
 
 <body>
