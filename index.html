@@ -398,7 +398,7 @@
     </div>
     <section class="grid" id="gridProducts"></section>
     <div class="mini" style="margin:8px 0 0;opacity:.92">
-      ✅ Para comprar: clique em <b>Comprar agora</b> no item → preencha seu usuário Roblox → gere o pedido → copie o PIX e pague.
+      ✅ Para comprar: clique em <b>Comprar agora</b> → pague o PIX → <b>aguarde a entrega</b>. (Se quiser, você pode mandar seu user do Roblox no WhatsApp depois.)
     </div>
 
 
@@ -473,8 +473,8 @@
 
           <div class="rowFlex" style="margin-top:10px">
             <div style="flex:1">
-              <div class="mini">Usuário do Roblox (obrigatório)</div>
-              <input id="ckRbxUser" placeholder="ex: darlanana06"/>
+              <div class="mini">Usuário do Roblox (opcional)</div>
+              <input id="ckRbxUser" placeholder="@user_1234"/>
             </div>
             <div style="flex:1">
               <div class="mini">Info extra (opcional)</div>
@@ -523,7 +523,7 @@
 
           <div class="rowFlex">
             <button class="btn btnPrimary" id="btnCreateOrder">Gerar pedido e liberar PIX</button>
-            <a class="btn btnGhost" id="btnOpenWaPay" href="#" target="_blank" rel="noopener" style="text-decoration:none">Abrir WhatsApp</a>
+            <a class="btn btnGhost" id="btnOpenWaPay" href="#" target="_blank" rel="noopener" style="text-decoration:none">Enviar no WhatsApp (opcional)</a>
           </div>
 
           <div class="mini" style="margin-top:10px" id="ckStatus">—</div>
@@ -676,6 +676,7 @@
       lastOrderId="";
       updatePrice();
       openModal("#modalCheckout");
+
     }
 
     $("#ckCoupon").addEventListener("input", updatePrice, {passive:true});
@@ -709,14 +710,15 @@
         const rbxUser=$("#ckRbxUser").value.trim();
         const rbxExtra=$("#ckRbxExtra").value.trim();
         if(!rbxUser){
-          $("#ckStatus").textContent="⚠️ Preencha o Usuário do Roblox.";
+          $("#ckStatus").innerHTML="⚠️ <b>Preencha seu usuário do Roblox</b> para receber o item.";
+          $("#ckRbxUser").focus();
           return;
         }
 
         const coupon=$("#ckCoupon").value.trim().toUpperCase();
         const d=calcDiscount(currentProduct.price,coupon);
 
-        $("#ckStatus").textContent="Gerando pedido…";
+        $("#ckStatus").textContent="Gerando pedido automático…";
 
         const payload = {
           user: rbxUser,
@@ -729,7 +731,9 @@
         lastOrderId = data.orderId || data.id || "";
         if(!lastOrderId) throw new Error("orderId não retornou");
 
-        $("#ckStatus").textContent = "✅ Pedido criado: " + lastOrderId;
+        $("#ckStatus").innerHTML = "✅ Pedido criado: <b>" + lastOrderId + "</b><br/>Agora é só <b>pagar o PIX</b> e aguardar a entrega em até 24h. Se quiser, mande seu user do Roblox no WhatsApp.";
+        // Abre WhatsApp automaticamente (opcional)
+        try{ window.open($("#btnOpenWaPay").href, "_blank"); }catch(e){}
         $("#btnCopyOrder").disabled=false;
 
         if(coupon===WELCOME_COUPON){
