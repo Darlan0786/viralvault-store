@@ -329,7 +329,7 @@
           <div class="tag"><span class="k"></span> <span>Anime kawaii • Loja premium</span></div>
           <div class="h1">Compre com confiança ✨<br/>e verifique seu pedido em segundos.</div>
           <p class="sub">
-            Produtos digitais (Roblox/brainrots e +). Checkout PIX com QR, cupom visível e transparência anti-golpe.
+            Produtos digitais (Roblox/brainrots). Clique em COMPRAR e pague via PIX. Entrega em até 24h (ou reembolso).
           </p>
 
           <!-- Upgrade 1: Proof Social Ticker -->
@@ -352,7 +352,7 @@
           </div>
 
           <div style="display:flex;gap:10px;flex-wrap:wrap;margin-top:14px">
-            <button class="btn btnPrimary" id="btnGoProducts">🛍️ Ver itens</button>
+            <button class="btn btnPrimary" id="btnGoProducts">🛍️ Comprar agora</button>
             <button class="btn btnGhost" id="btnGoHow">📌 Como funciona</button>
             <a class="btn btnGhost" id="btnGoSupport" href="#" style="text-decoration:none">💬 Suporte</a>
           </div>
@@ -393,10 +393,14 @@
 
     <!-- PRODUTOS -->
     <div class="secTitle" id="produtos">
-      <b>Itens em destaque 🌸</b>
-      <small>clique e finalize em 1 minuto</small>
+      <b>Produtos digitais 🛒</b>
+      <small>escolha 1 item e pague via PIX</small>
     </div>
     <section class="grid" id="gridProducts"></section>
+    <div class="mini" style="margin:8px 0 0;opacity:.92">
+      ✅ Para comprar: clique em <b>Comprar agora</b> no item → preencha seu usuário Roblox → gere o pedido → copie o PIX e pague.
+    </div>
+
 
     <!-- COMO FUNCIONA -->
     <div class="secTitle" id="como">
@@ -416,7 +420,7 @@
 
     <!-- VERIFICAR -->
     <div class="secTitle" id="verificar">
-      <b>Verificação pública 🔎</b>
+      <b>Verificar pedido 🔎</b>
       <small>confirma se o pedido é VV-OFICIAL</small>
     </div>
 
@@ -518,7 +522,7 @@
           <hr/>
 
           <div class="rowFlex">
-            <button class="btn btnPrimary" id="btnCreateOrder">Gerar pedido VV-OFICIAL</button>
+            <button class="btn btnPrimary" id="btnCreateOrder">Gerar pedido e liberar PIX</button>
             <a class="btn btnGhost" id="btnOpenWaPay" href="#" target="_blank" rel="noopener" style="text-decoration:none">Abrir WhatsApp</a>
           </div>
 
@@ -630,7 +634,7 @@
                 <div class="mini">Preço</div>
                 <div class="price">${money(p.price)}</div>
               </div>
-              <button class="btn btnPrimary small" data-buy="${p.id}">Comprar</button>
+              <button class="btn btnPrimary small" data-buy="${p.id}">Comprar agora</button>
             </div>
           </div>`;
         grid.appendChild(el);
