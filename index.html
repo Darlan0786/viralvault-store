@@ -1,1407 +1,848 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <meta name="color-scheme" content="light" />
-  <title>ViralVault Store • Premium</title>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>ViralVault</title>
+  <meta name="description" content="Página oficial da ViralVault — layout leve, responsivo e pronto para crescer." />
   <style>
     :root{
-      --bg:#fbfbff;
-      --card:#ffffff;
-      --ink:#0f172a;
-      --muted:#64748b;
-      --line:#e5e7eb;
-      --brand:#7c3aed;
-      --brand2:#06b6d4;
-      --good:#16a34a;
-      --bad:#dc2626;
-      --warn:#f59e0b;
-      --shadow: 0 12px 30px rgba(15, 23, 42, .08);
-      --radius: 20px;
+      --bg: #0b0b12;
+      --card: rgba(255,255,255,.06);
+      --card2: rgba(255,255,255,.08);
+      --text: rgba(255,255,255,.92);
+      --muted: rgba(255,255,255,.70);
+      --line: rgba(255,255,255,.10);
+      --purple1:#7c3aed;
+      --purple2:#a78bfa;
+      --green1:#22c55e;
+      --shadow: 0 18px 50px rgba(0,0,0,.35);
+      --radius: 18px;
     }
 
-    *{box-sizing:border-box}
-    html,body{height:100%}
-    body{
-      margin:0;
-      font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, "Apple Color Emoji","Segoe UI Emoji";
-      color:var(--ink);
-      background:
-        radial-gradient(900px 420px at 15% -5%, rgba(124,58,237,.16), transparent 55%),
-        radial-gradient(900px 420px at 85% 0%, rgba(6,182,212,.14), transparent 60%),
-        linear-gradient(180deg, #ffffff, var(--bg));
+    html, body{
+      width: 100%;
+      max-width: 100%;
+      overflow-x: hidden;
+      margin: 0;
+      padding: 0;
+      font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Arial, "Noto Sans", "Helvetica Neue", sans-serif;
+      background: radial-gradient(1200px 700px at 15% 10%, rgba(124,58,237,.35), transparent 55%),
+                  radial-gradient(900px 600px at 85% 20%, rgba(34,197,94,.18), transparent 55%),
+                  radial-gradient(900px 700px at 50% 120%, rgba(167,139,250,.20), transparent 60%),
+                  var(--bg);
+      color: var(--text);
     }
+    *{ box-sizing: border-box; }
+    a{ color: inherit; }
 
-    a{color:inherit; text-decoration:none}
-
-    .wrap{max-width:1120px; margin:0 auto; padding:18px 16px 56px}
+    /* Subtle animated grain */
+    .grain{
+      pointer-events:none;
+      position: fixed;
+      inset: 0;
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='180'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='180' height='180' filter='url(%23n)' opacity='.18'/%3E%3C/svg%3E");
+      opacity: .15;
+      mix-blend-mode: overlay;
+      animation: grain 8s steps(10) infinite;
+    }
+    @keyframes grain{
+      0%{ transform: translate(0,0); }
+      10%{ transform: translate(-2%, -3%); }
+      20%{ transform: translate(-4%, 2%); }
+      30%{ transform: translate(3%, -4%); }
+      40%{ transform: translate(2%, 3%); }
+      50%{ transform: translate(-3%, 2%); }
+      60%{ transform: translate(-1%, -2%); }
+      70%{ transform: translate(4%, 1%); }
+      80%{ transform: translate(2%, -3%); }
+      90%{ transform: translate(-3%, -1%); }
+      100%{ transform: translate(0,0); }
+    }
 
     /* Topbar */
     .topbar{
-      position:sticky; top:0; z-index:20;
-      backdrop-filter: blur(12px);
-      background: rgba(255,255,255,.78);
-      border-bottom:1px solid rgba(229,231,235,.7);
+      position: sticky;
+      top: 0;
+      z-index: 50;
+      display:flex;
+      align-items:center;
+      gap:12px;
+      padding:12px 14px;
+      background: rgba(10,10,18,.65);
+      backdrop-filter: blur(14px);
+      border-bottom: 1px solid rgba(255,255,255,.08);
     }
-    .topbar .inner{max-width:1120px; margin:0 auto; padding:10px 16px; display:flex; align-items:center; gap:12px}
     .brand{
-      display:flex; align-items:center; gap:10px; min-width: 220px;
-    }
-    .logo{
-      width:36px; height:36px; border-radius:12px;
-      background: conic-gradient(from 180deg, var(--brand), var(--brand2), var(--brand));
-      box-shadow: 0 10px 25px rgba(124,58,237,.20);
-      position:relative;
-    }
-    .logo:after{content:"VV"; position:absolute; inset:0; display:grid; place-items:center; font-weight:900; font-size:12px; color:#fff; letter-spacing:.5px}
-    .brand h1{margin:0; font-size:14px; line-height:1.05}
-    .brand small{display:block; color:var(--muted); font-weight:600; margin-top:2px}
-
-    .nav{display:flex; align-items:center; gap:8px; flex-wrap:wrap}
-    .pill{
-      display:inline-flex; align-items:center; gap:8px;
-      padding:9px 10px;
-      border:1px solid var(--line);
-      border-radius:999px;
-      background: rgba(255,255,255,.86);
-      box-shadow: 0 8px 22px rgba(15,23,42,.05);
-      cursor:pointer;
-      user-select:none;
-      font-weight:800;
-      font-size:12px;
-    }
-    .pill:hover{border-color:#d1d5db; transform: translateY(-1px)}
-    .pill .dot{width:8px;height:8px;border-radius:99px;background:linear-gradient(180deg,var(--brand),var(--brand2))}
-
-    .right{margin-left:auto; display:flex; align-items:center; gap:10px}
-
-    .badge{
-      display:flex; align-items:center; gap:8px;
-      padding:9px 12px;
-      border-radius:999px;
-      background: rgba(124,58,237,.08);
-      border:1px solid rgba(124,58,237,.18);
+      display:flex;
+      align-items:center;
+      gap:10px;
       font-weight:900;
-      font-size:12px;
-      white-space:nowrap;
+      letter-spacing:.3px;
+    }
+    .logoDot{
+      width: 14px;
+      height: 14px;
+      border-radius: 999px;
+      background: linear-gradient(135deg,var(--purple1),var(--purple2));
+      box-shadow: 0 0 0 6px rgba(124,58,237,.18);
+    }
+    .brand span{
+      font-size: 16px;
     }
 
-    .cartBtn{
-      position:relative;
-      display:inline-flex; align-items:center; gap:8px;
-      padding:10px 12px;
-      border-radius:999px;
-      background: linear-gradient(180deg, rgba(124,58,237,.18), rgba(124,58,237,.10));
-      border:1px solid rgba(124,58,237,.25);
-      font-weight:950;
-      cursor:pointer;
-    }
-    .cartBtn:hover{transform: translateY(-1px)}
-    .count{
-      position:absolute; top:-7px; right:-7px;
-      width:22px;height:22px;border-radius:999px;
-      background: var(--brand);
-      color:#fff; display:grid; place-items:center;
-      font-size:12px; font-weight:900;
-      box-shadow: 0 8px 18px rgba(124,58,237,.25);
-      border:2px solid #fff;
+    .right{
+      margin-left:auto;
+      display:flex;
+      align-items:center;
+      gap:10px;
     }
 
-    /* Hero */
-    .hero{display:grid; grid-template-columns: 1.25fr .75fr; gap:18px; margin-top:18px}
-    @media (max-width: 900px){.hero{grid-template-columns: 1fr;}}
-
-    .card{
-      background: var(--card);
-      border:1px solid rgba(229,231,235,.9);
-      border-radius: var(--radius);
-      box-shadow: var(--shadow);
-      overflow:hidden;
-    }
-
-    .heroMain{padding:20px}
-    .kicker{display:flex; align-items:center; gap:8px; color:var(--muted); font-weight:800; font-size:12px}
-    .kicker .spark{width:10px;height:10px;border-radius:99px;background:linear-gradient(180deg,var(--brand2),var(--brand))}
-    .heroMain h2{margin:10px 0 10px; font-size:28px; letter-spacing:-.02em; line-height:1.1}
-    .heroMain p{margin:0; color:var(--muted); font-weight:650; line-height:1.45}
-
-    .ctaRow{display:flex; gap:10px; flex-wrap:wrap; margin-top:14px}
-    .btn{
-      display:inline-flex; align-items:center; justify-content:center; gap:10px;
-      padding:11px 14px;
-      border-radius:14px;
-      border:1px solid var(--line);
-      background:#fff;
-      font-weight:950;
-      cursor:pointer;
-    }
-    .btn.primary{
-      background: linear-gradient(135deg, rgba(124,58,237,.18), rgba(6,182,212,.14));
-      border-color: rgba(124,58,237,.25);
-    }
-    .btn:hover{transform: translateY(-1px)}
-
-    .heroSide{padding:16px}
-    .miniGrid{display:grid; grid-template-columns: 1fr 1fr; gap:10px}
-    .mini{
-      border:1px solid var(--line);
-      border-radius: 18px;
-      background: rgba(251,251,255,.9);
-      padding:12px;
-    }
-    .mini b{display:block; font-size:12px; letter-spacing:.02em}
-    .mini span{display:block; margin-top:6px; color:var(--muted); font-weight:650; font-size:12px; line-height:1.35}
-
-    /* Content */
-    .section{margin-top:18px}
-    .sectionHead{display:flex; align-items:flex-end; gap:12px; flex-wrap:wrap; padding:0 4px}
-    .sectionHead h3{margin:0; font-size:16px}
-    .sectionHead p{margin:0; color:var(--muted); font-weight:650; font-size:12px}
-    .bar{display:flex; gap:10px; flex-wrap:wrap; margin-top:12px}
-    .input{
-      flex:1;
-      min-width: 220px;
-      padding:12px 14px;
-      border-radius: 14px;
-      border:1px solid var(--line);
-      background: rgba(255,255,255,.9);
-      font-weight:750;
-      outline:none;
-    }
-    .select{
-      padding:12px 14px;
-      border-radius: 14px;
-      border:1px solid var(--line);
-      background: rgba(255,255,255,.9);
-      font-weight:800;
-      outline:none;
-    }
-
-    .grid{display:grid; grid-template-columns: repeat(3, 1fr); gap:14px; margin-top:14px}
-    @media (max-width: 980px){.grid{grid-template-columns: repeat(2, 1fr);}}
-    @media (max-width: 640px){.grid{grid-template-columns: 1fr;}}
-
-    .prod{padding:14px}
-    .prodTop{display:flex; align-items:flex-start; gap:12px}
-    .thumb{
-      width:58px; height:58px; border-radius:18px;
-      background:
-        radial-gradient(28px 28px at 20% 30%, rgba(255,255,255,.8), transparent 55%),
-        linear-gradient(135deg, rgba(124,58,237,.25), rgba(6,182,212,.18));
-      border:1px solid rgba(124,58,237,.20);
-      position:relative;
-      overflow:hidden;
-    }
-    .thumb:after{content:""; position:absolute; inset:-40%; background:radial-gradient(circle at 30% 30%, rgba(255,255,255,.65), transparent 50%); transform: rotate(18deg)}
-
-    .prod h4{margin:0; font-size:14px; line-height:1.25}
-    .meta{margin-top:6px; color:var(--muted); font-size:12px; font-weight:650; line-height:1.3}
-    .priceRow{display:flex; align-items:center; justify-content:space-between; margin-top:12px; gap:10px}
-    .price{font-weight:950}
-    .tag{
-      font-size:11px; font-weight:950;
-      color:#0f172a;
-      padding:6px 10px;
-      border-radius:999px;
-      border:1px solid var(--line);
-      background: rgba(255,255,255,.9);
-    }
-
-    .qtyRow{display:flex; align-items:center; gap:8px}
-    .qtyBtn{
-      width:34px; height:34px; border-radius:12px;
-      border:1px solid var(--line);
-      background:#fff; font-weight:950; cursor:pointer;
-    }
-    .qty{width:44px; text-align:center; font-weight:950}
-
-    .toast{
-      position:fixed; left:50%; bottom:18px; transform: translateX(-50%);
-      background: rgba(15,23,42,.92);
-      color:#fff;
+    .pill{
+      display:none;
+      align-items:center;
+      gap:8px;
       padding:10px 12px;
       border-radius: 999px;
-      font-weight:850;
-      font-size:12px;
-      box-shadow: 0 18px 40px rgba(15,23,42,.25);
-      opacity:0; pointer-events:none;
-      transition: .22s ease;
-      z-index:50;
+      border: 1px solid rgba(255,255,255,.10);
+      background: rgba(255,255,255,.06);
+      color: var(--muted);
+      font-weight: 700;
+      font-size: 13px;
+      white-space: nowrap;
     }
-    .toast.show{opacity:1; transform: translateX(-50%) translateY(-4px)}
 
-    /* Modal */
-    .modalWrap{
-      position:fixed; inset:0; z-index:40;
-      background: rgba(2,6,23,.44);
-      display:none;
+    .verifyBtn{
+      padding:14px 22px;
+      border: none;
+      border-radius: 16px;
+      background: linear-gradient(90deg,var(--purple1),var(--purple2));
+      color:white;
+      font-weight:900;
+      font-size:16px;
+      cursor:pointer;
+      box-shadow: 0 14px 30px rgba(124,58,237,.22);
+      transition: transform .15s ease, filter .15s ease;
+    }
+    .verifyBtn:active{ transform: translateY(1px) scale(.99); }
+    .verifyBtn:hover{ filter: brightness(1.05); }
+
+    .menuBtn{
+      width:54px;
+      height:54px;
+      border-radius: 16px;
+      border: 1px solid rgba(255,255,255,.12);
+      background: rgba(255,255,255,.06);
+      color: var(--text);
+      font-size:26px;
+      cursor:pointer;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      box-shadow: 0 12px 24px rgba(0,0,0,.22);
+      transition: transform .15s ease, filter .15s ease;
+    }
+    .menuBtn:hover{ filter: brightness(1.08); }
+    .menuBtn:active{ transform: translateY(1px) scale(.99); }
+
+    /* Drawer */
+    .overlay{
+      position: fixed;
+      inset: 0;
+      background: rgba(0,0,0,.55);
+      z-index: 60;
+    }
+    .drawer{
+      position: fixed;
+      top: 0;
+      right: 0;
+      height: 100vh;
+      width: 310px;
+      z-index: 70;
+      background: rgba(14,14,24,.96);
+      border-left: 1px solid rgba(255,255,255,.10);
+      box-shadow: -12px 0 45px rgba(0,0,0,.45);
+      padding: 14px;
+      display:flex;
+      flex-direction:column;
+      gap: 10px;
+    }
+    .drawerTop{
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      padding: 6px 2px 12px 2px;
+      border-bottom: 1px solid rgba(255,255,255,.10);
+    }
+    .drawerTitle{
+      font-weight:900;
+      font-size: 18px;
+    }
+    .closeBtn{
+      width:48px;
+      height:48px;
+      border-radius: 14px;
+      border: 1px solid rgba(255,255,255,.12);
+      background: rgba(255,255,255,.06);
+      color: var(--text);
+      cursor:pointer;
+      font-size:18px;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      box-shadow: 0 10px 22px rgba(0,0,0,.28);
+    }
+    .drawer a{
+      padding: 14px 14px;
+      border-radius: 16px;
+      text-decoration:none;
+      color: var(--text);
+      font-weight:800;
+      font-size:16px;
+      background: rgba(124,58,237,.10);
+      border: 1px solid rgba(124,58,237,.18);
+      transition: transform .15s ease, filter .15s ease, background .15s ease;
+    }
+    .drawer a:hover{
+      background: rgba(124,58,237,.16);
+      filter: brightness(1.05);
+      transform: translateX(-2px);
+    }
+    .hidden{ display:none; }
+
+    /* Layout */
+    main{
+      padding: 20px;
+      max-width: 1080px;
+      margin: 0 auto;
+    }
+
+    .hero{
+      margin-top: 18px;
+      border-radius: 26px;
+      padding: 26px;
+      background:
+        radial-gradient(900px 340px at 10% 0%, rgba(124,58,237,.35), transparent 60%),
+        radial-gradient(700px 320px at 100% 20%, rgba(34,197,94,.18), transparent 55%),
+        rgba(255,255,255,.05);
+      border: 1px solid rgba(255,255,255,.10);
+      box-shadow: var(--shadow);
+      overflow: hidden;
+      position: relative;
+    }
+    .heroGlow{
+      position:absolute;
+      inset:-2px;
+      background:
+        radial-gradient(600px 250px at 20% 30%, rgba(167,139,250,.12), transparent 65%),
+        radial-gradient(600px 250px at 70% 70%, rgba(124,58,237,.10), transparent 65%);
+      filter: blur(0px);
+      pointer-events:none;
+    }
+    .heroGrid{
+      position:absolute;
+      inset:0;
+      background-image: linear-gradient(to right, rgba(255,255,255,.05) 1px, transparent 1px),
+                        linear-gradient(to bottom, rgba(255,255,255,.04) 1px, transparent 1px);
+      background-size: 60px 60px;
+      mask-image: radial-gradient(closest-side, rgba(0,0,0,.65), transparent 65%);
+      opacity: .25;
+      pointer-events:none;
+    }
+
+    .heroContent{
+      position: relative;
+      z-index: 1;
+      display:grid;
+      grid-template-columns: 1.15fr .85fr;
+      gap: 18px;
+      align-items:center;
+    }
+    .kicker{
+      display:inline-flex;
+      gap:8px;
+      align-items:center;
+      padding: 10px 12px;
+      border-radius: 999px;
+      border: 1px solid rgba(255,255,255,.12);
+      background: rgba(255,255,255,.06);
+      color: var(--muted);
+      font-weight:800;
+      font-size: 13px;
+      width: fit-content;
+    }
+    .kDot{
+      width:10px;height:10px;border-radius:999px;
+      background: linear-gradient(135deg,var(--green1),#86efac);
+      box-shadow: 0 0 0 5px rgba(34,197,94,.14);
+    }
+
+    h1{
+      margin: 14px 0 10px 0;
+      font-size: 44px;
+      line-height: 1.05;
+      letter-spacing: -0.6px;
+    }
+    .subtitle{
+      margin: 0;
+      color: var(--muted);
+      font-size: 16px;
+      line-height: 1.5;
+      max-width: 52ch;
+    }
+
+    .ctaRow{
+      margin-top: 18px;
+      display:flex;
+      flex-wrap: wrap;
+      gap: 12px;
+      align-items:center;
+    }
+    .btn{
+      padding: 16px 22px;
+      border-radius: 16px;
+      border: 1px solid rgba(255,255,255,.12);
+      background: rgba(255,255,255,.06);
+      color: var(--text);
+      font-weight: 900;
+      font-size: 16px;
+      cursor:pointer;
+      transition: transform .15s ease, filter .15s ease, background .15s ease;
+    }
+    .btn:hover{ filter: brightness(1.08); }
+    .btn:active{ transform: translateY(1px) scale(.99); }
+
+    .btnPrimary{
+      border: none;
+      background: linear-gradient(90deg,var(--purple1),var(--purple2));
+      box-shadow: 0 14px 30px rgba(124,58,237,.22);
+    }
+    .btnGhost{
+      background: rgba(255,255,255,.05);
+    }
+
+    .trustRow{
+      margin-top: 18px;
+      display:grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 10px;
+    }
+    .trust{
+      border-radius: 16px;
+      padding: 12px 12px;
+      border: 1px solid rgba(255,255,255,.10);
+      background: rgba(255,255,255,.05);
+      display:flex;
+      gap:10px;
+      align-items:flex-start;
+    }
+    .tIcon{
+      width: 38px;
+      height: 38px;
+      border-radius: 14px;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      background: rgba(124,58,237,.14);
+      border: 1px solid rgba(124,58,237,.20);
+      flex: 0 0 auto;
+      font-size: 18px;
+    }
+    .tText b{ display:block; font-size: 14px; }
+    .tText span{ display:block; color: var(--muted); font-size: 13px; margin-top: 2px; }
+
+    .heroCard{
+      border-radius: 22px;
       padding: 18px;
+      border: 1px solid rgba(255,255,255,.10);
+      background: rgba(255,255,255,.05);
+      box-shadow: 0 18px 45px rgba(0,0,0,.30);
     }
-    .modalWrap.show{display:flex}
-    .modal{
-      margin:auto;
-      width:min(880px, 100%);
-      background: var(--card);
-      border-radius: 24px;
-      border:1px solid rgba(229,231,235,.9);
-      box-shadow: 0 30px 80px rgba(2,6,23,.28);
-      overflow:hidden;
+    .heroCard h3{
+      margin: 0 0 10px 0;
+      font-size: 16px;
+      letter-spacing: .2px;
     }
-    .modalHead{display:flex; align-items:center; justify-content:space-between; padding:14px 16px; border-bottom:1px solid var(--line)}
-    .modalHead b{font-size:13px}
-    .x{width:38px;height:38px;border-radius:14px;border:1px solid var(--line);background:#fff;font-weight:950;cursor:pointer}
+    .mini{
+      color: var(--muted);
+      font-size: 13px;
+      line-height: 1.5;
+      margin: 0 0 14px 0;
+    }
+    .statGrid{
+      display:grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px;
+    }
+    .stat{
+      border-radius: 16px;
+      padding: 12px;
+      border: 1px solid rgba(255,255,255,.10);
+      background: rgba(255,255,255,.05);
+    }
+    .stat b{ font-size: 18px; display:block; }
+    .stat span{ color: var(--muted); font-size: 12px; display:block; margin-top: 2px; }
 
-    .modalBody{padding:14px 16px}
-    .cols{display:grid; grid-template-columns: 1fr 1fr; gap:12px}
-    @media (max-width: 860px){.cols{grid-template-columns:1fr}}
-
-    .panel{border:1px solid var(--line); border-radius: 20px; padding:12px; background: rgba(251,251,255,.8)}
-    .panel h5{margin:0 0 10px; font-size:13px}
-
-    .row{display:flex; gap:10px; flex-wrap:wrap}
-    .row .input{min-width: 180px}
-
-    .list{display:flex; flex-direction:column; gap:8px}
-    .lineItem{display:flex; align-items:center; justify-content:space-between; gap:10px; padding:10px 10px; border:1px solid var(--line); border-radius:16px; background:#fff}
-    .lineItem small{color:var(--muted); font-weight:650}
-    .lineItem b{font-size:12px}
-
-    .hr{height:1px; background: var(--line); margin:10px 0}
-
-    .kpi{display:flex; align-items:center; justify-content:space-between; padding:12px; border-radius:18px; border:1px solid var(--line); background:#fff}
-    .kpi span{color:var(--muted); font-weight:700; font-size:12px}
-    .kpi b{font-size:14px}
-
-    .note{
-      padding:10px 12px;
-      border-radius: 18px;
-      border: 1px solid rgba(124,58,237,.22);
-      background: rgba(124,58,237,.08);
-      color: #1e293b;
-      font-weight:700;
-      font-size:12px;
-      line-height:1.35;
+    /* Sections */
+    .sectionTitle{
+      margin: 26px 0 12px 0;
+      font-size: 18px;
+      letter-spacing: .2px;
+      color: rgba(255,255,255,.90);
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap: 10px;
+    }
+    .sectionTitle small{
+      color: var(--muted);
+      font-weight: 700;
+      font-size: 12px;
     }
 
-    .status{
-      display:flex; align-items:center; gap:8px;
-      padding:10px 12px;
-      border-radius: 18px;
-      border:1px solid var(--line);
-      background:#fff;
-      font-weight:850;
-      font-size:12px;
+    .grid{
+      display:grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 12px;
     }
-    .chip{width:10px;height:10px;border-radius:99px;background:var(--muted)}
-    .status.good .chip{background:var(--good)}
-    .status.bad .chip{background:var(--bad)}
-    .status.warn .chip{background:var(--warn)}
+    .card{
+      border-radius: var(--radius);
+      padding: 16px;
+      border: 1px solid rgba(255,255,255,.10);
+      background: rgba(255,255,255,.05);
+      box-shadow: 0 16px 40px rgba(0,0,0,.22);
+      transition: transform .15s ease, filter .15s ease, background .15s ease;
+    }
+    .card:hover{
+      transform: translateY(-2px);
+      filter: brightness(1.05);
+      background: rgba(255,255,255,.06);
+    }
+    .card h4{
+      margin: 0 0 6px 0;
+      font-size: 15px;
+      letter-spacing: .2px;
+    }
+    .card p{
+      margin: 0;
+      color: var(--muted);
+      font-size: 13px;
+      line-height: 1.45;
+    }
+    .chip{
+      display:inline-flex;
+      margin-top: 12px;
+      padding: 8px 10px;
+      border-radius: 999px;
+      border: 1px solid rgba(255,255,255,.12);
+      background: rgba(255,255,255,.06);
+      color: rgba(255,255,255,.85);
+      font-weight: 800;
+      font-size: 12px;
+      width: fit-content;
+    }
 
-    .footer{margin-top:16px; color:var(--muted); font-weight:650; font-size:12px; text-align:center}
+    .faq{
+      display:grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+    }
+    details{
+      border-radius: var(--radius);
+      border: 1px solid rgba(255,255,255,.10);
+      background: rgba(255,255,255,.05);
+      padding: 14px 14px;
+      box-shadow: 0 16px 40px rgba(0,0,0,.18);
+    }
+    summary{
+      cursor:pointer;
+      font-weight: 900;
+      font-size: 14px;
+      outline: none;
+    }
+    details p{
+      margin: 10px 0 0 0;
+      color: var(--muted);
+      font-size: 13px;
+      line-height: 1.45;
+    }
 
-    /* Keep clicks working */
-    *{ -webkit-tap-highlight-color: transparent; }
-    button, .pill, .btn, .cartBtn{ touch-action: manipulation; }
+    footer{
+      margin: 24px 0 34px 0;
+      color: rgba(255,255,255,.55);
+      font-size: 12px;
+      text-align:center;
+    }
+
+    /* WhatsApp floating button */
+    .waFloat{
+      position: fixed;
+      right: 16px;
+      bottom: 16px;
+      z-index: 80;
+      display:flex;
+      gap: 10px;
+      align-items:center;
+      text-decoration:none;
+      padding: 14px 16px;
+      border-radius: 999px;
+      background: linear-gradient(90deg, #16a34a, #22c55e);
+      color: white;
+      font-weight: 900;
+      box-shadow: 0 18px 40px rgba(34,197,94,.25);
+      border: 1px solid rgba(255,255,255,.16);
+      transition: transform .15s ease, filter .15s ease;
+    }
+    .waFloat:hover{ filter: brightness(1.05); }
+    .waFloat:active{ transform: translateY(1px) scale(.99); }
+    .waIcon{
+      width: 38px;
+      height: 38px;
+      border-radius: 999px;
+      background: rgba(255,255,255,.18);
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      font-size: 18px;
+    }
+    .waText span{ display:block; font-size: 11px; opacity: .9; font-weight: 800; }
+    .waText b{ display:block; font-size: 14px; line-height: 1.05; }
+
+    /* Responsive tweaks */
+    @media (min-width: 720px){
+      .pill{ display:inline-flex; }
+    }
+
+    @media (max-width: 900px){
+      .heroContent{ grid-template-columns: 1fr; }
+      h1{ font-size: 40px; }
+      .grid{ grid-template-columns: 1fr; }
+      .trustRow{ grid-template-columns: 1fr; }
+      .faq{ grid-template-columns: 1fr; }
+      .drawer{ width: 300px; }
+    }
+
+    @media (max-width: 480px){
+      .topbar{
+        padding: 10px 10px;
+        gap: 8px;
+      }
+      .brand span{ font-size: 15px; }
+
+      .verifyBtn{
+        padding: 12px 14px;
+        font-size: 14px;
+        border-radius: 14px;
+      }
+      .menuBtn{
+        width: 48px;
+        height: 48px;
+        font-size: 24px;
+      }
+      main{ padding: 14px; }
+      .hero{ padding: 18px; border-radius: 22px; }
+      h1{ font-size: 34px; }
+      .btn{ width: 100%; justify-content:center; }
+      .ctaRow{ gap: 10px; }
+      .waFloat{ left: 14px; right: 14px; justify-content:center; }
+    }
   </style>
 </head>
 <body>
+  <div class="grain"></div>
 
-  <div class="topbar">
-    <div class="inner">
-      <div class="brand" onclick="go('#home')" role="button" aria-label="Ir para o início">
-        <div class="logo" aria-hidden="true"></div>
+  <header class="topbar">
+    <div class="brand">
+      <div class="logoDot"></div>
+      <span>ViralVault</span>
+    </div>
+
+    <div class="right">
+      <div class="pill">⚡ Leve • Rápido • Responsivo</div>
+      <button class="verifyBtn" id="goVerify">Verificar pedido</button>
+      <button id="menuBtn" class="menuBtn" aria-label="Abrir menu">☰</button>
+    </div>
+  </header>
+
+  <div id="menuOverlay" class="overlay hidden"></div>
+
+  <nav id="menuDrawer" class="drawer hidden" aria-label="Menu">
+    <div class="drawerTop">
+      <div class="drawerTitle">Menu</div>
+      <button id="closeMenu" class="closeBtn" aria-label="Fechar menu">✕</button>
+    </div>
+
+    <a href="#home">🏠 Início</a>
+    <a href="#catalogo">📦 Catálogo (em breve)</a>
+    <a href="#como">🧠 Como funciona</a>
+    <a href="#reputacao">⭐ Reputação</a>
+    <a href="#provas">🧾 Provas</a>
+    <a href="#faq">❓ FAQ</a>
+    <a href="#suporte">💬 Suporte</a>
+  </nav>
+
+  <main>
+    <section class="hero" id="home">
+      <div class="heroGlow"></div>
+      <div class="heroGrid"></div>
+
+      <div class="heroContent">
         <div>
-          <h1>ViralVault Store</h1>
-          <small>Loja Premium • 100% digital</small>
-        </div>
-      </div>
+          <div class="kicker"><span class="kDot"></span> Projeto em construção — mas já com cara de loja</div>
+          <h1>Simples, chamativo e fácil de usar.</h1>
+          <p class="subtitle">
+            Aqui é pra pessoa entrar e entender rápido: botões grandes, menu limpo e tudo ajustado no celular.
+            Quando você começar a vender, é só ativar o catálogo.
+          </p>
 
-      <div class="nav" aria-label="Navegação">
-        <div class="pill" onclick="go('#catalogo')"><span class="dot"></span>Catálogo</div>
-        <div class="pill" onclick="go('#verificar')"><span class="dot"></span>Verificar pedido</div>
-        <div class="pill" onclick="go('#reputacao')"><span class="dot"></span>Reputação</div>
-        <div class="pill" onclick="go('#provas')"><span class="dot"></span>Provas</div>
-        <div class="pill" onclick="go('#faq')"><span class="dot"></span>FAQ</div>
-        <div class="pill" onclick="go('#suporte')"><span class="dot"></span>Suporte</div>
-      </div>
+          <div class="ctaRow">
+            <button class="btn btnPrimary" id="ctaCatalogo">Ver catálogo (em breve)</button>
+            <button class="btn btnGhost" id="ctaSuporte">Falar no suporte</button>
+          </div>
 
-      <div class="right">
-        <div class="badge" title="Entrega garantida">⚡ 24h ou reembolso</div>
-        <div class="cartBtn" onclick="openCart()" role="button" aria-label="Abrir carrinho">
-          🛒 Carrinho
-          <div class="count" id="cartCount">0</div>
-        </div>
-      </div>
-    </div>
-  </div>
-
-  <div class="wrap" id="home">
-
-    <div class="hero">
-      <div class="card heroMain">
-        <div class="kicker"><span class="spark"></span>Anime aesthetic • checkout limpo • assinatura de pedido (VV)</div>
-        <h2>Itens/Brainrots Roblox com entrega rápida e verificação pública.</h2>
-        <p>
-          Você compra, recebe um <b>código de pedido</b> e consegue <b>validar a assinatura</b> quando quiser.
-          Se atrasar além de <b>24h</b>, reembolso automático.
-        </p>
-        <div class="ctaRow">
-          <button class="btn primary" onclick="go('#catalogo')">Ver catálogo</button>
-          <button class="btn" onclick="openCart()">Abrir carrinho</button>
-          <button class="btn" onclick="go('#verificar')">Verificar assinatura</button>
-        </div>
-        <div style="margin-top:14px" class="note">
-          Dica: o site usa um Worker (Cloudflare) pra gerar <b>itemsHash</b> e <b>sig</b>. Isso protege contra falsificação.
-        </div>
-      </div>
-
-      <div class="card heroSide">
-        <div class="miniGrid">
-          <div class="mini"><b>🔒 Antigolpe</b><span>Assinatura HMAC + verificação pública.</span></div>
-          <div class="mini"><b>🧾 Provas</b><span>Seção de prints e entregas reais.</span></div>
-          <div class="mini"><b>💬 Suporte</b><span>WhatsApp com resposta rápida.</span></div>
-          <div class="mini"><b>✨ UI premium</b><span>Leve, clara e organizada no mobile.</span></div>
-        </div>
-        <div class="hr"></div>
-        <div class="note" id="antiFakeNote">🛡️ Anti-fake: nosso WhatsApp oficial: <b id="waText">(defina no código)</b></div>
-        <div class="footer">Config fácil: só editar 2 variáveis no JS.</div>
-      </div>
-    </div>
-
-    <!-- Catálogo -->
-    <div class="section" id="catalogo">
-      <div class="sectionHead">
-        <h3>Catálogo (digital)</h3>
-        <p>Filtre, pesquise e adicione ao carrinho.</p>
-      </div>
-      <div class="bar">
-        <input class="input" id="q" placeholder="Buscar por nome, tag, ID…" oninput="render()" />
-        <select class="select" id="cat" onchange="render()">
-          <option value="all">Todas as categorias</option>
-        </select>
-        <select class="select" id="sort" onchange="render()">
-          <option value="reco">Recomendados</option>
-          <option value="priceAsc">Menor preço</option>
-          <option value="priceDesc">Maior preço</option>
-          <option value="name">Nome A-Z</option>
-        </select>
-        <button class="btn" onclick="openAdmin()">Admin</button>
-      </div>
-
-      <div class="grid" id="grid"></div>
-    </div>
-
-    <!-- Verificar -->
-    <div class="section" id="verificar">
-      <div class="sectionHead">
-        <h3>Verificar pedido (assinatura)</h3>
-        <p>Cole <b>orderId</b>, <b>itemsHash</b> e <b>sig</b> para validar no Worker.</p>
-      </div>
-
-      <div class="card" style="margin-top:14px; padding:14px">
-        <div class="cols">
-          <div class="panel">
-            <h5>1) Cole aqui</h5>
-            <div class="row">
-              <input class="input" id="v_orderId" placeholder="orderId" />
-              <input class="input" id="v_itemsHash" placeholder="itemsHash" />
-              <input class="input" id="v_sig" placeholder="sig" />
+          <div class="trustRow" aria-label="Destaques">
+            <div class="trust">
+              <div class="tIcon">📱</div>
+              <div class="tText">
+                <b>100% Responsivo</b>
+                <span>Fica perfeito no celular</span>
+              </div>
             </div>
-            <div style="margin-top:10px" class="row">
-              <button class="btn primary" onclick="verifyNow()">Verificar</button>
-              <button class="btn" onclick="fillDemoVerify()">Preencher demo</button>
+            <div class="trust">
+              <div class="tIcon">⚡</div>
+              <div class="tText">
+                <b>Carrega rápido</b>
+                <span>Leve e sem travar</span>
+              </div>
             </div>
-            <div style="margin-top:10px" class="note">
-              Se der "Envie JSON com header Content-Type" no teste, é porque faltou o header.
-              Aqui no site ele manda certinho.
+            <div class="trust">
+              <div class="tIcon">🛡️</div>
+              <div class="tText">
+                <b>Visual confiável</b>
+                <span>Sem poluição e confusão</span>
+              </div>
             </div>
           </div>
-          <div class="panel">
-            <h5>2) Resultado</h5>
-            <div class="status warn" id="v_status"><span class="chip"></span><span id="v_text">Aguardando…</span></div>
-            <div class="hr"></div>
-            <pre id="v_raw" style="margin:0; white-space:pre-wrap; font-size:12px; color:#0f172a"></pre>
-          </div>
         </div>
+
+        <aside class="heroCard" aria-label="Resumo rápido">
+          <h3>Resumo do site</h3>
+          <p class="mini">
+            Você só precisa trocar os textos e ativar as seções quando começar a vender.
+            Tudo já está pronto pra crescer.
+          </p>
+
+          <div class="statGrid">
+            <div class="stat">
+              <b>☰ Menu</b>
+              <span>Organiza tudo sem bagunça</span>
+            </div>
+            <div class="stat">
+              <b>🔎 Verificar</b>
+              <span>Botão principal do topo</span>
+            </div>
+            <div class="stat">
+              <b>🎨 Visual</b>
+              <span>Moderno e clean</span>
+            </div>
+            <div class="stat">
+              <b>📦 Catálogo</b>
+              <span>Pronto pra ativar depois</span>
+            </div>
+          </div>
+        </aside>
+      </div>
+    </section>
+
+    <div class="sectionTitle" id="como">
+      <div>Como vai funcionar <small>(simples em 3 passos)</small></div>
+      <small>Você pode mudar depois</small>
+    </div>
+    <div class="grid">
+      <div class="card">
+        <h4>1) Escolhe</h4>
+        <p>O cliente entra no catálogo e escolhe o item/serviço.</p>
+        <div class="chip">Catálogo</div>
+      </div>
+      <div class="card">
+        <h4>2) Envia os dados</h4>
+        <p>Depois do pagamento, envia o @nick/infos necessárias.</p>
+        <div class="chip">Checkout</div>
+      </div>
+      <div class="card">
+        <h4>3) Recebe</h4>
+        <p>Entrega dentro do prazo combinado. Transparente e direto.</p>
+        <div class="chip">Entrega</div>
       </div>
     </div>
 
-    <!-- Reputação -->
-    <div class="section" id="reputacao">
-      <div class="sectionHead">
-        <h3>Reputação</h3>
-        <p>Transparência = confiança. (Você pode editar os números aqui no código.)</p>
+    <div class="sectionTitle" id="catalogo">
+      <div>Catálogo <small>(em breve)</small></div>
+      <small>Coloque seus produtos aqui</small>
+    </div>
+    <div class="grid">
+      <div class="card">
+        <h4>Produto/Serviço #1</h4>
+        <p>Descrição curta e clara. Sem textão — só o essencial.</p>
+        <div class="chip">R$ --,--</div>
       </div>
-      <div class="grid" style="margin-top:14px">
-        <div class="card prod">
-          <div class="prodTop">
-            <div class="thumb"></div>
-            <div>
-              <h4>Pedidos entregues</h4>
-              <div class="meta"><b id="rep_entregues">128</b> entregas confirmadas</div>
-            </div>
-          </div>
-          <div class="priceRow">
-            <span class="tag">✅ Verificado</span>
-            <span class="price">Atualizado hoje</span>
-          </div>
-        </div>
-        <div class="card prod">
-          <div class="prodTop">
-            <div class="thumb"></div>
-            <div>
-              <h4>Tempo médio</h4>
-              <div class="meta"><b id="rep_tempo">2h</b> pra concluir entrega</div>
-            </div>
-          </div>
-          <div class="priceRow">
-            <span class="tag">⚡ Rápido</span>
-            <span class="price">SLA 24h</span>
-          </div>
-        </div>
-        <div class="card prod">
-          <div class="prodTop">
-            <div class="thumb"></div>
-            <div>
-              <h4>Reembolsos</h4>
-              <div class="meta"><b id="rep_reembolso">0</b> (no mês)</div>
-            </div>
-          </div>
-          <div class="priceRow">
-            <span class="tag">🛡️ Seguro</span>
-            <span class="price">Política clara</span>
-          </div>
-        </div>
+      <div class="card">
+        <h4>Produto/Serviço #2</h4>
+        <p>Quando for vender, você troca por dados reais rapidinho.</p>
+        <div class="chip">R$ --,--</div>
+      </div>
+      <div class="card">
+        <h4>Produto/Serviço #3</h4>
+        <p>Se quiser, dá pra colocar imagens e botão “Comprar”.</p>
+        <div class="chip">R$ --,--</div>
       </div>
     </div>
 
-    <!-- Provas -->
-    <div class="section" id="provas">
-      <div class="sectionHead">
-        <h3>Provas</h3>
-        <p>Coloque prints/links de entregas aqui (ex.: Imgur/Drive).</p>
+    <div class="sectionTitle" id="reputacao">
+      <div>Reputação <small>(pra passar confiança)</small></div>
+      <small>Mostre números e prints</small>
+    </div>
+    <div class="grid">
+      <div class="card">
+        <h4>✅ Entregas confirmadas</h4>
+        <p>Mostre quantas entregas você já fez (quando começar).</p>
+        <div class="chip">0 por enquanto</div>
       </div>
-      <div class="card" style="margin-top:14px; padding:14px">
-        <div class="note">
-          🔥 Dica: coloque 6 a 12 provas boas. Melhor pouca e real do que muita e duvidosa.
-        </div>
-        <div class="hr"></div>
-        <div id="proofsList" class="list"></div>
-        <div style="margin-top:10px" class="row">
-          <input class="input" id="proofUrl" placeholder="URL da prova (print/link)" />
-          <input class="input" id="proofText" placeholder="Descrição curta (ex: Entrega Brainrot X)" />
-          <button class="btn primary" onclick="addProof()">Adicionar</button>
-          <button class="btn" onclick="resetProofs()">Reset</button>
-        </div>
+      <div class="card">
+        <h4>⏱️ Tempo médio</h4>
+        <p>Quando tiver histórico, coloque seu tempo médio aqui.</p>
+        <div class="chip">--h</div>
+      </div>
+      <div class="card">
+        <h4>💬 Suporte</h4>
+        <p>Deixa sempre um contato fácil (WhatsApp/Discord).</p>
+        <div class="chip">Ativo</div>
       </div>
     </div>
 
-    <!-- FAQ -->
-    <div class="section" id="faq">
-      <div class="sectionHead">
-        <h3>FAQ</h3>
-        <p>Respostas rápidas (reduz ticket e aumenta confiança).</p>
+    <div class="sectionTitle" id="provas">
+      <div>Provas <small>(prints / links)</small></div>
+      <small>Sem enrolação</small>
+    </div>
+    <div class="grid">
+      <div class="card">
+        <h4>Print #1</h4>
+        <p>Cola aqui um print de entrega, avaliação ou conversa.</p>
+        <div class="chip">Adicionar</div>
       </div>
-      <div class="grid" style="margin-top:14px">
-        <div class="card prod">
-          <h4>Como funciona a entrega?</h4>
-          <div class="meta">Você compra e envia seu @/nick no Roblox. Entrega em até 24h.</div>
-        </div>
-        <div class="card prod">
-          <h4>Se eu não receber?</h4>
-          <div class="meta">Passou de 24h sem entrega? Você tem direito a reembolso (política do site).</div>
-        </div>
-        <div class="card prod">
-          <h4>Como sei que é real?</h4>
-          <div class="meta">Use a seção <b>Verificar pedido</b>. O Worker valida a assinatura.</div>
-        </div>
+      <div class="card">
+        <h4>Print #2</h4>
+        <p>Quanto mais prova, mais confiança. Simples assim.</p>
+        <div class="chip">Adicionar</div>
+      </div>
+      <div class="card">
+        <h4>Links úteis</h4>
+        <p>Você pode colocar links de reviews, perfil, etc.</p>
+        <div class="chip">Adicionar</div>
       </div>
     </div>
 
-    <!-- Suporte -->
-    <div class="section" id="suporte">
-      <div class="sectionHead">
-        <h3>Suporte</h3>
-        <p>Atendimento rápido no WhatsApp.</p>
+    <div class="sectionTitle" id="faq">
+      <div>FAQ <small>(perguntas rápidas)</small></div>
+      <small>Evita dúvida repetida</small>
+    </div>
+    <div class="faq">
+      <details>
+        <summary>Quando o catálogo vai ficar pronto?</summary>
+        <p>Quando você decidir o que vai vender, é só trocar os cards do catálogo por produtos reais e pronto.</p>
+      </details>
+      <details>
+        <summary>Como a pessoa “verifica pedido”?</summary>
+        <p>Esse botão pode abrir uma página/área que consulta o status. Por enquanto ele só te leva pra seção de suporte.</p>
+      </details>
+      <details>
+        <summary>Tem como colocar modo claro/escuro?</summary>
+        <p>Sim. Dá pra fazer um botão de tema depois (eu monto rapidinho quando você quiser).</p>
+      </details>
+      <details>
+        <summary>Como eu deixo mais “cara de loja”?</summary>
+        <p>Com imagem de capa, logo e cards de produto com botão Comprar. Se você quiser, eu já deixo isso pronto também.</p>
+      </details>
+    </div>
+
+    <div class="sectionTitle" id="suporte">
+      <div>Suporte <small>(contato rápido)</small></div>
+      <small>Deixa fácil</small>
+    </div>
+    <div class="grid">
+      <div class="card">
+        <h4>WhatsApp</h4>
+        <p>Configure o número no link do botão flutuante (abaixo).</p>
+        <div class="chip">Editar número</div>
       </div>
-      <div class="card" style="margin-top:14px; padding:14px">
-        <div class="cols">
-          <div class="panel">
-            <h5>Falar agora</h5>
-            <div class="note">Clique abaixo pra abrir o WhatsApp oficial.</div>
-            <div style="margin-top:10px" class="row">
-              <button class="btn primary" onclick="openWhatsApp()">Abrir WhatsApp</button>
-              <button class="btn" onclick="copyWhatsApp()">Copiar número</button>
-            </div>
-            <div class="hr"></div>
-            <div class="note">⚠️ Nunca pague por “intermediário”. Se alguém disser que é a loja, valide aqui no site.</div>
-          </div>
-          <div class="panel">
-            <h5>Política rápida</h5>
-            <div class="list">
-              <div class="lineItem"><div><b>SLA</b><br><small>Entrega em até 24h</small></div><b>✅</b></div>
-              <div class="lineItem"><div><b>Reembolso</b><br><small>Se não entregar no prazo</small></div><b>✅</b></div>
-              <div class="lineItem"><div><b>Provas</b><br><small>Prints e histórico</small></div><b>✅</b></div>
-            </div>
-          </div>
-        </div>
+      <div class="card">
+        <h4>Discord</h4>
+        <p>Se tiver servidor, coloca o convite aqui pra ficar fácil.</p>
+        <div class="chip">Adicionar link</div>
+      </div>
+      <div class="card">
+        <h4>Horários</h4>
+        <p>Exemplo: Seg–Sex 10h–22h. Transparência aumenta confiança.</p>
+        <div class="chip">Definir</div>
       </div>
     </div>
 
-    <div class="footer">© <span id="year"></span> ViralVault Store • Feito para mobile • Assinatura via Worker</div>
-  </div>
+    <footer>
+      © <span id="year"></span> ViralVault • Página leve e responsiva • Feita para crescer
+    </footer>
+  </main>
 
-  <!-- Cart Modal -->
-  <div class="modalWrap" id="cartModal" aria-hidden="true">
-    <div class="modal" role="dialog" aria-modal="true" aria-label="Carrinho">
-      <div class="modalHead">
-        <b>🛒 Carrinho & Checkout (3 passos)</b>
-        <button class="x" onclick="closeCart()" aria-label="Fechar">✕</button>
-      </div>
-      <div class="modalBody">
-        <div class="cols">
-          <div class="panel">
-            <h5>Passo 1 — Itens</h5>
-            <div id="cartList" class="list"></div>
-            <div class="hr"></div>
-            <div class="kpi"><span>Total (preview)</span><b id="cartTotal">R$ 0,00</b></div>
-            <div style="margin-top:10px" class="note">
-              O total final é calculado no Worker (segurança). O valor aqui é só preview.
-            </div>
-          </div>
-
-          <div class="panel">
-            <h5>Passo 2 — Dados</h5>
-            <div class="row">
-              <input class="input" id="buyerName" placeholder="Seu nome (ex: Darlan)" />
-              <input class="input" id="buyerRoblox" placeholder="Seu @ no Roblox" />
-            </div>
-            <div class="hr"></div>
-
-            <h5>Passo 3 — Gerar pedido (assinatura)</h5>
-            <div class="row">
-              <button class="btn primary" onclick="checkout()">Gerar pedido</button>
-              <button class="btn" onclick="clearCart()">Limpar</button>
-            </div>
-
-            <div style="margin-top:10px" class="status warn" id="co_status"><span class="chip"></span><span id="co_text">Aguardando…</span></div>
-            <div class="hr"></div>
-            <div class="note" id="orderBox" style="display:none"></div>
-            <pre id="co_raw" style="margin:0; white-space:pre-wrap; font-size:12px; color:#0f172a"></pre>
-          </div>
-        </div>
-      </div>
+  <!-- WhatsApp Floating Button (troque o número no link) -->
+  <a class="waFloat" href="https://wa.me/5511941598713?text=Oi!%20Quero%20suporte%20na%20ViralVault." target="_blank" rel="noopener">
+    <div class="waIcon">💬</div>
+    <div class="waText">
+      <span>Suporte rápido</span>
+      <b>Falar no WhatsApp</b>
     </div>
-  </div>
-
-  <!-- Admin Modal (catálogo local) -->
-  <div class="modalWrap" id="adminModal" aria-hidden="true">
-    <div class="modal" role="dialog" aria-modal="true" aria-label="Admin">
-      <div class="modalHead">
-        <b>⚙️ Admin (catálogo local)</b>
-        <button class="x" onclick="closeAdmin()" aria-label="Fechar">✕</button>
-      </div>
-      <div class="modalBody">
-        <div class="note">
-          Este admin é só do <b>HTML (local)</b> — bom pra organizar a vitrine.
-          Para segurança real, o controle de preços deve estar no <b>Worker</b>.
-        </div>
-        <div class="hr"></div>
-
-        <div class="cols">
-          <div class="panel">
-            <h5>Senha do admin (local)</h5>
-            <div class="row">
-              <input class="input" id="adminPass" type="password" placeholder="Defina/Entre com a senha" />
-              <button class="btn primary" onclick="adminLogin()">Entrar</button>
-              <button class="btn" onclick="adminLogout()">Sair</button>
-            </div>
-            <div style="margin-top:10px" class="status warn" id="ad_status"><span class="chip"></span><span id="ad_text">Bloqueado</span></div>
-          </div>
-
-          <div class="panel">
-            <h5>Config do Worker / WhatsApp</h5>
-            <div class="row">
-              <input class="input" id="cfgWorker" placeholder="Worker base (ex: https://...workers.dev)" />
-              <input class="input" id="cfgWA" placeholder="WhatsApp (E.164) ex: 5511..." />
-            </div>
-            <div style="margin-top:10px" class="row">
-              <button class="btn primary" onclick="saveConfig()">Salvar</button>
-              <button class="btn" onclick="resetConfig()">Reset</button>
-            </div>
-          </div>
-        </div>
-
-        <div class="hr"></div>
-
-        <div class="panel" id="adminOnly" style="display:none">
-          <h5>Produtos</h5>
-          <div class="row">
-            <input class="input" id="p_id" placeholder="id (ex: roblox_001)" />
-            <input class="input" id="p_name" placeholder="nome" />
-            <input class="input" id="p_cat" placeholder="categoria (ex: Brainrot)" />
-            <input class="input" id="p_tag" placeholder="tag (ex: META)" />
-            <input class="input" id="p_price" placeholder="preço (ex: 10)" />
-          </div>
-          <div style="margin-top:10px" class="row">
-            <button class="btn primary" onclick="addProduct()">Adicionar/Atualizar</button>
-            <button class="btn" onclick="exportProducts()">Exportar JSON</button>
-            <button class="btn" onclick="resetProducts()">Reset catálogo</button>
-          </div>
-          <div class="hr"></div>
-          <div class="hr"></div>
-          <h5>Importar catálogo (JSON)</h5>
-          <div class="row">
-            <textarea class="input" id="importJson" style="height:90px" placeholder='Cole aqui um JSON de produtos (array). Ex: [{"id":"roblox_001","name":"Brainrot","cat":"Brainrot","tag":"META","price":10}]'></textarea>
-          </div>
-          <div style="margin-top:10px" class="row">
-            <button class="btn" onclick="importProducts()">Importar/mesclar</button>
-            <button class="btn" onclick="clearImport()">Limpar caixa</button>
-          </div>
-          <div class="hr"></div>
-          <div id="adminProducts" class="list"></div>
-        </div>
-      </div>
-    </div>
-  </div>
-
-  <div class="toast" id="toast"></div>
+  </a>
 
   <script>
-    // =========================
-    //  CONFIG (edite se quiser)
-    // =========================
-    const DEFAULTS = {
-      WORKER_BASE: "https://viralvault-sign.darlanana06.workers.dev",
-      WHATSAPP_E164: "5511941598713" // troque se quiser
-    };
+    // Menu
+    const menuBtn = document.getElementById("menuBtn");
+    const closeMenu = document.getElementById("closeMenu");
+    const overlay = document.getElementById("menuOverlay");
+    const drawer = document.getElementById("menuDrawer");
 
-    // =========================
-    //  STORAGE
-    // =========================
-    const LS = {
-      cfg: "vv_cfg_v1",
-      products: "vv_products_v1",
-      cart: "vv_cart_v1",
-      proofs: "vv_proofs_v1",
-      adminHash: "vv_admin_hash_v1",
-      adminUnlocked: "vv_admin_unlocked_v1"
-    };
-
-    function loadCfg(){
-      const raw = localStorage.getItem(LS.cfg);
-      const cfg = raw ? JSON.parse(raw) : {};
-      return {
-        WORKER_BASE: cfg.WORKER_BASE || DEFAULTS.WORKER_BASE,
-        WHATSAPP_E164: cfg.WHATSAPP_E164 || DEFAULTS.WHATSAPP_E164,
-      };
+    function openMenu(){
+      overlay.classList.remove("hidden");
+      drawer.classList.remove("hidden");
+    }
+    function close(){
+      overlay.classList.add("hidden");
+      drawer.classList.add("hidden");
     }
 
-    function saveCfg(cfg){
-      localStorage.setItem(LS.cfg, JSON.stringify(cfg));
-      applyCfg();
-    }
-
-    function applyCfg(){
-      const cfg = loadCfg();
-      document.getElementById('waText').textContent = "+" + cfg.WHATSAPP_E164;
-      document.getElementById('antiFakeNote').querySelector('b').textContent = "+" + cfg.WHATSAPP_E164;
-    }
-
-    // =========================
-    //  PRODUCTS (local vitrine)
-    // =========================
-    const DEFAULT_PRODUCTS = [
-      { id:"roblox_001", name:"Brainrot Teste", category:"Brainrots", tag:"META", price:10, desc:"Entrega digital em até 24h." },
-      { id:"roblox_002", name:"Brainrot Raro", category:"Brainrots", tag:"RARO", price:25, desc:"Perfeito pra coleção." },
-      { id:"roblox_003", name:"Bundle Brainrot", category:"Bundles", tag:"COMBO", price:45, desc:"Combo com desconto." },
-      { id:"roblox_004", name:"Item VIP", category:"Itens", tag:"VIP", price:60, desc:"Entrega prioritária." },
-      { id:"roblox_005", name:"Skin / Acessório", category:"Itens", tag:"STYLE", price:15, desc:"Um toque de drip." },
-      { id:"roblox_006", name:"Pack Iniciante", category:"Bundles", tag:"START", price:20, desc:"Começa bem." },
-    ];
-
-    function loadProducts(){
-      const raw = localStorage.getItem(LS.products);
-      return raw ? JSON.parse(raw) : DEFAULT_PRODUCTS;
-    }
-    function saveProducts(arr){
-      localStorage.setItem(LS.products, JSON.stringify(arr));
-      render();
-      adminRenderProducts();
-    }
-
-    // =========================
-    //  CART
-    // =========================
-    function loadCart(){
-      const raw = localStorage.getItem(LS.cart);
-      return raw ? JSON.parse(raw) : [];
-    }
-    function saveCart(cart){
-      localStorage.setItem(LS.cart, JSON.stringify(cart));
-      updateCartBadge();
-    }
-
-    function addToCart(id, qty=1){
-      const cart = loadCart();
-      const found = cart.find(x=>x.id===id);
-      if(found) found.qty += qty;
-      else cart.push({id, qty});
-      saveCart(cart);
-      toast("Adicionado ao carrinho ✅");
-    }
-
-    function setQty(id, qty){
-      const cart = loadCart();
-      const it = cart.find(x=>x.id===id);
-      if(!it) return;
-      it.qty = Math.max(1, Math.min(99, qty|0));
-      saveCart(cart);
-      renderCart();
-    }
-
-    function removeFromCart(id){
-      const cart = loadCart().filter(x=>x.id!==id);
-      saveCart(cart);
-      renderCart();
-    }
-
-    function clearCart(){
-      saveCart([]);
-      renderCart();
-      toast("Carrinho limpo");
-    }
-
-    function cartCount(){
-      return loadCart().reduce((a,b)=>a + (b.qty||0), 0);
-    }
-
-    function updateCartBadge(){
-      document.getElementById('cartCount').textContent = String(cartCount());
-    }
-
-    function moneyBRL(n){
-      return (n||0).toLocaleString('pt-BR', {style:'currency', currency:'BRL'});
-    }
-
-    function cartTotalPreview(){
-      const products = loadProducts();
-      const map = new Map(products.map(p=>[p.id, p]));
-      return loadCart().reduce((sum, it)=>{
-        const p = map.get(it.id);
-        return sum + (p ? (p.price * it.qty) : 0);
-      }, 0);
-    }
-
-    // =========================
-    //  UI NAV
-    // =========================
-    function go(hash){
-      const el = document.querySelector(hash);
-      if(el) el.scrollIntoView({behavior:'smooth', block:'start'});
-      history.replaceState(null, "", hash);
-    }
-
-    function toast(msg){
-      const t = document.getElementById('toast');
-      t.textContent = msg;
-      t.classList.add('show');
-      clearTimeout(window.__t);
-      window.__t = setTimeout(()=>t.classList.remove('show'), 1700);
-    }
-
-    // =========================
-    //  RENDER CATALOG
-    // =========================
-    function ensureCategories(){
-      const products = loadProducts();
-      const cats = Array.from(new Set(products.map(p=>p.category||"Outros")));
-      const sel = document.getElementById('cat');
-      const cur = sel.value;
-      sel.innerHTML = '<option value="all">Todas as categorias</option>' + cats.map(c=>`<option value="${escapeHtml(c)}">${escapeHtml(c)}</option>`).join('');
-      sel.value = cur && (cur==="all" || cats.includes(cur)) ? cur : "all";
-    }
-
-    function render(){
-      ensureCategories();
-      const products = loadProducts();
-      const q = (document.getElementById('q').value||"").trim().toLowerCase();
-      const cat = document.getElementById('cat').value;
-      const sort = document.getElementById('sort').value;
-
-      let list = products.filter(p=>{
-        if(cat !== 'all' && (p.category||'Outros') !== cat) return false;
-        if(!q) return true;
-        const hay = `${p.name} ${p.id} ${p.tag||''} ${p.category||''}`.toLowerCase();
-        return hay.includes(q);
-      });
-
-      if(sort==='priceAsc') list.sort((a,b)=>a.price-b.price);
-      if(sort==='priceDesc') list.sort((a,b)=>b.price-a.price);
-      if(sort==='name') list.sort((a,b)=>String(a.name).localeCompare(String(b.name), 'pt-BR'));
-
-      const grid = document.getElementById('grid');
-      grid.innerHTML = list.map(p=>{
-        return `
-          <div class="card prod">
-            <div class="prodTop">
-              <div class="thumb" aria-hidden="true"></div>
-              <div>
-                <h4>${escapeHtml(p.name)}</h4>
-                <div class="meta">${escapeHtml(p.desc || 'Entrega digital em até 24h.')}<br><small><b>ID:</b> ${escapeHtml(p.id)} • <b>Categoria:</b> ${escapeHtml(p.category||'Outros')}</small></div>
-              </div>
-            </div>
-            <div class="priceRow">
-              <div>
-                <div class="price">${moneyBRL(p.price)}</div>
-                <div class="meta">Tag: <b>${escapeHtml(p.tag||'STANDARD')}</b></div>
-              </div>
-              <div class="qtyRow">
-                <button class="qtyBtn" onclick="addToCart('${escapeAttr(p.id)}', 1)">+1</button>
-                <button class="btn primary" onclick="addToCart('${escapeAttr(p.id)}', 1)">Adicionar</button>
-              </div>
-            </div>
-          </div>
-        `;
-      }).join('');
-
-      updateCartBadge();
-      renderCart();
-    }
-
-    function escapeHtml(s){
-      return String(s??'').replace(/[&<>"']/g, m=>({"&":"&amp;","<":"&lt;",">":"&gt;","\"":"&quot;","'":"&#39;"}[m]));
-    }
-    function escapeAttr(s){
-      return escapeHtml(s).replace(/`/g,'');
-    }
-
-    // =========================
-    //  CART MODAL
-    // =========================
-    function openCart(){
-      document.getElementById('cartModal').classList.add('show');
-      document.getElementById('cartModal').setAttribute('aria-hidden','false');
-      renderCart();
-    }
-    function closeCart(){
-      document.getElementById('cartModal').classList.remove('show');
-      document.getElementById('cartModal').setAttribute('aria-hidden','true');
-    }
-
-    function renderCart(){
-      const products = loadProducts();
-      const map = new Map(products.map(p=>[p.id, p]));
-      const cart = loadCart();
-      const list = document.getElementById('cartList');
-      const cl = document.getElementById('cartList');
-
-      if(cart.length===0){
-        list.innerHTML = `<div class="note">Carrinho vazio. Volte no catálogo e adicione itens 👀</div>`;
-        document.getElementById('cartTotal').textContent = moneyBRL(0);
-        document.getElementById('cartList').innerHTML = list.innerHTML;
-        return;
-      }
-
-      const rows = cart.map(it=>{
-        const p = map.get(it.id);
-        const name = p ? p.name : it.id;
-        const price = p ? p.price : 0;
-        const subtotal = price * it.qty;
-        return `
-          <div class="lineItem">
-            <div>
-              <b>${escapeHtml(name)}</b><br>
-              <small>ID: ${escapeHtml(it.id)} • ${moneyBRL(price)} cada</small>
-            </div>
-            <div class="qtyRow">
-              <button class="qtyBtn" onclick="setQty('${escapeAttr(it.id)}', ${it.qty-1})">−</button>
-              <div class="qty">${it.qty}</div>
-              <button class="qtyBtn" onclick="setQty('${escapeAttr(it.id)}', ${it.qty+1})">+</button>
-              <button class="qtyBtn" onclick="removeFromCart('${escapeAttr(it.id)}')">🗑</button>
-            </div>
-          </div>
-        `;
-      }).join('');
-
-      cl.innerHTML = rows;
-      document.getElementById('cartTotal').textContent = moneyBRL(cartTotalPreview());
-      updateCartBadge();
-    }
-
-    // =========================
-    //  WORKER API
-    // =========================
-    async function api(path, body){
-      const cfg = loadCfg();
-      const url = cfg.WORKER_BASE.replace(/\/+$/,'') + path;
-      const res = await fetch(url, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json'
-        },
-        body: JSON.stringify(body)
-      });
-      const txt = await res.text();
-      let json;
-      try{ json = JSON.parse(txt); }catch{ json = { ok:false, error:'Resposta não-JSON', raw: txt }; }
-      if(!res.ok && json && json.ok!==true){
-        json._http = res.status;
-      }
-      return json;
-    }
-
-    function setStatus(idBase, kind, text){
-      const box = document.getElementById(idBase + '_status');
-      const t = document.getElementById(idBase + '_text');
-      box.classList.remove('good','bad','warn');
-      box.classList.add(kind);
-      t.textContent = text;
-    }
-
-    async function checkout(){
-      const cart = loadCart();
-      if(cart.length===0){ toast('Carrinho vazio'); return; }
-
-      const buyerName = (document.getElementById('buyerName').value||'').trim();
-      const buyerRoblox = (document.getElementById('buyerRoblox').value||'').trim();
-      if(!buyerName || !buyerRoblox){ toast('Preencha nome e @'); return; }
-
-      setStatus('co','warn','Gerando pedido…');
-      document.getElementById('co_raw').textContent = '';
-      document.getElementById('orderBox').style.display='none';
-
-      // Payload enxuto (seguro): worker calcula total e hash
-      const payload = {
-        user: buyerName,
-        roblox: buyerRoblox,
-        items: cart.map(x=>({id:x.id, qty:x.qty}))
-      };
-
-      try{
-        const out = await api('/sign', payload);
-        document.getElementById('co_raw').textContent = JSON.stringify(out, null, 2);
-
-        if(out && out.ok){
-          setStatus('co','good','Pedido gerado ✅');
-          const box = document.getElementById('orderBox');
-          box.style.display = 'block';
-          box.innerHTML = `
-            <b>Seu pedido:</b><br>
-            <b>orderId:</b> ${escapeHtml(out.orderId||'(sem)')}<br>
-            <b>itemsHash:</b> ${escapeHtml(out.itemsHash||'(sem)')}<br>
-            <b>sig:</b> ${escapeHtml(out.sig||'(sem)')}<br><br>
-            ✅ Agora vá em <b>Verificar pedido</b> e cole <b>itemsHash</b> + <b>sig</b>.
-          `;
-          // auto-preenche a tela de verificação
-          if(out.orderId) document.getElementById('v_orderId').value = out.orderId;
-          if(out.itemsHash) document.getElementById('v_itemsHash').value = out.itemsHash;
-          if(out.sig) document.getElementById('v_sig').value = out.sig;
-          toast('Pedido pronto!');
-        } else {
-          setStatus('co','bad', (out && out.error) ? out.error : 'Falhou');
-        }
-      } catch (e){
-        setStatus('co','bad','Erro na conexão');
-        document.getElementById('co_raw').textContent = String(e);
-      }
-    }
-
-    async function verifyNow(){
-      const orderId = (document.getElementById('v_orderId').value||'').trim();
-      const itemsHash = (document.getElementById('v_itemsHash').value||'').trim();
-      const sig = (document.getElementById('v_sig').value||'').trim();
-      if(!orderId || !itemsHash || !sig){ toast('Cole orderId + itemsHash + sig'); return; }
-
-      setStatus('v','warn','Verificando…');
-      document.getElementById('v_raw').textContent = '';
-
-      try{
-        const out = await api('/verify', { orderId, itemsHash, sig });
-        document.getElementById('v_raw').textContent = JSON.stringify(out, null, 2);
-        if(out && out.ok && out.valid===true){
-          setStatus('v','good','Assinatura válida ✅');
-        } else if(out && out.ok && out.valid===false){
-          setStatus('v','bad','Assinatura inválida ❌');
-        } else {
-          setStatus('v','bad', (out && out.error) ? out.error : 'Falhou');
-        }
-      } catch (e){
-        setStatus('v','bad','Erro na conexão');
-        document.getElementById('v_raw').textContent = String(e);
-      }
-    }
-
-    function fillDemoVerify(){
-      document.getElementById('v_orderId').value = "COLE_AQUI";
-      document.getElementById('v_itemsHash').value = "COLE_AQUI";
-      document.getElementById('v_sig').value = "COLE_AQUI";
-      toast('Cole os valores do /sign');
-    }
-
-    // =========================
-    //  WHATSAPP
-    // =========================
-    function openWhatsApp(){
-      const cfg = loadCfg();
-      const text = encodeURIComponent('Olá! Vim pela ViralVault Store. Preciso de suporte / entrega.');
-      const url = `https://wa.me/${cfg.WHATSAPP_E164}?text=${text}`;
-      window.open(url, '_blank', 'noopener');
-    }
-
-    async function copyWhatsApp(){
-      const cfg = loadCfg();
-      const val = '+' + cfg.WHATSAPP_E164;
-      try{ await navigator.clipboard.writeText(val); toast('Copiado ✅'); }
-      catch{ toast(val); }
-    }
-
-    // =========================
-    //  PROOFS
-    // =========================
-    const DEFAULT_PROOFS = [
-      { url: 'https://example.com/print1', text: 'Entrega #1 (troque esse link)' },
-      { url: 'https://example.com/print2', text: 'Entrega #2 (troque esse link)' },
-    ];
-
-    function loadProofs(){
-      const raw = localStorage.getItem(LS.proofs);
-      return raw ? JSON.parse(raw) : DEFAULT_PROOFS;
-    }
-
-    function saveProofs(arr){
-      localStorage.setItem(LS.proofs, JSON.stringify(arr));
-      renderProofs();
-    }
-
-    function renderProofs(){
-      const list = document.getElementById('proofsList');
-      const proofs = loadProofs();
-      list.innerHTML = proofs.map((p, idx)=>{
-        return `
-          <div class="lineItem">
-            <div>
-              <b>${escapeHtml(p.text||'Prova')}</b><br>
-              <small>${escapeHtml(p.url||'')}</small>
-            </div>
-            <div class="qtyRow">
-              <button class="qtyBtn" onclick="openLink('${escapeAttr(p.url)}')">🔗</button>
-              <button class="qtyBtn" onclick="delProof(${idx})">🗑</button>
-            </div>
-          </div>
-        `;
-      }).join('');
-    }
-
-    function openLink(url){
-      if(!url || url.startsWith('https://example.com')){ toast('Troque o link pela sua prova real'); return; }
-      window.open(url, '_blank', 'noopener');
-    }
-
-    function addProof(){
-      const url = (document.getElementById('proofUrl').value||'').trim();
-      const text = (document.getElementById('proofText').value||'').trim();
-      if(!url || !text){ toast('Preencha url e descrição'); return; }
-      const proofs = loadProofs();
-      proofs.unshift({url, text});
-      saveProofs(proofs);
-      document.getElementById('proofUrl').value='';
-      document.getElementById('proofText').value='';
-      toast('Prova adicionada ✅');
-    }
-
-    function delProof(i){
-      const proofs = loadProofs();
-      proofs.splice(i,1);
-      saveProofs(proofs);
-    }
-
-    function resetProofs(){
-      localStorage.removeItem(LS.proofs);
-      renderProofs();
-      toast('Resetado');
-    }
-
-    // =========================
-    //  ADMIN (LOCAL)
-    // =========================
-    function openAdmin(){
-      document.getElementById('adminModal').classList.add('show');
-      document.getElementById('adminModal').setAttribute('aria-hidden','false');
-      const cfg = loadCfg();
-      document.getElementById('cfgWorker').value = cfg.WORKER_BASE;
-      document.getElementById('cfgWA').value = cfg.WHATSAPP_E164;
-      adminSync();
-      adminRenderProducts();
-    }
-    function closeAdmin(){
-      document.getElementById('adminModal').classList.remove('show');
-      document.getElementById('adminModal').setAttribute('aria-hidden','true');
-    }
-
-    function isAdminUnlocked(){
-      return localStorage.getItem(LS.adminUnlocked)==='1';
-    }
-
-    async function sha256Hex(str){
-      const buf = new TextEncoder().encode(str);
-      const hash = await crypto.subtle.digest('SHA-256', buf);
-      return Array.from(new Uint8Array(hash)).map(b=>b.toString(16).padStart(2,'0')).join('');
-    }
-
-    async function adminLogin(){
-      const pass = (document.getElementById('adminPass').value||'').trim();
-      if(!pass){ toast('Digite uma senha'); return; }
-
-      const existing = localStorage.getItem(LS.adminHash);
-      const h = await sha256Hex(pass);
-
-      if(!existing){
-        // define senha
-        localStorage.setItem(LS.adminHash, h);
-        localStorage.setItem(LS.adminUnlocked, '1');
-        toast('Senha definida ✅');
-      } else {
-        if(h === existing){
-          localStorage.setItem(LS.adminUnlocked, '1');
-          toast('Admin liberado ✅');
-        } else {
-          toast('Senha incorreta');
-        }
-      }
-      document.getElementById('adminPass').value='';
-      adminSync();
-    }
-
-    function adminLogout(){
-      localStorage.removeItem(LS.adminUnlocked);
-      adminSync();
-      toast('Saiu do admin');
-    }
-
-    function adminSync(){
-      const unlocked = isAdminUnlocked();
-      const adminOnly = document.getElementById('adminOnly');
-      adminOnly.style.display = unlocked ? 'block' : 'none';
-      if(unlocked){
-        setStatus('ad','good','Desbloqueado');
-      } else {
-        setStatus('ad','warn','Bloqueado');
-      }
-    }
-
-    function saveConfig(){
-      if(!isAdminUnlocked()){ toast('Entre no admin'); return; }
-      const worker = (document.getElementById('cfgWorker').value||'').trim();
-      const wa = (document.getElementById('cfgWA').value||'').trim();
-      if(!worker.startsWith('https://')){ toast('Worker precisa começar com https://'); return; }
-      if(!/^\d{10,16}$/.test(wa)) { toast('WhatsApp: só números (E.164)'); return; }
-      saveCfg({WORKER_BASE: worker, WHATSAPP_E164: wa});
-      toast('Config salva ✅');
-    }
-
-    function resetConfig(){
-      if(!isAdminUnlocked()){ toast('Entre no admin'); return; }
-      localStorage.removeItem(LS.cfg);
-      applyCfg();
-      toast('Resetado');
-    }
-
-    function addProduct(){
-      if(!isAdminUnlocked()){ toast('Entre no admin'); return; }
-      const id = (document.getElementById('p_id').value||'').trim();
-      const name = (document.getElementById('p_name').value||'').trim();
-      const category = (document.getElementById('p_cat').value||'').trim() || 'Outros';
-      const tag = (document.getElementById('p_tag').value||'').trim() || 'STANDARD';
-      const price = Number((document.getElementById('p_price').value||'').trim());
-      if(!id || !name || !Number.isFinite(price)){ toast('Preencha id, nome e preço'); return; }
-
-      const products = loadProducts();
-      const idx = products.findIndex(p=>p.id===id);
-      const obj = { id, name, category, tag, price, desc: 'Entrega digital em até 24h.' };
-      if(idx>=0) products[idx] = {...products[idx], ...obj};
-      else products.unshift(obj);
-      saveProducts(products);
-      toast('Produto salvo ✅');
-    }
-
-    function adminRenderProducts() {
-      const wrap = document.getElementById("adminProducts");
-      const list = getProducts();
-      if (!list.length) {
-        wrap.innerHTML = '<div class="note">Nenhum produto ainda. Use os campos acima e clique em <b>Adicionar/Atualizar</b>.</div>';
-        return;
-      }
-
-      const rows = list
-        .slice()
-        .sort((a, b) => (a.cat || "").localeCompare(b.cat || "") || (a.name || "").localeCompare(b.name || ""))
-        .map(p => {
-          const safe = (s) => String(s ?? "").replaceAll("&", "&amp;").replaceAll("<", "&lt;").replaceAll(">", "&gt;").replaceAll('"', "&quot;");
-          const id = safe(p.id);
-          const name = safe(p.name);
-          const cat = safe(p.category);
-          const tag = safe(p.tag);
-          const price = Number(p.price || 0);
-          return `
-            <tr>
-              <td><code>${id}</code></td>
-              <td>${name}</td>
-              <td>${cat || '-'} </td>
-              <td>${tag ? `<span class="badge">${tag}</span>` : '-'}</td>
-              <td style="text-align:right">R$ ${price.toFixed(2).replace('.',',')}</td>
-              <td style="white-space:nowrap; text-align:right">
-                <button class="btn" onclick="editProduct('${id}')">Editar</button>
-                <button class="btn danger" onclick="deleteProduct('${id}')">Remover</button>
-              </td>
-            </tr>`;
-        })
-        .join("");
-
-      wrap.innerHTML = `
-        <div style="overflow:auto; border:1px solid rgba(15,23,42,.12); border-radius:14px">
-          <table style="width:100%; border-collapse:collapse; font-size:13px">
-            <thead>
-              <tr style="background:rgba(15,23,42,.04)">
-                <th style="text-align:left; padding:10px">ID</th>
-                <th style="text-align:left; padding:10px">Nome</th>
-                <th style="text-align:left; padding:10px">Categoria</th>
-                <th style="text-align:left; padding:10px">Tag</th>
-                <th style="text-align:right; padding:10px">Preço</th>
-                <th style="text-align:right; padding:10px">Ações</th>
-              </tr>
-            </thead>
-            <tbody>${rows}</tbody>
-          </table>
-        </div>
-        <div class="note" style="margin-top:10px">Dica: clique em <b>Exportar JSON</b> para salvar o catálogo e colar depois aqui no Importar.</div>`;
-    }
-
-    function prefillProd(i){
-      if(!isAdminUnlocked()){ toast('Entre no admin'); return; }
-      const p = loadProducts()[i];
-      if(!p) return;
-      document.getElementById('p_id').value = p.id;
-      document.getElementById('p_name').value = p.name;
-      document.getElementById('p_cat').value = p.category||'';
-      document.getElementById('p_tag').value = p.tag||'';
-      document.getElementById('p_price').value = p.price;
-      toast('Preenchido');
-    }
-
-    function delProd(i){
-      if(!isAdminUnlocked()){ toast('Entre no admin'); return; }
-      const products = loadProducts();
-      products.splice(i,1);
-      saveProducts(products);
-      toast('Removido');
-    }
-
-    function resetProducts(){
-      if(!isAdminUnlocked()){ toast('Entre no admin'); return; }
-      localStorage.removeItem(LS.products);
-      render();
-      adminRenderProducts();
-      toast('Catálogo resetado');
-    }
-
-    async function exportProducts(){
-      if(!isAdminUnlocked()){ toast('Entre no admin'); return; }
-      const data = JSON.stringify(loadProducts(), null, 2);
-      try{ await navigator.clipboard.writeText(data); toast('JSON copiado ✅'); }
-      catch{
-        alert(data);
-      }
-
-    }
-
-    
-function importProducts() {
-      try {
-        const txt = (document.getElementById('importJson').value || '').trim();
-        if (!txt) return toast('Cole um JSON primeiro.', 'warn');
-        const incoming = JSON.parse(txt);
-        if (!Array.isArray(incoming)) return toast('O JSON precisa ser um array de produtos.', 'warn');
-
-        const current = getProducts();
-        const map = new Map(current.map(p => [String(p.id), p]));
-        let merged = 0;
-
-        for (const raw of incoming) {
-          if (!raw || !raw.id) continue;
-          const id = String(raw.id);
-          const p = {
-            id,
-            name: String(raw.name || ''),
-            cat: String(raw.cat || raw.category || ''),
-            tag: String(raw.tag || ''),
-            price: Number(raw.price || 0)
-          };
-          map.set(id, p);
-          merged++;
-        }
-
-        const out = Array.from(map.values());
-        setProducts(out);
-        adminRenderProducts();
-        renderCatalog();
-        toast(`Importado/mesclado: ${merged} item(ns).`, 'ok');
-      } catch (e) {
-        toast('JSON inválido. Verifique vírgulas e aspas.', 'bad');
-      }
-    }
-
-    function clearImport() {
-      const el = document.getElementById('importJson');
-      if (el) el.value = '';
-      toast('Caixa de importação limpa.', 'ok');
-    }
-
-    function editProduct(id) {
-      const p = getProducts().find(x => String(x.id) === String(id));
-      if (!p) return;
-      document.getElementById('p_id').value = p.id || '';
-      document.getElementById('p_name').value = p.name || '';
-      document.getElementById('p_cat').value = p.category || '';
-      document.getElementById('p_tag').value = p.tag || '';
-      document.getElementById('p_price').value = String(p.price ?? '');
-      toast('Produto carregado para edição.', 'ok');
-    }
-
-    function deleteProduct(id) {
-      if (!confirm('Remover este produto do catálogo local?')) return;
-      const out = getProducts().filter(p => String(p.id) !== String(id));
-      setProducts(out);
-      adminRenderProducts();
-      renderCatalog();
-      toast('Produto removido.', 'ok');
-    }
-
-    // =========================
-    //  INIT
-    // =========================
-    function init(){
-      document.getElementById('year').textContent = String(new Date().getFullYear());
-      applyCfg();
-      updateCartBadge();
-      render();
-      renderProofs();
-      setStatus('co','warn','Aguardando…');
-      setStatus('v','warn','Aguardando…');
-      setStatus('ad','warn','Bloqueado');
-
-      // close modals on background tap
-      document.getElementById('cartModal').addEventListener('click', (e)=>{ if(e.target.id==='cartModal') closeCart(); });
-      document.getElementById('adminModal').addEventListener('click', (e)=>{ if(e.target.id==='adminModal') closeAdmin(); });
-
-      // ESC
-      window.addEventListener('keydown', (e)=>{
-        if(e.key==='Escape'){ closeCart(); closeAdmin(); }
-      });
-    }
-
-    init();
+    menuBtn.addEventListener("click", openMenu);
+    closeMenu.addEventListener("click", close);
+    overlay.addEventListener("click", close);
+
+    // Close drawer when clicking links
+    drawer.querySelectorAll("a").forEach(a => a.addEventListener("click", close));
+
+    // Buttons
+    const goVerify = document.getElementById("goVerify");
+    const ctaCatalogo = document.getElementById("ctaCatalogo");
+    const ctaSuporte = document.getElementById("ctaSuporte");
+
+    goVerify.addEventListener("click", () => {
+      document.getElementById("suporte").scrollIntoView({ behavior: "smooth" });
+    });
+
+    ctaCatalogo.addEventListener("click", () => {
+      document.getElementById("catalogo").scrollIntoView({ behavior: "smooth" });
+    });
+
+    ctaSuporte.addEventListener("click", () => {
+      document.getElementById("suporte").scrollIntoView({ behavior: "smooth" });
+    });
+
+    // Year
+    document.getElementById("year").textContent = new Date().getFullYear();
   </script>
 </body>
 </html>
