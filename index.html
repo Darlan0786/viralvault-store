@@ -1,756 +1,387 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-  <meta charset="utf-8"/>
-  <meta name="viewport" content="width=device-width,initial-scale=1"/>
-  <title>ViralVault Store — Itens & Brainrots</title>
-  <meta name="description" content="ViralVault Store — loja de itens/brainrots do Roblox. Compra simples via PIX, pedido com ID e entrega em até 24h."/>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>ViralVault Store</title>
+  <meta name="description" content="ViralVault Store — compra rápida e segura. Pagamento via PIX e entrega digital." />
   <style>
     :root{
-      --bg:#f7f7fb;
-      --card:#ffffffcc;
-      --cardSolid:#fff;
-      --line:#e9e9f2;
-      --text:#101018;
-      --muted:#5c5c76;
-      --accent:#ff2d55;   /* red */
-      --accent2:#ff6a88;
-      --good:#16a34a;
+      --bg:#0b0b12;
+      --text:rgba(255,255,255,.92);
+      --muted:rgba(255,255,255,.72);
+      --accent:#ff4d7d;
+      --accent2:#ff87a6;
+      --ok:#22c55e;
       --bad:#ef4444;
-      --shadow: 0 18px 45px rgba(17, 17, 34, .10);
-      --shadow2: 0 10px 24px rgba(17, 17, 34, .10);
-      --radius: 18px;
-      --radius2: 26px;
-      --max: 1120px;
+      --shadow:0 18px 50px rgba(0,0,0,.35);
+      --max:1120px;
     }
     *{box-sizing:border-box}
-    html,body{height:100%}
-    body{
-      margin:0;
-      font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Arial, "Noto Sans", "Helvetica Neue", sans-serif;
-      color:var(--text);
+    html,body{margin:0;padding:0;width:100%;max-width:100%;overflow-x:hidden;
+      font-family:ui-sans-serif,system-ui,-apple-system,Segoe UI,Roboto,Arial;
       background:
-        radial-gradient(900px 420px at 10% 0%, rgba(255,45,85,.14), transparent 60%),
-        radial-gradient(900px 520px at 90% 10%, rgba(255,106,136,.12), transparent 60%),
-        radial-gradient(1200px 700px at 50% 120%, rgba(255,45,85,.08), transparent 60%),
+        radial-gradient(1200px 700px at 15% 10%, rgba(255,77,125,.22), transparent 55%),
+        radial-gradient(900px 600px at 85% 20%, rgba(255,135,166,.15), transparent 55%),
+        radial-gradient(900px 700px at 50% 120%, rgba(255,77,125,.12), transparent 60%),
         var(--bg);
-      overflow-x:hidden;
+      color:var(--text);
     }
-    a{color:inherit; text-decoration:none}
-    button,input{font:inherit}
-    .wrap{max-width:var(--max); margin:0 auto; padding:18px}
-    /* Topbar */
-    .topbar{
-      position:sticky; top:0; z-index:50;
-      background: rgba(247,247,251,.82);
-      backdrop-filter: blur(12px);
-      border-bottom:1px solid var(--line);
-    }
-    .topInner{display:flex; align-items:center; gap:12px; padding:12px 18px; max-width:var(--max); margin:0 auto;}
-    .brand{display:flex; align-items:center; gap:10px; font-weight:1000; letter-spacing:-.2px}
-    .mark{
-      width:44px; height:44px; border-radius:14px;
-      background: linear-gradient(135deg,var(--accent),var(--accent2));
-      box-shadow: 0 12px 26px rgba(255,45,85,.22);
-      display:grid; place-items:center; color:white;
-      font-weight:1100;
-    }
-    .nav{margin-left:auto; display:flex; gap:10px; align-items:center}
-    .nav a{
-      padding:10px 12px; border-radius:999px;
-      border:1px solid transparent;
-      color:var(--muted); font-weight:900; font-size:13px;
-    }
-    .nav a:hover{border-color:var(--line); background:#fff}
-    .btn{
-      border:1px solid var(--line);
-      background:#fff;
+    a{color:inherit}
+    button,input,textarea{font:inherit}
+
+    header{
+      position:sticky;top:0;z-index:10;
+      display:flex;align-items:center;gap:12px;
       padding:12px 14px;
-      border-radius:14px;
-      font-weight:1000;
-      cursor:pointer;
-      box-shadow: var(--shadow2);
-      transition: transform .12s ease, filter .12s ease;
-      display:inline-flex; align-items:center; gap:10px; justify-content:center;
+      background:rgba(10,10,18,.70);
+      backdrop-filter:blur(14px);
+      border-bottom:1px solid rgba(255,255,255,.08);
     }
-    .btn:active{transform: translateY(1px) scale(.99)}
-    .btnPrimary{
-      border:none;
-      background: linear-gradient(90deg,var(--accent),var(--accent2));
-      color:white;
-      box-shadow: 0 16px 34px rgba(255,45,85,.22);
+    .brand{display:flex;align-items:center;gap:10px;font-weight:1000;letter-spacing:.3px}
+    .logo{width:14px;height:14px;border-radius:999px;background:linear-gradient(135deg,var(--accent),var(--accent2));
+      box-shadow:0 0 0 6px rgba(255,77,125,.18);
     }
-    .chip{
-      display:inline-flex; align-items:center; gap:8px;
-      padding:10px 12px; border-radius:999px;
-      background:#fff; border:1px solid var(--line);
-      color:var(--muted); font-weight:950; font-size:12px;
-      box-shadow: var(--shadow2);
+    .spacer{margin-left:auto}
+    .pill{
+      display:inline-flex;align-items:center;gap:8px;
+      padding:10px 12px;border-radius:999px;border:1px solid rgba(255,255,255,.10);
+      background:rgba(255,255,255,.06);
+      color:var(--muted);
+      font-weight:900;font-size:13px;white-space:nowrap;
     }
-    .dot{width:10px; height:10px; border-radius:999px; background: var(--good)}
-    /* Hero */
+    main{max-width:var(--max);margin:0 auto;padding:18px}
     .hero{
-      margin-top: 14px;
-      background: linear-gradient(180deg, rgba(255,255,255,.92), rgba(255,255,255,.70));
-      border:1px solid var(--line);
-      border-radius: var(--radius2);
-      box-shadow: var(--shadow);
+      border:1px solid rgba(255,255,255,.10);
+      border-radius:26px;
+      background:rgba(255,255,255,.05);
+      box-shadow:var(--shadow);
+      padding:20px;
       overflow:hidden;
       position:relative;
     }
     .hero::before{
       content:"";
-      position:absolute; inset:-2px;
+      position:absolute;inset:-2px;
       background:
-        radial-gradient(700px 320px at 10% 10%, rgba(255,45,85,.16), transparent 60%),
-        radial-gradient(700px 340px at 90% 10%, rgba(255,106,136,.14), transparent 60%);
+        radial-gradient(900px 300px at 10% 0%, rgba(255,77,125,.22), transparent 60%),
+        radial-gradient(700px 260px at 100% 20%, rgba(255,135,166,.14), transparent 55%);
       pointer-events:none;
     }
-    .heroGrid{
-      position:absolute; inset:0;
-      background-image: linear-gradient(to right, rgba(16,16,24,.06) 1px, transparent 1px),
-                        linear-gradient(to bottom, rgba(16,16,24,.05) 1px, transparent 1px);
-      background-size: 58px 58px;
-      mask-image: radial-gradient(closest-side, rgba(0,0,0,.50), transparent 72%);
-      opacity:.45;
-      pointer-events:none;
-    }
-    .heroInner{position:relative; padding:22px; display:grid; grid-template-columns: 1.25fr .75fr; gap:16px; align-items:center}
-    h1{margin:10px 0 10px; font-size:42px; line-height:1.05; letter-spacing:-.8px}
-    .sub{margin:0; color:var(--muted); font-weight:800; line-height:1.55; max-width:62ch}
-    .cta{display:flex; gap:10px; flex-wrap:wrap; margin-top:14px}
-    .trust{display:grid; grid-template-columns: repeat(3,1fr); gap:10px; margin-top:14px}
-    .tCard{
-      background:#fff; border:1px solid var(--line);
-      border-radius: 16px; padding:12px 12px;
-      box-shadow: var(--shadow2);
-      display:flex; gap:10px; align-items:flex-start;
-    }
-    .ico{
-      width:40px; height:40px; border-radius:14px;
-      background: rgba(255,45,85,.10);
-      border:1px solid rgba(255,45,85,.18);
-      display:grid; place-items:center;
-      font-size:18px;
-      flex:0 0 auto;
-    }
-    .tCard b{display:block; font-weight:1050}
-    .tCard small{display:block; color:var(--muted); font-weight:850; margin-top:2px}
-    /* Promo side */
-    .promo{
-      background:#fff;
-      border:1px solid var(--line);
-      border-radius: 22px;
-      box-shadow: var(--shadow2);
-      padding:14px;
-    }
-    .promoTitle{font-weight:1100; letter-spacing:-.2px; margin:0 0 8px}
-    .promoRow{display:flex; gap:10px; align-items:center; flex-wrap:wrap}
-    .input{
-      width:100%;
-      padding:14px 14px;
-      border-radius: 14px;
-      border:1px solid var(--line);
-      background:#fff;
-      outline:none;
-      font-weight:900;
-    }
-    .hint{color:var(--muted); font-weight:850; font-size:12px; margin-top:8px; line-height:1.4}
-    /* Sections */
-    .section{margin-top:18px}
-    .sectionHead{display:flex; align-items:flex-end; justify-content:space-between; gap:12px}
-    .sectionHead h2{margin:0; font-size:20px; letter-spacing:-.3px}
-    .sectionHead p{margin:0; color:var(--muted); font-weight:850; font-size:13px}
-    .grid{
-      margin-top:12px;
-      display:grid;
-      grid-template-columns: repeat(3,1fr);
-      gap:12px;
-    }
+    .hero > *{position:relative}
+    h1{margin:10px 0 8px 0;font-size:34px;line-height:1.05;letter-spacing:-.6px}
+    .sub{margin:0;color:var(--muted);font-weight:800;line-height:1.55}
+    .grid{margin-top:16px;display:grid;grid-template-columns:repeat(3,1fr);gap:14px}
     .card{
-      background:#fff;
-      border:1px solid var(--line);
-      border-radius: 18px;
-      box-shadow: var(--shadow2);
+      border-radius:22px;
+      background:rgba(255,255,255,.05);
+      border:1px solid rgba(255,255,255,.10);
+      box-shadow:0 16px 45px rgba(0,0,0,.25);
       overflow:hidden;
-      position:relative;
     }
-    .cardInner{padding:14px}
-    .tag{
-      display:inline-flex; align-items:center; gap:8px;
-      padding:8px 10px; border-radius:999px;
-      border:1px solid var(--line); background: #fff;
-      font-weight:950; font-size:12px; color:var(--muted)
+    .cardInner{padding:16px}
+    .tag{display:inline-flex;align-items:center;gap:8px;padding:10px 12px;border-radius:999px;
+      font-size:12px;font-weight:1000;border:1px solid rgba(255,255,255,.12);background:rgba(255,255,255,.06);
+      width:fit-content;margin-bottom:10px}
+    .title{font-weight:1000;font-size:18px;margin:2px 0 8px 0}
+    .desc{margin:0 0 12px 0;color:var(--muted);font-weight:800;font-size:14px;line-height:1.45}
+    .row{display:flex;align-items:flex-end;justify-content:space-between;gap:10px}
+    .price{font-size:22px;font-weight:1000}
+    .btn{
+      padding:12px 14px;border-radius:14px;border:none;
+      background:linear-gradient(90deg,var(--accent),var(--accent2));
+      color:white;font-weight:1000;font-size:14px;cursor:pointer;
+      box-shadow:0 14px 30px rgba(255,77,125,.18);
     }
-    .pTitle{margin:10px 0 6px; font-weight:1100; letter-spacing:-.2px}
-    .pDesc{margin:0 0 10px; color:var(--muted); font-weight:850; font-size:13px; line-height:1.5}
-    .row{display:flex; align-items:flex-end; justify-content:space-between; gap:10px; margin-top:6px}
-    .price{font-weight:1150; font-size:20px}
-    .muted{color:var(--muted); font-weight:900; font-size:12px}
-    /* How it works */
-    .steps{
-      margin-top:12px;
-      display:grid;
-      grid-template-columns: repeat(3,1fr);
-      gap:12px;
+    .btn:active{transform:translateY(1px) scale(.99)}
+    .btnGhost{
+      background:rgba(255,255,255,.06);
+      border:1px solid rgba(255,255,255,.12);
+      color:var(--text);
+      box-shadow:none;
     }
-    .step{
-      background:#fff; border:1px solid var(--line);
-      border-radius: 18px; box-shadow: var(--shadow2);
-      padding:14px;
-    }
-    .num{
-      width:40px; height:40px; border-radius:14px;
-      background: linear-gradient(135deg, rgba(255,45,85,.18), rgba(255,106,136,.16));
-      border:1px solid rgba(255,45,85,.20);
-      display:grid; place-items:center; font-weight:1150;
-      margin-bottom:10px;
-    }
-    .step b{display:block; font-weight:1100}
-    .step small{display:block; color:var(--muted); font-weight:850; margin-top:6px; line-height:1.45}
-    /* Reviews */
-    .reviews{
-      margin-top:12px;
-      background:#fff; border:1px solid var(--line);
-      border-radius: 22px; box-shadow: var(--shadow2);
-      padding:14px;
-    }
-    .score{display:flex; gap:10px; align-items:center; flex-wrap:wrap}
-    .badge{
-      padding:10px 12px; border-radius:999px;
-      border:1px solid var(--line); background:#fff;
-      font-weight:1050; color:var(--muted)
-    }
-    .revRow{display:grid; grid-template-columns: repeat(3,1fr); gap:12px; margin-top:12px}
-    .rev{
-      border:1px solid var(--line); border-radius: 18px;
-      padding:12px; background: linear-gradient(180deg, #fff, #fff8fb);
-    }
-    .revTop{display:flex; align-items:center; justify-content:space-between; gap:10px}
-    .who{font-weight:1100}
-    .ok{color:var(--good); font-weight:1100}
-    .rev p{margin:10px 0 0; color:var(--muted); font-weight:850; line-height:1.5; font-size:13px}
-    /* FAQ */
-    .faq{margin-top:12px; display:grid; grid-template-columns: 1fr 1fr; gap:12px}
-    details{
-      background:#fff; border:1px solid var(--line); border-radius: 18px;
-      box-shadow: var(--shadow2);
-      padding:12px 14px;
-    }
-    summary{cursor:pointer; font-weight:1100}
-    details p{margin:10px 0 0; color:var(--muted); font-weight:850; line-height:1.5; font-size:13px}
-    /* Footer */
-    footer{margin:20px 0 30px; color:var(--muted); font-weight:850}
-    .foot{
-      background:#fff; border:1px solid var(--line);
-      border-radius: 22px; box-shadow: var(--shadow2);
-      padding:14px;
-      display:grid; grid-template-columns: 1.2fr .8fr; gap:12px;
-    }
-    .foot b{color:var(--text)}
-    .pillWarn{
-      margin-top:10px;
-      padding:12px 12px;
-      border-radius: 18px;
-      border:1px dashed rgba(255,45,85,.35);
-      background: rgba(255,45,85,.06);
-      color: #7a1a2b;
-      font-weight:1000;
-      line-height:1.45;
-    }
+
     /* Modal checkout */
-    .overlay{position:fixed; inset:0; background: rgba(16,16,24,.55); display:none; align-items:center; justify-content:center; padding:16px; z-index:90}
-    .modal{
-      width:min(560px, 100%);
-      background:#fff;
-      border:1px solid var(--line);
-      border-radius: 24px;
-      box-shadow: 0 22px 70px rgba(0,0,0,.22);
-      overflow:hidden;
+    .modalWrap{position:fixed;inset:0;display:none;align-items:center;justify-content:center;padding:16px;z-index:50;
+      background:rgba(0,0,0,.60)}
+    .modal{width:min(560px,100%);border-radius:26px;border:1px solid rgba(255,255,255,.12);
+      background:rgba(14,14,24,.96);box-shadow:0 20px 60px rgba(0,0,0,.55);overflow:hidden}
+    .modalTop{display:flex;align-items:center;justify-content:space-between;padding:14px;border-bottom:1px solid rgba(255,255,255,.10)}
+    .modalTop b{font-size:18px}
+    .xBtn{width:46px;height:46px;border-radius:14px;border:1px solid rgba(255,255,255,.12);background:rgba(255,255,255,.06);
+      color:var(--text);cursor:pointer;font-size:18px;font-weight:1000}
+    .modalBody{padding:14px}
+    .box{border-radius:18px;border:1px solid rgba(255,255,255,.10);background:rgba(255,255,255,.04);padding:12px;margin:12px 0}
+    label{display:block;font-weight:1000;color:rgba(255,255,255,.82);margin-bottom:6px}
+    input,textarea{
+      width:100%;padding:14px;border-radius:16px;border:1px solid rgba(255,255,255,.12);
+      background:rgba(0,0,0,.20);color:var(--text);outline:none;font-weight:900
     }
-    .mTop{display:flex; align-items:center; justify-content:space-between; padding:12px 14px; border-bottom:1px solid var(--line)}
-    .mTop b{font-weight:1150}
-    .x{width:44px; height:44px; border-radius:14px; border:1px solid var(--line); background:#fff; cursor:pointer; font-weight:1100}
-    .mBody{padding:14px}
-    .mGrid{display:grid; grid-template-columns: 1fr; gap:10px}
-    .box{
-      border:1px solid var(--line);
-      border-radius: 18px;
-      padding:12px;
-      background: linear-gradient(180deg,#fff,#fff8fb);
-    }
-    .k{color:var(--muted); font-weight:950; font-size:12px}
-    .v{font-weight:1100; margin-top:4px}
-    .copyRow{display:flex; gap:10px; flex-wrap:wrap; margin-top:10px}
-    .btnSmall{padding:11px 12px; border-radius: 14px; font-size:14px}
-    .status{
-      margin-top:10px;
-      padding:12px 12px;
-      border-radius: 18px;
-      border:1px dashed var(--line);
-      background:#fafafe;
-      color:var(--muted);
-      font-weight:1000;
-      min-height:46px;
-      display:flex; align-items:center;
-    }
-    .status.ok{border-color: rgba(22,163,74,.35); background: rgba(22,163,74,.08); color:#0f3d1f}
-    .status.bad{border-color: rgba(239,68,68,.35); background: rgba(239,68,68,.08); color:#4a0e0e}
-    /* WA */
-    .wa{
-      position:fixed; right:16px; bottom:16px; z-index:80;
-      display:flex; gap:10px; align-items:center;
-      padding:12px 12px;
-      border-radius: 999px;
-      background: linear-gradient(90deg,#16a34a,#22c55e);
-      color:white; box-shadow: 0 18px 45px rgba(34,197,94,.20);
-      font-weight:1100;
-    }
-    /* Responsive */
-    @media (max-width: 980px){
-      .heroInner{grid-template-columns:1fr}
+    textarea{min-height:92px;resize:vertical}
+    .help{color:var(--muted);font-weight:900;font-size:13px;margin-top:6px}
+    .actions{display:flex;gap:10px;flex-wrap:wrap;margin-top:12px}
+    .status{margin-top:12px;padding:12px;border-radius:16px;border:1px dashed rgba(255,255,255,.16);
+      background:rgba(0,0,0,.20);color:var(--muted);font-weight:1000;min-height:46px;display:flex;align-items:center}
+    .status.ok{border-color:rgba(34,197,94,.25);background:rgba(34,197,94,.10);color:rgba(255,255,255,.92)}
+    .status.bad{border-color:rgba(239,68,68,.28);background:rgba(239,68,68,.10);color:rgba(255,255,255,.92)}
+    .qrWrap{display:grid;grid-template-columns: 1fr;gap: 10px;margin-top: 12px;}
+    .qrCard{border-radius:18px;border:1px solid rgba(255,255,255,.10);background:rgba(255,255,255,.04);
+      padding:12px;display:flex;align-items:center;justify-content:center;}
+    .qrCard img{width:230px;height:230px;border-radius:16px;background:white;padding:10px;}
+
+    @media (max-width:900px){
       .grid{grid-template-columns:1fr}
-      .trust{grid-template-columns:1fr}
-      .steps{grid-template-columns:1fr}
-      .revRow{grid-template-columns:1fr}
-      .faq{grid-template-columns:1fr}
-      h1{font-size:34px}
-      .nav{display:none}
+      h1{font-size:30px}
     }
   </style>
 </head>
 <body>
-  <header class="topbar">
-    <div class="topInner">
-      <div class="brand">
-        <div class="mark">VV</div>
-        <div>
-          <div style="line-height:1; font-size:14px; color:var(--muted); font-weight:950">Loja Digital</div>
-          <div style="line-height:1.05; font-size:16px">ViralVault Store</div>
-        </div>
-      </div>
-
-      <nav class="nav">
-        <a href="#catalogo">Catálogo</a>
-        <a href="#como">Como comprar</a>
-        <a href="#avaliacoes">Avaliações</a>
-        <a href="#faq">FAQ</a>
-      </nav>
-
-      <div style="margin-left:auto; display:flex; gap:10px; align-items:center">
-        <div class="chip"><span class="dot"></span> Entrega em até 24h</div>
-        <button class="btn btnPrimary" id="btnCatalogoTop">Ver Catálogo</button>
-      </div>
-    </div>
+  <header>
+    <div class="brand"><div class="logo"></div><span>ViralVault Store</span></div>
+    <div class="spacer"></div>
+    <div class="pill">PIX • simples • entrega digital</div>
   </header>
 
-  <main class="wrap">
-    <section class="hero" id="inicio">
-      <div class="heroGrid"></div>
-      <div class="heroInner">
-        <div>
-          <div class="chip">🔥 Itens/Brainrots do Roblox • PIX</div>
-          <h1>Compra simples, sem enrolação.<br/>Paga e só espera a entrega.</h1>
-          <p class="sub">
-            Você escolhe o item, informa seu <b>usuário do Roblox</b> e finaliza. O pedido gera um <b>ID</b> para acompanhar e comprovar.
-          </p>
-
-          <div class="cta">
-            <button class="btn btnPrimary" id="btnVerCatalogo">🛍️ Ver catálogo</button>
-            <button class="btn" id="btnComo">✨ Como funciona</button>
-            <button class="btn" id="btnVerificar">🔎 Verificar pedido</button>
-          </div>
-
-          <div class="trust">
-            <div class="tCard"><div class="ico">🔒</div><div><b>Transparente</b><small>ID do pedido + status</small></div></div>
-            <div class="tCard"><div class="ico">⚡</div><div><b>Rápido</b><small>Fluxo simples (paga e pronto)</small></div></div>
-            <div class="tCard"><div class="ico">💬</div><div><b>Suporte</b><small>WhatsApp direto</small></div></div>
-          </div>
-        </div>
-
-        <aside class="promo" aria-label="Compra rápida">
-          <p class="promoTitle">Compra rápida (1 clique)</p>
-          <div class="promoRow">
-            <label style="width:100%">
-              <div class="k" style="margin-bottom:6px">Seu usuário do Roblox</div>
-              <input class="input" id="quickUser" placeholder="@user_1234" autocomplete="off"/>
-            </label>
-            <button class="btn btnPrimary" style="width:100%" id="btnQuickOpen">Escolher produto</button>
-          </div>
-          <div class="hint">
-            ⚠️ <b>Anti-golpe:</b> a compra só é válida com <b>ID do pedido</b> gerado no site. Não aceite “prints” sem ID.
-          </div>
-        </aside>
-      </div>
+  <main>
+    <section class="hero">
+      <div class="pill">🛡️ Loja digital • pagamentos via PIX</div>
+      <h1>Compre rápido e receba com segurança ✨</h1>
+      <p class="sub">Escolha um produto, informe seu user do Roblox e gere o PIX. Depois é só pagar e aguardar.</p>
     </section>
 
-    <section class="section" id="catalogo">
-      <div class="sectionHead">
-        <div>
-          <h2>Produtos em destaque</h2>
-          <p>Catálogo puxado automaticamente do Worker</p>
-        </div>
-        <button class="btn" id="btnReload">Atualizar</button>
-      </div>
-      <div class="grid" id="productGrid" aria-live="polite"></div>
+    <section style="margin-top:16px">
+      <div class="grid" id="productsGrid"></div>
     </section>
-
-    <section class="section" id="como">
-      <div class="sectionHead">
-        <div>
-          <h2>Como é fácil comprar</h2>
-          <p>Processo rápido em 3 etapas</p>
-        </div>
-      </div>
-      <div class="steps">
-        <div class="step"><div class="num">1</div><b>Escolha o produto</b><small>Veja o catálogo e selecione o item/brainrot desejado.</small></div>
-        <div class="step"><div class="num">2</div><b>Informe seu usuário e pague</b><small>Digite seu usuário do Roblox e finalize via PIX. Você recebe um <b>ID</b>.</small></div>
-        <div class="step"><div class="num">3</div><b>Aguarde a entrega</b><small>Entrega em até <b>24h</b>. Se não entregar, você tem <b>reembolso</b>.</small></div>
-      </div>
-    </section>
-
-    <section class="section" id="avaliacoes">
-      <div class="sectionHead">
-        <div>
-          <h2>Avaliações dos clientes</h2>
-          <p>Prova social (exemplo — personalize depois)</p>
-        </div>
-      </div>
-      <div class="reviews">
-        <div class="score">
-          <div class="badge">⭐ 4.9/5</div>
-          <div class="badge">✅ Compradores verificados</div>
-          <div class="badge">💬 Suporte rápido</div>
-        </div>
-        <div class="revRow">
-          <div class="rev"><div class="revTop"><div class="who">João</div><div class="ok">✓</div></div><p>“Chegou certinho. Processo simples e o ID do pedido passa confiança.”</p></div>
-          <div class="rev"><div class="revTop"><div class="who">Carla</div><div class="ok">✓</div></div><p>“Gostei do atendimento. Paguei e só esperei a entrega, sem enrolação.”</p></div>
-          <div class="rev"><div class="revTop"><div class="who">Vini</div><div class="ok">✓</div></div><p>“Entrega dentro do prazo. Achei top ter verificação do pedido.”</p></div>
-        </div>
-      </div>
-    </section>
-
-    <section class="section" id="faq">
-      <div class="sectionHead">
-        <div>
-          <h2>Dúvidas frequentes</h2>
-          <p>Respostas rápidas para o cliente</p>
-        </div>
-      </div>
-      <div class="faq">
-        <details><summary>Como funciona a compra?</summary><p>Você escolhe o produto, informa seu usuário e gera o pedido. Após o pagamento via PIX, é só aguardar a entrega (até 24h).</p></details>
-        <details><summary>O que garante que não é golpe?</summary><p>O pedido gera um <b>ID</b> e status. Você pode verificar no site. Se alguém pedir fora do site, desconfie.</p></details>
-        <details><summary>Quanto tempo para receber?</summary><p>Até <b>24h</b>. Se passar do prazo, você pode solicitar <b>reembolso</b>.</p></details>
-        <details><summary>Preciso falar com entregador?</summary><p>Na maioria dos casos, não. Se precisar de confirmação, o suporte chama você pelo WhatsApp.</p></details>
-      </div>
-    </section>
-
-    <footer>
-      <div class="foot">
-        <div>
-          <b>ViralVault Store</b><br/>
-          <span>Suporte: WhatsApp</span><br/>
-          <span>Brasil • Loja digital de itens/brainrots</span>
-          <div class="pillWarn">
-            ✅ <b>Anti-golpe:</b> compras somente pelo site. <br/>
-            Sempre peça o <b>ID do pedido</b>. Sem ID, não é compra.
-          </div>
-        </div>
-        <div>
-          <b>Links</b><br/><br/>
-          <a href="#catalogo">Catálogo</a><br/>
-          <a href="#como">Como comprar</a><br/>
-          <a href="#faq">FAQ</a><br/>
-          <a href="#inicio">Topo</a><br/>
-          <p style="margin-top:10px; font-size:12px">© <span id="year"></span> ViralVault Store</p>
-        </div>
-      </div>
-    </footer>
   </main>
 
-  <a class="wa" id="waLink" href="#" target="_blank" rel="noopener">💬 Suporte no WhatsApp</a>
-
-  <!-- Checkout modal -->
-  <div class="overlay" id="ovl" role="dialog" aria-modal="true" aria-label="Checkout">
-    <div class="modal">
-      <div class="mTop">
+  <!-- Modal -->
+  <div class="modalWrap" id="modalWrap" aria-hidden="true">
+    <div class="modal" role="dialog" aria-modal="true">
+      <div class="modalTop">
         <b>Checkout (PIX) — simples</b>
-        <button class="x" id="close">✕</button>
+        <button class="xBtn" id="closeModal">✕</button>
       </div>
-      <div class="mBody">
-        <div class="mGrid">
-          <div class="box">
-            <div class="k">Produto</div>
-            <div class="v" id="mProd">—</div>
-            <div class="k" style="margin-top:8px">Preço</div>
-            <div class="v" id="mPrice">—</div>
-          </div>
-
-          <div class="box">
-            <div class="k">Seu usuário do Roblox</div>
-            <input class="input" id="mUser" placeholder="@user_1234"/>
-            <div class="hint">Sem usuário, não dá pra entregar. 😉</div>
-          </div>
-
-          <button class="btn btnPrimary" id="btnCreate">Gerar pedido + PIX</button>
-
-          <div class="box" id="pixBox" style="display:none">
-            <div class="k">ID do pedido</div>
-            <div class="v" id="mOrder">—</div>
-
-            <div class="k" style="margin-top:10px">PIX copia e cola</div>
-            <textarea class="input" id="mPix" rows="3" style="resize:vertical; font-weight:900"></textarea>
-
-            <div class="copyRow">
-              <button class="btn btnSmall" id="copyPix">Copiar PIX</button>
-              <button class="btn btnSmall" id="copyOrder">Copiar ID</button>
-              <a class="btn btnSmall" id="btnSupport" href="#" target="_blank" rel="noopener">Falar com suporte</a>
+      <div class="modalBody">
+        <div class="box">
+          <div style="display:flex;justify-content:space-between;gap:10px;flex-wrap:wrap">
+            <div>
+              <div style="color:var(--muted);font-weight:1000;font-size:13px">Produto</div>
+              <div id="ckProdName" style="font-weight:1000;font-size:18px;margin-top:4px"></div>
             </div>
+            <div style="text-align:right">
+              <div style="color:var(--muted);font-weight:1000;font-size:13px">Preço</div>
+              <div id="ckProdPrice" style="font-weight:1000;font-size:20px;margin-top:4px"></div>
+            </div>
+          </div>
+        </div>
 
-            <div class="status" id="mStatus">Depois de pagar, é só aguardar a entrega (até 24h).</div>
+        <div class="box">
+          <label for="robloxUser">Seu usuário do Roblox</label>
+          <input id="robloxUser" placeholder="@user_1234" autocomplete="off" />
+          <div class="help">Sem usuário, não dá pra entregar. 😉</div>
+        </div>
+
+        <button class="btn" style="width:100%;padding:16px;border-radius:18px;font-size:16px" id="btnCreateOrder">
+          Gerar pedido + PIX
+        </button>
+
+        <div class="box" id="orderBox" style="display:none">
+          <div style="display:flex;justify-content:space-between;gap:10px;flex-wrap:wrap">
+            <div>
+              <div style="color:var(--muted);font-weight:1000;font-size:13px">ID do pedido</div>
+              <div id="orderId" style="font-weight:1000;font-size:18px;margin-top:4px"></div>
+            </div>
           </div>
 
-          <div class="status bad" id="err" style="display:none"></div>
+          <div style="margin-top:12px">
+            <label for="pixPayload">PIX copia e cola</label>
+            <textarea id="pixPayload" readonly></textarea>
+          </div>
+
+          <div class="qrWrap">
+            <div class="qrCard" id="qrCard" style="display:none">
+              <img id="pixQr" alt="QR Code PIX" />
+            </div>
+          </div>
+
+          <div class="actions">
+            <button class="btn btnGhost" id="btnCopyPix">Copiar PIX</button>
+            <button class="btn btnGhost" id="btnCopyId">Copiar ID</button>
+            <a class="btn btnGhost" id="btnSupport" href="#" target="_blank" rel="noopener">Falar com suporte</a>
+          </div>
+
+          <div class="status ok">Pedido criado ✅ Pague via PIX e aguarde a entrega.</div>
         </div>
+
+        <div class="status" id="statusBox">Pronto pra gerar seu pedido.</div>
       </div>
     </div>
   </div>
 
   <script>
-    // ======= CONFIG =======
+    // ===== CONFIG =====
     const WORKER_BASE = "https://viralvault-sign.darlanana06.workers.dev";
-    const WHATSAPP_NUMBER = "5511941598713"; // seu número
-    const SUPPORT_TEXT = (orderId) => encodeURIComponent(
-      "Olá! Preciso de ajuda com meu pedido. ID: " + (orderId || "(ainda não tenho)") + "\\nMeu user do Roblox: "
-    );
+    const ENDPOINTS = { catalog: "/catalog", createOrder: "/create-order" };
+    const WHATSAPP_LINK = "https://wa.me/55XXXXXXXXXXX?text=Oi!%20Preciso%20de%20suporte%20no%20pedido%20";
 
-    // Você pode trocar o PIX para vir do Worker depois.
-    // Por enquanto: será preenchido pelo /create-order (se seu Worker mandar), ou você coloca aqui fallback.
-    const PIX_FALLBACK = "";
-
-    // ======= HELPERS =======
-    const $ = (id) => document.getElementById(id);
-    const money = (v) => {
-      try {
-        const n = Number(v);
-        if (Number.isFinite(n)) return n.toLocaleString("pt-BR",{style:"currency",currency:"BRL"});
-      } catch(e){}
-      return String(v || "");
-    }
-    function toast(msg){
-      // micro toast simples
-      const t = document.createElement("div");
-      t.textContent = msg;
-      t.style.cssText = "position:fixed;left:50%;bottom:92px;transform:translateX(-50%);background:#111; color:#fff; padding:10px 12px; border-radius:999px; font-weight:900; z-index:9999; box-shadow: 0 12px 34px rgba(0,0,0,.25);";
-      document.body.appendChild(t);
-      setTimeout(()=>t.remove(), 1600);
-    }
-    async function copyText(txt){
-      try{
-        await navigator.clipboard.writeText(txt);
-        toast("Copiado ✅");
-      }catch(e){
-        // fallback
-        const ta = document.createElement("textarea");
-        ta.value = txt;
-        document.body.appendChild(ta);
-        ta.select();
-        document.execCommand("copy");
-        ta.remove();
-        toast("Copiado ✅");
-      }
-    }
-
-    // ======= STATE =======
-    let catalog = [];
-    let selected = null;
-
-    // ======= UI NAV =======
-    $("btnVerCatalogo").onclick = () => document.querySelector("#catalogo").scrollIntoView({behavior:"smooth"});
-    $("btnCatalogoTop").onclick = () => document.querySelector("#catalogo").scrollIntoView({behavior:"smooth"});
-    $("btnComo").onclick = () => document.querySelector("#como").scrollIntoView({behavior:"smooth"});
-    $("btnVerificar").onclick = () => {
-      toast("Verificação pública: use o ID do pedido");
-      document.querySelector("#faq").scrollIntoView({behavior:"smooth"});
+    const fmtBRL = (v) => {
+      try { return new Intl.NumberFormat("pt-BR", { style:"currency", currency:"BRL"}).format(v); }
+      catch(e){ return "R$ " + (Number(v||0).toFixed(2)).replace(".", ","); }
+    };
+    const qs = (id) => document.getElementById(id);
+    const setStatus = (msg, kind="") => {
+      const el = qs("statusBox");
+      el.textContent = msg;
+      el.className = "status" + (kind ? " " + kind : "");
     };
 
-    $("year").textContent = new Date().getFullYear();
-
-    // WhatsApp link
-    const waBase = "https://wa.me/" + WHATSAPP_NUMBER + "?text=";
-    $("waLink").href = waBase + SUPPORT_TEXT("");
-
-    // ======= MODAL =======
-    function openModal(prod){
-      selected = prod;
-      $("mProd").textContent = prod?.name || prod?.title || "Produto";
-      $("mPrice").textContent = money(prod?.price ?? prod?.valor ?? "");
-      $("mUser").value = $("quickUser").value || "";
-      $("err").style.display = "none";
-      $("pixBox").style.display = "none";
-      $("mPix").value = "";
-      $("mOrder").textContent = "—";
-      $("mStatus").className = "status";
-      $("mStatus").textContent = "Depois de pagar, é só aguardar a entrega (até 24h).";
-      $("ovl").style.display = "flex";
-      $("mUser").focus();
+    function setPixQrFromPayload(payload){
+      // QR generator without key
+      const url = "https://api.qrserver.com/v1/create-qr-code/?size=320x320&data=" + encodeURIComponent(payload);
+      const img = qs("pixQr");
+      img.src = url;
+      qs("qrCard").style.display = "flex";
     }
-    function closeModal(){ $("ovl").style.display = "none"; }
-    $("close").onclick = closeModal;
-    $("ovl").addEventListener("click", (e)=>{ if(e.target === $("ovl")) closeModal(); });
 
-    $("btnQuickOpen").onclick = () => {
-      document.querySelector("#catalogo").scrollIntoView({behavior:"smooth"});
-      toast("Escolha um produto abaixo 👇");
-    };
-
-    // ======= LOAD CATALOG =======
     async function loadCatalog(){
-      $("productGrid").innerHTML = '<div class="card"><div class="cardInner"><div class="tag">Carregando…</div><div class="pTitle">Buscando catálogo</div><div class="pDesc">Aguarde…</div></div></div>';
-      try{
-        const r = await fetch(WORKER_BASE + "/catalog", {method:"GET"});
-        const data = await r.json();
-        const items = data?.items || data?.products || data || [];
-        catalog = Array.isArray(items) ? items : [];
-        renderCatalog();
-      }catch(e){
-        $("productGrid").innerHTML = '<div class="card"><div class="cardInner"><div class="tag">Erro</div><div class="pTitle">Não deu pra carregar</div><div class="pDesc">Verifique se o Worker está online e se /catalog existe.</div></div></div>';
-      }
-    }
-
-    function renderCatalog(){
-      const grid = $("productGrid");
-      if(!catalog.length){
-        grid.innerHTML = '<div class="card"><div class="cardInner"><div class="tag">Vazio</div><div class="pTitle">Sem produtos</div><div class="pDesc">Adicione produtos no Worker (products).</div></div></div>';
-        return;
-      }
+      const grid = qs("productsGrid");
       grid.innerHTML = "";
-      for(const p of catalog.slice(0, 12)){
-        const name = p.name || p.title || "Produto";
-        const desc = p.desc || p.description || "Entrega em até 24h.";
-        const badge = p.badge || p.game || "Digital";
-        const price = money(p.price ?? p.valor ?? "");
-        const el = document.createElement("div");
-        el.className = "card";
-        el.innerHTML = `
-          <div class="cardInner">
-            <div class="tag">✨ ${escapeHtml(badge)}</div>
-            <div class="pTitle">${escapeHtml(name)}</div>
-            <div class="pDesc">${escapeHtml(desc)}</div>
-            <div class="row">
-              <div>
-                <div class="price">${escapeHtml(price)}</div>
-                <div class="muted">Entrega: até 24h</div>
+      try{
+        const res = await fetch(WORKER_BASE + ENDPOINTS.catalog, { method:"GET" });
+        const data = await res.json();
+        if(!data || data.ok !== true || !Array.isArray(data.products)) throw new Error(data?.error || "Catálogo inválido");
+        data.products.forEach(p => {
+          const card = document.createElement("div");
+          card.className = "card";
+          card.innerHTML = `
+            <div class="cardInner">
+              <div class="tag">💎 Digital</div>
+              <div class="title">${escapeHtml(p.name || p.id)}</div>
+              <p class="desc">${escapeHtml(p.description || "Entrega digital após confirmação.")}</p>
+              <div class="row">
+                <div>
+                  <div class="price">${fmtBRL(p.price || 0)}</div>
+                  <div style="color:var(--muted);font-weight:1000;font-size:12px">Pagamento via PIX</div>
+                </div>
+                <button class="btn" data-buy="1">Comprar</button>
               </div>
-              <button class="btn btnPrimary btnSmall">Comprar</button>
-            </div>
-          </div>
-        `;
-        el.querySelector("button").onclick = () => openModal(p);
-        grid.appendChild(el);
+            </div>`;
+          card.querySelector("[data-buy]").addEventListener("click", () => openCheckout(p));
+          grid.appendChild(card);
+        });
+      }catch(err){
+        grid.innerHTML = `
+          <div class="card"><div class="cardInner">
+            <div class="title">Erro ao carregar catálogo</div>
+            <p class="desc">${escapeHtml(String(err.message || err))}</p>
+            <div class="help">Confira se <b>/catalog</b> está no Worker e se WORKER_BASE está correto.</div>
+          </div></div>`;
       }
     }
 
-    function escapeHtml(s){
-      return String(s ?? "").replace(/[&<>"']/g, (m)=>({ "&":"&amp;","<":"&lt;",">":"&gt;","\"":"&quot;","'":"&#039;" }[m]));
+    function escapeHtml(str){
+      return String(str ?? "").replace(/[&<>"']/g, (m) => ({
+        "&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#039;"
+      }[m]));
     }
 
-    $("btnReload").onclick = loadCatalog;
+    let selectedProduct = null;
 
-    // ======= CREATE ORDER =======
-    $("btnCreate").onclick = async () => {
-      const user = $("mUser").value.trim();
-      if(!user){
-        $("err").style.display = "block";
-        $("err").textContent = "Preencha seu usuário (ex: @user_1234).";
+    function openCheckout(prod){
+      selectedProduct = prod;
+      qs("ckProdName").textContent = prod.name || prod.id || "Produto";
+      qs("ckProdPrice").textContent = fmtBRL(prod.price || 0);
+      qs("robloxUser").value = "";
+      qs("orderBox").style.display = "none";
+      qs("pixPayload").value = "";
+      qs("orderId").textContent = "";
+      qs("qrCard").style.display = "none";
+      setStatus("Preencha seu user e gere o pedido.", "");
+      qs("modalWrap").style.display = "flex";
+      qs("modalWrap").setAttribute("aria-hidden", "false");
+    }
+
+    function closeCheckout(){
+      qs("modalWrap").style.display = "none";
+      qs("modalWrap").setAttribute("aria-hidden", "true");
+    }
+
+    qs("closeModal").addEventListener("click", closeCheckout);
+    qs("modalWrap").addEventListener("click", (e) => { if(e.target === qs("modalWrap")) closeCheckout(); });
+
+    async function createOrder(){
+      if(!selectedProduct) return;
+      const robloxUser = (qs("robloxUser").value || "").trim();
+      if(!robloxUser){
+        setStatus("Preencha seu usuário do Roblox antes de comprar.", "bad");
         return;
       }
-      $("err").style.display = "none";
-      $("btnCreate").disabled = true;
-      $("btnCreate").textContent = "Gerando…";
+
+      const payload = {
+        productId: selectedProduct.id || selectedProduct.productId || selectedProduct.slug || selectedProduct.name,
+        robloxUser
+      };
+
+      setStatus("Gerando pedido + PIX...", "");
 
       try{
-        // payload flexível (o Worker pode aceitar productId/name/price)
-        const body = {
-          user,
-          productId: selected?.id || selected?.sku || selected?.slug || null,
-          productName: selected?.name || selected?.title || "Produto",
-          price: selected?.price ?? selected?.valor ?? null
-        };
-
-        const r = await fetch(WORKER_BASE + "/create-order", {
+        const res = await fetch(WORKER_BASE + ENDPOINTS.createOrder, {
           method:"POST",
           headers:{ "Content-Type":"application/json" },
-          body: JSON.stringify(body)
+          body: JSON.stringify(payload)
         });
-        const data = await r.json();
 
-        if(!r.ok || data?.ok === false){
+        const data = await res.json().catch(() => ({}));
+
+        if(!res.ok || data?.ok !== true){
           throw new Error(data?.error || "Falha ao criar pedido");
         }
 
-        const orderId = data.orderId || data.id || data.order || "";
-        const pix = data.pix || data.pixCopiaECola || data.pix_payload || PIX_FALLBACK;
+        const pix =
+          data.pix_copia_cola ||
+          data.pixCopiaECola ||
+          data.pix ||
+          data.pix_copy_paste ||
+          data.pixPayload ||
+          data.qrcode ||
+          data.brcode ||
+          data.payload ||
+          "";
 
-        $("pixBox").style.display = "block";
-        $("mOrder").textContent = orderId || "(sem id)";
-        $("mPix").value = pix || "";
+        const orderId = data.orderId || data.order_id || data.id || "";
 
-        // suporte link com contexto
-        $("btnSupport").href = waBase + encodeURIComponent(
-          "Olá! Fiz um pedido na ViralVault Store.\n" +
-          "ID: " + (orderId || "(sem id)") + "\n" +
-          "User Roblox: " + user + "\n" +
-          "Produto: " + (selected?.name || selected?.title || "Produto")
-        );
+        if(!pix) throw new Error("Resposta sem PIX copia e cola.");
 
-        $("mStatus").className = "status ok";
-        $("mStatus").textContent = "Pedido criado ✅ Pague via PIX e aguarde a entrega (até 24h).";
+        qs("orderId").textContent = orderId || "—";
+        qs("pixPayload").value = pix;
+        qs("orderBox").style.display = "block";
 
-        // opcional: poll status
-        if(orderId){
-          pollStatus(orderId);
-        }
-      }catch(e){
-        $("err").style.display = "block";
-        $("err").textContent = String(e?.message || e);
-      }finally{
-        $("btnCreate").disabled = false;
-        $("btnCreate").textContent = "Gerar pedido + PIX";
+        setPixQrFromPayload(pix);
+
+        qs("btnSupport").href = WHATSAPP_LINK + encodeURIComponent(orderId || "");
+
+        setStatus("Pedido criado ✅ Agora pague via PIX.", "ok");
+      }catch(err){
+        setStatus("Não consegui gerar pedido + PIX. Motivo: " + (err.message || err), "bad");
       }
-    };
-
-    $("copyPix").onclick = () => copyText($("mPix").value || "");
-    $("copyOrder").onclick = () => copyText($("mOrder").textContent || "");
-
-    async function pollStatus(orderId){
-      // poll leve: 1x a cada 6s, por 5 min
-      const start = Date.now();
-      const interval = 6000;
-      const max = 5 * 60 * 1000;
-
-      async function tick(){
-        if(Date.now() - start > max) return;
-        try{
-          const r = await fetch(WORKER_BASE + "/order-status?orderId=" + encodeURIComponent(orderId));
-          const data = await r.json();
-          const st = (data.status || data.state || "").toLowerCase();
-          if(st.includes("paid") || st.includes("pago")){
-            $("mStatus").className = "status ok";
-            $("mStatus").textContent = "Pagamento confirmado ✅ Agora é só aguardar a entrega.";
-          }
-          if(st.includes("delivered") || st.includes("entreg")){
-            $("mStatus").className = "status ok";
-            $("mStatus").textContent = "Entregue ✅ Obrigado pela compra!";
-            return;
-          }
-        }catch(e){}
-        setTimeout(tick, interval);
-      }
-      setTimeout(tick, interval);
     }
 
-    // init
+    qs("btnCreateOrder").addEventListener("click", createOrder);
+
+    qs("btnCopyPix").addEventListener("click", async () => {
+      const v = qs("pixPayload").value || "";
+      if(!v) return setStatus("PIX vazio.", "bad");
+      try{ await navigator.clipboard.writeText(v); setStatus("PIX copiado ✅", "ok"); }
+      catch(e){ setStatus("Não consegui copiar (seu navegador bloqueou).", "bad"); }
+    });
+
+    qs("btnCopyId").addEventListener("click", async () => {
+      const v = qs("orderId").textContent || "";
+      if(!v || v === "—") return setStatus("ID vazio.", "bad");
+      try{ await navigator.clipboard.writeText(v); setStatus("ID copiado ✅", "ok"); }
+      catch(e){ setStatus("Não consegui copiar (seu navegador bloqueou).", "bad"); }
+    });
+
     loadCatalog();
   </script>
 </body>
