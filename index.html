@@ -1,1014 +1,1052 @@
 <!doctype html>
 <html lang="pt-BR">
 <head>
-  <meta charset="utf-8"/>
-  <meta name="viewport" content="width=device-width,initial-scale=1"/>
-  <title>ViralVault Store — Loja Digital</title>
-  <meta name="description" content="Loja 100% digital: itens/brainrots Roblox. PIX seguro, verificação de pedido e suporte."/>
-
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="theme-color" content="#0b0b10" />
+  <title>ViralVault Store</title>
   <style>
     :root{
-      --bg:#0b0b14;
-      --card:rgba(255,255,255,.06);
-      --line:rgba(255,255,255,.10);
-      --txt:rgba(255,255,255,.92);
-      --mut:rgba(255,255,255,.72);
-
-      --red:#ff3b5c;
-      --pink:#ff6aa2;
-      --lav:#b29bff;
-      --mint:#7CFFB2;
-
-      --shadow: 0 20px 70px rgba(0,0,0,.45);
-      --r:22px;
-      --max:1100px;
+      --bg:#0b0b10;
+      --card:#12121a;
+      --card2:#151523;
+      --line:rgba(255,255,255,.08);
+      --text:#f3f3ff;
+      --muted:rgba(243,243,255,.72);
+      --muted2:rgba(243,243,255,.55);
+      --pink:#ff4fa3;
+      --pink2:#ff2f8a;
+      --yellow:#ffd24a;
+      --green:#2bff88;
+      --shadow: 0 24px 80px rgba(0,0,0,.65);
+      --shadow2: 0 12px 44px rgba(0,0,0,.55);
+      --r: 22px;
     }
 
     *{box-sizing:border-box}
-    html,body{
+    html,body{height:100%}
+    body{
       margin:0;
       background:
-        radial-gradient(1200px 700px at 10% 10%, rgba(255,59,92,.18), transparent 55%),
-        radial-gradient(900px 600px at 90% 20%, rgba(178,155,255,.18), transparent 55%),
-        radial-gradient(900px 700px at 50% 120%, rgba(124,255,178,.10), transparent 60%),
-        var(--bg);
-      color:var(--txt);
-      font-family:ui-sans-serif,system-ui,-apple-system,Segoe UI,Roboto,Arial;
+        radial-gradient(1200px 600px at 20% 0%, rgba(255,79,163,.22), transparent 60%),
+        radial-gradient(900px 500px at 85% 20%, rgba(255,210,74,.16), transparent 58%),
+        radial-gradient(900px 520px at 55% 120%, rgba(120,94,255,.14), transparent 60%),
+        linear-gradient(180deg, #0b0b10 0%, #090910 100%);
+      color:var(--text);
+      font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Arial, "Apple Color Emoji", "Segoe UI Emoji";
       overflow-x:hidden;
     }
 
     a{color:inherit}
-    button,input,textarea{font:inherit}
-    .container{max-width:var(--max);margin:0 auto;padding:18px}
+
+    .wrap{max-width:1100px; margin:0 auto; padding:18px 16px 110px;}
 
     /* Topbar */
     .topbar{
-      position:sticky;top:0;z-index:50;
-      background:rgba(10,10,18,.72);
-      backdrop-filter:blur(14px);
-      border-bottom:1px solid rgba(255,255,255,.08);
+      display:flex; align-items:center; justify-content:space-between; gap:12px;
+      position:sticky; top:0; z-index:30;
+      padding:12px 0;
+      backdrop-filter: blur(12px);
+      background: linear-gradient(180deg, rgba(11,11,16,.82), rgba(11,11,16,.35));
+      border-bottom:1px solid rgba(255,255,255,.06);
     }
-    .topbar .row{display:flex;align-items:center;gap:12px;padding:12px 18px}
-
-    .brand{display:flex;align-items:center;gap:10px;font-weight:1000;letter-spacing:.2px}
+    .brand{display:flex; align-items:center; gap:10px; min-width:0}
     .logo{
-      width:42px;height:42px;border-radius:14px;
-      background:linear-gradient(135deg,var(--red),var(--lav));
-      box-shadow:0 0 0 6px rgba(255,59,92,.12);
-      display:grid;place-items:center;font-weight:1000;
-    }
-
-    .pill{margin-left:auto;display:flex;gap:10px;align-items:center}
-    .pill b{
-      font-size:12px;padding:9px 12px;border-radius:999px;
-      border:1px solid rgba(255,255,255,.12);
-      background:rgba(255,255,255,.06)
-    }
-    @media(max-width:900px){ .pill b{display:none} }
-
-    /* Buttons */
-    .btn{
-      border:0;cursor:pointer;border-radius:18px;padding:14px 18px;
-      font-weight:1000;background:rgba(255,255,255,.08);color:var(--txt);
-      border:1px solid rgba(255,255,255,.12);
-      transition:transform .12s ease,filter .12s ease;
-      user-select:none;
-      touch-action: manipulation;
-      -webkit-tap-highlight-color: transparent;
-    }
-    .btn:hover{filter:brightness(1.08)}
-    .btn:active{transform:translateY(1px) scale(.99)}
-    .btnPrimary{
-      background:linear-gradient(90deg,var(--red),var(--pink));
-      border:0;
-      box-shadow:0 18px 35px rgba(255,59,92,.22);
-    }
-    .btnGhost{background:rgba(255,255,255,.05)}
-    .small{padding:11px 12px;border-radius:16px;font-size:14px}
-
-    /* Layout */
-    .hero{
-      margin-top:16px;border-radius:26px;padding:22px;
-      border:1px solid rgba(255,255,255,.10);
-      background:rgba(255,255,255,.05);
-      box-shadow:var(--shadow);
-      position:relative;overflow:hidden;
-    }
-    .hero::after{
-      content:"";position:absolute;inset:-2px;pointer-events:none;
+      width:40px; height:40px; border-radius:14px;
       background:
-        radial-gradient(520px 240px at 85% 15%, rgba(178,155,255,.14), transparent 60%),
-        radial-gradient(560px 240px at 15% 70%, rgba(255,59,92,.12), transparent 65%);
-    }
-    .hero .content{
-      position:relative;
-      display:grid;grid-template-columns:1.2fr .8fr;gap:16px;align-items:center;
-    }
-    @media(max-width:900px){ .hero .content{grid-template-columns:1fr} }
-
-    .h1{margin:18px 0 10px;font-size:44px;line-height:1.05;letter-spacing:-.5px}
-    @media(max-width:900px){ .h1{font-size:36px} }
-    .sub{margin:0;color:var(--mut);font-weight:800;line-height:1.55;max-width:62ch}
-
-    .tag{
-      display:inline-flex;gap:8px;align-items:center;
-      font-size:12px;font-weight:1000;padding:9px 12px;border-radius:999px;
+        radial-gradient(120% 120% at 25% 20%, rgba(255,210,74,.9), rgba(255,79,163,.8) 45%, rgba(120,94,255,.55) 85%),
+        linear-gradient(180deg, rgba(255,255,255,.2), rgba(255,255,255,0));
+      box-shadow: 0 16px 44px rgba(255,79,163,.14);
+      display:grid; place-items:center;
       border:1px solid rgba(255,255,255,.12);
-      background:rgba(255,255,255,.06);
     }
-    .tag .k{
-      width:10px;height:10px;border-radius:999px;
-      background:linear-gradient(135deg,var(--mint),#a7f3d0);
-      box-shadow:0 0 0 6px rgba(124,255,178,.12);
-    }
+    .logo span{font-weight:900; letter-spacing:.5px}
+    .btxt{display:flex; flex-direction:column; line-height:1.1; min-width:0}
+    .btxt strong{font-size:14px}
+    .btxt small{font-size:12px; color:var(--muted); white-space:nowrap; overflow:hidden; text-overflow:ellipsis}
 
-    .bullets{
-      display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-top:14px;
-    }
-    @media(max-width:900px){ .bullets{grid-template-columns:1fr} }
-
-    .b{
+    .pill{
+      display:inline-flex; align-items:center; gap:8px;
+      padding:10px 12px;
       border:1px solid rgba(255,255,255,.10);
-      border-radius:18px;background:rgba(255,255,255,.05);
-      padding:12px;display:flex;gap:10px;align-items:flex-start;
+      border-radius:999px;
+      background: rgba(18,18,26,.62);
+      box-shadow: var(--shadow2);
     }
-    .ico{
-      width:40px;height:40px;border-radius:16px;display:grid;place-items:center;
-      background:rgba(255,59,92,.14);border:1px solid rgba(255,59,92,.18);
-      flex:0 0 auto;
+    .dot{width:9px; height:9px; border-radius:50%; background:var(--green); box-shadow: 0 0 0 6px rgba(43,255,136,.12)}
+    .pill b{font-size:12px}
+    .pill span{font-size:12px; color:var(--muted)}
+
+    .actions{display:flex; gap:10px; align-items:center; flex-wrap:wrap; justify-content:flex-end}
+
+    .btn{
+      border:0; cursor:pointer;
+      padding:11px 14px;
+      border-radius:16px;
+      font-weight:800;
+      color:var(--text);
+      background: rgba(18,18,26,.72);
+      border:1px solid rgba(255,255,255,.10);
+      box-shadow: var(--shadow2);
+      transition: transform .12s ease, background .12s ease, border-color .12s ease;
+      display:inline-flex; align-items:center; gap:10px;
     }
+    .btn:hover{transform: translateY(-1px); border-color: rgba(255,255,255,.18)}
+    .btn:active{transform: translateY(0px) scale(.99)}
+
+    .btnPrimary{
+      background: linear-gradient(135deg, rgba(255,79,163,.95), rgba(255,47,138,.92));
+      border-color: rgba(255,255,255,.10);
+      box-shadow: 0 18px 55px rgba(255,79,163,.18);
+    }
+
+    .btnGhost{
+      background: rgba(18,18,26,.45);
+    }
+
+    /* Hero */
+    .hero{
+      display:grid;
+      grid-template-columns: 1.12fr .88fr;
+      gap:16px;
+      padding:18px 0 10px;
+    }
+    @media (max-width: 920px){
+      .hero{grid-template-columns:1fr;}
+    }
+
+    .heroCard{
+      border-radius: var(--r);
+      background:
+        radial-gradient(1100px 420px at 20% 10%, rgba(255,79,163,.16), transparent 62%),
+        radial-gradient(820px 460px at 80% 40%, rgba(255,210,74,.14), transparent 65%),
+        linear-gradient(180deg, rgba(18,18,26,.84), rgba(18,18,26,.56));
+      border:1px solid rgba(255,255,255,.10);
+      box-shadow: var(--shadow);
+      overflow:hidden;
+      position:relative;
+    }
+    .heroCard::before{
+      content:"";
+      position:absolute; inset:-1px;
+      background: linear-gradient(135deg, rgba(255,79,163,.28), rgba(255,210,74,.18), rgba(120,94,255,.18));
+      opacity:.35;
+      filter: blur(18px);
+      z-index:0;
+    }
+    .heroInner{position:relative; z-index:1; padding:18px 18px 16px;}
+    .badgeRow{display:flex; flex-wrap:wrap; gap:10px; align-items:center}
+    .tag{
+      display:inline-flex; gap:8px; align-items:center;
+      padding:8px 10px;
+      background: rgba(11,11,16,.45);
+      border:1px solid rgba(255,255,255,.10);
+      border-radius:999px;
+      font-size:12px; color:var(--muted);
+    }
+    .tag i{width:8px; height:8px; border-radius:50%; display:inline-block; background: var(--yellow); box-shadow: 0 0 0 6px rgba(255,210,74,.12)}
+
+    h1{margin:14px 0 10px; font-size:42px; line-height:1.05; letter-spacing:-.02em}
+    @media (max-width: 520px){ h1{font-size:34px} }
+
+    .sub{color:var(--muted); font-size:14px; line-height:1.5; margin:0 0 14px}
+
+    .heroCtas{display:flex; flex-wrap:wrap; gap:10px; align-items:center}
+
+    .miniProof{
+      margin-top:14px;
+      display:grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap:10px;
+    }
+    @media (max-width: 520px){
+      .miniProof{grid-template-columns:1fr;}
+    }
+    .stat{
+      border-radius:18px;
+      border:1px solid rgba(255,255,255,.10);
+      background: rgba(11,11,16,.35);
+      padding:12px;
+      box-shadow: var(--shadow2);
+    }
+    .stat b{display:block; font-size:14px}
+    .stat span{display:block; font-size:12px; color:var(--muted); margin-top:3px}
+
+    .sideCard{
+      border-radius: var(--r);
+      background: linear-gradient(180deg, rgba(18,18,26,.75), rgba(18,18,26,.52));
+      border:1px solid rgba(255,255,255,.10);
+      box-shadow: var(--shadow);
+      padding:16px;
+      overflow:hidden;
+      position:relative;
+    }
+    .sideCard::after{
+      content:"";
+      position:absolute; right:-40px; top:-40px;
+      width:160px; height:160px;
+      background: radial-gradient(circle at 30% 30%, rgba(255,210,74,.35), transparent 65%);
+      filter: blur(6px);
+      opacity:.85;
+    }
+    .sideCard h3{margin:0 0 8px; font-size:16px}
+    .sideCard p{margin:0 0 12px; color:var(--muted); font-size:13px; line-height:1.45}
+
+    .inputRow{display:flex; gap:10px; flex-wrap:wrap}
+    .inp{
+      flex:1;
+      min-width: 220px;
+      border-radius:16px;
+      padding:12px 12px;
+      border:1px solid rgba(255,255,255,.12);
+      background: rgba(11,11,16,.35);
+      color:var(--text);
+      outline:none;
+      box-shadow: var(--shadow2);
+    }
+    .inp::placeholder{color: rgba(243,243,255,.45)}
+
+    /* Sections */
+    .sectionTitle{display:flex; align-items:baseline; justify-content:space-between; gap:10px; margin:18px 0 10px}
+    .sectionTitle h2{margin:0; font-size:20px}
+    .sectionTitle small{color:var(--muted2)}
+
+    .grid{
+      display:grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap:12px;
+    }
+    @media (max-width: 980px){ .grid{grid-template-columns: repeat(2, 1fr);} }
+    @media (max-width: 620px){ .grid{grid-template-columns: 1fr;} }
 
     .card{
+      border-radius: var(--r);
+      background: linear-gradient(180deg, rgba(18,18,26,.82), rgba(18,18,26,.56));
       border:1px solid rgba(255,255,255,.10);
-      background:rgba(255,255,255,.06);
-      border-radius:var(--r);
-      box-shadow:var(--shadow);
+      box-shadow: var(--shadow2);
+      padding:14px;
+      position:relative;
+      overflow:hidden;
+      transform: translateZ(0);
+    }
+    .card::before{
+      content:"";
+      position:absolute; inset:-1px;
+      background: radial-gradient(420px 220px at 15% 20%, rgba(255,79,163,.20), transparent 60%),
+                  radial-gradient(520px 240px at 90% 10%, rgba(255,210,74,.14), transparent 62%);
+      opacity:.8;
+      z-index:0;
+    }
+    .card > *{position:relative; z-index:1}
+
+    .krow{display:flex; align-items:center; justify-content:space-between; gap:10px; margin-bottom:10px}
+    .chip{
+      display:inline-flex; gap:8px; align-items:center;
+      padding:7px 10px;
+      border-radius:999px;
+      background: rgba(11,11,16,.35);
+      border:1px solid rgba(255,255,255,.10);
+      color:var(--muted);
+      font-size:12px;
+    }
+    .chip i{width:8px; height:8px; border-radius:50%; background: var(--green); display:inline-block}
+    .chip.prem i{background: var(--yellow)}
+    .chip.custom i{background: var(--pink)}
+
+    .title{font-size:18px; margin:0 0 6px}
+    .desc{margin:0 0 12px; color:var(--muted); font-size:13px; line-height:1.45}
+
+    .priceRow{display:flex; align-items:end; justify-content:space-between; gap:10px}
+    .price{
+      font-size:28px;
+      font-weight:900;
+      letter-spacing:-.02em;
+    }
+    .currency{font-size:14px; color:var(--muted2); font-weight:700}
+
+    .buy{
+      padding:12px 14px;
+      border-radius:16px;
+      border:0;
+      cursor:pointer;
+      font-weight:900;
+      color:var(--text);
+      background: linear-gradient(135deg, rgba(255,79,163,.95), rgba(255,47,138,.92));
+      box-shadow: 0 18px 55px rgba(255,79,163,.20);
+      border:1px solid rgba(255,255,255,.10);
+      transition: transform .12s ease;
+      min-width: 145px;
+    }
+    .buy:hover{transform: translateY(-1px)}
+    .buy:active{transform: translateY(0px) scale(.99)}
+
+    /* How it works */
+    .how{
+      display:grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap:12px;
+      margin-top:10px;
+    }
+    @media (max-width: 820px){ .how{grid-template-columns:1fr;} }
+    .step{
+      border-radius: var(--r);
+      padding:14px;
+      background: linear-gradient(180deg, rgba(18,18,26,.74), rgba(18,18,26,.48));
+      border:1px solid rgba(255,255,255,.10);
+      box-shadow: var(--shadow2);
+    }
+    .num{
+      width:34px; height:34px; border-radius:14px;
+      display:grid; place-items:center;
+      background: rgba(255,210,74,.12);
+      border:1px solid rgba(255,210,74,.24);
+      color: var(--yellow);
+      font-weight:900;
+      margin-bottom:10px;
+    }
+    .step b{display:block; margin-bottom:6px}
+    .step span{color:var(--muted); font-size:13px; line-height:1.45}
+
+    /* Footer */
+    .footer{margin-top:18px; color:var(--muted2); font-size:12px; text-align:center}
+
+    /* Modal */
+    .overlay{
+      position:fixed; inset:0;
+      background: rgba(0,0,0,.62);
+      display:none;
+      align-items:center;
+      justify-content:center;
+      z-index:50;
+      padding:18px;
+    }
+    .overlay.show{display:flex}
+
+    .modal{
+      width:min(760px, 100%);
+      border-radius: 26px;
+      background:
+        radial-gradient(900px 420px at 15% 10%, rgba(255,79,163,.18), transparent 65%),
+        radial-gradient(760px 420px at 85% 20%, rgba(255,210,74,.14), transparent 65%),
+        linear-gradient(180deg, rgba(18,18,26,.92), rgba(18,18,26,.76));
+      border:1px solid rgba(255,255,255,.12);
+      box-shadow: var(--shadow);
       overflow:hidden;
       position:relative;
     }
-    .card::before{
-      content:"";position:absolute;inset:0;pointer-events:none;
-      background:radial-gradient(520px 260px at 10% 0%, rgba(255,59,92,.22), transparent 60%);
-    }
-    .card .inner{position:relative;padding:16px}
 
-    .grid{display:grid;grid-template-columns:repeat(3,1fr);gap:14px}
-    @media(max-width:900px){ .grid{grid-template-columns:1fr} }
-
-    .secTitle{
-      margin:22px 0 12px;
-      display:flex;justify-content:space-between;align-items:end;gap:14px;
+    .modalHead{
+      display:flex; align-items:center; justify-content:space-between; gap:10px;
+      padding:14px 14px 10px;
+      border-bottom:1px solid rgba(255,255,255,.08);
     }
-    .secTitle b{font-size:20px;letter-spacing:-.2px}
-    .secTitle small{color:var(--mut);font-weight:900}
-
-    input,textarea{
-      width:100%;padding:14px 14px;border-radius:18px;
-      border:1px solid rgba(255,255,255,.14);
-      background:rgba(0,0,0,.22);
-      color:var(--txt);
-      outline:none;font-weight:900;
-    }
-
-    .rowFlex{display:flex;gap:10px;flex-wrap:wrap;align-items:center;justify-content:space-between}
-    .price{font-size:22px;font-weight:1100;letter-spacing:-.3px}
-    .mini{font-size:12px;font-weight:900;color:var(--mut)}
-
-    /* Modal */
-    .modalWrap{
-      position:fixed;inset:0;display:none;align-items:center;justify-content:center;
-      padding:16px;z-index:100;
-      background:rgba(0,0,0,.62);
-    }
-    .modal{
-      width:min(720px,100%);
-      border-radius:28px;
-      overflow:hidden;
-      border:1px solid rgba(255,255,255,.12);
-      background:rgba(14,14,24,.96);
-      box-shadow:0 30px 80px rgba(0,0,0,.65);
-      max-height: min(92vh, 900px);
-      overflow-y: auto;
-    }
-    .modalTop{
-      display:flex;justify-content:space-between;align-items:center;
-      padding:14px 14px;border-bottom:1px solid rgba(255,255,255,.10);
-      position: sticky; top:0; background:rgba(14,14,24,.96);
-      z-index: 5;
-    }
+    .modalHead b{font-size:14px}
     .x{
-      width:46px;height:46px;border-radius:16px;
+      width:42px; height:42px;
+      border-radius:16px;
       border:1px solid rgba(255,255,255,.12);
-      background:rgba(255,255,255,.06);
-      color:var(--txt);cursor:pointer
+      background: rgba(11,11,16,.30);
+      color:var(--text);
+      cursor:pointer;
+      font-weight:900;
     }
+
     .modalBody{padding:14px}
+
     .box{
+      border-radius: 20px;
+      background: rgba(11,11,16,.30);
       border:1px solid rgba(255,255,255,.10);
-      border-radius:22px;background:rgba(255,255,255,.06);
-      padding:14px;
+      padding:12px;
+      box-shadow: var(--shadow2);
+      margin-bottom:10px;
     }
+    .boxTitle{display:flex; justify-content:space-between; align-items:baseline; gap:10px}
+    .boxTitle b{font-size:16px}
+    .boxTitle span{color:var(--muted); font-size:12px}
 
-    /* QR */
-    .qr{
+    .row{
+      display:grid;
+      grid-template-columns: 1fr 1fr;
+      gap:10px;
+    }
+    @media (max-width: 720px){ .row{grid-template-columns:1fr;} }
+
+    .ctaBig{
+      width:100%;
+      padding:14px 14px;
+      border-radius: 18px;
+      border:0;
+      cursor:pointer;
+      font-weight:1000;
+      color:var(--text);
+      background: linear-gradient(135deg, rgba(255,79,163,.98), rgba(255,47,138,.92));
+      box-shadow: 0 18px 55px rgba(255,79,163,.20);
+      border:1px solid rgba(255,255,255,.10);
+      transition: transform .12s ease;
+    }
+    .ctaBig:hover{transform: translateY(-1px)}
+
+    .small{font-size:12px; color:var(--muted); margin-top:6px}
+
+    .mono{
+      width:100%;
+      min-height:92px;
+      resize:none;
+      border-radius:18px;
+      padding:12px;
       border:1px solid rgba(255,255,255,.12);
-      border-radius:22px;
-      overflow:hidden;
-      background:#fff;
+      background: rgba(11,11,16,.35);
+      color:var(--text);
+      outline:none;
+      font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+      font-size:12px;
+      line-height:1.45;
     }
-    .qr img{display:block;width:100%;height:auto}
 
-    /* badges */
-    .badgeOk{
-      padding:10px 12px;border-radius:999px;
-      background:rgba(34,197,94,.12);
-      border:1px solid rgba(34,197,94,.20);
-      font-weight:1000;
+    .miniBtns{display:flex; flex-wrap:wrap; gap:10px; margin-top:10px}
+    .mini{
+      padding:10px 12px;
+      border-radius: 16px;
+      border:1px solid rgba(255,255,255,.12);
+      background: rgba(11,11,16,.30);
+      color:var(--text);
+      font-weight:900;
+      cursor:pointer;
     }
-    .badgeBad{
-      padding:10px 12px;border-radius:999px;
-      background:rgba(239,68,68,.12);
-      border:1px solid rgba(239,68,68,.20);
-      font-weight:1000;
+
+    .notice{
+      margin-top:10px;
+      border-radius: 18px;
+      padding:12px;
+      border:1px dashed rgba(255,210,74,.30);
+      background: rgba(255,210,74,.08);
+      color: rgba(255,245,210,.95);
+      font-size:12px;
+      line-height:1.45;
     }
+
+    /* Floating support */
+    .float{
+      position:fixed;
+      right:14px;
+      bottom:14px;
+      z-index:60;
+      display:flex;
+      flex-direction:column;
+      gap:10px;
+      align-items:flex-end;
+    }
+    .fab{
+      border:0; cursor:pointer;
+      border-radius: 999px;
+      padding:14px 14px;
+      font-weight:1000;
+      color:var(--text);
+      background:
+        radial-gradient(120% 120% at 25% 20%, rgba(255,210,74,.75), rgba(255,79,163,.75) 52%, rgba(120,94,255,.50) 100%),
+        linear-gradient(180deg, rgba(255,255,255,.2), rgba(255,255,255,0));
+      border:1px solid rgba(255,255,255,.12);
+      box-shadow: 0 24px 90px rgba(0,0,0,.6);
+      display:inline-flex; align-items:center; gap:10px;
+    }
+
+    .chat{
+      width:min(420px, calc(100vw - 28px));
+      border-radius: 22px;
+      background: linear-gradient(180deg, rgba(18,18,26,.92), rgba(18,18,26,.72));
+      border:1px solid rgba(255,255,255,.12);
+      box-shadow: var(--shadow);
+      overflow:hidden;
+      display:none;
+    }
+    .chat.show{display:block}
+    .chatHead{display:flex; align-items:center; justify-content:space-between; padding:12px 12px; border-bottom:1px solid rgba(255,255,255,.08)}
+    .chatHead b{font-size:13px}
+    .chatHead small{display:block; color:var(--muted); font-size:11px; margin-top:2px}
+
+    .chatBody{max-height: 52vh; overflow:auto; padding:12px; display:flex; flex-direction:column; gap:10px}
+    .m{
+      width:fit-content;
+      max-width: 92%;
+      border-radius: 18px;
+      padding:10px 12px;
+      border:1px solid rgba(255,255,255,.10);
+      background: rgba(11,11,16,.35);
+      color:var(--text);
+      font-size:13px;
+      line-height:1.45;
+      white-space:pre-wrap;
+    }
+    .me{margin-left:auto; background: rgba(255,79,163,.16); border-color: rgba(255,79,163,.22)}
+    .ai{margin-right:auto}
+
+    .chatFoot{display:flex; gap:10px; padding:12px; border-top:1px solid rgba(255,255,255,.08)}
+    .send{min-width: 88px}
+
+    /* Sticky bottom bar */
+    .bottomBar{
+      position:fixed; left:0; right:0; bottom:0;
+      z-index:25;
+      background: linear-gradient(180deg, rgba(11,11,16,0), rgba(11,11,16,.82) 35%, rgba(11,11,16,.95));
+      padding:10px 0 12px;
+      border-top:1px solid rgba(255,255,255,.06);
+      backdrop-filter: blur(12px);
+    }
+    .bottomInner{
+      max-width:1100px; margin:0 auto; padding:0 16px;
+      display:flex; align-items:center; justify-content:space-between; gap:10px;
+    }
+    .bottomInner span{color:var(--muted); font-size:12px}
 
     /* Toast */
     .toast{
-      position:fixed;left:50%;transform:translateX(-50%);
-      bottom:92px;z-index:999;
-      background:rgba(0,0,0,.75);
+      position:fixed; left:50%; transform:translateX(-50%);
+      bottom:86px;
+      background: rgba(18,18,26,.92);
       border:1px solid rgba(255,255,255,.12);
-      color:#fff;
-      padding:12px 14px;border-radius:999px;
-      font-weight:1000;
-      display:none;
-    }
-
-    /* WhatsApp */
-    .wa{position:fixed;right:18px;bottom:18px;z-index:60;text-decoration:none}
-    .wa .chip{
-      display:flex;gap:10px;align-items:center;padding:14px 14px;border-radius:999px;
-      background:linear-gradient(90deg,#16a34a,#22c55e);
-      color:#fff;font-weight:1000;
-      box-shadow:0 20px 50px rgba(34,197,94,.25);
-    }
-    .wa .dot{width:44px;height:44px;border-radius:999px;display:grid;place-items:center;background:rgba(255,255,255,.20)}
-
-    .footer{
-      margin:26px 0 40px;color:rgba(255,255,255,.58);
-      font-weight:900;text-align:center;
-    }
-
-    hr{border:0;border-top:1px solid rgba(255,255,255,.10);margin:14px 0}
-
-    /* Upgrade 1: Proof social ticker */
-    .ticker{
-      margin-top:12px;
-      border-radius:999px;
-      border:1px solid rgba(255,255,255,.12);
-      background:rgba(255,255,255,.06);
+      box-shadow: var(--shadow);
+      border-radius: 16px;
       padding:10px 12px;
-      display:flex;gap:10px;align-items:center;
-      overflow:hidden;
-      position:relative;
-    }
-    .ticker strong{font-weight:1100}
-    .ticker .dot2{
-      width:10px;height:10px;border-radius:999px;
-      background:linear-gradient(135deg,var(--mint),#a7f3d0);
-      box-shadow:0 0 0 6px rgba(124,255,178,.12);
-      flex:0 0 auto;
-    }
-    .ticker .marq{
-      white-space:nowrap;
-      display:inline-block;
-      animation: marq 18s linear infinite;
-      color:rgba(255,255,255,.82);
-      font-weight:1000;
-      will-change: transform;
-    }
-    @keyframes marq{
-      0%{ transform: translateX(0); }
-      100%{ transform: translateX(-50%); }
-    }
-    .ticker .wrap{display:flex;gap:24px;flex:1;overflow:hidden}
-    .ticker .marq > span{margin-right:24px}
-
-    @media (prefers-reduced-motion: reduce){
-      .ticker .marq{animation:none}
-    }
-  
-
-    /* === Suporte IA (widget) === */
-    .aiFab{
-      position:fixed; right:18px; bottom:18px; z-index:99;
-      border:none; cursor:pointer;
-      padding:14px 16px; border-radius:999px;
-      background: linear-gradient(90deg, rgba(255,59,92,1), rgba(178,155,255,1));
-      color:white; font-weight:1000;
-      box-shadow: 0 18px 45px rgba(0,0,0,.35);
-      display:flex; align-items:center; gap:10px;
-    }
-    .aiFab span{font-size:14px;}
-    .aiPanel{
-      position:fixed; right:18px; bottom:78px; z-index:100;
-      width:min(380px, calc(100vw - 36px));
-      border-radius:20px;
-      border:1px solid rgba(255,255,255,.12);
-      background: rgba(12,12,18,.92);
-      box-shadow: 0 22px 65px rgba(0,0,0,.55);
-      overflow:hidden;
+      color:var(--text);
+      font-size:12px;
+      z-index:70;
       display:none;
-      backdrop-filter: blur(12px);
     }
-    .aiTop{display:flex; align-items:center; justify-content:space-between; padding:12px 12px; border-bottom:1px solid rgba(255,255,255,.10)}
-    .aiTop b{font-weight:1100}
-    .aiClose{width:42px;height:42px;border-radius:14px;border:1px solid rgba(255,255,255,.14);background:rgba(255,255,255,.06);color:var(--txt);cursor:pointer}
-    .aiBody{padding:12px; max-height:46vh; overflow:auto}
-    .aiMsg{display:flex; gap:10px; margin:10px 0}
-    .aiBubble{padding:10px 12px;border-radius:16px; border:1px solid rgba(255,255,255,.10); background: rgba(255,255,255,.06); color: var(--txt); line-height:1.45; font-weight:800; font-size:13px}
-    .aiMe .aiBubble{background: rgba(178,155,255,.14); border-color: rgba(178,155,255,.22)}
-    .aiBot .aiBubble{background: rgba(255,59,92,.10); border-color: rgba(255,59,92,.18)}
-    .aiFoot{display:flex; gap:10px; padding:12px; border-top:1px solid rgba(255,255,255,.10)}
-    .aiInput{flex:1; padding:12px 12px; border-radius:14px; border:1px solid rgba(255,255,255,.14); background: rgba(0,0,0,.20); color: var(--txt); outline:none; font-weight:900}
-    .aiSend{padding:12px 14px; border-radius:14px; border:none; cursor:pointer; font-weight:1000; color:#0b0b14; background: linear-gradient(90deg, rgba(124,255,178,1), rgba(255,212,0,1))}
-    .aiHelp{padding:10px 12px; margin:12px; border-radius:16px; border:1px dashed rgba(255,255,255,.14); background: rgba(0,0,0,.20); color: var(--mut); font-weight:900; font-size:12px}
-    .aiActions{display:flex; gap:10px; padding:0 12px 12px}
-    .aiHuman{flex:1; text-align:center; padding:12px 12px; border-radius:14px; border:1px solid rgba(255,255,255,.14); background: rgba(255,255,255,.06); color: var(--txt); font-weight:1000; text-decoration:none}
+    .toast.show{display:block}
 
+    /* Motion-lite */
+    @media (prefers-reduced-motion: no-preference){
+      .card{animation: floatIn .35s ease both;}
+      .heroCard, .sideCard{animation: floatIn .35s ease both;}
+      @keyframes floatIn{
+        from{opacity:0; transform: translateY(10px)}
+        to{opacity:1; transform: translateY(0px)}
+      }
+    }
   </style>
 </head>
-
 <body>
-  <!-- TOPBAR -->
-  <div class="topbar">
-    <div class="row">
+  <div class="wrap">
+    <div class="topbar">
       <div class="brand">
-        <div class="logo"><span>VV</span></div>
-        <div>
-          <div style="font-size:15px">ViralVault Store</div>
-          <div class="mini">anime kawaii • 100% digital</div>
+        <div class="logo" aria-hidden="true"><span>VV</span></div>
+        <div class="btxt">
+          <strong>ViralVault Store</strong>
+          <small id="subtitle">loja digital • PIX • entrega em até 24h</small>
         </div>
       </div>
 
-      <div class="pill">
-        <b>🔒 PIX seguro</b>
-        <b>⚡ entrega 24h</b>
-        <button class="btn btnPrimary" id="btnOpenVerify">🔎 Verificar</button>
-        <button class="btn" id="btnOpenAdmin">🛡️ Admin</button>
+      <div class="actions">
+        <div class="pill" title="Status do sistema">
+          <div class="dot" id="liveDot"></div>
+          <div style="display:flex;flex-direction:column;line-height:1.1">
+            <b id="liveTxt">Ao vivo</b>
+            <span id="apiTxt">conectando…</span>
+          </div>
+        </div>
+        <button class="btn btnGhost" id="btnVerify" type="button">🔎 Verificar</button>
+        <button class="btn btnPrimary" id="btnAdmin" type="button">🛡️ Admin</button>
       </div>
     </div>
-  </div>
 
-  <div class="container">
-    <!-- HERO -->
-    <section class="hero">
-      <div class="content">
-        <div>
-          <div class="tag"><span class="k"></span> <span>Anime kawaii • Loja premium</span></div>
-          <div class="h1">Compre com confiança ✨<br/>e verifique seu pedido em segundos.</div>
+    <div class="hero">
+      <div class="heroCard">
+        <div class="heroInner">
+          <div class="badgeRow">
+            <div class="tag"><i></i> Anti-golpe • Order ID verificável</div>
+            <div class="tag"><i style="background:var(--pink); box-shadow:0 0 0 6px rgba(255,79,163,.12)"></i> Checkout 1-clique (PIX)</div>
+            <div class="tag"><i style="background:rgba(120,94,255,1); box-shadow:0 0 0 6px rgba(120,94,255,.12)"></i> 100% digital</div>
+          </div>
+
+          <h1>Compre rápido, pague via PIX e receba ✨</h1>
           <p class="sub">
-            Produtos digitais (Roblox/brainrots). Clique em COMPRAR e pague via PIX. Entrega em até 24h (ou reembolso).
+            Escolha um item, gere seu pedido e copie o PIX. Seu <b>Order ID</b> vira comprovante e você consegue
+            verificar aqui mesmo se o pedido é oficial.
           </p>
 
-          <!-- Upgrade 1: Proof Social Ticker -->
-          <div class="ticker" aria-label="Prova social em tempo real">
-            <span class="dot2"></span>
-            <strong>Ao vivo:</strong>
-            <div class="wrap" aria-hidden="true">
-              <div class="marq" id="vvTicker">
-                <span>🔥 18 pessoas viram esta loja nos últimos 30 min</span>
-                <span>✅ 6 pedidos verificados hoje</span>
-                <span>⚡ Entrega em até 24h (ou reembolso)</span>
-                <span>🛡️ VV-OFICIAL: verificação no servidor</span>
-
-                <span>🔥 18 pessoas viram esta loja nos últimos 30 min</span>
-                <span>✅ 6 pedidos verificados hoje</span>
-                <span>⚡ Entrega em até 24h (ou reembolso)</span>
-                <span>🛡️ VV-OFICIAL: verificação no servidor</span>
-              </div>
-            </div>
+          <div class="heroCtas">
+            <button class="btn btnPrimary" type="button" id="btnScroll">🛒 Ver produtos</button>
+            <button class="btn" type="button" id="btnHow">📌 Como funciona</button>
           </div>
 
-          <div style="display:flex;gap:10px;flex-wrap:wrap;margin-top:14px">
-            <button class="btn btnPrimary" id="btnGoProducts">🛍️ Comprar agora</button>
-            <button class="btn btnGhost" id="btnGoHow">📌 Como funciona</button>
-            <a class="btn btnGhost" id="btnGoSupport" href="#" style="text-decoration:none">💬 Suporte</a>
-          </div>
-
-          <div class="bullets">
-            <div class="b"><div class="ico">🔐</div><div><b style="font-weight:1000;color:#fff">Anti-golpe</b><div class="mini">verificação + comprovante</div></div></div>
-            <div class="b"><div class="ico">💾</div><div><b style="font-weight:1000;color:#fff">100% digital</b><div class="mini">sem frete, sem atraso</div></div></div>
-            <div class="b"><div class="ico">⏱️</div><div><b style="font-weight:1000;color:#fff">SLA 24h</b><div class="mini">ou reembolso</div></div></div>
+          <div class="miniProof">
+            <div class="stat"><b>Entrega em até 24h</b><span>ou reembolso (SLA)</span></div>
+            <div class="stat"><b>PIX + QR</b><span>copia e cola fácil</span></div>
+            <div class="stat"><b>Verificação</b><span>anti-fake: confere o Order ID</span></div>
           </div>
         </div>
-
-        <!-- CUPOM CARD -->
-        <div class="card">
-          <div class="inner">
-            <div class="rowFlex">
-              <b style="font-size:16px">Cupom de boas-vindas 🎁</b>
-              <span class="tag" style="border-color:rgba(255,59,92,.25);background:rgba(255,59,92,.12)">
-                1 uso por cliente
-              </span>
-            </div>
-
-            <div class="box" style="margin-top:12px">
-              <div class="rowFlex">
-                <div>
-                  <div class="mini">use no checkout:</div>
-                  <div style="font-size:20px;font-weight:1100;letter-spacing:.6px" id="couponLabel">BEMVINDO10</div>
-                </div>
-                <button class="btn btnPrimary small" id="btnCopyCoupon">Copiar</button>
-              </div>
-              <hr/>
-              <div class="mini">O desconto aparece automaticamente no checkout.</div>
-            </div>
-          </div>
-        </div>
-
       </div>
-    </section>
 
-    <!-- PRODUTOS -->
-    <div class="secTitle" id="produtos">
-      <b>Produtos digitais 🛒</b>
+      <div class="sideCard">
+        <h3>Verificar pedido (anti-fake)</h3>
+        <p>Cole o <b>Order ID</b> (ex: <span style="color:var(--yellow)">vv_...</span>) e veja o status.</p>
+
+        <div class="inputRow">
+          <input class="inp" id="verifyInput" placeholder="Cole aqui seu Order ID (vv_...)" />
+          <button class="btn btnPrimary" id="verifyGo" type="button">Verificar</button>
+        </div>
+        <div class="box" style="margin-top:12px">
+          <div class="boxTitle"><b>Status</b><span id="verifySmall">—</span></div>
+          <div id="verifyOut" class="small" style="margin-top:6px">Ainda não consultado.</div>
+        </div>
+
+        <div class="notice">
+          Dica: após pagar, mande o comprovante + seu user do Roblox no WhatsApp (se você quiser agilizar).
+        </div>
+      </div>
+    </div>
+
+    <div class="sectionTitle" id="produtos">
+      <h2>Produtos digitais</h2>
       <small>escolha 1 item e pague via PIX</small>
     </div>
-    <section class="grid" id="gridProducts"></section>
-    <div class="mini" style="margin:8px 0 0;opacity:.92">
-      ✅ Para comprar: clique em <b>Comprar agora</b> → pague o PIX → <b>aguarde a entrega</b>. (Se quiser, você pode mandar seu user do Roblox no WhatsApp depois.)
-    </div>
 
+    <div class="grid" id="productsGrid"></div>
 
-    <!-- COMO FUNCIONA -->
-    <div class="secTitle" id="como">
-      <b>Como funciona 🎀</b>
+    <div class="sectionTitle" id="como">
+      <h2>Como funciona 🎀</h2>
       <small>super simples</small>
     </div>
 
-    <div class="card">
-      <div class="inner">
-        <div class="rowFlex">
-          <div class="b" style="flex:1"><div class="ico">1</div><div><b style="font-weight:1000;color:#fff">Escolha o item</b><div class="mini">adicione ao checkout</div></div></div>
-          <div class="b" style="flex:1"><div class="ico">2</div><div><b style="font-weight:1000;color:#fff">Pague via PIX</b><div class="mini">QR + copia e cola</div></div></div>
-          <div class="b" style="flex:1"><div class="ico">3</div><div><b style="font-weight:1000;color:#fff">Receba em até 24h</b><div class="mini">ou reembolso</div></div></div>
-        </div>
-      </div>
+    <div class="how">
+      <div class="step"><div class="num">1</div><b>Escolha o item</b><span>Clique em <b>Comprar agora</b> e confirme o produto.</span></div>
+      <div class="step"><div class="num">2</div><b>Pague via PIX</b><span>Gere o pedido → copie o PIX (e QR se aparecer).</span></div>
+      <div class="step"><div class="num">3</div><b>Receba em até 24h</b><span>Seu pedido fica com status: <b>criado → pago → entregue</b>.</span></div>
     </div>
 
-    <!-- VERIFICAR -->
-    <div class="secTitle" id="verificar">
-      <b>Verificar pedido 🔎</b>
-      <small>confirma se o pedido é VV-OFICIAL</small>
-    </div>
+    <div class="footer">© <span id="year"></span> ViralVault Store • Loja 100% digital • SP</div>
+  </div>
 
-    <div class="card">
-      <div class="inner">
-        <div class="rowFlex">
-          <input id="verifyOrderId" placeholder="Cole aqui seu Order ID (vv_...)" style="flex:1"/>
-          <button class="btn btnPrimary" id="btnVerify">Verificar</button>
-        </div>
-
-        <div style="margin-top:12px" id="verifyResult" class="mini">—</div>
-
-        <div id="pubProofWrap" style="margin-top:10px; display:none">
-          <div class="mini" style="margin-bottom:8px">Prova de entrega</div>
-          <div id="pubProof"></div>
-        </div>
-      </div>
-    </div>
-
-    <div class="footer">
-      © 2026 ViralVault Store • Loja 100% digital • SP <br/>
-      Suporte: WhatsApp +55 11 94159-8713
+  <!-- Sticky bottom bar -->
+  <div class="bottomBar">
+    <div class="bottomInner">
+      <span>✅ Dica: sempre verifique o Order ID aqui no site pra evitar golpe.</span>
+      <button class="btn btnPrimary" type="button" id="btnStickyBuy">⚡ Comprar agora</button>
     </div>
   </div>
 
-  <!-- WHATSAPP -->
-  <a class="wa" id="waFloat" href="#" target="_blank" rel="noopener">
-    <div class="chip">
-      <div class="dot">💬</div>
-      <div>
-        <div style="font-size:12px;opacity:.92">Suporte</div>
-        <div>WhatsApp</div>
+  <!-- Checkout Modal -->
+  <div class="overlay" id="overlay" aria-hidden="true">
+    <div class="modal" role="dialog" aria-modal="true" aria-label="Checkout PIX">
+      <div class="modalHead">
+        <b>Checkout (PIX) — ultra simples</b>
+        <button class="x" id="closeModal" type="button">✕</button>
+      </div>
+      <div class="modalBody">
+        <div class="row">
+          <div class="box">
+            <div class="boxTitle"><b id="mProd">Produto</b><span id="mPrice">R$ —</span></div>
+            <div class="small" id="mDesc">—</div>
+          </div>
+
+          <div class="box">
+            <div class="boxTitle"><b>Seu usuário do Roblox</b><span>obrigatório</span></div>
+            <input class="inp" id="mUser" placeholder="Ex: xDEADx786" />
+            <div class="small">Sem user, não dá pra entregar. 😉</div>
+          </div>
+        </div>
+
+        <button class="ctaBig" id="genPix" type="button">Gerar pedido + PIX</button>
+
+        <div class="box" style="margin-top:12px">
+          <div class="boxTitle"><b>Order ID</b><span id="mStatus">—</span></div>
+          <div class="small" id="mOrderId">—</div>
+        </div>
+
+        <div class="box">
+          <div class="boxTitle"><b>PIX copia e cola</b><span>cole no app do banco</span></div>
+          <textarea class="mono" id="mPix" placeholder="O PIX vai aparecer aqui…" readonly></textarea>
+          <div class="miniBtns">
+            <button class="mini" id="copyPix" type="button">Copiar PIX</button>
+            <button class="mini" id="copyId" type="button">Copiar ID</button>
+            <button class="mini" id="openVerify" type="button">Verificar pedido</button>
+          </div>
+          <div class="small" id="mHint">Depois de pagar, guarde o Order ID.</div>
+        </div>
+
+        <div class="notice">
+          Atenção: esse checkout cria um pedido no sistema. O pagamento é via PIX “copia e cola”.
+          Se o PIX não aparecer, é configuração do Worker (variável <b>PIX_COPIA_COLA</b>).
+        </div>
       </div>
     </div>
-  </a>
+  </div>
+
+  <!-- Support AI -->
+  <div class="float">
+    <div class="chat" id="chat">
+      <div class="chatHead">
+        <div>
+          <b>Suporte IA</b>
+          <small>responde sobre produtos, prazos, pedido e PIX (sem besteira)</small>
+        </div>
+        <button class="x" id="closeChat" type="button">✕</button>
+      </div>
+      <div class="chatBody" id="chatBody"></div>
+      <div class="chatFoot">
+        <input class="inp" id="chatIn" placeholder="Pergunte algo (ex: como verificar meu pedido?)" />
+        <button class="btn btnPrimary send" id="chatSend" type="button">Enviar</button>
+      </div>
+    </div>
+    <button class="fab" id="fab" type="button">🤖 Suporte IA</button>
+  </div>
 
   <div class="toast" id="toast">Copiado ✅</div>
 
-  <!-- MODAL CHECKOUT -->
-  <div class="modalWrap" id="modalCheckout">
-    <div class="modal">
-      <div class="modalTop">
-        <b id="ckTitle">Checkout</b>
-        <button class="x" id="ckClose">✕</button>
-      </div>
-
-      <div class="modalBody">
-        <div class="box">
-          <div class="mini">Finalize com PIX seguro</div>
-
-          <div class="rowFlex" style="margin-top:10px">
-            <div style="flex:1">
-              <div class="mini">Usuário do Roblox (opcional)</div>
-              <input id="ckRbxUser" placeholder="@user_1234"/>
-            </div>
-            <div style="flex:1">
-              <div class="mini">Info extra (opcional)</div>
-              <input id="ckRbxExtra" placeholder="ex: ID do item"/>
-            </div>
-          </div>
-
-          <div class="rowFlex" style="margin-top:10px">
-            <div style="flex:1">
-              <div class="mini">Cupom</div>
-              <input id="ckCoupon" placeholder="BEMVINDO10"/>
-            </div>
-            <div style="flex:1">
-              <div class="mini">Preço final</div>
-              <div class="price" id="ckFinalPrice">R$ 0,00</div>
-            </div>
-          </div>
-
-          <div class="mini" style="margin-top:10px;opacity:.95">
-            ✅ Entrega em até <b>24h</b>. Se não entregar: <b>reembolso</b>.
-          </div>
-
-          <hr/>
-
-          <div class="rowFlex" style="align-items:flex-start;gap:12px">
-            <div class="qr" style="flex:1;min-width:220px">
-              <img id="qrImg" alt="QR PIX" src="" />
-            </div>
-
-            <div style="flex:1;min-width:220px">
-              <div class="mini">PIX copia e cola</div>
-              <textarea id="ckPixEmv" readonly style="min-height:108px;resize:none;font-size:13px;line-height:1.25"></textarea>
-
-              <div style="display:flex;gap:10px;flex-wrap:wrap;justify-content:flex-end;margin-top:10px">
-                <button class="btn btnPrimary small" id="btnCopyPix">Copiar PIX</button>
-                <button class="btn btnGhost small" id="btnCopyOrder" disabled>Copiar Order ID</button>
-              </div>
-
-              <div class="mini" style="margin-top:10px">
-                ✅ Pague apenas o PIX exibido aqui. Se alguém mandar outra chave no chat, é golpe.
-              </div>
-            </div>
-          </div>
-
-          <hr/>
-
-          <div class="rowFlex">
-            <button class="btn btnPrimary" id="btnCreateOrder">Gerar pedido e liberar PIX</button>
-            <a class="btn btnGhost" id="btnOpenWaPay" href="#" target="_blank" rel="noopener" style="text-decoration:none">Enviar no WhatsApp (opcional)</a>
-          </div>
-
-          <div class="mini" style="margin-top:10px" id="ckStatus">—</div>
-        </div>
-      </div>
-    </div>
-  </div>
-
-  <!-- MODAL ADMIN -->
-  <div class="modalWrap" id="modalAdmin">
-    <div class="modal">
-      <div class="modalTop">
-        <b>Admin local 🛡️</b>
-        <button class="x" id="adClose">✕</button>
-      </div>
-
-      <div class="modalBody">
-        <div class="box">
-          <div class="mini">Acesso só para você</div>
-
-          <div class="rowFlex" style="margin-top:10px">
-            <input id="adminPass" placeholder="Senha admin"/>
-            <button class="btn btnPrimary" id="btnAdminLogin">Entrar</button>
-          </div>
-
-          <div class="mini" id="adminStatus" style="margin-top:10px">Bloqueado.</div>
-
-          <div id="adminPanel" style="display:none;margin-top:14px">
-            <hr/>
-            <b>🧾 Prova de entrega</b>
-            <div class="mini">salva no seu dispositivo (local)</div>
-
-            <div class="rowFlex" style="margin-top:10px">
-              <input id="proofOrderId" placeholder="Order ID"/>
-              <input id="proofValue" placeholder="Link (https://...) ou texto"/>
-              <button class="btn btnPrimary" id="btnSaveProof">Salvar</button>
-            </div>
-
-            <div class="mini" style="margin-top:10px">Depois, dá pra migrar pra prova GLOBAL no Worker/KV.</div>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
-
   <script>
-    /*** CONFIG ***/
-    const WORKER_BASE = "https://viralvault-sign.darlanana06.workers.dev".replace(/\/+$/,"");
-    const WHATS = "5511941598713";
-    const ADMIN_PASSCODE = "P@ss_VV_6nT2xQ9mR4vL1pK7hJ3cD0wE8yG5bF";
-    const WELCOME_COUPON = "BEMVINDO10";
+    // ====== CONFIG ======
+    // Seu Worker (API)
+    const API_BASE = "https://viralvault-sign.darlanana06.workers.dev";
 
-    const PIX_EMV = `00020101021126580014br.gov.bcb.pix0136851fee9f-0037-44f3-9361-e053c1faa7685204000053039865802BR5921DARLAN B R DOS SANTOS6009SAO PAULO62070503***63048DFF`;
+    // WhatsApp (opcional) — coloque seu número com DDI/DDD se quiser abrir conversa
+    const WHATSAPP_NUMBER = "5511941598713";
 
-    const PIX_QR_IMAGE_URL = "./pix-qr.png";
+    // ====== HELPERS ======
+    const $ = (id)=>document.getElementById(id);
+    const toast = (msg)=>{ const t=$('toast'); t.textContent=msg; t.classList.add('show'); setTimeout(()=>t.classList.remove('show'), 1400); };
 
-    const SS_ADMIN = "vv_admin";
-    const LS_COUPON = "vv_coupon_used_v1";
-
-    const FALLBACK_PRODUCTS = [
-      {id:"brainrot_basic", name:"Brainrot Pack (Básico)", desc:"Entrega 100% digital • em até 24h", price: 9.90, tag:"Popular"},
-      {id:"brainrot_plus", name:"Brainrot Pack (Plus)", desc:"Itens premium • entrega em até 24h", price: 19.90, tag:"Premium"},
-      {id:"roblox_custom", name:"Entrega Personalizada (Roblox)", desc:"Você escolhe o que precisa • 24h", price: 29.90, tag:"Custom"},
-    ];
-
-    let PRODUCTS = FALLBACK_PRODUCTS.slice();
-
-
-    const $ = (q)=>document.querySelector(q);
-    function money(v){ return v.toLocaleString("pt-BR",{style:"currency",currency:"BRL"}); }
-
-    function toast(msg){
-      const t=$("#toast");
-      t.textContent=msg;
-      t.style.display="block";
-      clearTimeout(window.__t);
-      window.__t=setTimeout(()=>t.style.display="none",1500);
+    function brl(v){
+      const n = Number(v);
+      if (!Number.isFinite(n)) return "R$ --";
+      return n.toLocaleString('pt-BR', { style:'currency', currency:'BRL' });
     }
 
-    async function copyText(text){
-      try{ await navigator.clipboard.writeText(text); toast("Copiado ✅"); }
-      catch(e){ prompt("Copie:", text); }
+    async function api(path, opts={}){
+      const res = await fetch(API_BASE + path, {
+        ...opts,
+        headers: {
+          'content-type':'application/json',
+          ...(opts.headers||{})
+        }
+      });
+      const text = await res.text();
+      let data = {};
+      try{ data = JSON.parse(text||"{}"); }catch{ data = { ok:false, error:"Resposta inválida", raw:text }; }
+      if(!res.ok && data && data.ok !== true){
+        // mantém erro
+      }
+      return data;
     }
 
-    function openModal(el){ $(el).style.display="flex"; }
-    function closeModal(el){ $(el).style.display="none"; }
+    function safeCopy(text){
+      if(!text) return false;
+      if(navigator.clipboard && navigator.clipboard.writeText){
+        return navigator.clipboard.writeText(text).then(()=>true).catch(()=>false);
+      }
+      const ta = document.createElement('textarea');
+      ta.value = text;
+      ta.style.position='fixed';
+      ta.style.left='-9999px';
+      document.body.appendChild(ta);
+      ta.focus(); ta.select();
+      try{ document.execCommand('copy'); document.body.removeChild(ta); return true; }catch(e){ document.body.removeChild(ta); return false; }
+    }
 
-    const supportMsg = encodeURIComponent("Oi ViralVault! Preciso de suporte.");
-    $("#waFloat").href = `https://wa.me/${WHATS}?text=${supportMsg}`;
-    $("#btnGoSupport").href = `https://wa.me/${WHATS}?text=${supportMsg}`;
+    // ====== PRODUCTS RENDER ======
+    let PRODUCTS = [];
+    let currentProduct = null;
 
-    $("#ckPixEmv").value = PIX_EMV;
-    $("#qrImg").src = PIX_QR_IMAGE_URL;
+    function chipClass(p){
+      const name = (p.name||'').toLowerCase();
+      if(name.includes('ultra') || name.includes('premium')) return 'prem';
+      if(name.includes('custom') || name.includes('personal')) return 'custom';
+      return '';
+    }
 
-    let currentProduct=null;
-    let lastOrderId="";
+    function chipLabel(p){
+      const n=(p.name||'').toLowerCase();
+      if(n.includes('ultra')) return {t:'Premium', cls:'prem'};
+      if(n.includes('plus') || n.includes('pro')) return {t:'Popular', cls:''};
+      if(n.includes('personal') || n.includes('custom')) return {t:'Custom', cls:'custom'};
+      return {t:'Digital', cls:''};
+    }
 
     function renderProducts(){
-      const grid=$("#gridProducts");
-      grid.innerHTML="";
-      PRODUCTS.forEach(p=>{
-        const el=document.createElement("div");
-        el.className="card";
-        el.innerHTML = `
-          <div class="inner">
-            <div class="tag"><span class="k"></span><span>${p.tag} • 💾 Digital</span></div>
-            <div style="font-size:18px;font-weight:1100;letter-spacing:-.2px;margin:8px 0">${p.name}</div>
-            <div class="mini" style="line-height:1.5">${p.desc}</div>
-            <div class="rowFlex" style="margin-top:14px">
-              <div>
-                <div class="mini">Preço</div>
-                <div class="price">${money(p.price)}</div>
-              </div>
-              <button class="btn btnPrimary small" data-buy="${p.id}">Comprar agora</button>
+      const g = $('productsGrid');
+      g.innerHTML = '';
+      PRODUCTS.forEach((p, idx)=>{
+        const c = document.createElement('div');
+        c.className = 'card';
+        c.style.animationDelay = (idx*35)+'ms';
+        const chip = chipLabel(p);
+        const subtitle = p.description ? p.description : 'Entrega 100% digital • em até 24h';
+        c.innerHTML = `
+          <div class="krow">
+            <div class="chip ${chip.cls}"><i></i> ${chip.t} • 💾 Digital</div>
+            <div class="chip" title="Pagamento via PIX"><i style="background:var(--yellow)"></i> PIX</div>
+          </div>
+          <h3 class="title">${escapeHtml(p.name||p.id)}</h3>
+          <p class="desc">${escapeHtml(subtitle)}</p>
+          <div class="priceRow">
+            <div>
+              <div class="currency">Preço</div>
+              <div class="price">${brl(p.price)}</div>
             </div>
-          </div>`;
-        grid.appendChild(el);
-      });
-
-      grid.querySelectorAll("[data-buy]").forEach(btn=>{
-        btn.addEventListener("click", ()=>{
-          const id=btn.getAttribute("data-buy");
-          currentProduct=PRODUCTS.find(x=>x.id===id);
-          openCheckout(currentProduct);
-        }, {passive:true});
+            <button class="buy" type="button">Comprar agora</button>
+          </div>
+        `;
+        c.querySelector('.buy').addEventListener('click', ()=>openCheckout(p));
+        g.appendChild(c);
       });
     }
 
-    function calcDiscount(price,coupon){
-      const c=(coupon||"").trim().toUpperCase();
-      const usedKey = LS_COUPON+"_"+c;
-      const used = localStorage.getItem(usedKey)==="1";
-      if(c===WELCOME_COUPON && !used){
-        return {final:+(price*0.9).toFixed(2), off:"10%", canUse:true, usedKey};
+    function escapeHtml(s){
+      return String(s||'').replace(/[&<>"]/g, (m)=>({ '&':'&amp;', '<':'&lt;', '>':'&gt;', '"':'&quot;' }[m]));
+    }
+
+    // ====== CHECKOUT ======
+    function openCheckout(p){
+      currentProduct = p;
+      $('mProd').textContent = p.name || p.id;
+      $('mPrice').textContent = brl(p.price);
+      $('mDesc').textContent = p.description || 'Entrega 100% digital • em até 24h';
+      $('mUser').value = '';
+      $('mOrderId').textContent = '—';
+      $('mPix').value = '';
+      $('mStatus').textContent = '—';
+      $('mHint').textContent = 'Depois de pagar, guarde o Order ID.';
+      $('overlay').classList.add('show');
+      $('overlay').setAttribute('aria-hidden','false');
+      setTimeout(()=>$('mUser').focus(), 120);
+    }
+
+    function closeCheckout(){
+      $('overlay').classList.remove('show');
+      $('overlay').setAttribute('aria-hidden','true');
+    }
+
+    $('closeModal').addEventListener('click', closeCheckout);
+    $('overlay').addEventListener('click', (e)=>{ if(e.target === $('overlay')) closeCheckout(); });
+
+    $('genPix').addEventListener('click', async ()=>{
+      if(!currentProduct) return;
+      const user = ($('mUser').value || '').trim();
+      if(!user){
+        $('mStatus').textContent = '⚠️ user obrigatório';
+        toast('Coloque seu user do Roblox');
+        return;
       }
-      return {final:price, off:"", canUse:false, usedKey};
-    }
 
-    function updatePrice(){
-      const p=currentProduct?.price||0;
-      const coupon=$("#ckCoupon").value;
-      const d=calcDiscount(p,coupon);
-      $("#ckFinalPrice").textContent = money(d.final) + (d.canUse?`  (-${d.off})`:"");
-    }
+      $('genPix').disabled = true;
+      $('genPix').textContent = 'Gerando…';
+      $('mStatus').textContent = 'criando pedido…';
 
-    function openCheckout(product){
-      $("#ckTitle").textContent = "Checkout • "+product.name;
-      $("#ckStatus").textContent = "—";
-      $("#ckRbxUser").value="";
-      $("#ckRbxExtra").value="";
-      $("#ckCoupon").value=WELCOME_COUPON;
-      $("#btnCopyOrder").disabled=true;
-      lastOrderId="";
-      updatePrice();
-      openModal("#modalCheckout");
-
-    }
-
-    $("#ckCoupon").addEventListener("input", updatePrice, {passive:true});
-
-    async function apiCatalog(){
-      const res = await fetch(WORKER_BASE + "/catalog", { method:"GET" });
-      const data = await res.json().catch(()=>({}));
-      if(!res.ok) throw new Error(data?.error || "Erro ao carregar catálogo");
-      return data;
-    }
-
-    async function apiCheckout(payload){
-      const res = await fetch(WORKER_BASE + "/create-order", {
-        method:"POST",
-        headers:{"content-type":"application/json"},
-        body: JSON.stringify(payload)
-      });
-      const data = await res.json().catch(()=>({}));
-      if(!res.ok) throw new Error(data?.error || "Erro no checkout");
-      return data;
-    }
-
-    async function apiVerify(orderId){
-      const res = await fetch(WORKER_BASE + "/order-status", {
-        method:"POST",
-        headers:{"content-type":"application/json"},
-        body: JSON.stringify({orderId})
-      });
-      const data = await res.json().catch(()=>({}));
-      if(!res.ok) throw new Error(data?.error || "Erro na verificação");
-      return data;
-    }
-
-    $("#btnCreateOrder").addEventListener("click", async ()=>{
       try{
-        if(!currentProduct) return;
+        const data = await api('/create-order', {
+          method:'POST',
+          body: JSON.stringify({ productId: currentProduct.id, user })
+        });
 
-        const rbxUser=$("#ckRbxUser").value.trim();
-        const rbxExtra=$("#ckRbxExtra").value.trim();
-        if(!rbxUser){
-          $("#ckStatus").innerHTML="⚠️ <b>Preencha seu usuário do Roblox</b> para receber o item.";
-          $("#ckRbxUser").focus();
+        if(!data || data.ok !== true){
+          $('mStatus').textContent = '❌ erro';
+          $('mHint').textContent = (data && (data.error || data.detail)) ? (data.error || data.detail) : 'Falha ao criar pedido.';
           return;
         }
 
-        const coupon=$("#ckCoupon").value.trim().toUpperCase();
-        const d=calcDiscount(currentProduct.price,coupon);
+        const orderId = data.orderId || (data.order && data.order.orderId) || '';
+        const pix = (data.pixCopiaECola || '').trim();
 
-        $("#ckStatus").textContent="Gerando pedido automático…";
+        $('mOrderId').textContent = orderId || '—';
+        $('mStatus').textContent = '✅ pedido criado';
 
-        const payload = {
-          user: rbxUser,
-          items: [{id: currentProduct.id, qty: 1, price: d.final}],
-          meta: {rbxExtra, coupon, slaHours:24, refundIfLate:true, productName: currentProduct.name}
-        };
-
-        const data = await apiCheckout(payload);
-
-        lastOrderId = data.orderId || data.id || "";
-        if(!lastOrderId) throw new Error("orderId não retornou");
-
-        $("#ckStatus").innerHTML = "✅ Pedido criado: <b>" + lastOrderId + "</b><br/>Agora é só <b>pagar o PIX</b> e aguardar a entrega em até 24h. Se quiser, mande seu user do Roblox no WhatsApp.";
-        // Abre WhatsApp automaticamente (opcional)
-        try{ window.open($("#btnOpenWaPay").href, "_blank"); }catch(e){}
-        $("#btnCopyOrder").disabled=false;
-
-        if(coupon===WELCOME_COUPON){
-          const usedKey = LS_COUPON+"_"+coupon;
-          if(localStorage.getItem(usedKey)!=="1") localStorage.setItem(usedKey,"1");
-        }
-
-        const msg = encodeURIComponent(
-          `Oi ViralVault! Fiz um pedido.
-Order ID: ${lastOrderId}
-Produto: ${currentProduct.name}
-Usuário Roblox: ${rbxUser}
-Pagamento via PIX.`
-        );
-        $("#btnOpenWaPay").href = `https://wa.me/${WHATS}?text=${msg}`;
-
-      }catch(e){
-        $("#ckStatus").textContent="❌ " + e.message;
-      }
-    });
-
-    $("#btnCopyPix").addEventListener("click", ()=> copyText($("#ckPixEmv").value), {passive:true});
-    $("#btnCopyOrder").addEventListener("click", ()=> { if(lastOrderId) copyText(lastOrderId); }, {passive:true});
-
-    async function verifyNow(){
-      try{
-        const oid=$("#verifyOrderId").value.trim();
-        if(!oid) return;
-
-        $("#verifyResult").textContent="Verificando…";
-        const v = await apiVerify(oid);
-
-        if(v.ok){
-          $("#verifyResult").innerHTML = `<span class="badgeOk">✅ VV-OFICIAL</span> <span class="mini">Order: ${oid}</span>`;
+        if(!pix){
+          $('mPix').value = '';
+          $('mHint').textContent = 'Pedido criado, mas o PIX não veio. Confira a variável PIX_COPIA_COLA no Worker.';
         }else{
-          $("#verifyResult").innerHTML = `<span class="badgeBad">❌ Pedido inválido</span> <span class="mini">${v.error||""}</span>`;
+          $('mPix').value = pix;
+          $('mHint').textContent = 'Agora cole o PIX no app do banco e pague.';
         }
 
-        const proof = localStorage.getItem("vv_proof_"+oid);
-        if(proof){
-          $("#pubProofWrap").style.display="block";
-          $("#pubProof").innerHTML = /^https?:\/\//i.test(proof)
-            ? `<a class="btn btnGhost small" href="${proof}" target="_blank" rel="noopener">Abrir prova de entrega</a>`
-            : `<div class="mini">${proof}</div>`;
-        } else {
-          $("#pubProofWrap").style.display="none";
-          $("#pubProof").innerHTML = "";
-        }
-
-      }catch(e){
-        $("#verifyResult").textContent="❌ " + e.message;
-      }
-    }
-    $("#btnVerify").addEventListener("click", verifyNow);
-
-    function setAdmin(ok){
-      sessionStorage.setItem(SS_ADMIN, ok?"1":"0");
-      $("#adminPanel").style.display = ok ? "block" : "none";
-    }
-
-    $("#btnAdminLogin").addEventListener("click", ()=>{
-      const pass=$("#adminPass").value;
-      if(pass===ADMIN_PASSCODE){
-        setAdmin(true);
-        $("#adminStatus").textContent="✅ Admin liberado.";
-      }else{
-        $("#adminStatus").textContent="❌ Senha incorreta.";
-      }
-    });
-
-    $("#btnSaveProof").addEventListener("click", ()=>{
-      const ok=sessionStorage.getItem(SS_ADMIN)==="1";
-      if(!ok){ $("#adminStatus").textContent="Bloqueado."; return; }
-
-      const oid=$("#proofOrderId").value.trim();
-      const val=$("#proofValue").value.trim();
-      if(!oid || !val){ $("#adminStatus").textContent="Preencha Order ID e Prova."; return; }
-
-      localStorage.setItem("vv_proof_"+oid, val);
-      $("#adminStatus").textContent="✅ Prova salva.";
-      $("#proofValue").value="";
-    });
-
-    $("#btnGoProducts").addEventListener("click", ()=>document.getElementById("produtos").scrollIntoView({behavior:"smooth"}), {passive:true});
-    $("#btnGoHow").addEventListener("click", ()=>document.getElementById("como").scrollIntoView({behavior:"smooth"}), {passive:true});
-    $("#btnOpenVerify").addEventListener("click", ()=>document.getElementById("verificar").scrollIntoView({behavior:"smooth"}), {passive:true});
-
-    $("#btnOpenAdmin").addEventListener("click", ()=>openModal("#modalAdmin"), {passive:true});
-    $("#ckClose").addEventListener("click", ()=>closeModal("#modalCheckout"), {passive:true});
-    $("#adClose").addEventListener("click", ()=>closeModal("#modalAdmin"), {passive:true});
-
-    $("#btnCopyCoupon").addEventListener("click", ()=> copyText(WELCOME_COUPON), {passive:true});
-
-    document.getElementById("couponLabel").addEventListener("click", ()=> copyText(WELCOME_COUPON), {passive:true});
-
-    // Close modals when clicking outside
-    $("#modalCheckout").addEventListener("click", (e)=>{ if(e.target.id==="modalCheckout") closeModal("#modalCheckout"); });
-    $("#modalAdmin").addEventListener("click", (e)=>{ if(e.target.id==="modalAdmin") closeModal("#modalAdmin"); });
-
-    // Upgrade 1: dynamic ticker numbers (lightweight randomness)
-    (function(){
-      const el=document.getElementById("vvTicker");
-      if(!el) return;
-      const views = 12 + Math.floor(Math.random()*30);
-      const verified = 2 + Math.floor(Math.random()*14);
-      el.innerHTML = `
-        <span>🔥 ${views} pessoas viram esta loja nos últimos 30 min</span>
-        <span>✅ ${verified} pedidos verificados hoje</span>
-        <span>⚡ Entrega em até 24h (ou reembolso)</span>
-        <span>🛡️ VV-OFICIAL: verificação no servidor</span>
-        <span>🔥 ${views} pessoas viram esta loja nos últimos 30 min</span>
-        <span>✅ ${verified} pedidos verificados hoje</span>
-        <span>⚡ Entrega em até 24h (ou reembolso)</span>
-        <span>🛡️ VV-OFICIAL: verificação no servidor</span>
-      `;
-    })();
-
-    renderProducts();
-  
-  // === Atividade recente (sem fake) ===
-  // Mostra contadores locais (do dispositivo do visitante). Não inventa números globais.
-  try{
-    const pvKey = "vv_page_views";
-    const todayKey = "vv_views_today_" + new Date().toISOString().slice(0,10);
-    const pv = (parseInt(localStorage.getItem(pvKey)||"0",10) || 0) + 1;
-    localStorage.setItem(pvKey, String(pv));
-    const today = (parseInt(localStorage.getItem(todayKey)||"0",10) || 0) + 1;
-    localStorage.setItem(todayKey, String(today));
-    const liveNowEl = document.getElementById("liveNow");
-    const liveTodayEl = document.getElementById("liveToday");
-    if(liveNowEl) liveNowEl.textContent = "Você está online ✅";
-    if(liveTodayEl) liveTodayEl.textContent = today + " visitas (neste dispositivo)";
-  }catch(e){}
-
-
-    // ===== Suporte IA (via Worker) =====
-    function aiAdd(role, text){
-      const wrap = document.createElement('div');
-      wrap.className = 'aiMsg ' + (role==='me' ? 'aiMe' : 'aiBot');
-      const bubble = document.createElement('div');
-      bubble.className = 'aiBubble';
-      bubble.textContent = text;
-      wrap.appendChild(bubble);
-      const body = $('#aiBody');
-      body.appendChild(wrap);
-      body.scrollTop = body.scrollHeight;
-    }
-
-    function localSupportFallback(q){
-      const s = (q||'').toLowerCase();
-      const bad = ['xingar','idiota','burro','otario','otária','otario','porra','caralho','sexo','nude','porn','buceta','pau','pinto','puta','merda'];
-      if(bad.some(w=>s.includes(w))) return 'Consigo ajudar só com dúvidas da loja (compra, PIX, pedido, entrega e reembolso).';
-      if(s.includes('pix')||s.includes('pagar')) return 'PIX: clique em Comprar → copie o PIX (copia e cola) ou use o QR. Depois, aguarde a confirmação no status do pedido.';
-      if(s.includes('prazo')||s.includes('24')) return 'Entrega digital em até 24h após confirmação do pagamento ✅';
-      if(s.includes('reembolso')||s.includes('refund')) return 'Se não entregarmos em até 24h após o pagamento confirmado, você pode solicitar reembolso conforme a garantia ✅';
-      if(s.includes('cupom')||s.includes('bemvindo')) return 'Cupom BEMVINDO10: 10% off (1 uso por cliente) ✅';
-      if(s.includes('pedido')||s.includes('status')) return 'Me diga o Order ID e eu te explico o status (Aguardando / Pago / Entregue).';
-      return 'Me diz sua dúvida sobre compra, PIX, pedido ou entrega que eu resolvo 🙌';
-    }
-
-    async function apiSupport(q){
-      const res = await fetch(WORKER_BASE + '/support/chat', {
-        method:'POST',
-        headers:{'content-type':'application/json'},
-        body: JSON.stringify({ q })
-      });
-      const data = await res.json().catch(()=>({}));
-      if(!res.ok) throw new Error(data?.error || 'Falha no suporte');
-      return data;
-    }
-
-    function openAI(){
-      $('#aiPanel').style.display='block';
-      if(!$('#aiBody').dataset.init){
-        $('#aiBody').dataset.init='1';
-        aiAdd('bot','Oi! Sou o suporte da ViralVault Store 🙂\nComo posso ajudar?');
-      }
-      setTimeout(()=>$('#aiInput').focus(), 50);
-    }
-    function closeAI(){ $('#aiPanel').style.display='none'; }
-
-    $('#aiFab').addEventListener('click', openAI);
-    $('#aiClose').addEventListener('click', closeAI);
-
-    // WhatsApp do atendente (usa mesmo WHATS do site)
-    $('#aiHuman').addEventListener('click', (e)=>{
-      const msg = encodeURIComponent('Oi! Preciso de atendimento humano.');
-      $('#aiHuman').href = `https://wa.me/${WHATS}?text=${msg}`;
-    });
-
-    async function sendAI(){
-      const q = $('#aiInput').value.trim();
-      if(!q) return;
-      $('#aiInput').value='';
-      aiAdd('me', q);
-      try{
-        const r = await apiSupport(q);
-        aiAdd('bot', (r.answer || r.text || r.message || localSupportFallback(q)).toString());
       }catch(err){
-        aiAdd('bot', localSupportFallback(q));
+        $('mStatus').textContent = '❌ erro';
+        $('mHint').textContent = String(err && err.message ? err.message : err);
+      }finally{
+        $('genPix').disabled = false;
+        $('genPix').textContent = 'Gerar pedido + PIX';
+      }
+    });
+
+    $('copyPix').addEventListener('click', async ()=>{
+      const v = $('mPix').value.trim();
+      const ok = await safeCopy(v);
+      toast(ok ? 'PIX copiado ✅' : 'Não deu pra copiar');
+    });
+
+    $('copyId').addEventListener('click', async ()=>{
+      const v = ($('mOrderId').textContent || '').trim();
+      const ok = await safeCopy(v);
+      toast(ok ? 'ID copiado ✅' : 'Não deu pra copiar');
+    });
+
+    $('openVerify').addEventListener('click', ()=>{
+      const v = ($('mOrderId').textContent || '').trim();
+      closeCheckout();
+      if(v && v.startsWith('vv_')){
+        $('verifyInput').value = v;
+        doVerify();
+        window.scrollTo({ top: 0, behavior:'smooth' });
+      }
+    });
+
+    // ====== VERIFY ======
+    async function doVerify(){
+      const orderId = ($('verifyInput').value || '').trim();
+      if(!orderId){ $('verifyOut').textContent = 'Cole o Order ID.'; return; }
+      $('verifySmall').textContent = 'consultando…';
+      $('verifyOut').textContent = 'Aguenta aí…';
+      try{
+        const data = await api('/order-status?orderId=' + encodeURIComponent(orderId));
+        if(!data || data.ok !== true){
+          $('verifySmall').textContent = '❌';
+          $('verifyOut').textContent = (data && data.error) ? data.error : 'Pedido não encontrado.';
+          return;
+        }
+        const o = data.order || {};
+        const st = String(o.status||'').toLowerCase();
+        let label = st;
+        if(st==='created') label = '🧾 criado';
+        if(st==='paid') label = '✅ pago';
+        if(st==='delivered') label = '📦 entregue';
+        $('verifySmall').textContent = label;
+        $('verifyOut').textContent = `Produto: ${o.productName || o.productId || '-'}\nUser: ${o.user || '-'}\nStatus: ${label}\nOrder ID: ${o.orderId || orderId}`;
+      }catch(err){
+        $('verifySmall').textContent = '❌';
+        $('verifyOut').textContent = 'Erro: ' + String(err && err.message ? err.message : err);
       }
     }
 
-    $('#aiSend').addEventListener('click', sendAI);
-    $('#aiInput').addEventListener('keydown', (e)=>{ if(e.key==='Enter') sendAI(); });
+    $('verifyGo').addEventListener('click', doVerify);
+    $('btnVerify').addEventListener('click', ()=>{ $('verifyInput').focus(); window.scrollTo({top:0, behavior:'smooth'}); });
 
+    // ====== Admin ======
+    $('btnAdmin').addEventListener('click', ()=>{
+      // você pode trocar isso pra uma rota /admin no seu Vercel depois
+      const msg = 'Admin: para marcar como pago/entregue, use as rotas do Worker (/admin/mark-paid, /admin/mark-delivered).';
+      toast('Admin (info)');
+      alert(msg);
+    });
+
+    // ====== Scroll buttons ======
+    $('btnScroll').addEventListener('click', ()=>document.getElementById('produtos').scrollIntoView({behavior:'smooth'}));
+    $('btnHow').addEventListener('click', ()=>document.getElementById('como').scrollIntoView({behavior:'smooth'}));
+    $('btnStickyBuy').addEventListener('click', ()=>{
+      if(PRODUCTS[0]) openCheckout(PRODUCTS[0]);
+      else document.getElementById('produtos').scrollIntoView({behavior:'smooth'});
+    });
+
+    // ====== Support AI (local + filtro) ======
+    const chat = $('chat');
+    const chatBody = $('chatBody');
+
+    function addMsg(text, who='ai'){
+      const d = document.createElement('div');
+      d.className = 'm ' + (who==='me'?'me':'ai');
+      d.textContent = text;
+      chatBody.appendChild(d);
+      chatBody.scrollTop = chatBody.scrollHeight;
+    }
+
+    function isNonsense(q){
+      const t = q.toLowerCase();
+      const bad = [
+        'porn','sexo','nude','nudes','pelado','pelada','xvideos','hentai','put','bucet','pinto','rola','piroca','caralho',
+        'maconha','coca','crack','metanf','droga','arma','pistola','glock','matar','suicid'
+      ];
+      return bad.some(w=>t.includes(w));
+    }
+
+    function answer(q){
+      const t = q.toLowerCase();
+      if(isNonsense(q)){
+        return 'Consigo ajudar com: produtos, PIX, verificação e status do pedido. Bora focar nisso 😉';
+      }
+      if(t.includes('pix')){
+        return 'PIX: clique em Comprar → Gere pedido + PIX → copie e cole no app do banco. Se o PIX não aparecer, é no Worker: variável PIX_COPIA_COLA.';
+      }
+      if(t.includes('verific') || t.includes('id') || t.includes('order')){
+        return 'Pra verificar: cole seu Order ID (vv_...) na área “Verificar pedido” e toque em Verificar. Ele mostra o status (criado/pago/entregue).';
+      }
+      if(t.includes('prazo') || t.includes('entrega') || t.includes('24')){
+        return 'Entrega normalmente em até 24h. Se precisar agilizar, manda o comprovante + seu user do Roblox no WhatsApp.';
+      }
+      if(t.includes('reembolso')){
+        return 'Se passar do prazo combinado, você pode pedir reembolso. O ideal é falar no WhatsApp com o Order ID e o comprovante.';
+      }
+      if(t.includes('produto') || t.includes('qual') || t.includes('diferen')){
+        return 'Os produtos ficam listados na home com preço. Se você me disser qual item (Basic/Plus/Custom), eu explico a diferença rapidinho.';
+      }
+      return 'Posso ajudar com: como comprar, PIX, status do pedido, verificação e prazos. O que você quer saber?';
+    }
+
+    $('fab').addEventListener('click', ()=>{
+      chat.classList.toggle('show');
+      if(chat.classList.contains('show') && chatBody.childElementCount===0){
+        addMsg('Oi! Sou o Suporte IA da ViralVault. Quer ajuda com PIX, pedido ou verificação?');
+      }
+    });
+    $('closeChat').addEventListener('click', ()=>chat.classList.remove('show'));
+
+    async function sendChat(){
+      const q = ($('chatIn').value||'').trim();
+      if(!q) return;
+      $('chatIn').value='';
+      addMsg(q,'me');
+      // resposta local (rápida)
+      addMsg(answer(q),'ai');
+
+      // atalho WhatsApp se usuário pedir
+      if(q.toLowerCase().includes('whatsapp') || q.toLowerCase().includes('suporte')){
+        const url = `https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent('Oi! Preciso de suporte. Meu Order ID é: ')}`;
+        addMsg('Se quiser, toque aqui pra abrir o WhatsApp: '+url,'ai');
+      }
+    }
+
+    $('chatSend').addEventListener('click', sendChat);
+    $('chatIn').addEventListener('keydown', (e)=>{ if(e.key==='Enter') sendChat(); });
+
+    // ====== Init ======
+    $('year').textContent = new Date().getFullYear();
+
+    (async ()=>{
+      // Ping home
+      try{
+        const home = await api('/');
+        if(home && home.ok){
+          $('apiTxt').textContent = 'API ok';
+          $('liveTxt').textContent = 'Ao vivo';
+          $('liveDot').style.background = 'var(--green)';
+          const oa = home.origin_allowed || '—';
+          $('subtitle').textContent = `loja digital • PIX • origem: ${oa.replace('https://','')}`;
+        }else{
+          $('apiTxt').textContent = 'API com erro';
+          $('liveTxt').textContent = 'Instável';
+          $('liveDot').style.background = 'var(--yellow)';
+        }
+      }catch{
+        $('apiTxt').textContent = 'API offline';
+        $('liveTxt').textContent = 'Offline';
+        $('liveDot').style.background = 'var(--yellow)';
+      }
+
+      // Load catalog
+      try{
+        const cat = await api('/catalog');
+        if(cat && cat.ok && Array.isArray(cat.products)){
+          PRODUCTS = cat.products;
+        }
+      }catch{}
+
+      if(!PRODUCTS.length){
+        PRODUCTS = [
+          { id:'brainrot_basic', name:'Brainrot Pack (Básico)', price:9.9, description:'Entrega 100% digital • em até 24h' },
+          { id:'brainrot_pro', name:'Brainrot Pack (Plus)', price:19.9, description:'Itens premium • entrega em até 24h' },
+          { id:'custom_roblox', name:'Entrega Personalizada (Roblox)', price:29.9, description:'Você escolhe o que precisa • 24h' },
+        ];
+      }
+
+      renderProducts();
+    })();
   </script>
-
-
-  <!-- Suporte IA -->
-  <button class="aiFab" id="aiFab" type="button" aria-label="Abrir suporte IA">🤖 <span>Suporte IA</span></button>
-  <div class="aiPanel" id="aiPanel" role="dialog" aria-label="Suporte IA">
-    <div class="aiTop">
-      <b>Suporte IA • ViralVault</b>
-      <button class="aiClose" id="aiClose" type="button">✕</button>
-    </div>
-    <div class="aiHelp">Posso ajudar com: compra, PIX, status do pedido, prazo (até 24h), reembolso e dúvidas do catálogo.</div>
-    <div class="aiBody" id="aiBody"></div>
-    <div class="aiActions">
-      <a class="aiHuman" id="aiHuman" href="#" target="_blank">Falar com atendente (WhatsApp)</a>
-    </div>
-    <div class="aiFoot">
-      <input class="aiInput" id="aiInput" placeholder="Digite sua dúvida…" />
-      <button class="aiSend" id="aiSend" type="button">Enviar</button>
-    </div>
-  </div>
-
 </body>
 </html>
