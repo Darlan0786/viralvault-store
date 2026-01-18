@@ -714,54 +714,68 @@
     }
 
     $("#btnCreateOrder").addEventListener("click", async ()=>{
+
+      const user = ($("#ckRbxUser").value||"").trim();
+      const extra = ($("#ckRbxExtra").value||"").trim();
+      const coupon = ($("#ckCoupon").value||"").trim().toUpperCase();
+
+      if(!user){
+        toast("Preencha seu @user do Roblox para comprar.", false);
+        $("#ckRbxUser").focus();
+        return;
+      }
+
+      // trava botao enquanto processa
+      const btn = $("#btnCreateOrder");
+      btn.disabled = true;
+      btn.textContent = "Gerando pedido...";
+
       try{
-        if(!currentProduct) return;
-
-        const rbxUser=$("#ckRbxUser").value.trim();
-        const rbxExtra=$("#ckRbxExtra").value.trim();
-        if(!rbxUser){
-          $("#ckStatus").innerHTML="⚠️ <b>Preencha seu usuário do Roblox</b> para receber o item.";
-          $("#ckRbxUser").focus();
-          return;
-        }
-
-        const coupon=$("#ckCoupon").value.trim().toUpperCase();
-        const d=calcDiscount(currentProduct.price,coupon);
-
-        $("#ckStatus").textContent="Gerando pedido automático…";
-
         const payload = {
-          user: rbxUser,
-          items: [{id: currentProduct.id, qty: 1, price: d.final}],
-          meta: {rbxExtra, coupon, slaHours:24, refundIfLate:true, productName: currentProduct.name}
+          user,
+          extra,
+          coupon,
+          items: [{ id: currentProduct.id, qty: 1 }]
         };
 
         const data = await apiCheckout(payload);
+        if(!data?.ok) throw new Error(data?.error || "Falha ao criar pedido");
 
-        lastOrderId = data.orderId || data.id || "";
-        if(!lastOrderId) throw new Error("orderId não retornou");
+        lastOrderId = data.orderId;
 
-        $("#ckStatus").innerHTML = "✅ Pedido criado: <b>" + lastOrderId + "</b><br/>Agora é só <b>pagar o PIX</b> e aguardar a entrega em até 24h. Se quiser, mande seu user do Roblox no WhatsApp.";
-        // Abre WhatsApp automaticamente (opcional)
-        try{ window.open($("#btnOpenWaPay").href, "_blank"); }catch(e){}
-        $("#btnCopyOrder").disabled=false;
+        // mostra status simples
+        $("#ckStatus").classList.remove("bad","ok");
+        $("#ckStatus").innerHTML = `
+          <div style="font-weight:1000; color:rgba(255,255,255,.92);">✅ Pedido criado!</div>
+          <div style="margin-top:6px; color:rgba(255,255,255,.72); font-weight:900;">
+            ID do pedido: <b style="color:white">${data.orderId}</b><br/>
+            Agora pague via PIX e aguarde confirmação. Entrega em até 24h.
+          </div>
+        `;
 
-        if(coupon===WELCOME_COUPON){
-          const usedKey = LS_COUPON+"_"+coupon;
-          if(localStorage.getItem(usedKey)!=="1") localStorage.setItem(usedKey,"1");
+        // habilita copiar infos
+        $("#btnCopyOrder").disabled = false;
+        $("#btnCopyPix").disabled = false;
+
+        // scroll pro status
+        $("#ckStatus").scrollIntoView({behavior:"smooth", block:"center"});
+
+        // Cupom de boas-vindas: 1x por cliente (salva local)
+        if(coupon === WELCOME_COUPON){
+          try{
+            const used = JSON.parse(localStorage.getItem("vv_used_coupons")||"{}");
+            used[WELCOME_COUPON] = true;
+            localStorage.setItem("vv_used_coupons", JSON.stringify(used));
+          }catch(e){}
         }
 
-        const msg = encodeURIComponent(
-          `Oi ViralVault! Fiz um pedido.
-Order ID: ${lastOrderId}
-Produto: ${currentProduct.name}
-Usuário Roblox: ${rbxUser}
-Pagamento via PIX.`
-        );
-        $("#btnOpenWaPay").href = `https://wa.me/${WHATS}?text=${msg}`;
-
-      }catch(e){
-        $("#ckStatus").textContent="❌ " + e.message;
+      }catch(err){
+        $("#ckStatus").classList.add("bad");
+        $("#ckStatus").innerHTML = `❌ ${String(err.message||err)}`;
+        toast("Não foi possível criar o pedido.", false);
+      }finally{
+        btn.disabled = false;
+        btn.textContent = "Comprar agora (PIX)";
       }
     });
 
