@@ -533,7 +533,33 @@
         to{opacity:1; transform: translateY(0px)}
       }
     }
-  </style>
+  
+  .float{display:flex;flex-direction:column;gap:12px;align-items:flex-end}
+  .fab.zap{background:linear-gradient(135deg,#19c37d,#0b8f5c);box-shadow:0 18px 55px rgba(25,195,125,.25)}
+  .fab.zap:active{transform:translateY(1px) scale(.99)}
+  /* garante clique acima de tudo */
+  .float{z-index:9999;pointer-events:auto}
+  #chat{z-index:10000}
+
+
+  /* Admin Modal */
+
+  .modal{position:fixed;inset:0;display:none;align-items:center;justify-content:center;padding:18px;background:rgba(0,0,0,.55);backdrop-filter:blur(10px)}
+  .modal.show{display:flex}
+  .modalCard{width:min(720px,100%);background:rgba(20,20,25,.82);border:1px solid rgba(255,255,255,.10);border-radius:22px;box-shadow:0 40px 120px rgba(0,0,0,.55);padding:16px 16px 14px}
+  .modalTop{display:flex;align-items:flex-start;justify-content:space-between;gap:14px;margin-bottom:10px}
+  .modalTitle{font-weight:900;font-size:18px;letter-spacing:.2px}
+  .modalSub{opacity:.75;font-size:13px;margin-top:2px}
+  .field{display:flex;flex-direction:column;gap:6px}
+  .field span{font-size:12px;opacity:.8}
+  .field input{width:100%;padding:12px 12px;border-radius:14px;border:1px solid rgba(255,255,255,.12);background:rgba(0,0,0,.25);color:#fff;outline:none}
+  .grid2{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+  @media (max-width:560px){.grid2{grid-template-columns:1fr}}
+  .rowBtns{display:flex;flex-wrap:wrap;gap:10px;margin:12px 0 10px}
+  .adminOut{max-height:280px;overflow:auto;margin:0;background:rgba(0,0,0,.25);border:1px solid rgba(255,255,255,.10);border-radius:16px;padding:12px;color:#d7d7e6}
+  .hint{font-size:12px;opacity:.7;margin-top:10px}
+
+</style>
 </head>
 <body>
   <div class="wrap">
@@ -684,7 +710,8 @@
 
   <!-- Support AI -->
   <div class="float">
-    <div class="chat" id="chat">
+        <button class="fab zap" id="btnZap" type="button">💬 WhatsApp</button>
+<div class="chat" id="chat">
       <div class="chatHead">
         <div>
           <b>Suporte IA</b>
@@ -1169,7 +1196,94 @@
 
       renderProducts();
     })();
-  </script>
+  
+
+// ===== WhatsApp (Suporte) =====
+const WHATSAPP_NUMBER = "5511941598713";
+function openZap(){
+  const msg = encodeURIComponent("Oi! Vim pelo ViralVault Store. Preciso de suporte com meu pedido.");
+  const url = `https://wa.me/${WHATSAPP_NUMBER}?text=${msg}`;
+  // iOS/Android: usar location.href funciona melhor que window.open
+  window.location.href = url;
+}
+const btnZap = document.getElementById('btnZap');
+if(btnZap) btnZap.addEventListener('click', openZap);
+
+// ===== Admin Modal =====
+const adminModal = document.getElementById('adminModal');
+const adminClose = document.getElementById('adminClose');
+const adminToken = document.getElementById('adminToken');
+const adminOrderId = document.getElementById('adminOrderId');
+const adminOut = document.getElementById('adminOut');
+const adminFetch = document.getElementById('adminFetch');
+const adminPaid = document.getElementById('adminPaid');
+const adminDelivered = document.getElementById('adminDelivered');
+
+function showAdmin(open=true){
+  if(!adminModal) return;
+  adminModal.classList.toggle('show', open);
+  adminModal.setAttribute('aria-hidden', open? 'false':'true');
+  if(open){
+    const saved = localStorage.getItem('VV_ADMIN_TOKEN') || '';
+    if(adminToken && !adminToken.value) adminToken.value = saved;
+    setTimeout(()=>adminOrderId?.focus(), 50);
+  }
+}
+
+if(adminClose) adminClose.addEventListener('click', ()=>showAdmin(false));
+if(adminModal) adminModal.addEventListener('click', (e)=>{ if(e.target===adminModal) showAdmin(false); });
+
+// substitui o comportamento antigo do botão Admin
+if(btnAdmin){
+  btnAdmin.addEventListener('click', ()=>showAdmin(true));
+}
+
+async function adminCall(path, method, body){
+  const token = (adminToken?.value || '').trim();
+  if(!token){ toast('Cole o token do Admin primeiro.'); return null; }
+  localStorage.setItem('VV_ADMIN_TOKEN', token);
+
+  const res = await fetch(API_BASE + path, {
+    method,
+    headers: {
+      'content-type': 'application/json',
+      'x-admin-secret': token
+    },
+    body: body? JSON.stringify(body): undefined
+  });
+  const text = await res.text();
+  let data;
+  try{ data = JSON.parse(text); } catch { data = {raw:text}; }
+  return { ok: res.ok, status: res.status, data };
+}
+
+function printAdmin(result){
+  if(!adminOut) return;
+  adminOut.textContent = JSON.stringify(result, null, 2);
+}
+
+if(adminFetch) adminFetch.addEventListener('click', async ()=>{
+  const id = (adminOrderId?.value || '').trim();
+  if(!id){ toast('Cola o Order ID.'); return; }
+  const r = await adminCall(`/admin/order?orderId=${encodeURIComponent(id)}`, 'GET');
+  if(r) printAdmin(r);
+});
+
+if(adminPaid) adminPaid.addEventListener('click', async ()=>{
+  const id = (adminOrderId?.value || '').trim();
+  if(!id){ toast('Cola o Order ID.'); return; }
+  const r = await adminCall('/admin/mark-paid', 'POST', {orderId:id});
+  if(r) printAdmin(r);
+});
+
+if(adminDelivered) adminDelivered.addEventListener('click', async ()=>{
+  const id = (adminOrderId?.value || '').trim();
+  if(!id){ toast('Cola o Order ID.'); return; }
+  const r = await adminCall('/admin/mark-delivered', 'POST', {orderId:id});
+  if(r) printAdmin(r);
+});
+
+</script>
 
   <!-- ===== Admin Panel (token no site) ===== -->
   <div class="modal" id="adminModal" aria-hidden="true">
