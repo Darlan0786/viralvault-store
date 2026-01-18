@@ -4,385 +4,696 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>ViralVault Store</title>
-  <meta name="description" content="ViralVault Store — compra rápida e segura. Pagamento via PIX e entrega digital." />
+  <meta name="description" content="ViralVault Store — checkout simples via PIX e acompanhamento do pedido." />
   <style>
     :root{
-      --bg:#0b0b12;
-      --text:rgba(255,255,255,.92);
-      --muted:rgba(255,255,255,.72);
-      --accent:#ff4d7d;
-      --accent2:#ff87a6;
-      --ok:#22c55e;
-      --bad:#ef4444;
-      --shadow:0 18px 50px rgba(0,0,0,.35);
-      --max:1120px;
+      --bg:#0b0b12; --card:rgba(255,255,255,.06); --line:rgba(255,255,255,.10);
+      --text:rgba(255,255,255,.92); --muted:rgba(255,255,255,.72);
+      --pink:#fbbf24; --purple:#f59e0b; --green:#22c55e; --red:#ef4444;
+      --shadow:0 18px 55px rgba(0,0,0,.45); --r:18px; --max:1120px;
     }
     *{box-sizing:border-box}
-    html,body{margin:0;padding:0;width:100%;max-width:100%;overflow-x:hidden;
-      font-family:ui-sans-serif,system-ui,-apple-system,Segoe UI,Roboto,Arial;
-      background:
-        radial-gradient(1200px 700px at 15% 10%, rgba(255,77,125,.22), transparent 55%),
-        radial-gradient(900px 600px at 85% 20%, rgba(255,135,166,.15), transparent 55%),
-        radial-gradient(900px 700px at 50% 120%, rgba(255,77,125,.12), transparent 60%),
-        var(--bg);
+    html,body{margin:0;padding:0;background:
+      radial-gradient(1100px 700px at 20% 10%, rgba(255,79,216,.20), transparent 60%),
+      radial-gradient(900px 600px at 85% 25%, rgba(124,58,237,.20), transparent 60%),
+      var(--bg);
       color:var(--text);
+      font-family:ui-sans-serif,system-ui,-apple-system,Segoe UI,Roboto,Arial,"Noto Sans","Helvetica Neue",sans-serif;
+      overflow-x:hidden;
     }
     a{color:inherit}
-    button,input,textarea{font:inherit}
-
-    header{
-      position:sticky;top:0;z-index:10;
+    .top{
+      position:sticky;top:0;z-index:50;
       display:flex;align-items:center;gap:12px;
       padding:12px 14px;
-      background:rgba(10,10,18,.70);
+      background:rgba(10,10,18,.72);
       backdrop-filter:blur(14px);
       border-bottom:1px solid rgba(255,255,255,.08);
     }
-    .brand{display:flex;align-items:center;gap:10px;font-weight:1000;letter-spacing:.3px}
-    .logo{width:14px;height:14px;border-radius:999px;background:linear-gradient(135deg,var(--accent),var(--accent2));
-      box-shadow:0 0 0 6px rgba(255,77,125,.18);
-    }
-    .spacer{margin-left:auto}
-    .pill{
-      display:inline-flex;align-items:center;gap:8px;
-      padding:10px 12px;border-radius:999px;border:1px solid rgba(255,255,255,.10);
+    .brand{display:flex;align-items:center;gap:10px;font-weight:1000;letter-spacing:.2px}
+    .dot{width:14px;height:14px;border-radius:999px;background:linear-gradient(135deg,var(--pink),var(--purple));
+      box-shadow:0 0 0 6px rgba(255,79,216,.12)}
+    .right{margin-left:auto;display:flex;align-items:center;gap:10px}
+    .btn{
+      border:1px solid rgba(255,255,255,.12);
       background:rgba(255,255,255,.06);
-      color:var(--muted);
-      font-weight:900;font-size:13px;white-space:nowrap;
+      color:var(--text);
+      padding:12px 16px;border-radius:16px;
+      font-weight:900;cursor:pointer;
+      transition:transform .12s ease, filter .12s ease;
     }
-    main{max-width:var(--max);margin:0 auto;padding:18px}
+    .btn:hover{filter:brightness(1.08)}
+    .btn:active{transform:translateY(1px) scale(.99)}
+    .btnPrimary{
+      border:none;
+      background:linear-gradient(90deg,var(--pink),var(--purple));
+      box-shadow:0 16px 36px rgba(255,79,216,.16);
+    }
+    main{max-width:var(--max);margin:0 auto;padding:20px}
     .hero{
-      border:1px solid rgba(255,255,255,.10);
-      border-radius:26px;
+      border-radius:26px; padding:22px;
       background:rgba(255,255,255,.05);
+      border:1px solid rgba(255,255,255,.10);
       box-shadow:var(--shadow);
-      padding:20px;
-      overflow:hidden;
-      position:relative;
+      position:relative; overflow:hidden;
     }
     .hero::before{
-      content:"";
-      position:absolute;inset:-2px;
-      background:
-        radial-gradient(900px 300px at 10% 0%, rgba(255,77,125,.22), transparent 60%),
-        radial-gradient(700px 260px at 100% 20%, rgba(255,135,166,.14), transparent 55%);
+      content:""; position:absolute; inset:-2px;
+      background:radial-gradient(600px 260px at 20% 10%, rgba(255,79,216,.18), transparent 65%),
+                 radial-gradient(600px 260px at 85% 70%, rgba(124,58,237,.16), transparent 65%);
       pointer-events:none;
     }
-    .hero > *{position:relative}
-    h1{margin:10px 0 8px 0;font-size:34px;line-height:1.05;letter-spacing:-.6px}
-    .sub{margin:0;color:var(--muted);font-weight:800;line-height:1.55}
+    .heroInner{position:relative;display:grid;grid-template-columns:1.2fr .8fr;gap:16px;align-items:center}
+    h1{margin:0;font-size:40px;line-height:1.05;letter-spacing:-.6px}
+    .sub{margin:10px 0 0 0;color:var(--muted);font-weight:800;line-height:1.55}
+    .pill{display:inline-flex;align-items:center;gap:8px;padding:10px 12px;border-radius:999px;
+      border:1px solid rgba(255,255,255,.12);background:rgba(255,255,255,.06);color:var(--muted);font-weight:900;font-size:13px;width:fit-content}
+    .kdot{width:10px;height:10px;border-radius:999px;background:linear-gradient(135deg,var(--green),#86efac);box-shadow:0 0 0 5px rgba(34,197,94,.12)}
+    .panel{
+      border-radius:22px;padding:14px;background:rgba(0,0,0,.22);
+      border:1px solid rgba(255,255,255,.10);
+    }
     .grid{margin-top:16px;display:grid;grid-template-columns:repeat(3,1fr);gap:14px}
     .card{
-      border-radius:22px;
-      background:rgba(255,255,255,.05);
+      border-radius:22px;background:rgba(255,255,255,.05);
       border:1px solid rgba(255,255,255,.10);
       box-shadow:0 16px 45px rgba(0,0,0,.25);
-      overflow:hidden;
+      overflow:hidden; position:relative;
     }
-    .cardInner{padding:16px}
-    .tag{display:inline-flex;align-items:center;gap:8px;padding:10px 12px;border-radius:999px;
-      font-size:12px;font-weight:1000;border:1px solid rgba(255,255,255,.12);background:rgba(255,255,255,.06);
-      width:fit-content;margin-bottom:10px}
-    .title{font-weight:1000;font-size:18px;margin:2px 0 8px 0}
+    .card::before{content:"";position:absolute;inset:0;background:radial-gradient(420px 220px at 20% 0%, rgba(255,79,216,.16), transparent 60%);pointer-events:none}
+    .ci{position:relative;padding:16px}
+    .title{font-weight:1000;font-size:18px;margin:2px 0 6px 0}
     .desc{margin:0 0 12px 0;color:var(--muted);font-weight:800;font-size:14px;line-height:1.45}
-    .row{display:flex;align-items:flex-end;justify-content:space-between;gap:10px}
-    .price{font-size:22px;font-weight:1000}
-    .btn{
-      padding:12px 14px;border-radius:14px;border:none;
-      background:linear-gradient(90deg,var(--accent),var(--accent2));
-      color:white;font-weight:1000;font-size:14px;cursor:pointer;
-      box-shadow:0 14px 30px rgba(255,77,125,.18);
+    .priceRow{display:flex;align-items:flex-end;justify-content:space-between;gap:10px}
+    .price{font-weight:1000;font-size:22px;letter-spacing:-.2px}
+    .small{font-size:12px;color:var(--muted);font-weight:900}
+    .btnSmall{padding:10px 12px;border-radius:14px;font-size:14px}
+    .statusBox{
+      margin-top:12px;padding:12px 12px;border-radius:18px;
+      background:rgba(0,0,0,.22);
+      border:1px dashed rgba(255,255,255,.16);
+      color:var(--muted);font-weight:900;min-height:48px;display:flex;align-items:center;gap:10px;flex-wrap:wrap
     }
-    .btn:active{transform:translateY(1px) scale(.99)}
-    .btnGhost{
-      background:rgba(255,255,255,.06);
+    .ok{border-color:rgba(34,197,94,.30); background:rgba(34,197,94,.10); color:rgba(255,255,255,.92)}
+    .bad{border-color:rgba(239,68,68,.35); background:rgba(239,68,68,.10); color:rgba(255,255,255,.92)}
+    /* Modal */
+    .mw{position:fixed;inset:0;display:none;align-items:center;justify-content:center;padding:16px;z-index:90;background:rgba(0,0,0,.62)}
+    .mw.show{display:flex}
+    .m{
+      width:min(620px,100%);border-radius:26px;overflow:hidden;
+      background:rgba(14,14,24,.96);
       border:1px solid rgba(255,255,255,.12);
-      color:var(--text);
-      box-shadow:none;
+      box-shadow:0 22px 70px rgba(0,0,0,.60);
+      animation:pop .16s ease-out;
     }
-
-    /* Modal checkout */
-    .modalWrap{position:fixed;inset:0;display:none;align-items:center;justify-content:center;padding:16px;z-index:50;
-      background:rgba(0,0,0,.60)}
-    .modal{width:min(560px,100%);border-radius:26px;border:1px solid rgba(255,255,255,.12);
-      background:rgba(14,14,24,.96);box-shadow:0 20px 60px rgba(0,0,0,.55);overflow:hidden}
-    .modalTop{display:flex;align-items:center;justify-content:space-between;padding:14px;border-bottom:1px solid rgba(255,255,255,.10)}
-    .modalTop b{font-size:18px}
-    .xBtn{width:46px;height:46px;border-radius:14px;border:1px solid rgba(255,255,255,.12);background:rgba(255,255,255,.06);
-      color:var(--text);cursor:pointer;font-size:18px;font-weight:1000}
-    .modalBody{padding:14px}
-    .box{border-radius:18px;border:1px solid rgba(255,255,255,.10);background:rgba(255,255,255,.04);padding:12px;margin:12px 0}
-    label{display:block;font-weight:1000;color:rgba(255,255,255,.82);margin-bottom:6px}
-    input,textarea{
-      width:100%;padding:14px;border-radius:16px;border:1px solid rgba(255,255,255,.12);
+    @keyframes pop{from{transform:translateY(10px) scale(.985);opacity:0}to{transform:translateY(0) scale(1);opacity:1}}
+    .mt{display:flex;align-items:center;justify-content:space-between;padding:14px;border-bottom:1px solid rgba(255,255,255,.10)}
+    .mt b{font-size:16px;letter-spacing:-.2px}
+    .x{width:44px;height:44px;border-radius:14px;border:1px solid rgba(255,255,255,.12);background:rgba(255,255,255,.06);color:var(--text);font-weight:1000;cursor:pointer}
+    .mb{padding:14px;color:var(--muted);font-weight:900;line-height:1.55}
+    .row{display:flex;gap:10px;flex-wrap:wrap;align-items:center;margin:10px 0}
+    .in{
+      flex:1 1 240px;padding:14px 14px;border-radius:16px;
+      border:1px solid rgba(255,255,255,.12);
+      background:rgba(0,0,0,.20);color:var(--text);outline:none;font-weight:900;font-size:16px
+    }
+    .box{
+      border-radius:18px;border:1px solid rgba(255,255,255,.10);background:rgba(255,255,255,.04);
+      padding:12px;margin-top:10px
+    }
+    textarea{
+      width:100%;min-height:86px;resize:none;
+      padding:12px;border-radius:16px;
+      border:1px solid rgba(255,255,255,.12);
       background:rgba(0,0,0,.20);color:var(--text);outline:none;font-weight:900
     }
-    textarea{min-height:92px;resize:vertical}
-    .help{color:var(--muted);font-weight:900;font-size:13px;margin-top:6px}
-    .actions{display:flex;gap:10px;flex-wrap:wrap;margin-top:12px}
-    .status{margin-top:12px;padding:12px;border-radius:16px;border:1px dashed rgba(255,255,255,.16);
-      background:rgba(0,0,0,.20);color:var(--muted);font-weight:1000;min-height:46px;display:flex;align-items:center}
-    .status.ok{border-color:rgba(34,197,94,.25);background:rgba(34,197,94,.10);color:rgba(255,255,255,.92)}
-    .status.bad{border-color:rgba(239,68,68,.28);background:rgba(239,68,68,.10);color:rgba(255,255,255,.92)}
-    .qrWrap{display:grid;grid-template-columns: 1fr;gap: 10px;margin-top: 12px;}
-    .qrCard{border-radius:18px;border:1px solid rgba(255,255,255,.10);background:rgba(255,255,255,.04);
-      padding:12px;display:flex;align-items:center;justify-content:center;}
-    .qrCard img{width:230px;height:230px;border-radius:16px;background:white;padding:10px;}
-
+    .qr{width:210px;height:210px;border-radius:18px;border:1px solid rgba(255,255,255,.10);background:#fff;display:none}
+    .hint{color:rgba(255,255,255,.75);font-weight:900;font-size:13px}
+    footer{padding:26px 12px 40px 12px;text-align:center;color:rgba(255,255,255,.55);font-weight:900}
+    .links{margin-top:10px;display:flex;justify-content:center;gap:10px;flex-wrap:wrap}
+    .links a{padding:10px 12px;border-radius:999px;border:1px solid rgba(255,255,255,.10);background:rgba(255,255,255,.04);text-decoration:none;color:rgba(255,255,255,.75);font-weight:1000}
     @media (max-width:900px){
+      .heroInner{grid-template-columns:1fr}
       .grid{grid-template-columns:1fr}
-      h1{font-size:30px}
+      h1{font-size:34px}
     }
+  
+
+    /* Timeline (dark + amarelo, clean) */
+    .timeline{margin-top:14px;display:flex;gap:10px;flex-wrap:wrap;align-items:center}
+    .step{flex:1 1 140px;min-width:140px;position:relative;
+      padding:12px 12px;border-radius:16px;
+      border:1px solid rgba(255,255,255,.10);
+      background:rgba(255,255,255,.04);
+      color:var(--muted);
+      font-weight:1000;font-size:13px;
+      display:flex;gap:10px;align-items:center;justify-content:flex-start;
+    }
+    .step .b{width:14px;height:14px;border-radius:999px;
+      background:rgba(255,255,255,.14);
+      box-shadow:0 0 0 6px rgba(255,255,255,.06);
+      flex:0 0 auto;
+    }
+    .step.active{border-color:rgba(251,191,36,.30);background:rgba(251,191,36,.08);color:rgba(255,255,255,.92)}
+    .step.active .b{background:linear-gradient(135deg,var(--pink),var(--purple));box-shadow:0 0 0 6px rgba(251,191,36,.14)}
+    .step.done{border-color:rgba(34,197,94,.28);background:rgba(34,197,94,.10);color:rgba(255,255,255,.92)}
+    .step.done .b{background:linear-gradient(135deg,#16a34a,#22c55e);box-shadow:0 0 0 6px rgba(34,197,94,.12)}
+
   </style>
 </head>
 <body>
-  <header>
-    <div class="brand"><div class="logo"></div><span>ViralVault Store</span></div>
-    <div class="spacer"></div>
-    <div class="pill">PIX • simples • entrega digital</div>
+  <header class="top">
+    <div class="brand"><div class="dot"></div><span>ViralVault Store</span></div>
+    <div class="right">
+      <button class="btn" id="btnAcompanhar">Acompanhar pedido</button>
+      <button class="btn btnPrimary" id="btnComprarTopo">Comprar</button>
+    </div>
   </header>
 
   <main>
-    <section class="hero">
-      <div class="pill">🛡️ Loja digital • pagamentos via PIX</div>
-      <h1>Compre rápido e receba com segurança ✨</h1>
-      <p class="sub">Escolha um produto, informe seu user do Roblox e gere o PIX. Depois é só pagar e aguardar.</p>
+    <section class="hero" id="homeHero">
+      <div class="heroInner">
+        <div>
+          <div class="pill"><span class="kdot"></span> Loja digital • PIX • Entrega em até 24h</div>
+          <h1>Compra simples. <br>Você paga e só espera.</h1>
+          <p class="sub">Produtos digitais (Roblox/itens). Pedido com ID e acompanhamento automático. Suporte direto se precisar.</p>
+          <div style="margin-top:14px;display:flex;gap:10px;flex-wrap:wrap">
+            <button class="btn btnPrimary" id="btnComprar">Ver catálogo</button>
+            <button class="btn" id="btnVerificar">Verificar pedido</button>
+          </div>
+        </div>
+        <div class="panel">
+          <div style="font-weight:1000">Como funciona</div>
+          <div class="sub" style="margin-top:8px">
+            1) Escolha o item • 2) Informe seu user • 3) Gere o PIX • 4) Pague • 5) Aguarde (até 24h).<br><br>
+            <span class="hint">Acompanhe o status pelo link do pedido.</span>
+          </div>
+        </div>
+      </div>
     </section>
 
-    <section style="margin-top:16px">
-      <div class="grid" id="productsGrid"></div>
+    <div style="margin-top:18px;display:flex;align-items:flex-end;justify-content:space-between;gap:12px;flex-wrap:wrap">
+      <div style="font-weight:1000;font-size:18px;letter-spacing:-.2px">Catálogo</div>
+      <div class="small" id="catInfo">Carregando produtos…</div>
+    </div>
+
+    <section class="grid" id="catalogGrid"></section>
+
+    <section style="margin-top:18px" id="orderPage" class="hidden">
+      <div class="hero">
+        <div class="heroInner">
+          <div>
+            <div class="pill"><span class="kdot"></span> Página do pedido</div>
+            <h1 id="orderTitle">Pedido</h1>
+            <p class="sub" id="orderSub">Acompanhamento automático do status.</p>
+            <div class="statusBox" id="orderStatusBox">Carregando status…</div>
+            <div class="timeline" id="orderTimeline" aria-label="Linha do tempo do pedido">
+              <div class="step" data-step="created"><span class="b"></span>Pedido criado</div>
+              <div class="step" data-step="pending"><span class="b"></span>Aguardando pagamento</div>
+              <div class="step" data-step="paid"><span class="b"></span>Pago</div>
+              <div class="step" data-step="delivered"><span class="b"></span>Entregue</div>
+            </div>
+
+            <div style="margin-top:12px;display:flex;gap:10px;flex-wrap:wrap">
+              <button class="btn btnPrimary" id="btnCopiarLink">Copiar link do pedido</button>
+              <button class="btn" id="btnCopiarId">Copiar ID</button>
+              <button class="btn" id="btnSuporte">Chamar suporte</button>
+            </div>
+          </div>
+          <div class="panel">
+            <div style="font-weight:1000">Dica</div>
+            <div class="sub" style="margin-top:8px">
+              Se você já pagou, aguarde alguns minutos. Quando o status mudar para <b>Pago</b>, sua entrega entra na fila e sai em até 24h.
+            </div>
+          </div>
+        </div>
+      </div>
     </section>
+
+    <footer>
+      © <span id="y"></span> ViralVault Store • Transparência e suporte.
+      <div class="links">
+        <a href="#" id="lnkHome">Início</a>
+        <a href="#" id="lnkAcompanhar">Acompanhar pedido</a>
+        <a href="#" id="lnkSuporte">Suporte</a>
+      </div>
+    </footer>
   </main>
 
-  <!-- Modal -->
-  <div class="modalWrap" id="modalWrap" aria-hidden="true">
-    <div class="modal" role="dialog" aria-modal="true">
-      <div class="modalTop">
-        <b>Checkout (PIX) — simples</b>
-        <button class="xBtn" id="closeModal">✕</button>
+  <!-- Modal Checkout -->
+  <div class="mw" id="mw">
+    <div class="m" role="dialog" aria-modal="true">
+      <div class="mt">
+        <b id="mTitle">Checkout</b>
+        <button class="x" id="mClose">✕</button>
       </div>
-      <div class="modalBody">
-        <div class="box">
-          <div style="display:flex;justify-content:space-between;gap:10px;flex-wrap:wrap">
-            <div>
-              <div style="color:var(--muted);font-weight:1000;font-size:13px">Produto</div>
-              <div id="ckProdName" style="font-weight:1000;font-size:18px;margin-top:4px"></div>
+      <div class="mb">
+        <div class="hint">Informe seu user do Roblox para evitar erro na entrega:</div>
+        <div class="row">
+          <input class="in" id="robloxUser" placeholder="@user_1234" autocomplete="off" />
+          <button class="btn btnPrimary" id="btnGerar">Gerar pedido + PIX</button>
+        </div>
+        <div class="statusBox" id="mStatus">Selecione um item e gere seu pedido.</div>
+
+        <div class="box" id="pixBox" style="display:none">
+          <div style="display:flex;align-items:flex-start;justify-content:space-between;gap:12px;flex-wrap:wrap">
+            <div style="flex:1 1 260px">
+              <div style="font-weight:1000">PIX (copia e cola)</div>
+              <textarea id="pixTxt" readonly></textarea>
+              <div style="margin-top:10px;display:flex;gap:10px;flex-wrap:wrap">
+                <button class="btn btnPrimary" id="btnCopiarPix">Copiar PIX</button>
+                <button class="btn" id="btnCopiarPedido">Copiar ID do pedido</button>
+              </div>
+              <div class="sub" style="margin-top:10px">
+                Após pagar, você pode fechar. O site acompanha o status automaticamente.
+              <div class="timeline" id="checkoutTimeline" aria-label="Linha do tempo do pagamento">
+                <div class="step" data-step="created"><span class="b"></span>Pedido criado</div>
+                <div class="step" data-step="pending"><span class="b"></span>Aguardando pagamento</div>
+                <div class="step" data-step="paid"><span class="b"></span>Pago</div>
+                <div class="step" data-step="delivered"><span class="b"></span>Entregue</div>
+              </div>
+
+              </div>
             </div>
-            <div style="text-align:right">
-              <div style="color:var(--muted);font-weight:1000;font-size:13px">Preço</div>
-              <div id="ckProdPrice" style="font-weight:1000;font-size:20px;margin-top:4px"></div>
-            </div>
+            <img id="qr" class="qr" alt="QR Code PIX" />
           </div>
         </div>
-
-        <div class="box">
-          <label for="robloxUser">Seu usuário do Roblox</label>
-          <input id="robloxUser" placeholder="@user_1234" autocomplete="off" />
-          <div class="help">Sem usuário, não dá pra entregar. 😉</div>
-        </div>
-
-        <button class="btn" style="width:100%;padding:16px;border-radius:18px;font-size:16px" id="btnCreateOrder">
-          Gerar pedido + PIX
-        </button>
-
-        <div class="box" id="orderBox" style="display:none">
-          <div style="display:flex;justify-content:space-between;gap:10px;flex-wrap:wrap">
-            <div>
-              <div style="color:var(--muted);font-weight:1000;font-size:13px">ID do pedido</div>
-              <div id="orderId" style="font-weight:1000;font-size:18px;margin-top:4px"></div>
-            </div>
-          </div>
-
-          <div style="margin-top:12px">
-            <label for="pixPayload">PIX copia e cola</label>
-            <textarea id="pixPayload" readonly></textarea>
-          </div>
-
-          <div class="qrWrap">
-            <div class="qrCard" id="qrCard" style="display:none">
-              <img id="pixQr" alt="QR Code PIX" />
-            </div>
-          </div>
-
-          <div class="actions">
-            <button class="btn btnGhost" id="btnCopyPix">Copiar PIX</button>
-            <button class="btn btnGhost" id="btnCopyId">Copiar ID</button>
-            <a class="btn btnGhost" id="btnSupport" href="#" target="_blank" rel="noopener">Falar com suporte</a>
-          </div>
-
-          <div class="status ok">Pedido criado ✅ Pague via PIX e aguarde a entrega.</div>
-        </div>
-
-        <div class="status" id="statusBox">Pronto pra gerar seu pedido.</div>
       </div>
     </div>
   </div>
 
-  <script>
-    // ===== CONFIG =====
-    const WORKER_BASE = "https://viralvault-sign.darlanana06.workers.dev";
-    const ENDPOINTS = { catalog: "/catalog", createOrder: "/create-order" };
-    const WHATSAPP_LINK = "https://wa.me/55XXXXXXXXXXX?text=Oi!%20Preciso%20de%20suporte%20no%20pedido%20";
+<script>
+(() => {
+  // ===== CONFIG =====
+  const WORKER_BASE = "https://viralvault-sign.darlanana06.workers.dev"; // sem / no final
+  const FALLBACK_PIX = ""; // opcional (se quiser forçar PIX mesmo sem resposta do worker)
 
-    const fmtBRL = (v) => {
-      try { return new Intl.NumberFormat("pt-BR", { style:"currency", currency:"BRL"}).format(v); }
-      catch(e){ return "R$ " + (Number(v||0).toFixed(2)).replace(".", ","); }
-    };
-    const qs = (id) => document.getElementById(id);
-    const setStatus = (msg, kind="") => {
-      const el = qs("statusBox");
-      el.textContent = msg;
-      el.className = "status" + (kind ? " " + kind : "");
-    };
+  // ===== HELPERS =====
+  const $ = (id) => document.getElementById(id);
+  const y = new Date().getFullYear(); $("y").textContent = y;
 
-    function setPixQrFromPayload(payload){
-      // QR generator without key
-      const url = "https://api.qrserver.com/v1/create-qr-code/?size=320x320&data=" + encodeURIComponent(payload);
-      const img = qs("pixQr");
-      img.src = url;
-      qs("qrCard").style.display = "flex";
+  const sleep = (ms) => new Promise(r => setTimeout(r, ms));
+  const normalizeUser = (s) => {
+    s = (s||"").trim().replace(/\s+/g,"");
+    if(!s) return "";
+    return s.startsWith("@") ? s : "@"+s;
+  };
+  const safeJson = async (res) => {
+    const txt = await res.text();
+    try { return JSON.parse(txt); } catch(e){ return { ok:false, error:"Resposta inválida do servidor", raw: txt }; }
+  };
+  const copy = async (text) => {
+    try{
+      await navigator.clipboard.writeText(text);
+      return true;
+    }catch(e){
+      // fallback
+      const ta = document.createElement("textarea");
+      ta.value = text; document.body.appendChild(ta);
+      ta.select(); document.execCommand("copy");
+      ta.remove();
+      return true;
+    }
+  };
+  const pickPix = (data) => {
+    if(!data || typeof data !== "object") return "";
+    return data.pixCopyPaste || data.pix_copia_cola || data.pix || data.brcode || data.pixPayload || data.pix_payload || data.copiaECola || data.copia_cola || "";
+  };
+
+  // ===== STATE =====
+  let products = [];
+  let selected = null;
+  let currentOrderId = "";
+  let pollTimer = null;
+
+  // ===== UI refs =====
+  const grid = $("catalogGrid");
+  const catInfo = $("catInfo");
+
+  const mw = $("mw");
+  const mClose = $("mClose");
+  const mTitle = $("mTitle");
+  const robloxUser = $("robloxUser");
+  const btnGerar = $("btnGerar");
+  const mStatus = $("mStatus");
+  const pixBox = $("pixBox");
+  const pixTxt = $("pixTxt");
+  const btnCopiarPix = $("btnCopiarPix");
+  const btnCopiarPedido = $("btnCopiarPedido");
+  const qr = $("qr");
+
+  // Order page
+  const orderPage = $("orderPage");
+  const homeHero = $("homeHero");
+  const orderTitle = $("orderTitle");
+  const orderSub = $("orderSub");
+  const orderStatusBox = $("orderStatusBox");
+  const btnCopiarLink = $("btnCopiarLink");
+  const btnCopiarId = $("btnCopiarId");
+  const btnSuporte = $("btnSuporte");
+  const checkoutTimeline = $("checkoutTimeline");
+  const orderTimeline = $("orderTimeline");
+
+  function showModal(open){
+    mw.classList.toggle("show", !!open);
+    if(!open){
+      stopPolling();
+    } else {
+      robloxUser.focus();
+    }
+  }
+  function setStatus(el, kind, text){
+    el.classList.remove("ok","bad");
+    if(kind==="ok") el.classList.add("ok");
+    if(kind==="bad") el.classList.add("bad");
+    el.textContent = text;
+  }
+
+
+  function setTimeline(tlEl, status, hasOrder){
+    if(!tlEl) return;
+    const steps = Array.from(tlEl.querySelectorAll('.step'));
+    const st = (status||'').toLowerCase();
+
+    // default state
+    steps.forEach(s => s.classList.remove('active','done'));
+
+    if(!hasOrder){
+      return;
     }
 
-    async function loadCatalog(){
-      const grid = qs("productsGrid");
-      grid.innerHTML = "";
-      try{
-        const res = await fetch(WORKER_BASE + ENDPOINTS.catalog, { method:"GET" });
-        const data = await res.json();
-        if(!data || data.ok !== true || !Array.isArray(data.products)) throw new Error(data?.error || "Catálogo inválido");
-        data.products.forEach(p => {
-          const card = document.createElement("div");
-          card.className = "card";
-          card.innerHTML = `
-            <div class="cardInner">
-              <div class="tag">💎 Digital</div>
-              <div class="title">${escapeHtml(p.name || p.id)}</div>
-              <p class="desc">${escapeHtml(p.description || "Entrega digital após confirmação.")}</p>
-              <div class="row">
-                <div>
-                  <div class="price">${fmtBRL(p.price || 0)}</div>
-                  <div style="color:var(--muted);font-weight:1000;font-size:12px">Pagamento via PIX</div>
-                </div>
-                <button class="btn" data-buy="1">Comprar</button>
-              </div>
-            </div>`;
-          card.querySelector("[data-buy]").addEventListener("click", () => openCheckout(p));
-          grid.appendChild(card);
-        });
-      }catch(err){
-        grid.innerHTML = `
-          <div class="card"><div class="cardInner">
-            <div class="title">Erro ao carregar catálogo</div>
-            <p class="desc">${escapeHtml(String(err.message || err))}</p>
-            <div class="help">Confira se <b>/catalog</b> está no Worker e se WORKER_BASE está correto.</div>
-          </div></div>`;
+    // created always done when order exists
+    const by = { created:null, pending:null, paid:null, delivered:null };
+    steps.forEach(s => { by[s.dataset.step] = s; });
+    if(by.created) by.created.classList.add('done');
+
+    if(st === 'delivered' || st === 'entregue'){
+      if(by.pending) by.pending.classList.add('done');
+      if(by.paid) by.paid.classList.add('done');
+      if(by.delivered) by.delivered.classList.add('done');
+      return;
+    }
+
+    if(st === 'paid' || st === 'pago'){
+      if(by.pending) by.pending.classList.add('done');
+      if(by.paid) by.paid.classList.add('active');
+      return;
+    }
+
+    // pending / default
+    if(by.pending) by.pending.classList.add('active');
+  }
+
+
+  function renderCatalog(){
+    grid.innerHTML = "";
+    if(!products.length){
+      grid.innerHTML = `<div class="panel" style="grid-column:1/-1">
+        <div style="font-weight:1000">Sem produtos no catálogo</div>
+        <div class="sub" style="margin-top:8px">Se o /catalog estiver vazio, adicione produtos no worker.</div>
+      </div>`;
+      return;
+    }
+    products.forEach(p => {
+      const price = typeof p.price === "number" ? p.price : (p.priceCents ? (p.priceCents/100) : null);
+      const priceTxt = price != null ? price.toLocaleString("pt-BR",{style:"currency",currency:"BRL"}) : (p.priceText || "Consultar");
+      const el = document.createElement("article");
+      el.className = "card";
+      el.innerHTML = `
+        <div class="ci">
+          <div class="title">${escapeHtml(p.name || p.title || "Produto")}</div>
+          <p class="desc">${escapeHtml(p.description || p.desc || "Produto digital.")}</p>
+          <div class="priceRow">
+            <div>
+              <div class="price">${escapeHtml(priceTxt)}</div>
+              <div class="small">Digital • entrega até 24h</div>
+            </div>
+            <button class="btn btnPrimary btnSmall">Comprar</button>
+          </div>
+        </div>
+      `;
+      el.querySelector("button").addEventListener("click", () => openCheckout(p));
+      grid.appendChild(el);
+    });
+  }
+
+  function escapeHtml(s){
+    s = String(s ?? "");
+    return s.replace(/[&<>"']/g, (c) => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
+  }
+
+  async function loadCatalog(){
+    try{
+      catInfo.textContent = "Carregando…";
+      const res = await fetch(`${WORKER_BASE}/catalog`, { method:"GET" });
+      const data = await safeJson(res);
+      if(!res.ok || !data.ok){
+        catInfo.textContent = "Falha no catálogo";
+        renderCatalog();
+        return;
       }
+      products = data.products || data.items || [];
+      catInfo.textContent = `${products.length} item(ns)`;
+      renderCatalog();
+    }catch(e){
+      catInfo.textContent = "Erro ao carregar";
+      renderCatalog();
+    }
+  }
+
+  function openCheckout(p){
+    selected = p;
+    mTitle.textContent = `Checkout — ${p.name || p.title || "Produto"}`;
+    setStatus(mStatus, "", "Informe seu user e gere o pedido.");
+    pixBox.style.display = "none";
+    pixTxt.value = "";
+    qr.style.display = "none";
+    qr.src = "";
+    currentOrderId = "";
+    btnGerar.disabled = false;
+    showModal(true);
+  }
+
+  function stopPolling(){
+    if(pollTimer){ clearInterval(pollTimer); pollTimer = null; }
+  }
+
+  async function startPolling(orderId){
+    stopPolling();
+    // poll a cada 4s
+    pollTimer = setInterval(async () => {
+      try{
+        const res = await fetch(`${WORKER_BASE}/order-status?orderId=${encodeURIComponent(orderId)}`, { method:"GET" });
+        const data = await safeJson(res);
+        if(!res.ok || !data.ok) return;
+        const st = (data.status || data.state || "").toLowerCase();
+        setTimeline(orderTimeline, st, true);
+        setTimeline(checkoutTimeline, st, true);
+        if(st === "paid" || st === "pago"){
+          setStatus(mStatus, "ok", "Pagamento confirmado ✅ Entrega em até 24h.");
+        } else if(st === "delivered" || st === "entregue"){
+          setStatus(mStatus, "ok", "Entregue ✅ Obrigado pela compra!");
+          stopPolling();
+        } else {
+          setStatus(mStatus, "", "Aguardando pagamento… (atualiza sozinho)");
+        }
+      }catch(e){}
+    }, 4000);
+  }
+
+  async function createOrder(){
+    if(!selected) return;
+    const u = normalizeUser(robloxUser.value);
+    if(u.length < 3){
+      setStatus(mStatus, "bad", "Preencha seu user (@user_1234).");
+      return;
     }
 
-    function escapeHtml(str){
-      return String(str ?? "").replace(/[&<>"']/g, (m) => ({
-        "&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#039;"
-      }[m]));
-    }
+    btnGerar.disabled = true;
+    setStatus(mStatus, "", "Criando pedido…");
 
-    let selectedProduct = null;
+    const body = {
+      productId: selected.id || selected.productId || selected.slug || selected.sku || (selected.name || "produto").toLowerCase().replace(/\s+/g,"-"),
+      user: u,
+      username: u,
+      robloxUser: u
+    };
 
-    function openCheckout(prod){
-      selectedProduct = prod;
-      qs("ckProdName").textContent = prod.name || prod.id || "Produto";
-      qs("ckProdPrice").textContent = fmtBRL(prod.price || 0);
-      qs("robloxUser").value = "";
-      qs("orderBox").style.display = "none";
-      qs("pixPayload").value = "";
-      qs("orderId").textContent = "";
-      qs("qrCard").style.display = "none";
-      setStatus("Preencha seu user e gere o pedido.", "");
-      qs("modalWrap").style.display = "flex";
-      qs("modalWrap").setAttribute("aria-hidden", "false");
-    }
+    try{
+      const res = await fetch(`${WORKER_BASE}/create-order`, {
+        method:"POST",
+        headers:{ "Content-Type":"application/json" },
+        body: JSON.stringify(body)
+      });
+      const data = await safeJson(res);
 
-    function closeCheckout(){
-      qs("modalWrap").style.display = "none";
-      qs("modalWrap").setAttribute("aria-hidden", "true");
-    }
-
-    qs("closeModal").addEventListener("click", closeCheckout);
-    qs("modalWrap").addEventListener("click", (e) => { if(e.target === qs("modalWrap")) closeCheckout(); });
-
-    async function createOrder(){
-      if(!selectedProduct) return;
-      const robloxUser = (qs("robloxUser").value || "").trim();
-      if(!robloxUser){
-        setStatus("Preencha seu usuário do Roblox antes de comprar.", "bad");
+      if(!res.ok || !data.ok){
+        btnGerar.disabled = false;
+        setStatus(mStatus, "bad", data.error || "Falha ao criar pedido.");
         return;
       }
 
-      const payload = {
-        productId: selectedProduct.id || selectedProduct.productId || selectedProduct.slug || selectedProduct.name,
-        robloxUser
-      };
+      currentOrderId = data.orderId || data.id || data.order || "";
+      const pix = pickPix(data) || FALLBACK_PIX;
 
-      setStatus("Gerando pedido + PIX...", "");
-
-      try{
-        const res = await fetch(WORKER_BASE + ENDPOINTS.createOrder, {
-          method:"POST",
-          headers:{ "Content-Type":"application/json" },
-          body: JSON.stringify(payload)
-        });
-
-        const data = await res.json().catch(() => ({}));
-
-        if(!res.ok || data?.ok !== true){
-          throw new Error(data?.error || "Falha ao criar pedido");
-        }
-
-        const pix =
-          data.pix_copia_cola ||
-          data.pixCopiaECola ||
-          data.pix ||
-          data.pix_copy_paste ||
-          data.pixPayload ||
-          data.qrcode ||
-          data.brcode ||
-          data.payload ||
-          "";
-
-        const orderId = data.orderId || data.order_id || data.id || "";
-
-        if(!pix) throw new Error("Resposta sem PIX copia e cola.");
-
-        qs("orderId").textContent = orderId || "—";
-        qs("pixPayload").value = pix;
-        qs("orderBox").style.display = "block";
-
-        setPixQrFromPayload(pix);
-
-        qs("btnSupport").href = WHATSAPP_LINK + encodeURIComponent(orderId || "");
-
-        setStatus("Pedido criado ✅ Agora pague via PIX.", "ok");
-      }catch(err){
-        setStatus("Não consegui gerar pedido + PIX. Motivo: " + (err.message || err), "bad");
+      if(!currentOrderId){
+        btnGerar.disabled = false;
+        setStatus(mStatus, "bad", "Pedido criado, mas sem ID.");
+        return;
       }
+
+      // Show order link
+      const link = `${location.origin}${location.pathname}?orderId=${encodeURIComponent(currentOrderId)}`;
+      setStatus(mStatus, "ok", `Pedido criado ✅ ID: ${currentOrderId}`);
+
+      pixBox.style.display = "block";
+      pixTxt.value = pix || "";
+      btnCopiarPedido.disabled = false;
+
+      // QR (se tiver pix)
+      if(pix){
+        const qrUrl = `https://api.qrserver.com/v1/create-qr-code/?size=210x210&data=${encodeURIComponent(pix)}`;
+        qr.src = qrUrl;
+        qr.style.display = "block";
+      } else {
+        qr.style.display = "none";
+      }
+
+      // inicia timeline + polling
+      setTimeline(checkoutTimeline, "pending", true);
+      startPolling(currentOrderId);
+
+      // Deixa link do pedido fácil
+      orderSub.textContent = `Link do pedido: ${link}`;
+
+    }catch(e){
+      btnGerar.disabled = false;
+      setStatus(mStatus, "bad", "Erro de rede. Tente novamente.");
     }
+  }
 
-    qs("btnCreateOrder").addEventListener("click", createOrder);
+  // ===== Order page mode =====
+  function showHome(){
+    orderPage.classList.add("hidden");
+    homeHero.classList.remove("hidden");
+    window.scrollTo({top:0,behavior:"smooth"});
+  }
+  function showOrder(orderId){
+    homeHero.classList.add("hidden");
+    orderPage.classList.remove("hidden");
+    orderTitle.textContent = `Pedido ${orderId}`;
+    orderSub.textContent = "Acompanhando status automaticamente…";
+    setStatus(orderStatusBox, "", "Carregando status…");
+    setTimeline(orderTimeline, "pending", true);
+    // start polling on order page too
+    stopPolling();
+    pollTimer = setInterval(async () => {
+      try{
+        const res = await fetch(`${WORKER_BASE}/order-status?orderId=${encodeURIComponent(orderId)}`, { method:"GET" });
+        const data = await safeJson(res);
+        if(!res.ok || !data.ok){
+          setStatus(orderStatusBox, "bad", data.error || "Pedido não encontrado.");
+          return;
+        }
+        const st = (data.status || data.state || "").toLowerCase();
+        setTimeline(checkoutTimeline, st, true);
+        if(st === "paid" || st === "pago"){
+          setStatus(orderStatusBox, "ok", "Pagamento confirmado ✅ Entrega em até 24h.");
+        } else if(st === "delivered" || st === "entregue"){
+          setStatus(orderStatusBox, "ok", "Entregue ✅ Obrigado!");
+          stopPolling();
+        } else {
+          setStatus(orderStatusBox, "", "Aguardando pagamento…");
+        }
+      }catch(e){
+        setStatus(orderStatusBox, "bad", "Falha ao consultar status.");
+      }
+    }, 4000);
+  }
 
-    qs("btnCopyPix").addEventListener("click", async () => {
-      const v = qs("pixPayload").value || "";
-      if(!v) return setStatus("PIX vazio.", "bad");
-      try{ await navigator.clipboard.writeText(v); setStatus("PIX copiado ✅", "ok"); }
-      catch(e){ setStatus("Não consegui copiar (seu navegador bloqueou).", "bad"); }
-    });
+  function getOrderIdFromUrl(){
+    const sp = new URLSearchParams(location.search);
+    return sp.get("orderId") || sp.get("id") || "";
+  }
 
-    qs("btnCopyId").addEventListener("click", async () => {
-      const v = qs("orderId").textContent || "";
-      if(!v || v === "—") return setStatus("ID vazio.", "bad");
-      try{ await navigator.clipboard.writeText(v); setStatus("ID copiado ✅", "ok"); }
-      catch(e){ setStatus("Não consegui copiar (seu navegador bloqueou).", "bad"); }
-    });
+  // ===== Events =====
+  $("btnComprar").addEventListener("click", () => window.scrollTo({top: grid.getBoundingClientRect().top + window.scrollY - 80, behavior:"smooth"}));
+  $("btnComprarTopo").addEventListener("click", () => window.scrollTo({top: grid.getBoundingClientRect().top + window.scrollY - 80, behavior:"smooth"}));
+  $("btnVerificar").addEventListener("click", () => {
+    const id = prompt("Cole o ID do pedido (ex: vv_...)");
+    if(id) {
+      const url = `${location.origin}${location.pathname}?orderId=${encodeURIComponent(id.trim())}`;
+      location.href = url;
+    }
+  });
+  $("btnAcompanhar").addEventListener("click", () => {
+    const id = prompt("Cole o ID do pedido (ex: vv_...)");
+    if(id) {
+      const url = `${location.origin}${location.pathname}?orderId=${encodeURIComponent(id.trim())}`;
+      location.href = url;
+    }
+  });
 
-    loadCatalog();
-  </script>
+  $("lnkHome").addEventListener("click", (e)=>{e.preventDefault(); history.pushState({}, "", location.pathname); showHome(); stopPolling();});
+  $("lnkAcompanhar").addEventListener("click", (e)=>{e.preventDefault(); const id = prompt("Cole o ID do pedido"); if(id) location.href = `${location.pathname}?orderId=${encodeURIComponent(id.trim())}`;});
+  $("lnkSuporte").addEventListener("click", (e)=>{e.preventDefault(); window.open(`https://wa.me/5511941598713?text=${encodeURIComponent("Oi! Preciso de ajuda na ViralVault Store.")}`,"_blank");});
+
+  mClose.addEventListener("click", ()=>showModal(false));
+  mw.addEventListener("click", (e)=>{ if(e.target === mw) showModal(false); });
+
+  btnGerar.addEventListener("click", createOrder);
+  robloxUser.addEventListener("input", ()=>{
+    const u = normalizeUser(robloxUser.value);
+    // compra só com user válido
+    btnGerar.disabled = (u.length < 3) || !selected;
+  });
+
+  btnCopiarPix.addEventListener("click", async ()=>{
+    const pix = pixTxt.value.trim();
+    if(!pix) return setStatus(mStatus, "bad", "PIX não disponível ainda.");
+    await copy(pix);
+    setStatus(mStatus, "ok", "PIX copiado ✅ Agora é só pagar.");
+  });
+
+  btnCopiarPedido.addEventListener("click", async ()=>{
+    if(!currentOrderId) return;
+    await copy(currentOrderId);
+    setStatus(mStatus, "ok", "ID do pedido copiado ✅");
+  });
+
+  btnCopiarLink.addEventListener("click", async ()=>{
+    const id = getOrderIdFromUrl();
+    if(!id) return;
+    const link = `${location.origin}${location.pathname}?orderId=${encodeURIComponent(id)}`;
+    await copy(link);
+    setStatus(orderStatusBox, "ok", "Link do pedido copiado ✅");
+  });
+  btnCopiarId.addEventListener("click", async ()=>{
+    const id = getOrderIdFromUrl();
+    if(!id) return;
+    await copy(id);
+    setStatus(orderStatusBox, "ok", "ID copiado ✅");
+  });
+  btnSuporte.addEventListener("click", ()=>{
+    const id = getOrderIdFromUrl();
+    const msg = id ? `Oi! Preciso de ajuda no pedido ${id}` : "Oi! Preciso de ajuda na ViralVault Store.";
+    window.open(`https://wa.me/5511941598713?text=${encodeURIComponent(msg)}`,"_blank");
+  });
+
+  // Handle back/forward
+  window.addEventListener("popstate", ()=>{
+    const id = getOrderIdFromUrl();
+    if(id) showOrder(id); else showHome();
+  });
+
+  // ===== INIT =====
+  loadCatalog();
+
+  const initialId = getOrderIdFromUrl();
+  if(initialId){
+    showOrder(initialId);
+  }
+})();
+</script>
 </body>
 </html>
