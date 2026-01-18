@@ -1,1470 +1,1012 @@
 <!doctype html>
 <html lang="pt-BR">
 <head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>ViralVault</title>
-
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&display=swap" rel="stylesheet">
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width,initial-scale=1"/>
+  <title>ViralVault Store — Loja Digital</title>
+  <meta name="description" content="Loja 100% digital: itens/brainrots Roblox. PIX seguro, verificação de pedido e suporte."/>
 
   <style>
     :root{
-      --bg0:#060607;
-      --bg1:#0b0b0d;
-
-      --text:#ffffff;
-      --muted:rgba(255,255,255,.68);
-
+      --bg:#0b0b14;
       --card:rgba(255,255,255,.06);
       --line:rgba(255,255,255,.10);
+      --txt:rgba(255,255,255,.92);
+      --mut:rgba(255,255,255,.72);
 
-      --yellow:#ffd400;
-      --red:#ff2b2b;
+      --red:#ff3b5c;
+      --pink:#ff6aa2;
+      --lav:#b29bff;
+      --mint:#7CFFB2;
 
-      --shadow: 0 16px 40px rgba(0,0,0,.62);
-      --radius:22px;
+      --shadow: 0 20px 70px rgba(0,0,0,.45);
+      --r:22px;
+      --max:1100px;
     }
 
-    *{ box-sizing:border-box; }
-    html,body{ height:100%; }
-    body{
+    *{box-sizing:border-box}
+    html,body{
       margin:0;
-      font-family: Inter, system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
-      color:var(--text);
       background:
-        radial-gradient(900px 600px at 20% -10%, rgba(255,212,0,.10), transparent 58%),
-        radial-gradient(900px 650px at 85% 5%, rgba(255,43,43,.09), transparent 60%),
-        linear-gradient(180deg, var(--bg0), var(--bg1));
+        radial-gradient(1200px 700px at 10% 10%, rgba(255,59,92,.18), transparent 55%),
+        radial-gradient(900px 600px at 90% 20%, rgba(178,155,255,.18), transparent 55%),
+        radial-gradient(900px 700px at 50% 120%, rgba(124,255,178,.10), transparent 60%),
+        var(--bg);
+      color:var(--txt);
+      font-family:ui-sans-serif,system-ui,-apple-system,Segoe UI,Roboto,Arial;
       overflow-x:hidden;
     }
 
+    a{color:inherit}
+    button,input,textarea{font:inherit}
+    .container{max-width:var(--max);margin:0 auto;padding:18px}
+
     /* Topbar */
     .topbar{
-      position:sticky;
-      top:0;
-      z-index:50;
-      padding:14px 14px 10px;
-      backdrop-filter: blur(14px);
-      -webkit-backdrop-filter: blur(14px);
-      background: rgba(6,6,7,.78);
-      border-bottom:1px solid var(--line);
+      position:sticky;top:0;z-index:50;
+      background:rgba(10,10,18,.72);
+      backdrop-filter:blur(14px);
+      border-bottom:1px solid rgba(255,255,255,.08);
     }
-    .topbar__row{
-      display:flex;
-      align-items:center;
-      gap:10px;
-      max-width:1100px;
-      margin:0 auto;
-    }
-    .brand{
-      display:flex;
-      align-items:center;
-      gap:10px;
-      min-width:170px;
-    }
+    .topbar .row{display:flex;align-items:center;gap:12px;padding:12px 18px}
+
+    .brand{display:flex;align-items:center;gap:10px;font-weight:1000;letter-spacing:.2px}
     .logo{
-      width:34px;height:34px;border-radius:12px;
-      background:
-        radial-gradient(circle at 30% 25%, rgba(255,255,255,.25), transparent 58%),
-        linear-gradient(135deg, rgba(255,212,0,.95), rgba(255,43,43,.92));
-      box-shadow: 0 14px 30px rgba(0,0,0,.45);
-      border:1px solid rgba(255,255,255,.16);
-    }
-    .brand b{ font-weight:900; letter-spacing:.2px; }
-    .brand small{
-      display:block;
-      font-size:11px;
-      color: rgba(255,255,255,.68);
-      font-weight:600;
-      margin-top:2px;
+      width:42px;height:42px;border-radius:14px;
+      background:linear-gradient(135deg,var(--red),var(--lav));
+      box-shadow:0 0 0 6px rgba(255,59,92,.12);
+      display:grid;place-items:center;font-weight:1000;
     }
 
-    .pill{
-      flex:1;
-      display:flex;
-      align-items:center;
-      gap:10px;
-      padding:10px 12px;
-      border-radius:999px;
-      background: rgba(255,255,255,.05);
-      border:1px solid rgba(255,255,255,.10);
-      box-shadow: 0 10px 25px rgba(0,0,0,.25);
-    }
-    .pill input{
-      width:100%;
-      border:0;
-      outline:none;
-      background:transparent;
-      color:var(--text);
-      font-size:14px;
-    }
-    .pill input::placeholder{ color: rgba(255,255,255,.55); }
-
-    .iconbtn{
-      width:40px;height:40px;
-      display:grid;place-items:center;
-      border-radius:14px;
+    .pill{margin-left:auto;display:flex;gap:10px;align-items:center}
+    .pill b{
+      font-size:12px;padding:9px 12px;border-radius:999px;
       border:1px solid rgba(255,255,255,.12);
-      background: rgba(255,255,255,.05);
-      cursor:pointer;
-      transition: transform .12s ease, box-shadow .12s ease, border-color .12s ease;
-      position: relative;
+      background:rgba(255,255,255,.06)
     }
-    .iconbtn:active{ transform: scale(.97); }
-    .iconbtn:hover{
-      border-color: rgba(255,212,0,.28);
-      box-shadow: 0 0 0 4px rgba(255,212,0,.08);
-    }
+    @media(max-width:900px){ .pill b{display:none} }
 
-    .badge{
-      position:absolute;
-      right:-8px;
-      top:-8px;
-      padding:4px 7px;
-      font-size:11px;
-      border-radius:999px;
-      background: linear-gradient(135deg, var(--yellow), var(--red));
-      color: #111;
-      border:1px solid rgba(255,255,255,.18);
-      box-shadow: 0 14px 26px rgba(0,0,0,.45);
-      font-weight:900;
-      min-width: 22px;
-      text-align: center;
+    /* Buttons */
+    .btn{
+      border:0;cursor:pointer;border-radius:18px;padding:14px 18px;
+      font-weight:1000;background:rgba(255,255,255,.08);color:var(--txt);
+      border:1px solid rgba(255,255,255,.12);
+      transition:transform .12s ease,filter .12s ease;
+      user-select:none;
+      touch-action: manipulation;
+      -webkit-tap-highlight-color: transparent;
     }
+    .btn:hover{filter:brightness(1.08)}
+    .btn:active{transform:translateY(1px) scale(.99)}
+    .btnPrimary{
+      background:linear-gradient(90deg,var(--red),var(--pink));
+      border:0;
+      box-shadow:0 18px 35px rgba(255,59,92,.22);
+    }
+    .btnGhost{background:rgba(255,255,255,.05)}
+    .small{padding:11px 12px;border-radius:16px;font-size:14px}
 
     /* Layout */
-    .wrap{
-      max-width:1100px;
-      margin:0 auto;
-      padding:18px 14px 130px;
-    }
-
     .hero{
-      margin:6px 0 14px;
-      padding:18px;
-      border-radius: var(--radius);
-      background: rgba(255,255,255,.06);
+      margin-top:16px;border-radius:26px;padding:22px;
       border:1px solid rgba(255,255,255,.10);
-      box-shadow: var(--shadow);
+      background:rgba(255,255,255,.05);
+      box-shadow:var(--shadow);
+      position:relative;overflow:hidden;
     }
-    .hero h1{ margin:0; font-size:22px; letter-spacing:.2px; }
-    .hero p{ margin:8px 0 0; color:var(--muted); font-size:13px; line-height:1.35; }
+    .hero::after{
+      content:"";position:absolute;inset:-2px;pointer-events:none;
+      background:
+        radial-gradient(520px 240px at 85% 15%, rgba(178,155,255,.14), transparent 60%),
+        radial-gradient(560px 240px at 15% 70%, rgba(255,59,92,.12), transparent 65%);
+    }
+    .hero .content{
+      position:relative;
+      display:grid;grid-template-columns:1.2fr .8fr;gap:16px;align-items:center;
+    }
+    @media(max-width:900px){ .hero .content{grid-template-columns:1fr} }
 
-    .filters{
-      display:flex;
-      gap:10px;
-      flex-wrap:wrap;
-      margin-top:12px;
-    }
-    .chip{
-      padding:8px 10px;
-      border-radius:999px;
+    .h1{margin:18px 0 10px;font-size:44px;line-height:1.05;letter-spacing:-.5px}
+    @media(max-width:900px){ .h1{font-size:36px} }
+    .sub{margin:0;color:var(--mut);font-weight:800;line-height:1.55;max-width:62ch}
+
+    .tag{
+      display:inline-flex;gap:8px;align-items:center;
+      font-size:12px;font-weight:1000;padding:9px 12px;border-radius:999px;
       border:1px solid rgba(255,255,255,.12);
-      background: rgba(255,255,255,.05);
-      color: rgba(255,255,255,.85);
-      font-weight:900;
-      font-size:12px;
-      cursor:pointer;
-      transition: transform .12s ease, border-color .12s ease;
-      user-select:none;
+      background:rgba(255,255,255,.06);
     }
-    .chip:active{ transform: scale(.98); }
-    .chip.active{
-      border-color: rgba(255,212,0,.42);
-      box-shadow: 0 0 0 4px rgba(255,212,0,.08);
-      color:#fff;
+    .tag .k{
+      width:10px;height:10px;border-radius:999px;
+      background:linear-gradient(135deg,var(--mint),#a7f3d0);
+      box-shadow:0 0 0 6px rgba(124,255,178,.12);
     }
 
-    /* Pages */
-    .page{ display:none; }
-    .page.active{ display:block; }
-
-    .grid{
-      display:grid;
-      grid-template-columns: repeat(2, minmax(0,1fr));
-      gap:14px;
+    .bullets{
+      display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-top:14px;
     }
-    @media (min-width:900px){
-      .grid{ grid-template-columns: repeat(4, minmax(0,1fr)); }
-      .brand{ min-width:220px; }
+    @media(max-width:900px){ .bullets{grid-template-columns:1fr} }
+
+    .b{
+      border:1px solid rgba(255,255,255,.10);
+      border-radius:18px;background:rgba(255,255,255,.05);
+      padding:12px;display:flex;gap:10px;align-items:flex-start;
+    }
+    .ico{
+      width:40px;height:40px;border-radius:16px;display:grid;place-items:center;
+      background:rgba(255,59,92,.14);border:1px solid rgba(255,59,92,.18);
+      flex:0 0 auto;
     }
 
     .card{
-      position:relative;
-      border-radius: 22px;
-      overflow:hidden;
-      background: var(--card);
       border:1px solid rgba(255,255,255,.10);
-      box-shadow: 0 18px 40px rgba(0,0,0,.42);
-      transition: transform .14s ease, border-color .14s ease, box-shadow .14s ease;
-      cursor:pointer;
-      user-select:none;
-    }
-    .card:hover{
-      transform: translateY(-2px);
-      border-color: rgba(255,212,0,.22);
-      box-shadow: 0 18px 52px rgba(0,0,0,.55), 0 0 0 5px rgba(255,212,0,.06);
-    }
-    .card:active{ transform: translateY(0px) scale(.99); }
-
-    .thumb{ height: 148px; background: rgba(255,255,255,.04); position:relative; }
-    .thumb img{
-      width:100%;
-      height:100%;
-      object-fit: cover;
-      display:block;
-      filter: saturate(1.05) contrast(1.05);
-    }
-    .thumb::after{
-      content:"";
-      position:absolute; inset:0;
-      background: linear-gradient(180deg, rgba(0,0,0,.0), rgba(0,0,0,.35));
-      pointer-events:none;
-    }
-
-    .meta{ padding:12px 12px 14px; }
-    .title{
-      font-weight:900;
-      font-size:13.5px;
-      line-height:1.25;
-      display:-webkit-box;
-      -webkit-line-clamp:2;
-      -webkit-box-orient:vertical;
+      background:rgba(255,255,255,.06);
+      border-radius:var(--r);
+      box-shadow:var(--shadow);
       overflow:hidden;
-      min-height: 34px;
+      position:relative;
+    }
+    .card::before{
+      content:"";position:absolute;inset:0;pointer-events:none;
+      background:radial-gradient(520px 260px at 10% 0%, rgba(255,59,92,.22), transparent 60%);
+    }
+    .card .inner{position:relative;padding:16px}
+
+    .grid{display:grid;grid-template-columns:repeat(3,1fr);gap:14px}
+    @media(max-width:900px){ .grid{grid-template-columns:1fr} }
+
+    .secTitle{
+      margin:22px 0 12px;
+      display:flex;justify-content:space-between;align-items:end;gap:14px;
+    }
+    .secTitle b{font-size:20px;letter-spacing:-.2px}
+    .secTitle small{color:var(--mut);font-weight:900}
+
+    input,textarea{
+      width:100%;padding:14px 14px;border-radius:18px;
+      border:1px solid rgba(255,255,255,.14);
+      background:rgba(0,0,0,.22);
+      color:var(--txt);
+      outline:none;font-weight:900;
     }
 
-    .sub{
-      margin-top:6px;
-      font-size:12px;
-      color:var(--muted);
-      display:flex;
-      align-items:center;
-      justify-content:space-between;
-      gap:10px;
+    .rowFlex{display:flex;gap:10px;flex-wrap:wrap;align-items:center;justify-content:space-between}
+    .price{font-size:22px;font-weight:1100;letter-spacing:-.3px}
+    .mini{font-size:12px;font-weight:900;color:var(--mut)}
+
+    /* Modal */
+    .modalWrap{
+      position:fixed;inset:0;display:none;align-items:center;justify-content:center;
+      padding:16px;z-index:100;
+      background:rgba(0,0,0,.62);
     }
-    .tag{
-      display:inline-flex;
-      align-items:center;
-      gap:8px;
-      min-width:0;
-    }
-    .dot{
-      width:7px;height:7px;border-radius:50%;
-      background: var(--yellow);
-      box-shadow: 0 0 22px rgba(255,212,0,.22);
-      flex:0 0 auto;
-    }
-    .cat{
-      white-space:nowrap;
+    .modal{
+      width:min(720px,100%);
+      border-radius:28px;
       overflow:hidden;
-      text-overflow:ellipsis;
+      border:1px solid rgba(255,255,255,.12);
+      background:rgba(14,14,24,.96);
+      box-shadow:0 30px 80px rgba(0,0,0,.65);
+      max-height: min(92vh, 900px);
+      overflow-y: auto;
     }
-    .price{
-      font-weight:900;
-      color:#fff;
-      white-space:nowrap;
+    .modalTop{
+      display:flex;justify-content:space-between;align-items:center;
+      padding:14px 14px;border-bottom:1px solid rgba(255,255,255,.10);
+      position: sticky; top:0; background:rgba(14,14,24,.96);
+      z-index: 5;
+    }
+    .x{
+      width:46px;height:46px;border-radius:16px;
+      border:1px solid rgba(255,255,255,.12);
+      background:rgba(255,255,255,.06);
+      color:var(--txt);cursor:pointer
+    }
+    .modalBody{padding:14px}
+    .box{
+      border:1px solid rgba(255,255,255,.10);
+      border-radius:22px;background:rgba(255,255,255,.06);
+      padding:14px;
+    }
+
+    /* QR */
+    .qr{
+      border:1px solid rgba(255,255,255,.12);
+      border-radius:22px;
+      overflow:hidden;
+      background:#fff;
+    }
+    .qr img{display:block;width:100%;height:auto}
+
+    /* badges */
+    .badgeOk{
+      padding:10px 12px;border-radius:999px;
+      background:rgba(34,197,94,.12);
+      border:1px solid rgba(34,197,94,.20);
+      font-weight:1000;
+    }
+    .badgeBad{
+      padding:10px 12px;border-radius:999px;
+      background:rgba(239,68,68,.12);
+      border:1px solid rgba(239,68,68,.20);
+      font-weight:1000;
     }
 
     /* Toast */
     .toast{
-      position: fixed;
-      left: 50%;
-      bottom: 92px;
-      transform: translateX(-50%);
-      background: rgba(15,15,18,.88);
-      border: 1px solid rgba(255,255,255,.12);
-      padding: 10px 12px;
-      border-radius: 14px;
-      box-shadow: 0 22px 70px rgba(0,0,0,.65);
-      color: rgba(255,255,255,.9);
-      font-weight: 900;
-      font-size: 12px;
-      display:none;
-      z-index: 200;
-      backdrop-filter: blur(12px);
-      -webkit-backdrop-filter: blur(12px);
-    }
-    .toast b{ color: var(--yellow); }
-
-    /* Bottom bar */
-    .cartbar{
-      position:fixed;
-      left:0; right:0; bottom:0;
-      z-index:60;
-      padding:12px 12px 16px;
-      pointer-events:none;
-    }
-    .cartbar__inner{
-      pointer-events:auto;
-      max-width:1100px;
-      margin:0 auto;
-      border-radius: 18px;
-      background: rgba(10,10,12,.78);
-      backdrop-filter: blur(14px);
-      -webkit-backdrop-filter: blur(14px);
+      position:fixed;left:50%;transform:translateX(-50%);
+      bottom:92px;z-index:999;
+      background:rgba(0,0,0,.75);
       border:1px solid rgba(255,255,255,.12);
-      box-shadow: 0 24px 65px rgba(0,0,0,.65);
-      display:flex;
-      align-items:center;
-      justify-content:space-between;
-      gap:12px;
-      padding:12px 14px;
-    }
-    .cartleft{
-      display:flex;
-      align-items:center;
-      gap:10px;
-      min-width: 0;
-    }
-    .carticon{
-      width:40px;height:40px;border-radius:14px;
-      display:grid;place-items:center;
-      background: linear-gradient(135deg, rgba(255,212,0,.22), rgba(255,43,43,.18));
-      border:1px solid rgba(255,255,255,.14);
-      box-shadow: 0 14px 32px rgba(0,0,0,.45);
-      flex:0 0 auto;
-    }
-    .carttext{ min-width:0; display:flex; flex-direction:column; gap:2px; }
-    .carttext b{
-      font-size:13.5px;
-      white-space:nowrap;
-      overflow:hidden;
-      text-overflow:ellipsis;
-    }
-    .carttext span{ font-size:12px; color:var(--muted); }
-
-    .totalBtn{
-      font-weight:900;
-      font-size:14px;
-      padding:10px 12px;
-      border-radius:14px;
-      background: linear-gradient(135deg, var(--yellow), var(--red));
-      color:#111;
-      border:1px solid rgba(255,255,255,.18);
-      box-shadow: 0 20px 46px rgba(0,0,0,.55);
-      cursor:pointer;
-      transition: transform .12s ease;
-      white-space:nowrap;
-      text-decoration:none;
-      display:inline-flex;
-      align-items:center;
-      gap:8px;
-    }
-    .totalBtn:active{ transform: scale(.98); }
-
-    /* Checkout */
-    .panel{
-      border-radius: var(--radius);
-      background: rgba(255,255,255,.06);
-      border:1px solid rgba(255,255,255,.10);
-      box-shadow: var(--shadow);
-      overflow:hidden;
-    }
-    .panelTop{
-      padding:14px;
-      border-bottom:1px solid rgba(255,255,255,.08);
-      display:flex;
-      align-items:center;
-      justify-content:space-between;
-      gap:12px;
-    }
-    .panelTop h2{ margin:0; font-size:18px; }
-    .panelTop span{ color:var(--muted); font-size:12px; }
-
-    .btn{
-      padding:10px 12px;
-      border-radius:14px;
-      border:1px solid rgba(255,255,255,.12);
-      background: rgba(255,255,255,.05);
-      color:rgba(255,255,255,.90);
-      font-weight:900;
-      cursor:pointer;
-      text-decoration:none;
-      display:inline-flex;
-      align-items:center;
-      gap:8px;
-    }
-    .btn:active{ transform: scale(.99); }
-    .danger{
-      border-color: rgba(255,43,43,.30);
-      background: rgba(255,43,43,.08);
-    }
-
-    .items{
-      padding:14px;
-      display:flex;
-      flex-direction:column;
-      gap:10px;
-    }
-    .item{
-      padding:12px;
-      border-radius:16px;
-      background: rgba(0,0,0,.18);
-      border:1px solid rgba(255,255,255,.10);
-      display:flex;
-      align-items:center;
-      justify-content:space-between;
-      gap:12px;
-    }
-    .left{ min-width:0; }
-    .left b{
-      display:block;
-      white-space:nowrap;
-      overflow:hidden;
-      text-overflow:ellipsis;
-      font-size:13px;
-    }
-    .left small{ color:var(--muted); font-weight:800; }
-
-    .qty{
-      display:flex;
-      align-items:center;
-      gap:8px;
-      flex:0 0 auto;
-    }
-    .qbtn{
-      width:36px;height:36px;
-      border-radius:12px;
-      border:1px solid rgba(255,255,255,.12);
-      background: rgba(255,255,255,.06);
       color:#fff;
-      font-weight:900;
-      cursor:pointer;
-    }
-    .qbtn:active{ transform: scale(.98); }
-    .num{ min-width:22px; text-align:center; font-weight:900; }
-
-    .price2{ font-weight:900; white-space:nowrap; }
-
-    .empty{ padding:18px; color:var(--muted); display:none; }
-
-    /* Side menu */
-    .menuOverlay{
-      position:fixed; inset:0;
-      background: rgba(0,0,0,.55);
+      padding:12px 14px;border-radius:999px;
+      font-weight:1000;
       display:none;
-      z-index:999;
     }
-    .menu{
-      position:fixed;
-      top:0; right:0;
-      height:100%;
-      width:min(320px, 92%);
-      background: rgba(12,12,15,.92);
-      backdrop-filter: blur(14px);
-      -webkit-backdrop-filter: blur(14px);
-      border-left:1px solid rgba(255,255,255,.10);
-      box-shadow: -22px 0 80px rgba(0,0,0,.65);
-      transform: translateX(100%);
-      transition: transform .18s ease;
-      z-index:1000;
-      padding:14px;
-      display:flex;
-      flex-direction:column;
-      gap:12px;
+
+    /* WhatsApp */
+    .wa{position:fixed;right:18px;bottom:18px;z-index:60;text-decoration:none}
+    .wa .chip{
+      display:flex;gap:10px;align-items:center;padding:14px 14px;border-radius:999px;
+      background:linear-gradient(90deg,#16a34a,#22c55e);
+      color:#fff;font-weight:1000;
+      box-shadow:0 20px 50px rgba(34,197,94,.25);
     }
-    .menu.open{ transform: translateX(0); }
-    .menuHead{
-      display:flex; align-items:center; justify-content:space-between; gap:10px;
-      padding-bottom:10px;
-      border-bottom:1px solid rgba(255,255,255,.08);
+    .wa .dot{width:44px;height:44px;border-radius:999px;display:grid;place-items:center;background:rgba(255,255,255,.20)}
+
+    .footer{
+      margin:26px 0 40px;color:rgba(255,255,255,.58);
+      font-weight:900;text-align:center;
     }
-    .menuHead b{ font-size:14px; }
-    .closeBtn{
+
+    hr{border:0;border-top:1px solid rgba(255,255,255,.10);margin:14px 0}
+
+    /* Upgrade 1: Proof social ticker */
+    .ticker{
+      margin-top:12px;
+      border-radius:999px;
+      border:1px solid rgba(255,255,255,.12);
+      background:rgba(255,255,255,.06);
       padding:10px 12px;
-      border-radius:14px;
+      display:flex;gap:10px;align-items:center;
+      overflow:hidden;
+      position:relative;
+    }
+    .ticker strong{font-weight:1100}
+    .ticker .dot2{
+      width:10px;height:10px;border-radius:999px;
+      background:linear-gradient(135deg,var(--mint),#a7f3d0);
+      box-shadow:0 0 0 6px rgba(124,255,178,.12);
+      flex:0 0 auto;
+    }
+    .ticker .marq{
+      white-space:nowrap;
+      display:inline-block;
+      animation: marq 18s linear infinite;
+      color:rgba(255,255,255,.82);
+      font-weight:1000;
+      will-change: transform;
+    }
+    @keyframes marq{
+      0%{ transform: translateX(0); }
+      100%{ transform: translateX(-50%); }
+    }
+    .ticker .wrap{display:flex;gap:24px;flex:1;overflow:hidden}
+    .ticker .marq > span{margin-right:24px}
+
+    @media (prefers-reduced-motion: reduce){
+      .ticker .marq{animation:none}
+    }
+  
+
+    /* === Suporte IA (widget) === */
+    .aiFab{
+      position:fixed; right:18px; bottom:18px; z-index:99;
+      border:none; cursor:pointer;
+      padding:14px 16px; border-radius:999px;
+      background: linear-gradient(90deg, rgba(255,59,92,1), rgba(178,155,255,1));
+      color:white; font-weight:1000;
+      box-shadow: 0 18px 45px rgba(0,0,0,.35);
+      display:flex; align-items:center; gap:10px;
+    }
+    .aiFab span{font-size:14px;}
+    .aiPanel{
+      position:fixed; right:18px; bottom:78px; z-index:100;
+      width:min(380px, calc(100vw - 36px));
+      border-radius:20px;
       border:1px solid rgba(255,255,255,.12);
-      background: rgba(255,255,255,.05);
-      color: rgba(255,255,255,.9);
-      font-weight:900;
-      cursor:pointer;
+      background: rgba(12,12,18,.92);
+      box-shadow: 0 22px 65px rgba(0,0,0,.55);
+      overflow:hidden;
+      display:none;
+      backdrop-filter: blur(12px);
     }
-    .link{
-      padding:12px 12px;
-      border-radius:16px;
-      border:1px solid rgba(255,255,255,.12);
-      background: rgba(255,255,255,.05);
-      color: rgba(255,255,255,.92);
-      text-decoration:none;
-      font-weight:900;
-      display:flex;
-      align-items:center;
-      justify-content:space-between;
-      gap:10px;
-    }
-    .link small{ color: rgba(255,255,255,.65); font-weight:800; }
-    .link:hover{ border-color: rgba(255,212,0,.22); }
-    .menuFoot{
-      margin-top:auto;
-      padding-top:10px;
-      border-top:1px solid rgba(255,255,255,.08);
-      color: rgba(255,255,255,.65);
-      font-size: 11px;
-      font-weight:800;
-      line-height:1.35;
-    }
+    .aiTop{display:flex; align-items:center; justify-content:space-between; padding:12px 12px; border-bottom:1px solid rgba(255,255,255,.10)}
+    .aiTop b{font-weight:1100}
+    .aiClose{width:42px;height:42px;border-radius:14px;border:1px solid rgba(255,255,255,.14);background:rgba(255,255,255,.06);color:var(--txt);cursor:pointer}
+    .aiBody{padding:12px; max-height:46vh; overflow:auto}
+    .aiMsg{display:flex; gap:10px; margin:10px 0}
+    .aiBubble{padding:10px 12px;border-radius:16px; border:1px solid rgba(255,255,255,.10); background: rgba(255,255,255,.06); color: var(--txt); line-height:1.45; font-weight:800; font-size:13px}
+    .aiMe .aiBubble{background: rgba(178,155,255,.14); border-color: rgba(178,155,255,.22)}
+    .aiBot .aiBubble{background: rgba(255,59,92,.10); border-color: rgba(255,59,92,.18)}
+    .aiFoot{display:flex; gap:10px; padding:12px; border-top:1px solid rgba(255,255,255,.10)}
+    .aiInput{flex:1; padding:12px 12px; border-radius:14px; border:1px solid rgba(255,255,255,.14); background: rgba(0,0,0,.20); color: var(--txt); outline:none; font-weight:900}
+    .aiSend{padding:12px 14px; border-radius:14px; border:none; cursor:pointer; font-weight:1000; color:#0b0b14; background: linear-gradient(90deg, rgba(124,255,178,1), rgba(255,212,0,1))}
+    .aiHelp{padding:10px 12px; margin:12px; border-radius:16px; border:1px dashed rgba(255,255,255,.14); background: rgba(0,0,0,.20); color: var(--mut); font-weight:900; font-size:12px}
+    .aiActions{display:flex; gap:10px; padding:0 12px 12px}
+    .aiHuman{flex:1; text-align:center; padding:12px 12px; border-radius:14px; border:1px solid rgba(255,255,255,.14); background: rgba(255,255,255,.06); color: var(--txt); font-weight:1000; text-decoration:none}
+
   </style>
 </head>
 
 <body>
-  <header class="topbar">
-    <div class="topbar__row">
+  <!-- TOPBAR -->
+  <div class="topbar">
+    <div class="row">
       <div class="brand">
-        <div class="logo" aria-hidden="true"></div>
+        <div class="logo"><span>VV</span></div>
         <div>
-          <b>ViralVault</b>
-          <small id="subtitle">Catálogo • Itens e contas</small>
+          <div style="font-size:15px">ViralVault Store</div>
+          <div class="mini">anime kawaii • 100% digital</div>
         </div>
       </div>
 
-      <div class="pill" role="search" id="searchWrap">
-        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" aria-hidden="true">
-          <path d="M10.5 18a7.5 7.5 0 1 1 0-15 7.5 7.5 0 0 1 0 15Z" stroke="rgba(255,255,255,.75)" stroke-width="2"/>
-          <path d="M16.5 16.5 21 21" stroke="rgba(255,255,255,.75)" stroke-width="2" stroke-linecap="round"/>
-        </svg>
-        <input id="search" placeholder="Pesquisar..." autocomplete="off" />
+      <div class="pill">
+        <b>🔒 PIX seguro</b>
+        <b>⚡ entrega 24h</b>
+        <button class="btn btnPrimary" id="btnOpenVerify">🔎 Verificar</button>
+        <button class="btn" id="btnOpenAdmin">🛡️ Admin</button>
       </div>
-
-      <button class="iconbtn" id="openCart" title="Checkout">
-        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" aria-hidden="true">
-          <path d="M7 7h15l-2 9H9L7 7Z" stroke="rgba(255,255,255,.85)" stroke-width="2" stroke-linejoin="round"/>
-          <path d="M7 7 6 3H3" stroke="rgba(255,255,255,.85)" stroke-width="2" stroke-linecap="round"/>
-          <path d="M9 20a1 1 0 1 0 0-2 1 1 0 0 0 0 2Zm10 0a1 1 0 1 0 0-2 1 1 0 0 0 0 2Z" fill="rgba(255,255,255,.85)"/>
-        </svg>
-        <span class="badge" id="cartCount">0</span>
-      </button>
-
-      <button class="iconbtn" id="openMenu" title="Menu">
-        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" aria-hidden="true">
-          <path d="M4 7h16M4 12h16M4 17h16" stroke="rgba(255,255,255,.85)" stroke-width="2" stroke-linecap="round"/>
-        </svg>
-      </button>
-    </div>
-  </header>
-
-  <main class="wrap">
-    <!-- CATALOGO -->
-    <section class="page active" id="pageCatalog">
-      <section class="hero">
-        <h1>Escolha o que você quer</h1>
-        <p>Filtre por categoria e toque nos cards pra adicionar no carrinho.</p>
-        <div class="filters" id="filters"></div>
-      </section>
-      <section class="grid" id="grid"></section>
-    </section>
-
-    <!-- CHECKOUT -->
-    <section class="page" id="pageCheckout">
-      <section class="hero">
-        <h1>Checkout</h1>
-        <p>Revise seu carrinho e finalize (demo). Você pode editar as quantidades.</p>
-      </section>
-
-      <div class="panel">
-        <div class="panelTop">
-          <div>
-            <h2>Seu carrinho</h2>
-            <span>Edite as quantidades antes de finalizar.</span>
-          </div>
-          <button class="btn danger" id="clearBtn">Limpar</button>
-        </div>
-
-        <div class="items" id="items"></div>
-        <div class="empty" id="empty">Carrinho vazio. Volte no catálogo e adicione itens.</div>
-      </div>
-    </section>
-  </main>
-
-  <div class="toast" id="toast">Adicionado: <b id="toastName"></b></div>
-
-  <div class="cartbar">
-    <div class="cartbar__inner">
-      <div class="cartleft">
-        <div class="carticon" aria-hidden="true">
-          <svg width="18" height="18" viewBox="0 0 24 24" fill="none">
-            <path d="M7 7h15l-2 9H9L7 7Z" stroke="rgba(255,255,255,.92)" stroke-width="2" stroke-linejoin="round"/>
-            <path d="M7 7 6 3H3" stroke="rgba(255,255,255,.92)" stroke-width="2" stroke-linecap="round"/>
-          </svg>
-        </div>
-        <div class="carttext">
-          <b><span id="barCount">0</span> item(ns) no carrinho</b>
-          <span id="barHint">Toque para ir ao checkout</span>
-        </div>
-      </div>
-
-      <button class="totalBtn" id="primaryBtn">
-        R$ <span id="barTotal">0,00</span> • Checkout →
-      </button>
     </div>
   </div>
 
-  <!-- Side Menu -->
-  <div class="menuOverlay" id="menuOverlay"></div>
-  <aside class="menu" id="menu">
-    <div class="menuHead">
-      <b>Menu • ViralVault</b>
-      <button class="closeBtn" id="closeMenu">Fechar</button>
+  <div class="container">
+    <!-- HERO -->
+    <section class="hero">
+      <div class="content">
+        <div>
+          <div class="tag"><span class="k"></span> <span>Anime kawaii • Loja premium</span></div>
+          <div class="h1">Compre com confiança ✨<br/>e verifique seu pedido em segundos.</div>
+          <p class="sub">
+            Produtos digitais (Roblox/brainrots). Clique em COMPRAR e pague via PIX. Entrega em até 24h (ou reembolso).
+          </p>
+
+          <!-- Upgrade 1: Proof Social Ticker -->
+          <div class="ticker" aria-label="Prova social em tempo real">
+            <span class="dot2"></span>
+            <strong>Ao vivo:</strong>
+            <div class="wrap" aria-hidden="true">
+              <div class="marq" id="vvTicker">
+                <span>🔥 18 pessoas viram esta loja nos últimos 30 min</span>
+                <span>✅ 6 pedidos verificados hoje</span>
+                <span>⚡ Entrega em até 24h (ou reembolso)</span>
+                <span>🛡️ VV-OFICIAL: verificação no servidor</span>
+
+                <span>🔥 18 pessoas viram esta loja nos últimos 30 min</span>
+                <span>✅ 6 pedidos verificados hoje</span>
+                <span>⚡ Entrega em até 24h (ou reembolso)</span>
+                <span>🛡️ VV-OFICIAL: verificação no servidor</span>
+              </div>
+            </div>
+          </div>
+
+          <div style="display:flex;gap:10px;flex-wrap:wrap;margin-top:14px">
+            <button class="btn btnPrimary" id="btnGoProducts">🛍️ Comprar agora</button>
+            <button class="btn btnGhost" id="btnGoHow">📌 Como funciona</button>
+            <a class="btn btnGhost" id="btnGoSupport" href="#" style="text-decoration:none">💬 Suporte</a>
+          </div>
+
+          <div class="bullets">
+            <div class="b"><div class="ico">🔐</div><div><b style="font-weight:1000;color:#fff">Anti-golpe</b><div class="mini">verificação + comprovante</div></div></div>
+            <div class="b"><div class="ico">💾</div><div><b style="font-weight:1000;color:#fff">100% digital</b><div class="mini">sem frete, sem atraso</div></div></div>
+            <div class="b"><div class="ico">⏱️</div><div><b style="font-weight:1000;color:#fff">SLA 24h</b><div class="mini">ou reembolso</div></div></div>
+          </div>
+        </div>
+
+        <!-- CUPOM CARD -->
+        <div class="card">
+          <div class="inner">
+            <div class="rowFlex">
+              <b style="font-size:16px">Cupom de boas-vindas 🎁</b>
+              <span class="tag" style="border-color:rgba(255,59,92,.25);background:rgba(255,59,92,.12)">
+                1 uso por cliente
+              </span>
+            </div>
+
+            <div class="box" style="margin-top:12px">
+              <div class="rowFlex">
+                <div>
+                  <div class="mini">use no checkout:</div>
+                  <div style="font-size:20px;font-weight:1100;letter-spacing:.6px" id="couponLabel">BEMVINDO10</div>
+                </div>
+                <button class="btn btnPrimary small" id="btnCopyCoupon">Copiar</button>
+              </div>
+              <hr/>
+              <div class="mini">O desconto aparece automaticamente no checkout.</div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- PRODUTOS -->
+    <div class="secTitle" id="produtos">
+      <b>Produtos digitais 🛒</b>
+      <small>escolha 1 item e pague via PIX</small>
+    </div>
+    <section class="grid" id="gridProducts"></section>
+    <div class="mini" style="margin:8px 0 0;opacity:.92">
+      ✅ Para comprar: clique em <b>Comprar agora</b> → pague o PIX → <b>aguarde a entrega</b>. (Se quiser, você pode mandar seu user do Roblox no WhatsApp depois.)
     </div>
 
-    <a class="link" href="#catalog" data-nav="catalog">
-      Catálogo <small>Home</small>
-    </a>
 
-    <a class="link" href="#checkout" data-nav="checkout">
-      Checkout <small>Carrinho</small>
-    </a>
-
-    <a class="link" href="#support" id="supportLink">
-      Suporte <small>Contato</small>
-    </a>
-
-    <div class="menuFoot">
-      Dica: edite os produtos no código para mudar nomes/preços/categorias.
+    <!-- COMO FUNCIONA -->
+    <div class="secTitle" id="como">
+      <b>Como funciona 🎀</b>
+      <small>super simples</small>
     </div>
-  </aside>
+
+    <div class="card">
+      <div class="inner">
+        <div class="rowFlex">
+          <div class="b" style="flex:1"><div class="ico">1</div><div><b style="font-weight:1000;color:#fff">Escolha o item</b><div class="mini">adicione ao checkout</div></div></div>
+          <div class="b" style="flex:1"><div class="ico">2</div><div><b style="font-weight:1000;color:#fff">Pague via PIX</b><div class="mini">QR + copia e cola</div></div></div>
+          <div class="b" style="flex:1"><div class="ico">3</div><div><b style="font-weight:1000;color:#fff">Receba em até 24h</b><div class="mini">ou reembolso</div></div></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- VERIFICAR -->
+    <div class="secTitle" id="verificar">
+      <b>Verificar pedido 🔎</b>
+      <small>confirma se o pedido é VV-OFICIAL</small>
+    </div>
+
+    <div class="card">
+      <div class="inner">
+        <div class="rowFlex">
+          <input id="verifyOrderId" placeholder="Cole aqui seu Order ID (vv_...)" style="flex:1"/>
+          <button class="btn btnPrimary" id="btnVerify">Verificar</button>
+        </div>
+
+        <div style="margin-top:12px" id="verifyResult" class="mini">—</div>
+
+        <div id="pubProofWrap" style="margin-top:10px; display:none">
+          <div class="mini" style="margin-bottom:8px">Prova de entrega</div>
+          <div id="pubProof"></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="footer">
+      © 2026 ViralVault Store • Loja 100% digital • SP <br/>
+      Suporte: WhatsApp +55 11 94159-8713
+    </div>
+  </div>
+
+  <!-- WHATSAPP -->
+  <a class="wa" id="waFloat" href="#" target="_blank" rel="noopener">
+    <div class="chip">
+      <div class="dot">💬</div>
+      <div>
+        <div style="font-size:12px;opacity:.92">Suporte</div>
+        <div>WhatsApp</div>
+      </div>
+    </div>
+  </a>
+
+  <div class="toast" id="toast">Copiado ✅</div>
+
+  <!-- MODAL CHECKOUT -->
+  <div class="modalWrap" id="modalCheckout">
+    <div class="modal">
+      <div class="modalTop">
+        <b id="ckTitle">Checkout</b>
+        <button class="x" id="ckClose">✕</button>
+      </div>
+
+      <div class="modalBody">
+        <div class="box">
+          <div class="mini">Finalize com PIX seguro</div>
+
+          <div class="rowFlex" style="margin-top:10px">
+            <div style="flex:1">
+              <div class="mini">Usuário do Roblox (opcional)</div>
+              <input id="ckRbxUser" placeholder="@user_1234"/>
+            </div>
+            <div style="flex:1">
+              <div class="mini">Info extra (opcional)</div>
+              <input id="ckRbxExtra" placeholder="ex: ID do item"/>
+            </div>
+          </div>
+
+          <div class="rowFlex" style="margin-top:10px">
+            <div style="flex:1">
+              <div class="mini">Cupom</div>
+              <input id="ckCoupon" placeholder="BEMVINDO10"/>
+            </div>
+            <div style="flex:1">
+              <div class="mini">Preço final</div>
+              <div class="price" id="ckFinalPrice">R$ 0,00</div>
+            </div>
+          </div>
+
+          <div class="mini" style="margin-top:10px;opacity:.95">
+            ✅ Entrega em até <b>24h</b>. Se não entregar: <b>reembolso</b>.
+          </div>
+
+          <hr/>
+
+          <div class="rowFlex" style="align-items:flex-start;gap:12px">
+            <div class="qr" style="flex:1;min-width:220px">
+              <img id="qrImg" alt="QR PIX" src="" />
+            </div>
+
+            <div style="flex:1;min-width:220px">
+              <div class="mini">PIX copia e cola</div>
+              <textarea id="ckPixEmv" readonly style="min-height:108px;resize:none;font-size:13px;line-height:1.25"></textarea>
+
+              <div style="display:flex;gap:10px;flex-wrap:wrap;justify-content:flex-end;margin-top:10px">
+                <button class="btn btnPrimary small" id="btnCopyPix">Copiar PIX</button>
+                <button class="btn btnGhost small" id="btnCopyOrder" disabled>Copiar Order ID</button>
+              </div>
+
+              <div class="mini" style="margin-top:10px">
+                ✅ Pague apenas o PIX exibido aqui. Se alguém mandar outra chave no chat, é golpe.
+              </div>
+            </div>
+          </div>
+
+          <hr/>
+
+          <div class="rowFlex">
+            <button class="btn btnPrimary" id="btnCreateOrder">Gerar pedido e liberar PIX</button>
+            <a class="btn btnGhost" id="btnOpenWaPay" href="#" target="_blank" rel="noopener" style="text-decoration:none">Enviar no WhatsApp (opcional)</a>
+          </div>
+
+          <div class="mini" style="margin-top:10px" id="ckStatus">—</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- MODAL ADMIN -->
+  <div class="modalWrap" id="modalAdmin">
+    <div class="modal">
+      <div class="modalTop">
+        <b>Admin local 🛡️</b>
+        <button class="x" id="adClose">✕</button>
+      </div>
+
+      <div class="modalBody">
+        <div class="box">
+          <div class="mini">Acesso só para você</div>
+
+          <div class="rowFlex" style="margin-top:10px">
+            <input id="adminPass" placeholder="Senha admin"/>
+            <button class="btn btnPrimary" id="btnAdminLogin">Entrar</button>
+          </div>
+
+          <div class="mini" id="adminStatus" style="margin-top:10px">Bloqueado.</div>
+
+          <div id="adminPanel" style="display:none;margin-top:14px">
+            <hr/>
+            <b>🧾 Prova de entrega</b>
+            <div class="mini">salva no seu dispositivo (local)</div>
+
+            <div class="rowFlex" style="margin-top:10px">
+              <input id="proofOrderId" placeholder="Order ID"/>
+              <input id="proofValue" placeholder="Link (https://...) ou texto"/>
+              <button class="btn btnPrimary" id="btnSaveProof">Salvar</button>
+            </div>
+
+            <div class="mini" style="margin-top:10px">Depois, dá pra migrar pra prova GLOBAL no Worker/KV.</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
 
   <script>
-    // ===== PRODUTOS (edita aqui depois) =====
-    const produtos = [
-      { nome: "Robux 80 (Entrega rápida)", categoria: "Robux", preco: 9.60, img: "https://i.imgur.com/TbY4xvZ.png" },
-      { nome: "Robux 400 (Promo)", categoria: "Robux", preco: 39.90, img: "https://i.imgur.com/TbY4xvZ.png" },
-      { nome: "Conta Dragon (Blox Fruits)", categoria: "Conta", preco: 49.90, img: "https://i.imgur.com/4mVb1Xj.jpg" },
-      { nome: "Conta PVP (Jujutsu)", categoria: "Conta", preco: 29.90, img: "https://i.imgur.com/86tWjvX.jpg" },
-      { nome: "Itens Raros (Adopt Me)", categoria: "Itens", preco: 19.90, img: "https://i.imgur.com/8p8j0m0.jpg" },
-      { nome: "Som de Matança", categoria: "Itens", preco: 4.80, img: "https://i.imgur.com/c7vXj3o.png" },
-      { nome: "Gamepass VIP (Anime)", categoria: "Gamepass", preco: 14.90, img: "https://i.imgur.com/7yYxj0p.jpg" },
-      { nome: "Pacote de Gems (Anime)", categoria: "Moeda", preco: 12.90, img: "https://i.imgur.com/2TQZ2nA.jpg" }
+    /*** CONFIG ***/
+    const WORKER_BASE = "https://viralvault-sign.darlanana06.workers.dev".replace(/\/+$/,"");
+    const WHATS = "5511941598713";
+    const ADMIN_PASSCODE = "P@ss_VV_6nT2xQ9mR4vL1pK7hJ3cD0wE8yG5bF";
+    const WELCOME_COUPON = "BEMVINDO10";
+
+    const PIX_EMV = `00020101021126580014br.gov.bcb.pix0136851fee9f-0037-44f3-9361-e053c1faa7685204000053039865802BR5921DARLAN B R DOS SANTOS6009SAO PAULO62070503***63048DFF`;
+
+    const PIX_QR_IMAGE_URL = "./pix-qr.png";
+
+    const SS_ADMIN = "vv_admin";
+    const LS_COUPON = "vv_coupon_used_v1";
+
+    const FALLBACK_PRODUCTS = [
+      {id:"brainrot_basic", name:"Brainrot Pack (Básico)", desc:"Entrega 100% digital • em até 24h", price: 9.90, tag:"Popular"},
+      {id:"brainrot_plus", name:"Brainrot Pack (Plus)", desc:"Itens premium • entrega em até 24h", price: 19.90, tag:"Premium"},
+      {id:"roblox_custom", name:"Entrega Personalizada (Roblox)", desc:"Você escolhe o que precisa • 24h", price: 29.90, tag:"Custom"},
     ];
 
-    // ===== CARRINHO (salva no navegador) =====
-    const CART_KEY = "viralvault_cart_v1";
+    let PRODUCTS = FALLBACK_PRODUCTS.slice();
 
-    function loadCart(){
-      try{
-        const raw = localStorage.getItem(CART_KEY);
-        if(!raw) return new Map();
-        return new Map(JSON.parse(raw));
-      }catch(e){
-        return new Map();
-      }
-    }
-    function saveCart(map){
-      localStorage.setItem(CART_KEY, JSON.stringify([...map.entries()]));
+
+    const $ = (q)=>document.querySelector(q);
+    function money(v){ return v.toLocaleString("pt-BR",{style:"currency",currency:"BRL"}); }
+
+    function toast(msg){
+      const t=$("#toast");
+      t.textContent=msg;
+      t.style.display="block";
+      clearTimeout(window.__t);
+      window.__t=setTimeout(()=>t.style.display="none",1500);
     }
 
-    const carrinho = loadCart();
-
-    // ===== DOM =====
-    const pageCatalog = document.getElementById("pageCatalog");
-    const pageCheckout = document.getElementById("pageCheckout");
-
-    const subtitle = document.getElementById("subtitle");
-    const searchWrap = document.getElementById("searchWrap");
-    const search = document.getElementById("search");
-    const filters = document.getElementById("filters");
-    const grid = document.getElementById("grid");
-
-    const itemsEl = document.getElementById("items");
-    const emptyEl = document.getElementById("empty");
-    const clearBtn = document.getElementById("clearBtn");
-
-    const cartCount = document.getElementById("cartCount");
-    const barCount = document.getElementById("barCount");
-    const barTotal = document.getElementById("barTotal");
-    const barHint = document.getElementById("barHint");
-    const primaryBtn = document.getElementById("primaryBtn");
-
-    const toast = document.getElementById("toast");
-    const toastName = document.getElementById("toastName");
-
-    let activeCategory = "Todos";
-
-    function moneyBR(v){ return v.toFixed(2).replace(".", ","); }
-
-    // ===== Pages =====
-    function setPage(name){
-      const isCatalog = name === "catalog";
-      pageCatalog.classList.toggle("active", isCatalog);
-      pageCheckout.classList.toggle("active", !isCatalog);
-
-      subtitle.textContent = isCatalog ? "Catálogo • Itens e contas" : "Checkout • Carrinho";
-      searchWrap.style.display = isCatalog ? "flex" : "none";
-
-      barHint.textContent = isCatalog ? "Toque para ir ao checkout" : "Finalizar pedido (demo)";
-      primaryBtn.innerHTML = isCatalog
-        ? `R$ <span id="barTotal">0,00</span> • Checkout →`
-        : `R$ <span id="barTotal">0,00</span> • Finalizar →`;
-
-      // rebind span ref after innerHTML change
-      window._barTotalSpan = primaryBtn.querySelector("#barTotal");
-
-      if(!isCatalog){
-        renderCheckout();
-      }
-      updateCartUI();
-      closeMenu();
-      window.location.hash = isCatalog ? "#catalog" : "#checkout";
+    async function copyText(text){
+      try{ await navigator.clipboard.writeText(text); toast("Copiado ✅"); }
+      catch(e){ prompt("Copie:", text); }
     }
 
-    // ===== Filters =====
-    function getCategories(){
-      const set = new Set(produtos.map(p => p.categoria));
-      return ["Todos", ...Array.from(set)];
-    }
+    function openModal(el){ $(el).style.display="flex"; }
+    function closeModal(el){ $(el).style.display="none"; }
 
-    function renderFilters(){
-      filters.innerHTML = "";
-      getCategories().forEach(cat => {
-        const btn = document.createElement("div");
-        btn.className = "chip" + (cat === activeCategory ? " active" : "");
-        btn.textContent = cat;
-        btn.addEventListener("click", () => {
-          activeCategory = cat;
-          renderFilters();
-          applyAndRender();
-        });
-        filters.appendChild(btn);
-      });
-    }
+    const supportMsg = encodeURIComponent("Oi ViralVault! Preciso de suporte.");
+    $("#waFloat").href = `https://wa.me/${WHATS}?text=${supportMsg}`;
+    $("#btnGoSupport").href = `https://wa.me/${WHATS}?text=${supportMsg}`;
 
-    // ===== Catalog =====
-    function renderCatalog(lista){
-      grid.innerHTML = "";
-      lista.forEach((p) => {
-        const el = document.createElement("article");
-        el.className = "card";
+    $("#ckPixEmv").value = PIX_EMV;
+    $("#qrImg").src = PIX_QR_IMAGE_URL;
+
+    let currentProduct=null;
+    let lastOrderId="";
+
+    function renderProducts(){
+      const grid=$("#gridProducts");
+      grid.innerHTML="";
+      PRODUCTS.forEach(p=>{
+        const el=document.createElement("div");
+        el.className="card";
         el.innerHTML = `
-          <div class="thumb">
-            <img src="${p.img}" alt="${p.nome}">
-          </div>
-          <div class="meta">
-            <div class="title">${p.nome}</div>
-            <div class="sub">
-              <div class="tag">
-                <span class="dot"></span>
-                <span class="cat">${p.categoria}</span>
+          <div class="inner">
+            <div class="tag"><span class="k"></span><span>${p.tag} • 💾 Digital</span></div>
+            <div style="font-size:18px;font-weight:1100;letter-spacing:-.2px;margin:8px 0">${p.name}</div>
+            <div class="mini" style="line-height:1.5">${p.desc}</div>
+            <div class="rowFlex" style="margin-top:14px">
+              <div>
+                <div class="mini">Preço</div>
+                <div class="price">${money(p.price)}</div>
               </div>
-              <div class="price">R$ ${moneyBR(p.preco)}</div>
+              <button class="btn btnPrimary small" data-buy="${p.id}">Comprar agora</button>
             </div>
-          </div>
-        `;
-        el.addEventListener("click", () => addToCart(p));
+          </div>`;
         grid.appendChild(el);
       });
+
+      grid.querySelectorAll("[data-buy]").forEach(btn=>{
+        btn.addEventListener("click", ()=>{
+          const id=btn.getAttribute("data-buy");
+          currentProduct=PRODUCTS.find(x=>x.id===id);
+          openCheckout(currentProduct);
+        }, {passive:true});
+      });
     }
 
-    function applyAndRender(){
-      const q = search.value.trim().toLowerCase();
-      let lista = produtos.slice();
-
-      if(activeCategory !== "Todos"){
-        lista = lista.filter(p => p.categoria === activeCategory);
+    function calcDiscount(price,coupon){
+      const c=(coupon||"").trim().toUpperCase();
+      const usedKey = LS_COUPON+"_"+c;
+      const used = localStorage.getItem(usedKey)==="1";
+      if(c===WELCOME_COUPON && !used){
+        return {final:+(price*0.9).toFixed(2), off:"10%", canUse:true, usedKey};
       }
-      if(q){
-        lista = lista.filter(p =>
-          p.nome.toLowerCase().includes(q) ||
-          p.categoria.toLowerCase().includes(q)
+      return {final:price, off:"", canUse:false, usedKey};
+    }
+
+    function updatePrice(){
+      const p=currentProduct?.price||0;
+      const coupon=$("#ckCoupon").value;
+      const d=calcDiscount(p,coupon);
+      $("#ckFinalPrice").textContent = money(d.final) + (d.canUse?`  (-${d.off})`:"");
+    }
+
+    function openCheckout(product){
+      $("#ckTitle").textContent = "Checkout • "+product.name;
+      $("#ckStatus").textContent = "—";
+      $("#ckRbxUser").value="";
+      $("#ckRbxExtra").value="";
+      $("#ckCoupon").value=WELCOME_COUPON;
+      $("#btnCopyOrder").disabled=true;
+      lastOrderId="";
+      updatePrice();
+      openModal("#modalCheckout");
+
+    }
+
+    $("#ckCoupon").addEventListener("input", updatePrice, {passive:true});
+
+    async function apiCatalog(){
+      const res = await fetch(WORKER_BASE + "/catalog", { method:"GET" });
+      const data = await res.json().catch(()=>({}));
+      if(!res.ok) throw new Error(data?.error || "Erro ao carregar catálogo");
+      return data;
+    }
+
+    async function apiCheckout(payload){
+      const res = await fetch(WORKER_BASE + "/create-order", {
+        method:"POST",
+        headers:{"content-type":"application/json"},
+        body: JSON.stringify(payload)
+      });
+      const data = await res.json().catch(()=>({}));
+      if(!res.ok) throw new Error(data?.error || "Erro no checkout");
+      return data;
+    }
+
+    async function apiVerify(orderId){
+      const res = await fetch(WORKER_BASE + "/order-status", {
+        method:"POST",
+        headers:{"content-type":"application/json"},
+        body: JSON.stringify({orderId})
+      });
+      const data = await res.json().catch(()=>({}));
+      if(!res.ok) throw new Error(data?.error || "Erro na verificação");
+      return data;
+    }
+
+    $("#btnCreateOrder").addEventListener("click", async ()=>{
+      try{
+        if(!currentProduct) return;
+
+        const rbxUser=$("#ckRbxUser").value.trim();
+        const rbxExtra=$("#ckRbxExtra").value.trim();
+        if(!rbxUser){
+          $("#ckStatus").innerHTML="⚠️ <b>Preencha seu usuário do Roblox</b> para receber o item.";
+          $("#ckRbxUser").focus();
+          return;
+        }
+
+        const coupon=$("#ckCoupon").value.trim().toUpperCase();
+        const d=calcDiscount(currentProduct.price,coupon);
+
+        $("#ckStatus").textContent="Gerando pedido automático…";
+
+        const payload = {
+          user: rbxUser,
+          items: [{id: currentProduct.id, qty: 1, price: d.final}],
+          meta: {rbxExtra, coupon, slaHours:24, refundIfLate:true, productName: currentProduct.name}
+        };
+
+        const data = await apiCheckout(payload);
+
+        lastOrderId = data.orderId || data.id || "";
+        if(!lastOrderId) throw new Error("orderId não retornou");
+
+        $("#ckStatus").innerHTML = "✅ Pedido criado: <b>" + lastOrderId + "</b><br/>Agora é só <b>pagar o PIX</b> e aguardar a entrega em até 24h. Se quiser, mande seu user do Roblox no WhatsApp.";
+        // Abre WhatsApp automaticamente (opcional)
+        try{ window.open($("#btnOpenWaPay").href, "_blank"); }catch(e){}
+        $("#btnCopyOrder").disabled=false;
+
+        if(coupon===WELCOME_COUPON){
+          const usedKey = LS_COUPON+"_"+coupon;
+          if(localStorage.getItem(usedKey)!=="1") localStorage.setItem(usedKey,"1");
+        }
+
+        const msg = encodeURIComponent(
+          `Oi ViralVault! Fiz um pedido.
+Order ID: ${lastOrderId}
+Produto: ${currentProduct.name}
+Usuário Roblox: ${rbxUser}
+Pagamento via PIX.`
         );
+        $("#btnOpenWaPay").href = `https://wa.me/${WHATS}?text=${msg}`;
+
+      }catch(e){
+        $("#ckStatus").textContent="❌ " + e.message;
       }
-      renderCatalog(lista);
-    }
-
-    function showToast(nome){
-      toastName.textContent = nome;
-      toast.style.display = "block";
-      clearTimeout(showToast._t);
-      showToast._t = setTimeout(() => toast.style.display = "none", 1300);
-    }
-
-    function addToCart(p){
-      const atual = carrinho.get(p.nome) || { qtd: 0, preco: p.preco, categoria: p.categoria };
-      atual.qtd += 1;
-      carrinho.set(p.nome, atual);
-      saveCart(carrinho);
-      updateCartUI();
-      showToast(p.nome);
-      if (navigator.vibrate) navigator.vibrate(14);
-    }
-
-    // ===== Checkout =====
-    function calcTotal(){
-      let total = 0;
-      carrinho.forEach(v => total += v.qtd * v.preco);
-      return total;
-    }
-
-    function renderCheckout(){
-      itemsEl.innerHTML = "";
-
-      if(carrinho.size === 0){
-        emptyEl.style.display = "block";
-        itemsEl.style.display = "none";
-        updateCartUI();
-        return;
-      }
-
-      emptyEl.style.display = "none";
-      itemsEl.style.display = "flex";
-
-      carrinho.forEach((v, nome) => {
-        const row = document.createElement("div");
-        row.className = "item";
-        row.innerHTML = `
-          <div class="left">
-            <b>${nome}</b>
-            <small>${v.categoria} • R$ ${moneyBR(v.preco)} cada</small>
-          </div>
-
-          <div class="qty">
-            <button class="qbtn" data-act="dec">−</button>
-            <div class="num">${v.qtd}</div>
-            <button class="qbtn" data-act="inc">+</button>
-          </div>
-
-          <div class="price2">R$ ${moneyBR(v.qtd * v.preco)}</div>
-        `;
-
-        row.querySelectorAll(".qbtn").forEach(btn => {
-          btn.addEventListener("click", () => {
-            const act = btn.getAttribute("data-act");
-            const cur = carrinho.get(nome);
-
-            if(act === "inc") cur.qtd += 1;
-            if(act === "dec") cur.qtd -= 1;
-
-            if(cur.qtd <= 0) carrinho.delete(nome);
-            else carrinho.set(nome, cur);
-
-            saveCart(carrinho);
-            renderCheckout();
-          });
-        });
-
-        itemsEl.appendChild(row);
-      });
-
-      updateCartUI();
-    }
-
-    // ===== Cart UI =====
-    function updateCartUI(){
-      let totalQtd = 0;
-      carrinho.forEach((v) => totalQtd += v.qtd);
-
-      const totalValor = calcTotal();
-
-      cartCount.textContent = totalQtd;
-      barCount.textContent = totalQtd;
-
-      // bar total span could be replaced on page switch
-      const span = window._barTotalSpan || document.getElementById("barTotal");
-      if(span) span.textContent = moneyBR(totalValor);
-    }
-
-    // ===== Primary button behavior =====
-    function primaryAction(){
-      const isCatalog = pageCatalog.classList.contains("active");
-      if(isCatalog){
-        setPage("checkout");
-      } else {
-        const total = calcTotal();
-        alert("Checkout demo ✅\\nTotal: R$ " + moneyBR(total) + "\\n\\nDepois dá pra integrar Pix/checkout real.");
-      }
-    }
-
-    // ===== Menu =====
-    const menu = document.getElementById("menu");
-    const overlay = document.getElementById("menuOverlay");
-
-    function openMenu(){
-      overlay.style.display = "block";
-      requestAnimationFrame(() => menu.classList.add("open"));
-    }
-    function closeMenu(){
-      menu.classList.remove("open");
-      setTimeout(() => overlay.style.display = "none", 170);
-    }
-
-    document.getElementById("openMenu").addEventListener("click", openMenu);
-    document.getElementById("closeMenu").addEventListener("click", closeMenu);
-    overlay.addEventListener("click", closeMenu);
-
-    document.querySelectorAll("[data-nav]").forEach(a => {
-      a.addEventListener("click", (e) => {
-        e.preventDefault();
-        setPage(a.getAttribute("data-nav"));
-      });
     });
 
-    document.getElementById("supportLink").addEventListener("click", (e) => {
-      e.preventDefault();
-      closeMenu();
-      alert("Suporte ViralVault ✅\\n\\nColoque aqui seu WhatsApp/Discord/Instagram.\\nSe quiser, eu monto a página de suporte dentro do HTML também.");
+    $("#btnCopyPix").addEventListener("click", ()=> copyText($("#ckPixEmv").value), {passive:true});
+    $("#btnCopyOrder").addEventListener("click", ()=> { if(lastOrderId) copyText(lastOrderId); }, {passive:true});
+
+    async function verifyNow(){
+      try{
+        const oid=$("#verifyOrderId").value.trim();
+        if(!oid) return;
+
+        $("#verifyResult").textContent="Verificando…";
+        const v = await apiVerify(oid);
+
+        if(v.ok){
+          $("#verifyResult").innerHTML = `<span class="badgeOk">✅ VV-OFICIAL</span> <span class="mini">Order: ${oid}</span>`;
+        }else{
+          $("#verifyResult").innerHTML = `<span class="badgeBad">❌ Pedido inválido</span> <span class="mini">${v.error||""}</span>`;
+        }
+
+        const proof = localStorage.getItem("vv_proof_"+oid);
+        if(proof){
+          $("#pubProofWrap").style.display="block";
+          $("#pubProof").innerHTML = /^https?:\/\//i.test(proof)
+            ? `<a class="btn btnGhost small" href="${proof}" target="_blank" rel="noopener">Abrir prova de entrega</a>`
+            : `<div class="mini">${proof}</div>`;
+        } else {
+          $("#pubProofWrap").style.display="none";
+          $("#pubProof").innerHTML = "";
+        }
+
+      }catch(e){
+        $("#verifyResult").textContent="❌ " + e.message;
+      }
+    }
+    $("#btnVerify").addEventListener("click", verifyNow);
+
+    function setAdmin(ok){
+      sessionStorage.setItem(SS_ADMIN, ok?"1":"0");
+      $("#adminPanel").style.display = ok ? "block" : "none";
+    }
+
+    $("#btnAdminLogin").addEventListener("click", ()=>{
+      const pass=$("#adminPass").value;
+      if(pass===ADMIN_PASSCODE){
+        setAdmin(true);
+        $("#adminStatus").textContent="✅ Admin liberado.";
+      }else{
+        $("#adminStatus").textContent="❌ Senha incorreta.";
+      }
     });
 
-    // ===== Events =====
-    search.addEventListener("input", applyAndRender);
-    document.getElementById("openCart").addEventListener("click", () => setPage("checkout"));
-    primaryBtn.addEventListener("click", primaryAction);
+    $("#btnSaveProof").addEventListener("click", ()=>{
+      const ok=sessionStorage.getItem(SS_ADMIN)==="1";
+      if(!ok){ $("#adminStatus").textContent="Bloqueado."; return; }
 
-    clearBtn.addEventListener("click", () => {
-      carrinho.clear();
-      saveCart(carrinho);
-      renderCheckout();
+      const oid=$("#proofOrderId").value.trim();
+      const val=$("#proofValue").value.trim();
+      if(!oid || !val){ $("#adminStatus").textContent="Preencha Order ID e Prova."; return; }
+
+      localStorage.setItem("vv_proof_"+oid, val);
+      $("#adminStatus").textContent="✅ Prova salva.";
+      $("#proofValue").value="";
     });
 
-    // ===== Hash routing =====
-    function handleHash(){
-      const h = (window.location.hash || "#catalog").toLowerCase();
-      if(h.includes("checkout")) setPage("checkout");
-      else setPage("catalog");
+    $("#btnGoProducts").addEventListener("click", ()=>document.getElementById("produtos").scrollIntoView({behavior:"smooth"}), {passive:true});
+    $("#btnGoHow").addEventListener("click", ()=>document.getElementById("como").scrollIntoView({behavior:"smooth"}), {passive:true});
+    $("#btnOpenVerify").addEventListener("click", ()=>document.getElementById("verificar").scrollIntoView({behavior:"smooth"}), {passive:true});
+
+    $("#btnOpenAdmin").addEventListener("click", ()=>openModal("#modalAdmin"), {passive:true});
+    $("#ckClose").addEventListener("click", ()=>closeModal("#modalCheckout"), {passive:true});
+    $("#adClose").addEventListener("click", ()=>closeModal("#modalAdmin"), {passive:true});
+
+    $("#btnCopyCoupon").addEventListener("click", ()=> copyText(WELCOME_COUPON), {passive:true});
+
+    document.getElementById("couponLabel").addEventListener("click", ()=> copyText(WELCOME_COUPON), {passive:true});
+
+    // Close modals when clicking outside
+    $("#modalCheckout").addEventListener("click", (e)=>{ if(e.target.id==="modalCheckout") closeModal("#modalCheckout"); });
+    $("#modalAdmin").addEventListener("click", (e)=>{ if(e.target.id==="modalAdmin") closeModal("#modalAdmin"); });
+
+    // Upgrade 1: dynamic ticker numbers (lightweight randomness)
+    (function(){
+      const el=document.getElementById("vvTicker");
+      if(!el) return;
+      const views = 12 + Math.floor(Math.random()*30);
+      const verified = 2 + Math.floor(Math.random()*14);
+      el.innerHTML = `
+        <span>🔥 ${views} pessoas viram esta loja nos últimos 30 min</span>
+        <span>✅ ${verified} pedidos verificados hoje</span>
+        <span>⚡ Entrega em até 24h (ou reembolso)</span>
+        <span>🛡️ VV-OFICIAL: verificação no servidor</span>
+        <span>🔥 ${views} pessoas viram esta loja nos últimos 30 min</span>
+        <span>✅ ${verified} pedidos verificados hoje</span>
+        <span>⚡ Entrega em até 24h (ou reembolso)</span>
+        <span>🛡️ VV-OFICIAL: verificação no servidor</span>
+      `;
+    })();
+
+    renderProducts();
+  
+  // === Atividade recente (sem fake) ===
+  // Mostra contadores locais (do dispositivo do visitante). Não inventa números globais.
+  try{
+    const pvKey = "vv_page_views";
+    const todayKey = "vv_views_today_" + new Date().toISOString().slice(0,10);
+    const pv = (parseInt(localStorage.getItem(pvKey)||"0",10) || 0) + 1;
+    localStorage.setItem(pvKey, String(pv));
+    const today = (parseInt(localStorage.getItem(todayKey)||"0",10) || 0) + 1;
+    localStorage.setItem(todayKey, String(today));
+    const liveNowEl = document.getElementById("liveNow");
+    const liveTodayEl = document.getElementById("liveToday");
+    if(liveNowEl) liveNowEl.textContent = "Você está online ✅";
+    if(liveTodayEl) liveTodayEl.textContent = today + " visitas (neste dispositivo)";
+  }catch(e){}
+
+
+    // ===== Suporte IA (via Worker) =====
+    function aiAdd(role, text){
+      const wrap = document.createElement('div');
+      wrap.className = 'aiMsg ' + (role==='me' ? 'aiMe' : 'aiBot');
+      const bubble = document.createElement('div');
+      bubble.className = 'aiBubble';
+      bubble.textContent = text;
+      wrap.appendChild(bubble);
+      const body = $('#aiBody');
+      body.appendChild(wrap);
+      body.scrollTop = body.scrollHeight;
     }
-    window.addEventListener("hashchange", handleHash);
 
-    
-    // ===== Modal helpers =====
-    const modalOverlay = document.getElementById("vvModalOverlay");
-    const modalTitle = document.getElementById("vvModalTitle");
-    const modalBody = document.getElementById("vvModalBody");
-    const modalClose = document.getElementById("vvModalClose");
-
-    function openModal(title, bodyHtml){
-      modalTitle.textContent = title;
-      modalBody.innerHTML = bodyHtml;
-      modalOverlay.style.display = "flex";
-    }
-    function closeModal(){
-      modalOverlay.style.display = "none";
-    }
-    modalClose.addEventListener("click", closeModal);
-    modalOverlay.addEventListener("click", (e) => { if(e.target === modalOverlay) closeModal(); });
-
-    // ===== PIX checkout (demo) =====
-    const PIX_KEY = "00020101021126580014br.gov.bcb.pix0136851fee9f-0037-44f3-9361-e053c1faa7685204000053039865802BR5921DARLAN B R DOS SANTOS6009SAO PAULO62070503***63048DFF";
-    const WHATSAPP_NUMBER = "5511941598713"; // coloque só números com DDI/DDD, ex: 5511999999999
-
-    function makeOrderId(){
-      const n = Math.floor(100000 + Math.random()*900000);
-      return "VV-" + n;
+    function localSupportFallback(q){
+      const s = (q||'').toLowerCase();
+      const bad = ['xingar','idiota','burro','otario','otária','otario','porra','caralho','sexo','nude','porn','buceta','pau','pinto','puta','merda'];
+      if(bad.some(w=>s.includes(w))) return 'Consigo ajudar só com dúvidas da loja (compra, PIX, pedido, entrega e reembolso).';
+      if(s.includes('pix')||s.includes('pagar')) return 'PIX: clique em Comprar → copie o PIX (copia e cola) ou use o QR. Depois, aguarde a confirmação no status do pedido.';
+      if(s.includes('prazo')||s.includes('24')) return 'Entrega digital em até 24h após confirmação do pagamento ✅';
+      if(s.includes('reembolso')||s.includes('refund')) return 'Se não entregarmos em até 24h após o pagamento confirmado, você pode solicitar reembolso conforme a garantia ✅';
+      if(s.includes('cupom')||s.includes('bemvindo')) return 'Cupom BEMVINDO10: 10% off (1 uso por cliente) ✅';
+      if(s.includes('pedido')||s.includes('status')) return 'Me diga o Order ID e eu te explico o status (Aguardando / Pago / Entregue).';
+      return 'Me diz sua dúvida sobre compra, PIX, pedido ou entrega que eu resolvo 🙌';
     }
 
-    
-    function cartItemsSummary(){
-      let lines = [];
-      carrinho.forEach((v, nome) => {
-        lines.push(`${v.qtd}x ${nome} (R$ ${moneyBR(v.preco)})`);
+    async function apiSupport(q){
+      const res = await fetch(WORKER_BASE + '/support/chat', {
+        method:'POST',
+        headers:{'content-type':'application/json'},
+        body: JSON.stringify({ q })
       });
-      return lines.join("\n");
+      const data = await res.json().catch(()=>({}));
+      if(!res.ok) throw new Error(data?.error || 'Falha no suporte');
+      return data;
     }
 
-    function openWhatsAppMessage(msg){
-      const base = WHATSAPP_NUMBER ? ("https://wa.me/" + WHATSAPP_NUMBER) : "https://wa.me/";
-      const url = base + "?text=" + encodeURIComponent(msg);
-      window.open(url, "_blank");
+    function openAI(){
+      $('#aiPanel').style.display='block';
+      if(!$('#aiBody').dataset.init){
+        $('#aiBody').dataset.init='1';
+        aiAdd('bot','Oi! Sou o suporte da ViralVault Store 🙂\nComo posso ajudar?');
+      }
+      setTimeout(()=>$('#aiInput').focus(), 50);
+    }
+    function closeAI(){ $('#aiPanel').style.display='none'; }
+
+    $('#aiFab').addEventListener('click', openAI);
+    $('#aiClose').addEventListener('click', closeAI);
+
+    // WhatsApp do atendente (usa mesmo WHATS do site)
+    $('#aiHuman').addEventListener('click', (e)=>{
+      const msg = encodeURIComponent('Oi! Preciso de atendimento humano.');
+      $('#aiHuman').href = `https://wa.me/${WHATS}?text=${msg}`;
+    });
+
+    async function sendAI(){
+      const q = $('#aiInput').value.trim();
+      if(!q) return;
+      $('#aiInput').value='';
+      aiAdd('me', q);
+      try{
+        const r = await apiSupport(q);
+        aiAdd('bot', (r.answer || r.text || r.message || localSupportFallback(q)).toString());
+      }catch(err){
+        aiAdd('bot', localSupportFallback(q));
+      }
     }
 
-    function openPix(total){
-      const totalTxt = moneyBR(total);
-      const orderId = makeOrderId();
+    $('#aiSend').addEventListener('click', sendAI);
+    $('#aiInput').addEventListener('keydown', (e)=>{ if(e.key==='Enter') sendAI(); });
 
-      openModal("Pagamento via Pix", `
-        <div style="display:flex; flex-direction:column; gap:10px;">
-
-          <div style="padding:12px; border-radius:16px; border:1px solid rgba(255,255,255,.10); background:rgba(255,255,255,.05);">
-            <div style="display:flex; align-items:center; justify-content:space-between; gap:10px;">
-              <div>
-                <b style="display:block; font-size:13px;">Pedido</b>
-                <div style="font-weight:900; font-size:18px; margin-top:4px; color:#fff;">${orderId}</div>
-              </div>
-              <div style="text-align:right;">
-                <b style="display:block; font-size:13px;">Total</b>
-                <div style="font-weight:900; font-size:18px; margin-top:4px; color:#fff;">R$ ${totalTxt}</div>
-              </div>
-            </div>
-
-            <div style="margin-top:8px; color:rgba(255,255,255,.70); font-weight:800; font-size:12px;">
-              Preencha seus dados pra agilizar a entrega:
-            </div>
-
-            <div style="display:grid; grid-template-columns:1fr; gap:8px; margin-top:10px;">
-              <input id="vvName" placeholder="Seu nome" style="padding:12px; border-radius:14px; border:1px solid rgba(255,255,255,.12); background:rgba(0,0,0,.22); color:#fff; font-weight:800; outline:none;">
-              <input id="vvWhats" placeholder="Seu WhatsApp (ex: 11999999999)" style="padding:12px; border-radius:14px; border:1px solid rgba(255,255,255,.12); background:rgba(0,0,0,.22); color:#fff; font-weight:800; outline:none;">
-              <input id="vvUser" placeholder="Seu usuário/ID (Roblox/jogo)" style="padding:12px; border-radius:14px; border:1px solid rgba(255,255,255,.12); background:rgba(0,0,0,.22); color:#fff; font-weight:800; outline:none;">
-              <textarea id="vvObs" placeholder="Observação (opcional)" rows="3" style="padding:12px; border-radius:14px; border:1px solid rgba(255,255,255,.12); background:rgba(0,0,0,.22); color:#fff; font-weight:800; outline:none; resize:vertical;"></textarea>
-            </div>
-          </div>
-
-          <div style="padding:12px; border-radius:16px; border:1px solid rgba(255,255,255,.10); background:rgba(0,0,0,.18);">
-            <b style="display:block; font-size:13px;">QR Code Pix</b>
-            <div style="color:rgba(255,255,255,.70); font-weight:800; font-size:12px; margin-top:4px;">
-              Abra o app do banco e escaneie.
-            </div>
-            <div id="vvQrWrap" style="margin-top:10px; display:flex; justify-content:center;"></div>
-
-            <div style="margin-top:10px; font-weight:900; font-size:12px; color:rgba(255,255,255,.75);">Pix copia e cola</div>
-            <div id="pixKeyBox" style="margin-top:6px; font-weight:900; word-break:break-all; color:#fff;">${PIX_KEY}</div>
-
-            <button id="copyPixBtn" class="totalBtn" style="margin-top:10px; width:100%; justify-content:center;">
-              Copiar Pix (copia e cola)
-            </button>
-          </div>
-
-          <button id="sendProofBtn" class="totalBtn" style="width:100%; justify-content:center;">
-            Enviar comprovante no WhatsApp →
-          </button>
-
-          <div style="padding:12px; border-radius:16px; border:1px solid rgba(255,43,43,.22); background:rgba(255,43,43,.08);">
-            <b style="color:var(--red);">Aviso:</b>
-            <span style="color:rgba(255,255,255,.85); font-weight:800;">
-              este checkout é “semi-automático”: você paga via Pix e envia o comprovante. Depois dá pra integrar confirmação automática.
-            </span>
-          </div>
-        </div>
-      `);
-
-      setTimeout(() => {
-        // QR
-        const wrap = document.getElementById("vvQrWrap");
-        if(wrap && window.VVQR){
-          wrap.innerHTML = window.VVQR.toSVG(PIX_KEY, 220);
-          // add rounded container
-          wrap.firstChild && wrap.firstChild.setAttribute("style","border-radius:14px; overflow:hidden; border:1px solid rgba(255,255,255,.18); box-shadow: 0 18px 40px rgba(0,0,0,.45);");
-        }
-
-        const btn = document.getElementById("copyPixBtn");
-        if(btn){
-          btn.addEventListener("click", async () => {
-            try{
-              await navigator.clipboard.writeText(PIX_KEY);
-              btn.textContent = "✅ Copiado!";
-              setTimeout(() => btn.textContent = "Copiar Pix (copia e cola)", 1400);
-            }catch(e){
-              const t = document.createElement("textarea");
-              t.value = PIX_KEY;
-              document.body.appendChild(t);
-              t.select();
-              document.execCommand("copy");
-              document.body.removeChild(t);
-              btn.textContent = "✅ Copiado!";
-              setTimeout(() => btn.textContent = "Copiar Pix (copia e cola)", 1400);
-            }
-          });
-        }
-
-        const sendBtn = document.getElementById("sendProofBtn");
-        if(sendBtn){
-          sendBtn.addEventListener("click", () => {
-            const name = (document.getElementById("vvName")?.value || "").trim();
-            const wpp = (document.getElementById("vvWhats")?.value || "").trim();
-            const user = (document.getElementById("vvUser")?.value || "").trim();
-            const obs  = (document.getElementById("vvObs")?.value || "").trim();
-
-            const items = cartItemsSummary();
-            const msg =
-`Olá! Quero confirmar meu pedido na ViralVault ✅
-
-Pedido: ${orderId}
-Total: R$ ${totalTxt}
-
-Dados:
-Nome: ${name || "-"}
-WhatsApp: ${wpp || "-"}
-Usuário/ID: ${user || "-"}
-Obs: ${obs || "-"}
-
-Itens:
-${items}
-
-Comprovante: (vou enviar aqui)`;
-
-            openWhatsAppMessage(msg);
-          });
-        }
-      }, 60);
-    }
-
-          });
-        }
-      }, 40);
-    }
-
-
-    // ===== Init =====
-    renderFilters();
-    applyAndRender();
-    handleHash();
-    updateCartUI();
   </script>
 
-  <!-- MODALS -->
-  <div id="vvModalOverlay" style="position:fixed; inset:0; background:rgba(0,0,0,.62); display:none; z-index:1200; padding:14px; align-items:flex-end; justify-content:center;">
-    <div id="vvModal" style="width:min(720px,100%); border-radius:22px; background:rgba(15,15,18,.92); border:1px solid rgba(255,255,255,.12); backdrop-filter:blur(16px); -webkit-backdrop-filter:blur(16px); box-shadow:0 30px 90px rgba(0,0,0,.75); overflow:hidden;">
-      <div style="padding:14px; display:flex; align-items:center; justify-content:space-between; gap:12px; border-bottom:1px solid rgba(255,255,255,.08);">
-        <b id="vvModalTitle" style="font-size:14px;">Modal</b>
-        <button id="vvModalClose" class="closeBtn" style="padding:10px 12px;">Fechar</button>
-      </div>
-      <div id="vvModalBody" style="padding:14px; color:rgba(255,255,255,.86); font-size:13px; line-height:1.45;"></div>
+
+  <!-- Suporte IA -->
+  <button class="aiFab" id="aiFab" type="button" aria-label="Abrir suporte IA">🤖 <span>Suporte IA</span></button>
+  <div class="aiPanel" id="aiPanel" role="dialog" aria-label="Suporte IA">
+    <div class="aiTop">
+      <b>Suporte IA • ViralVault</b>
+      <button class="aiClose" id="aiClose" type="button">✕</button>
     </div>
-  </div>
-
-
-<script>
-/*! qrcode-generator (MIT) - minimal build */
-(function(global){
-  function QR8bitByte(data){this.mode=1;this.data=data;}
-  QR8bitByte.prototype={getLength:function(){return this.data.length;},write:function(buffer){for(var i=0;i<this.data.length;i++){buffer.put(this.data.charCodeAt(i),8);}}};
-  function QRBitBuffer(){this.buffer=[];this.length=0;}
-  QRBitBuffer.prototype={get:function(index){var bufIndex=Math.floor(index/8);return((this.buffer[bufIndex]>>> (7-index%8))&1)==1;},
-    put:function(num,length){for(var i=0;i<length;i++){this.putBit(((num>>> (length-i-1))&1)==1);}},
-    putBit:function(bit){var bufIndex=Math.floor(this.length/8);if(this.buffer.length<=bufIndex){this.buffer.push(0);}
-      if(bit){this.buffer[bufIndex]|=(0x80>>> (this.length%8));}this.length++;}};
-  function QRPolynomial(num,shift){if(num.length==undefined)throw new Error(num.length+"/"+shift);
-    var offset=0;while(offset<num.length&&num[offset]==0)offset++;
-    this.num=new Array(num.length-offset+shift);for(var i=0;i<num.length-offset;i++)this.num[i]=num[i+offset];
-  }
-  QRPolynomial.prototype={get:function(index){return this.num[index];},getLength:function(){return this.num.length;},
-    multiply:function(e){var num=new Array(this.getLength()+e.getLength()-1);for(var i=0;i<num.length;i++)num[i]=0;
-      for(var i=0;i<this.getLength();i++){for(var j=0;j<e.getLength();j++){num[i+j]^=QRMath.gexp(QRMath.glog(this.get(i))+QRMath.glog(e.get(j)));}}
-      return new QRPolynomial(num,0);},
-    mod:function(e){if(this.getLength()-e.getLength()<0)return this;
-      var ratio=QRMath.glog(this.get(0))-QRMath.glog(e.get(0));
-      var num=new Array(this.getLength());for(var i=0;i<this.getLength();i++)num[i]=this.get(i);
-      for(var i=0;i<e.getLength();i++)num[i]^=QRMath.gexp(QRMath.glog(e.get(i))+ratio);
-      return new QRPolynomial(num,0).mod(e);}};
-  var QRMath={glog:function(n){if(n<1)throw new Error("glog("+n+")");return QRMath.LOG_TABLE[n];},
-    gexp:function(n){while(n<0)n+=255;while(n>=256)n-=255;return QRMath.EXP_TABLE[n];},
-    EXP_TABLE:new Array(256),LOG_TABLE:new Array(256)};
-  for(var i=0;i<8;i++)QRMath.EXP_TABLE[i]=1<<i;
-  for(var i=8;i<256;i++)QRMath.EXP_TABLE[i]=QRMath.EXP_TABLE[i-4]^QRMath.EXP_TABLE[i-5]^QRMath.EXP_TABLE[i-6]^QRMath.EXP_TABLE[i-8];
-  for(var i=0;i<255;i++)QRMath.LOG_TABLE[QRMath.EXP_TABLE[i]]=i;
-
-  function QRRSBlock(totalCount,dataCount){this.totalCount=totalCount;this.dataCount=dataCount;}
-  QRRSBlock.getRSBlocks=function(typeNumber,errorCorrectLevel){
-    var rsBlock = QRRSBlock.getRsBlockTable(typeNumber,errorCorrectLevel);
-    if(rsBlock==undefined)throw new Error("bad rs block @ typeNumber:"+typeNumber+"/errorCorrectLevel:"+errorCorrectLevel);
-    var length=rsBlock.length/3;var list=[];
-    for(var i=0;i<length;i++){
-      var count=rsBlock[i*3+0],total=rsBlock[i*3+1],data=rsBlock[i*3+2];
-      for(var j=0;j<count;j++)list.push(new QRRSBlock(total,data));
-    }
-    return list;
-  };
-  QRRSBlock.getRsBlockTable=function(typeNumber,errorCorrectLevel){
-    // only types 1-10 tables (enough for Pix payload)
-    var RS_BLOCK_TABLE = [
-      // L  M  Q  H  (type 1..10)
-      [[1,26,19],[1,26,16],[1,26,13],[1,26,9]],
-      [[1,44,34],[1,44,28],[1,44,22],[1,44,16]],
-      [[1,70,55],[1,70,44],[2,35,17],[2,35,13]],
-      [[1,100,80],[2,50,32],[2,50,24],[4,25,9]],
-      [[1,134,108],[2,67,43],[2,33,15,2,34,16],[2,33,11,2,34,12]],
-      [[2,86,68],[4,43,27],[4,43,19],[4,43,15]],
-      [[2,98,78],[4,49,31],[2,32,14,4,33,15],[4,39,13,1,40,14]],
-      [[2,121,97],[2,60,38,2,61,39],[4,40,18,2,41,19],[4,40,14,2,41,15]],
-      [[2,146,116],[3,58,36,2,59,37],[4,36,16,4,37,17],[4,36,12,4,37,13]],
-      [[2,86,68,2,87,69],[4,69,43,1,70,44],[6,43,19,2,44,20],[6,43,15,2,44,16]]
-    ];
-    var idx=typeNumber-1;
-    if(idx<0||idx>=RS_BLOCK_TABLE.length) return undefined;
-    var row=RS_BLOCK_TABLE[idx];
-    var col = (errorCorrectLevel==1?0:errorCorrectLevel==0?1:errorCorrectLevel==3?2:3); // map: L=1,M=0,Q=3,H=2
-    return row[col];
-  };
-
-  function QRCodeModel(typeNumber,errorCorrectLevel){
-    this.typeNumber=typeNumber;this.errorCorrectLevel=errorCorrectLevel;
-    this.modules=null;this.moduleCount=0;this.dataCache=null;this.dataList=[];
-  }
-  QRCodeModel.prototype={
-    addData:function(data){this.dataList.push(new QR8bitByte(data));this.dataCache=null;},
-    isDark:function(row,col){if(this.modules[row][col]!=null)return this.modules[row][col];else return false;},
-    getModuleCount:function(){return this.moduleCount;},
-    make:function(){this.makeImpl(false,this.getBestMaskPattern());},
-    makeImpl:function(test,maskPattern){
-      this.moduleCount=this.typeNumber*4+17;
-      this.modules=new Array(this.moduleCount);
-      for(var row=0;row<this.moduleCount;row++){this.modules[row]=new Array(this.moduleCount);for(var col=0;col<this.moduleCount;col++)this.modules[row][col]=null;}
-      this.setupPositionProbePattern(0,0);
-      this.setupPositionProbePattern(this.moduleCount-7,0);
-      this.setupPositionProbePattern(0,this.moduleCount-7);
-      this.setupTimingPattern();
-      this.setupTypeInfo(test,maskPattern);
-      if(this.typeNumber>=2) this.setupAlignmentPattern();
-      if(this.dataCache==null)this.dataCache=QRCodeModel.createData(this.typeNumber,this.errorCorrectLevel,this.dataList);
-      this.mapData(this.dataCache,maskPattern);
-    },
-    setupPositionProbePattern:function(row,col){
-      for(var r=-1;r<=7;r++){
-        if(row+r<=-1||this.moduleCount<=row+r)continue;
-        for(var c=-1;c<=7;c++){
-          if(col+c<=-1||this.moduleCount<=col+c)continue;
-          if((0<=r&&r<=6&&(c==0||c==6))||(0<=c&&c<=6&&(r==0||r==6))||(2<=r&&r<=4&&2<=c&&c<=4))
-            this.modules[row+r][col+c]=true;
-          else this.modules[row+r][col+c]=false;
-        }
-      }
-    },
-    setupTimingPattern:function(){
-      for(var i=8;i<this.moduleCount-8;i++){
-        if(this.modules[i][6]==null)this.modules[i][6]=(i%2==0);
-        if(this.modules[6][i]==null)this.modules[6][i]=(i%2==0);
-      }
-    },
-    setupAlignmentPattern:function(){
-      var pos = QRCodeModel.getPatternPosition(this.typeNumber);
-      for(var i=0;i<pos.length;i++){
-        for(var j=0;j<pos.length;j++){
-          var row=pos[i],col=pos[j];
-          if(this.modules[row][col]!=null)continue;
-          for(var r=-2;r<=2;r++){
-            for(var c=-2;c<=2;c++){
-              this.modules[row+r][col+c]=(r==-2||r==2||c==-2||c==2||(r==0&&c==0));
-            }
-          }
-        }
-      }
-    },
-    setupTypeInfo:function(test,maskPattern){
-      var data=(this.errorCorrectLevel<<3)|maskPattern;
-      var bits=QRCodeModel.getBCHTypeInfo(data);
-      for(var i=0;i<15;i++){
-        var mod=!test && ((bits>>i)&1)==1;
-        if(i<6)this.modules[i][8]=mod;
-        else if(i<8)this.modules[i+1][8]=mod;
-        else this.modules[this.moduleCount-15+i][8]=mod;
-      }
-      for(var i=0;i<15;i++){
-        var mod=!test && ((bits>>i)&1)==1;
-        if(i<8)this.modules[8][this.moduleCount-i-1]=mod;
-        else if(i<9)this.modules[8][15-i-1+1]=mod;
-        else this.modules[8][15-i-1]=mod;
-      }
-      this.modules[this.moduleCount-8][8]=!test;
-    },
-    mapData:function(data,maskPattern){
-      var inc=-1;var row=this.moduleCount-1;var bitIndex=7;var byteIndex=0;
-      for(var col=this.moduleCount-1;col>0;col-=2){
-        if(col==6)col--;
-        while(true){
-          for(var c=0;c<2;c++){
-            if(this.modules[row][col-c]==null){
-              var dark=false;
-              if(byteIndex<data.length) dark=((data[byteIndex]>>>bitIndex)&1)==1;
-              var mask=QRCodeModel.getMask(maskPattern,row,col-c);
-              if(mask) dark=!dark;
-              this.modules[row][col-c]=dark;
-              bitIndex--;
-              if(bitIndex==-1){byteIndex++;bitIndex=7;}
-            }
-          }
-          row+=inc;
-          if(row<0||this.moduleCount<=row){row-=inc;inc=-inc;break;}
-        }
-      }
-    },
-    getBestMaskPattern:function(){
-      var min=1e9;var pattern=0;
-      for(var i=0;i<8;i++){
-        this.makeImpl(true,i);
-        var lost=QRCodeModel.getLostPoint(this);
-        if(lost<min){min=lost;pattern=i;}
-      }
-      return pattern;
-    }
-  };
-
-  QRCodeModel.PATTERN_POSITION_TABLE=[[],[6,18],[6,22],[6,26],[6,30],[6,34],[6,22,38],[6,24,42],[6,26,46],[6,28,50]];
-  QRCodeModel.getPatternPosition=function(typeNumber){return QRCodeModel.PATTERN_POSITION_TABLE[typeNumber-1]||[6,18];};
-  QRCodeModel.getMask=function(maskPattern,i,j){
-    switch(maskPattern){
-      case 0:return (i+j)%2==0;
-      case 1:return i%2==0;
-      case 2:return j%3==0;
-      case 3:return (i+j)%3==0;
-      case 4:return (Math.floor(i/2)+Math.floor(j/3))%2==0;
-      case 5:return (i*j)%2+(i*j)%3==0;
-      case 6:return ((i*j)%2+(i*j)%3)%2==0;
-      case 7:return ((i+j)%2+(i*j)%3)%2==0;
-      default:return false;
-    }
-  };
-  QRCodeModel.getBCHTypeInfo=function(data){
-    var d=data<<10;while(QRCodeModel.getBCHDigit(d)-QRCodeModel.getBCHDigit(0x537)>=0){d^=(0x537<<(QRCodeModel.getBCHDigit(d)-QRCodeModel.getBCHDigit(0x537)));}
-    return ((data<<10)|d)^0x5412;
-  };
-  QRCodeModel.getBCHDigit=function(data){var digit=0;while(data!=0){digit++;data>>>=1;}return digit;};
-  QRCodeModel.createData=function(typeNumber,errorCorrectLevel,dataList){
-    var rsBlocks=QRRSBlock.getRSBlocks(typeNumber,errorCorrectLevel);
-    var buffer=new QRBitBuffer();
-    for(var i=0;i<dataList.length;i++){
-      var data=dataList[i];
-      buffer.put(4,4); // mode 8bit
-      buffer.put(data.getLength(), QRCodeModel.getLengthInBits(typeNumber));
-      data.write(buffer);
-    }
-    var totalDataCount=0;
-    for(var i=0;i<rsBlocks.length;i++) totalDataCount+=rsBlocks[i].dataCount;
-    if(buffer.length+4<=totalDataCount*8) buffer.put(0,4);
-    while(buffer.length%8!=0) buffer.putBit(false);
-    while(true){
-      if(buffer.length>=totalDataCount*8) break;
-      buffer.put(0xec,8);
-      if(buffer.length>=totalDataCount*8) break;
-      buffer.put(0x11,8);
-    }
-    return QRCodeModel.createBytes(buffer,rsBlocks);
-  };
-  QRCodeModel.getLengthInBits=function(typeNumber){return typeNumber<10?8:16;};
-  QRCodeModel.createBytes=function(buffer,rsBlocks){
-    var offset=0;var maxDc=0,maxEc=0;
-    var dcdata=[],ecdata=[];
-    for(var r=0;r<rsBlocks.length;r++){
-      var dcCount=rsBlocks[r].dataCount;
-      var ecCount=rsBlocks[r].totalCount-dcCount;
-      maxDc=Math.max(maxDc,dcCount);maxEc=Math.max(maxEc,ecCount);
-      dcdata[r]=new Array(dcCount);
-      for(var i=0;i<dcdata[r].length;i++) dcdata[r][i]=0xff & buffer.buffer[i+offset];
-      offset+=dcCount;
-      var rsPoly=QRCodeModel.getErrorCorrectPolynomial(ecCount);
-      var rawPoly=new QRPolynomial(dcdata[r],rsPoly.getLength()-1);
-      var modPoly=rawPoly.mod(rsPoly);
-      ecdata[r]=new Array(rsPoly.getLength()-1);
-      for(var i=0;i<ecdata[r].length;i++){
-        var modIndex=i+modPoly.getLength()-ecdata[r].length;
-        ecdata[r][i]=(modIndex>=0)?modPoly.get(modIndex):0;
-      }
-    }
-    var totalCodeCount=0;
-    for(var i=0;i<rsBlocks.length;i++) totalCodeCount+=rsBlocks[i].totalCount;
-    var data=new Array(totalCodeCount);var index=0;
-    for(var i=0;i<maxDc;i++){for(var r=0;r<rsBlocks.length;r++){if(i<dcdata[r].length)data[index++]=dcdata[r][i];}}
-    for(var i=0;i<maxEc;i++){for(var r=0;r<rsBlocks.length;r++){if(i<ecdata[r].length)data[index++]=ecdata[r][i];}}
-    return data;
-  };
-  QRCodeModel.getErrorCorrectPolynomial=function(errorCorrectLength){
-    var a=new QRPolynomial([1],0);
-    for(var i=0;i<errorCorrectLength;i++) a=a.multiply(new QRPolynomial([1,QRMath.gexp(i)],0));
-    return a;
-  };
-  QRCodeModel.getLostPoint=function(qr){
-    var moduleCount=qr.getModuleCount();var lost=0;
-    // Level 1
-    for(var row=0;row<moduleCount;row++){
-      for(var col=0;col<moduleCount;col++){
-        var sameCount=0;var dark=qr.isDark(row,col);
-        for(var r=-1;r<=1;r++){
-          if(row+r<0||moduleCount<=row+r)continue;
-          for(var c=-1;c<=1;c++){
-            if(col+c<0||moduleCount<=col+c)continue;
-            if(r==0&&c==0)continue;
-            if(dark==qr.isDark(row+r,col+c)) sameCount++;
-          }
-        }
-        if(sameCount>5) lost += (3 + sameCount - 5);
-      }
-    }
-    // Level 2
-    for(var row=0;row<moduleCount-1;row++){
-      for(var col=0;col<moduleCount-1;col++){
-        var count=0;
-        if(qr.isDark(row,col))count++;
-        if(qr.isDark(row+1,col))count++;
-        if(qr.isDark(row,col+1))count++;
-        if(qr.isDark(row+1,col+1))count++;
-        if(count==0||count==4) lost+=3;
-      }
-    }
-    // Level 3
-    for(var row=0;row<moduleCount;row++){
-      for(var col=0;col<moduleCount-6;col++){
-        if(qr.isDark(row,col)&&!qr.isDark(row,col+1)&&qr.isDark(row,col+2)&&qr.isDark(row,col+3)&&qr.isDark(row,col+4)&&!qr.isDark(row,col+5)&&qr.isDark(row,col+6)) lost+=40;
-      }
-    }
-    for(var col=0;col<moduleCount;col++){
-      for(var row=0;row<moduleCount-6;row++){
-        if(qr.isDark(row,col)&&!qr.isDark(row+1,col)&&qr.isDark(row+2,col)&&qr.isDark(row+3,col)&&qr.isDark(row+4,col)&&!qr.isDark(row+5,col)&&qr.isDark(row+6,col)) lost+=40;
-      }
-    }
-    // Level 4
-    var darkCount=0;
-    for(var col=0;col<moduleCount;col++) for(var row=0;row<moduleCount;row++) if(qr.isDark(row,col)) darkCount++;
-    var ratio = Math.abs(100*darkCount/moduleCount/moduleCount - 50)/5;
-    lost += ratio*10;
-    return lost;
-  };
-
-  function makeQR(text){
-    // choose smallest type that fits (1..10)
-    for(var type=1; type<=10; type++){
-      try{
-        var qr=new QRCodeModel(type,0); // M
-        qr.addData(text);
-        qr.make();
-        return qr;
-      }catch(e){}
-    }
-    var qr=new QRCodeModel(10,0);
-    qr.addData(text);
-    qr.make();
-    return qr;
-  }
-
-  global.VVQR = {
-    toSVG: function(text, size){
-      var qr = makeQR(text);
-      var mc = qr.getModuleCount();
-      var scale = Math.floor(size / mc);
-      if(scale<2) scale=2;
-      var dim = mc*scale;
-      var svg = ['<svg xmlns="http://www.w3.org/2000/svg" width="'+dim+'" height="'+dim+'" viewBox="0 0 '+dim+' '+dim+'" shape-rendering="crispEdges">'];
-      svg.push('<rect width="100%" height="100%" fill="#fff"/>');
-      for(var r=0;r<mc;r++){
-        for(var c=0;c<mc;c++){
-          if(qr.isDark(r,c)){
-            svg.push('<rect x="'+(c*scale)+'" y="'+(r*scale)+'" width="'+scale+'" height="'+scale+'" fill="#000"/>');
-          }
-        }
-      }
-      svg.push('</svg>');
-      return svg.join('');
-    }
-  };
-})(window);
-</script>
-
-
-  <!-- AI Support (ViralVault IA) -->
-  <div id="aiBubble" style="position:fixed;left:18px;bottom:18px;z-index:9999;">
-    <button id="aiOpen" style="cursor:pointer;border:none;border-radius:999px;padding:14px 16px;font-weight:900;
-      box-shadow:0 18px 45px rgba(0,0,0,.25);background:linear-gradient(90deg,#facc15,#f59e0b);color:#111;">
-      🤖 Suporte IA
-    </button>
-  </div>
-
-  <div id="aiPanel" class="hidden" style="position:fixed;left:18px;bottom:80px;width:min(380px,calc(100vw - 36px));
-    max-height:70vh;z-index:9999;border-radius:18px;border:1px solid rgba(255,255,255,.14);
-    background:rgba(10,10,18,.96);backdrop-filter:blur(14px);box-shadow:0 24px 70px rgba(0,0,0,.45);overflow:hidden;">
-    <div style="display:flex;align-items:center;justify-content:space-between;padding:12px 12px;border-bottom:1px solid rgba(255,255,255,.10);">
-      <div style="font-weight:1000;">ViralVault IA • Suporte</div>
-      <button id="aiClose" style="cursor:pointer;border:none;border-radius:12px;width:40px;height:40px;
-        background:rgba(255,255,255,.08);color:#fff;font-size:18px;">✕</button>
+    <div class="aiHelp">Posso ajudar com: compra, PIX, status do pedido, prazo (até 24h), reembolso e dúvidas do catálogo.</div>
+    <div class="aiBody" id="aiBody"></div>
+    <div class="aiActions">
+      <a class="aiHuman" id="aiHuman" href="#" target="_blank">Falar com atendente (WhatsApp)</a>
     </div>
-    <div id="aiMsgs" style="padding:12px;display:flex;flex-direction:column;gap:10px;overflow:auto;max-height:52vh;">
-      <div style="padding:10px 12px;border-radius:14px;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.08);">
-        Oi! 👋 Sou a IA da ViralVault. Pergunte sobre compra, PIX, prazo (até 24h), reembolso e como funciona.
-      </div>
-    </div>
-    <div style="padding:12px;border-top:1px solid rgba(255,255,255,.10);display:flex;gap:10px;">
-      <input id="aiInput" placeholder="Digite sua pergunta…" style="flex:1;padding:12px 12px;border-radius:14px;
-        border:1px solid rgba(255,255,255,.12);background:rgba(255,255,255,.06);color:#fff;font-weight:900;outline:none;">
-      <button id="aiSend" style="cursor:pointer;border:none;border-radius:14px;padding:12px 14px;font-weight:1000;
-        background:linear-gradient(90deg,#7c3aed,#a78bfa);color:#fff;">Enviar</button>
-    </div>
-    <div style="padding:10px 12px;color:rgba(255,255,255,.65);font-weight:900;font-size:12px;">
-      ⚠️ A IA não responde besteiras/ofensas e não pede dados sensíveis. Em dúvida, chame o WhatsApp.
+    <div class="aiFoot">
+      <input class="aiInput" id="aiInput" placeholder="Digite sua dúvida…" />
+      <button class="aiSend" id="aiSend" type="button">Enviar</button>
     </div>
   </div>
 
