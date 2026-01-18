@@ -1435,5 +1435,38 @@ Comprovante: (vou enviar aqui)`;
 })(window);
 </script>
 
+
+  <!-- AI Support (ViralVault IA) -->
+  <div id="aiBubble" style="position:fixed;left:18px;bottom:18px;z-index:9999;">
+    <button id="aiOpen" style="cursor:pointer;border:none;border-radius:999px;padding:14px 16px;font-weight:900;
+      box-shadow:0 18px 45px rgba(0,0,0,.25);background:linear-gradient(90deg,#facc15,#f59e0b);color:#111;">
+      🤖 Suporte IA
+    </button>
+  </div>
+
+  <div id="aiPanel" class="hidden" style="position:fixed;left:18px;bottom:80px;width:min(380px,calc(100vw - 36px));
+    max-height:70vh;z-index:9999;border-radius:18px;border:1px solid rgba(255,255,255,.14);
+    background:rgba(10,10,18,.96);backdrop-filter:blur(14px);box-shadow:0 24px 70px rgba(0,0,0,.45);overflow:hidden;">
+    <div style="display:flex;align-items:center;justify-content:space-between;padding:12px 12px;border-bottom:1px solid rgba(255,255,255,.10);">
+      <div style="font-weight:1000;">ViralVault IA • Suporte</div>
+      <button id="aiClose" style="cursor:pointer;border:none;border-radius:12px;width:40px;height:40px;
+        background:rgba(255,255,255,.08);color:#fff;font-size:18px;">✕</button>
+    </div>
+    <div id="aiMsgs" style="padding:12px;display:flex;flex-direction:column;gap:10px;overflow:auto;max-height:52vh;">
+      <div style="padding:10px 12px;border-radius:14px;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.08);">
+        Oi! 👋 Sou a IA da ViralVault. Pergunte sobre compra, PIX, prazo (até 24h), reembolso e como funciona.
+      </div>
+    </div>
+    <div style="padding:12px;border-top:1px solid rgba(255,255,255,.10);display:flex;gap:10px;">
+      <input id="aiInput" placeholder="Digite sua pergunta…" style="flex:1;padding:12px 12px;border-radius:14px;
+        border:1px solid rgba(255,255,255,.12);background:rgba(255,255,255,.06);color:#fff;font-weight:900;outline:none;">
+      <button id="aiSend" style="cursor:pointer;border:none;border-radius:14px;padding:12px 14px;font-weight:1000;
+        background:linear-gradient(90deg,#7c3aed,#a78bfa);color:#fff;">Enviar</button>
+    </div>
+    <div style="padding:10px 12px;color:rgba(255,255,255,.65);font-weight:900;font-size:12px;">
+      ⚠️ A IA não responde besteiras/ofensas e não pede dados sensíveis. Em dúvida, chame o WhatsApp.
+    </div>
+  </div>
+
 </body>
 </html>
