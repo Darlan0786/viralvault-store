@@ -437,6 +437,15 @@
       gap:10px;
       align-items:flex-end;
     }
+
+    /* ===== UI offsets (evitar botões grudados / safe-area) ===== */
+    :root{ --bb: 0px; }
+    .bottomBar{ padding-bottom: calc(10px + env(safe-area-inset-bottom)); }
+    .float{ bottom: calc(14px + var(--bb) + env(safe-area-inset-bottom)); }
+    body.chatOpen .bottomBar{ transform: translateY(120%); opacity:0; pointer-events:none; }
+    body.chatOpen .float{ bottom: calc(14px + env(safe-area-inset-bottom)); }
+    body.chatOpen .modal.show + .float{ bottom: calc(14px + env(safe-area-inset-bottom)); }
+
     .fab{
       border:0; cursor:pointer;
       border-radius: 999px;
@@ -919,12 +928,113 @@
     $('verifyGo').addEventListener('click', doVerify);
     $('btnVerify').addEventListener('click', ()=>{ $('verifyInput').focus(); window.scrollTo({top:0, behavior:'smooth'}); });
 
-    // ====== Admin ======
+    // ====== Admin (no site, via token) ======
+    const adminModal = $('adminModal');
+    const LS_TOKEN_KEY = 'vv_admin_token';
+
+    function openAdmin(){ adminModal.classList.add('show'); adminModal.setAttribute('aria-hidden','false'); }
+    function closeAdmin(){ adminModal.classList.remove('show'); adminModal.setAttribute('aria-hidden','true'); }
+
+    function getAdminToken(){ return (localStorage.getItem(LS_TOKEN_KEY)||'').trim(); }
+    function setAdminToken(v){ localStorage.setItem(LS_TOKEN_KEY, (v||'').trim()); }
+
+    function adminHeaders(){
+      const t = getAdminToken();
+      return t ? { 'x-admin-secret': t } : {};
+    }
+
+    function setAdminUi(ok){
+      $('adminStatus').textContent = ok ? '🔓 token ok (salvo)' : '🔒 não conectado';
+      $('adminStatus').style.opacity = ok ? 1 : .7;
+    }
+
+    async function adminApi(path, opts={}){
+      const headers = Object.assign({ 'Content-Type':'application/json' }, adminHeaders(), (opts.headers||{}));
+      const res = await fetch(API_BASE + path, Object.assign({}, opts, { headers }));
+      const data = await res.json().catch(()=> ({}));
+      if(!res.ok || data.ok===false){
+        const msg = (data && (data.error||data.detail)) ? (data.error||data.detail) : ('HTTP '+res.status);
+        throw new Error(msg);
+      }
+      return data;
+    }
+
+    let adminCurrent = null;
+
     $('btnAdmin').addEventListener('click', ()=>{
-      // você pode trocar isso pra uma rota /admin no seu Vercel depois
-      const msg = 'Admin: para marcar como pago/entregue, use as rotas do Worker (/admin/mark-paid, /admin/mark-delivered).';
-      toast('Admin (info)');
-      alert(msg);
+      $('adminToken').value = getAdminToken();
+      setAdminUi(Boolean(getAdminToken()));
+      $('adminOut').textContent = 'Cole um Order ID e toque em “Buscar pedido”.';
+      $('adminPaid').disabled = true;
+      $('adminDelivered').disabled = true;
+      adminCurrent = null;
+      openAdmin();
+    });
+
+    $('adminClose').addEventListener('click', closeAdmin);
+    adminModal.addEventListener('click', (e)=>{ if(e.target===adminModal) closeAdmin(); });
+
+    $('adminSave').addEventListener('click', ()=>{
+      setAdminToken($('adminToken').value);
+      setAdminUi(Boolean(getAdminToken()));
+      toast('Token salvo ✅');
+    });
+
+    $('adminClear').addEventListener('click', ()=>{
+      setAdminToken('');
+      $('adminToken').value='';
+      setAdminUi(false);
+      $('adminOut').textContent='Token limpo.';
+      $('adminPaid').disabled = true;
+      $('adminDelivered').disabled = true;
+      adminCurrent = null;
+    });
+
+    $('adminFetch').addEventListener('click', async ()=>{
+      const orderId = ($('adminOrderId').value||'').trim();
+      if(!orderId){ $('adminOut').textContent='Cola o Order ID (vv_...).'; return; }
+      try{
+        $('adminOut').textContent='Buscando…';
+        const data = await adminApi('/admin/order?orderId=' + encodeURIComponent(orderId), { method:'GET' });
+        adminCurrent = data.order || null;
+        $('adminOut').textContent = JSON.stringify(adminCurrent, null, 2);
+        $('adminPaid').disabled = !adminCurrent;
+        $('adminDelivered').disabled = !adminCurrent;
+        toast('Pedido carregado ✅');
+      }catch(err){
+        $('adminOut').textContent = 'Erro: ' + String(err && err.message ? err.message : err);
+        $('adminPaid').disabled = true;
+        $('adminDelivered').disabled = true;
+        adminCurrent = null;
+      }
+    });
+
+    $('adminPaid').addEventListener('click', async ()=>{
+      const orderId = ($('adminOrderId').value||'').trim();
+      if(!orderId) return;
+      try{
+        $('adminOut').textContent='Marcando como pago…';
+        const data = await adminApi('/admin/mark-paid', { method:'POST', body: JSON.stringify({ orderId }) });
+        adminCurrent = data.order || null;
+        $('adminOut').textContent = JSON.stringify(adminCurrent, null, 2);
+        toast('Marcado como PAGO ✅');
+      }catch(err){
+        $('adminOut').textContent = 'Erro: ' + String(err && err.message ? err.message : err);
+      }
+    });
+
+    $('adminDelivered').addEventListener('click', async ()=>{
+      const orderId = ($('adminOrderId').value||'').trim();
+      if(!orderId) return;
+      try{
+        $('adminOut').textContent='Marcando como entregue…';
+        const data = await adminApi('/admin/mark-delivered', { method:'POST', body: JSON.stringify({ orderId }) });
+        adminCurrent = data.order || null;
+        $('adminOut').textContent = JSON.stringify(adminCurrent, null, 2);
+        toast('Marcado como ENTREGUE 📦');
+      }catch(err){
+        $('adminOut').textContent = 'Erro: ' + String(err && err.message ? err.message : err);
+      }
     });
 
     // ====== Scroll buttons ======
@@ -981,11 +1091,13 @@
 
     $('fab').addEventListener('click', ()=>{
       chat.classList.toggle('show');
+      document.body.classList.toggle('chatOpen', chat.classList.contains('show'));
+      updateBottomOffset();
       if(chat.classList.contains('show') && chatBody.childElementCount===0){
         addMsg('Oi! Sou o Suporte IA da ViralVault. Quer ajuda com PIX, pedido ou verificação?');
       }
     });
-    $('closeChat').addEventListener('click', ()=>chat.classList.remove('show'));
+    $('closeChat').addEventListener('click', ()=>{ chat.classList.remove('show'); document.body.classList.remove('chatOpen'); updateBottomOffset(); });
 
     async function sendChat(){
       const q = ($('chatIn').value||'').trim();
@@ -1004,6 +1116,16 @@
 
     $('chatSend').addEventListener('click', sendChat);
     $('chatIn').addEventListener('keydown', (e)=>{ if(e.key==='Enter') sendChat(); });
+
+
+    // ====== Layout: evita botões grudados ======
+    function updateBottomOffset(){
+      const bb = document.querySelector('.bottomBar');
+      const h = (bb && bb.offsetHeight) ? bb.offsetHeight : 0;
+      document.documentElement.style.setProperty('--bb', h + 'px');
+    }
+    window.addEventListener('resize', updateBottomOffset);
+    updateBottomOffset();
 
     // ====== Init ======
     $('year').textContent = new Date().getFullYear();
@@ -1048,5 +1170,47 @@
       renderProducts();
     })();
   </script>
+
+  <!-- ===== Admin Panel (token no site) ===== -->
+  <div class="modal" id="adminModal" aria-hidden="true">
+    <div class="sheet" role="dialog" aria-modal="true" aria-label="Painel Admin">
+      <div class="sheetHead">
+        <div>
+          <div class="sheetTitle">🛡️ Painel Admin</div>
+          <div class="sheetSub">Acesso por token • marca pedido como <b>pago</b> / <b>entregue</b></div>
+        </div>
+        <button class="iconBtn" id="adminClose" type="button" aria-label="Fechar">✕</button>
+      </div>
+
+      <div class="sheetBody" style="gap:12px">
+        <div class="field">
+          <label class="lbl">Token Admin (x-admin-secret)</label>
+          <input class="inp" id="adminToken" placeholder="cole seu VV_ADMIN_SECRET aqui" autocomplete="off" />
+          <div class="hint">Fica salvo só no seu navegador (localStorage). Não aparece pros clientes.</div>
+        </div>
+
+        <div class="row" style="gap:10px; flex-wrap:wrap">
+          <button class="btn btnGhost" id="adminSave" type="button">Salvar token</button>
+          <button class="btn btnGhost" id="adminClear" type="button">Limpar</button>
+          <span class="pill" id="adminStatus">🔒 não conectado</span>
+        </div>
+
+        <div class="field">
+          <label class="lbl">Order ID</label>
+          <input class="inp" id="adminOrderId" placeholder="vv_..." />
+          <div class="hint">Dica: peça pro cliente te mandar o Order ID + comprovante.</div>
+        </div>
+
+        <div class="row" style="gap:10px; flex-wrap:wrap">
+          <button class="btn btnPrimary" id="adminFetch" type="button">Buscar pedido</button>
+          <button class="btn" id="adminPaid" type="button" disabled>✅ Marcar pago</button>
+          <button class="btn" id="adminDelivered" type="button" disabled>📦 Marcar entregue</button>
+        </div>
+
+        <pre class="code" id="adminOut" style="min-height:120px">Cole um Order ID e toque em “Buscar pedido”.</pre>
+      </div>
+    </div>
+  </div>
+
 </body>
 </html>
