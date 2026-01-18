@@ -2,856 +2,284 @@
 <html lang="pt-BR">
 <head>
   <meta charset="utf-8"/>
-  <meta name="viewport" content="width=device-width,initial-scale=1"/>
-  <title>ViralVault Store — Loja Digital</title>
-  <meta name="description" content="Loja 100% digital: itens/brainrots Roblox. PIX seguro, verificação de pedido e suporte."/>
-
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <title>ViralVault Store</title>
+  <meta name="description" content="ViralVault Store — loja digital (Roblox) com checkout PIX e catálogo automático."/>
   <style>
-    :root{
-      --bg:#0b0b14;
-      --card:rgba(255,255,255,.06);
-      --line:rgba(255,255,255,.10);
-      --txt:rgba(255,255,255,.92);
-      --mut:rgba(255,255,255,.72);
-
-      --red:#ff3b5c;
-      --pink:#ff6aa2;
-      --lav:#b29bff;
-      --mint:#7CFFB2;
-
-      --shadow: 0 20px 70px rgba(0,0,0,.45);
-      --r:22px;
-      --max:1100px;
-    }
-
-    *{box-sizing:border-box}
-    html,body{
-      margin:0;
-      background:
-        radial-gradient(1200px 700px at 10% 10%, rgba(255,59,92,.18), transparent 55%),
-        radial-gradient(900px 600px at 90% 20%, rgba(178,155,255,.18), transparent 55%),
-        radial-gradient(900px 700px at 50% 120%, rgba(124,255,178,.10), transparent 60%),
-        var(--bg);
-      color:var(--txt);
-      font-family:ui-sans-serif,system-ui,-apple-system,Segoe UI,Roboto,Arial;
-      overflow-x:hidden;
-    }
-
+    :root{--bg:#fff7fb;--bg2:#f2f6ff;--card:#ffffffcc;--line:#00000012;--text:#14161b;--muted:#4b5563;--a:#ff3b6b;--a2:#ff7aa2;--ok:#16a34a;--bad:#ef4444;--r:18px;--max:1120px;--sh:0 18px 50px rgba(10,10,20,.12)}
+    *{box-sizing:border-box} html,body{margin:0;padding:0;font-family:system-ui,-apple-system,Segoe UI,Roboto,Arial;color:var(--text)}
+    body{min-height:100vh;background:
+      radial-gradient(900px 520px at 18% 10%, rgba(255,59,107,.14), transparent 60%),
+      radial-gradient(900px 520px at 82% 14%, rgba(99,102,241,.10), transparent 55%),
+      linear-gradient(180deg,var(--bg),var(--bg2));}
     a{color:inherit}
-    button,input,textarea{font:inherit}
-    .container{max-width:var(--max);margin:0 auto;padding:18px}
-
-    /* Topbar */
-    .topbar{
-      position:sticky;top:0;z-index:50;
-      background:rgba(10,10,18,.72);
-      backdrop-filter:blur(14px);
-      border-bottom:1px solid rgba(255,255,255,.08);
-    }
-    .topbar .row{display:flex;align-items:center;gap:12px;padding:12px 18px}
-
-    .brand{display:flex;align-items:center;gap:10px;font-weight:1000;letter-spacing:.2px}
-    .logo{
-      width:42px;height:42px;border-radius:14px;
-      background:linear-gradient(135deg,var(--red),var(--lav));
-      box-shadow:0 0 0 6px rgba(255,59,92,.12);
-      display:grid;place-items:center;font-weight:1000;
-    }
-
-    .pill{margin-left:auto;display:flex;gap:10px;align-items:center}
-    .pill b{
-      font-size:12px;padding:9px 12px;border-radius:999px;
-      border:1px solid rgba(255,255,255,.12);
-      background:rgba(255,255,255,.06)
-    }
-    @media(max-width:900px){ .pill b{display:none} }
-
-    /* Buttons */
-    .btn{
-      border:0;cursor:pointer;border-radius:18px;padding:14px 18px;
-      font-weight:1000;background:rgba(255,255,255,.08);color:var(--txt);
-      border:1px solid rgba(255,255,255,.12);
-      transition:transform .12s ease,filter .12s ease;
-      user-select:none;
-      touch-action: manipulation;
-      -webkit-tap-highlight-color: transparent;
-    }
-    .btn:hover{filter:brightness(1.08)}
-    .btn:active{transform:translateY(1px) scale(.99)}
-    .btnPrimary{
-      background:linear-gradient(90deg,var(--red),var(--pink));
-      border:0;
-      box-shadow:0 18px 35px rgba(255,59,92,.22);
-    }
-    .btnGhost{background:rgba(255,255,255,.05)}
-    .small{padding:11px 12px;border-radius:16px;font-size:14px}
-
-    /* Layout */
-    .hero{
-      margin-top:16px;border-radius:26px;padding:22px;
-      border:1px solid rgba(255,255,255,.10);
-      background:rgba(255,255,255,.05);
-      box-shadow:var(--shadow);
-      position:relative;overflow:hidden;
-    }
-    .hero::after{
-      content:"";position:absolute;inset:-2px;pointer-events:none;
-      background:
-        radial-gradient(520px 240px at 85% 15%, rgba(178,155,255,.14), transparent 60%),
-        radial-gradient(560px 240px at 15% 70%, rgba(255,59,92,.12), transparent 65%);
-    }
-    .hero .content{
-      position:relative;
-      display:grid;grid-template-columns:1.2fr .8fr;gap:16px;align-items:center;
-    }
-    @media(max-width:900px){ .hero .content{grid-template-columns:1fr} }
-
-    .h1{margin:18px 0 10px;font-size:44px;line-height:1.05;letter-spacing:-.5px}
-    @media(max-width:900px){ .h1{font-size:36px} }
-    .sub{margin:0;color:var(--mut);font-weight:800;line-height:1.55;max-width:62ch}
-
-    .tag{
-      display:inline-flex;gap:8px;align-items:center;
-      font-size:12px;font-weight:1000;padding:9px 12px;border-radius:999px;
-      border:1px solid rgba(255,255,255,.12);
-      background:rgba(255,255,255,.06);
-    }
-    .tag .k{
-      width:10px;height:10px;border-radius:999px;
-      background:linear-gradient(135deg,var(--mint),#a7f3d0);
-      box-shadow:0 0 0 6px rgba(124,255,178,.12);
-    }
-
-    .bullets{
-      display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-top:14px;
-    }
-    @media(max-width:900px){ .bullets{grid-template-columns:1fr} }
-
-    .b{
-      border:1px solid rgba(255,255,255,.10);
-      border-radius:18px;background:rgba(255,255,255,.05);
-      padding:12px;display:flex;gap:10px;align-items:flex-start;
-    }
-    .ico{
-      width:40px;height:40px;border-radius:16px;display:grid;place-items:center;
-      background:rgba(255,59,92,.14);border:1px solid rgba(255,59,92,.18);
-      flex:0 0 auto;
-    }
-
-    .card{
-      border:1px solid rgba(255,255,255,.10);
-      background:rgba(255,255,255,.06);
-      border-radius:var(--r);
-      box-shadow:var(--shadow);
-      overflow:hidden;
-      position:relative;
-    }
-    .card::before{
-      content:"";position:absolute;inset:0;pointer-events:none;
-      background:radial-gradient(520px 260px at 10% 0%, rgba(255,59,92,.22), transparent 60%);
-    }
-    .card .inner{position:relative;padding:16px}
-
-    .grid{display:grid;grid-template-columns:repeat(3,1fr);gap:14px}
-    @media(max-width:900px){ .grid{grid-template-columns:1fr} }
-
-    .secTitle{
-      margin:22px 0 12px;
-      display:flex;justify-content:space-between;align-items:end;gap:14px;
-    }
-    .secTitle b{font-size:20px;letter-spacing:-.2px}
-    .secTitle small{color:var(--mut);font-weight:900}
-
-    input,textarea{
-      width:100%;padding:14px 14px;border-radius:18px;
-      border:1px solid rgba(255,255,255,.14);
-      background:rgba(0,0,0,.22);
-      color:var(--txt);
-      outline:none;font-weight:900;
-    }
-
-    .rowFlex{display:flex;gap:10px;flex-wrap:wrap;align-items:center;justify-content:space-between}
-    .price{font-size:22px;font-weight:1100;letter-spacing:-.3px}
-    .mini{font-size:12px;font-weight:900;color:var(--mut)}
-
-    /* Modal */
-    .modalWrap{
-      position:fixed;inset:0;display:none;align-items:center;justify-content:center;
-      padding:16px;z-index:100;
-      background:rgba(0,0,0,.62);
-    }
-    .modal{
-      width:min(720px,100%);
-      border-radius:28px;
-      overflow:hidden;
-      border:1px solid rgba(255,255,255,.12);
-      background:rgba(14,14,24,.96);
-      box-shadow:0 30px 80px rgba(0,0,0,.65);
-      max-height: min(92vh, 900px);
-      overflow-y: auto;
-    }
-    .modalTop{
-      display:flex;justify-content:space-between;align-items:center;
-      padding:14px 14px;border-bottom:1px solid rgba(255,255,255,.10);
-      position: sticky; top:0; background:rgba(14,14,24,.96);
-      z-index: 5;
-    }
-    .x{
-      width:46px;height:46px;border-radius:16px;
-      border:1px solid rgba(255,255,255,.12);
-      background:rgba(255,255,255,.06);
-      color:var(--txt);cursor:pointer
-    }
-    .modalBody{padding:14px}
-    .box{
-      border:1px solid rgba(255,255,255,.10);
-      border-radius:22px;background:rgba(255,255,255,.06);
-      padding:14px;
-    }
-
-    /* QR */
-    .qr{
-      border:1px solid rgba(255,255,255,.12);
-      border-radius:22px;
-      overflow:hidden;
-      background:#fff;
-    }
-    .qr img{display:block;width:100%;height:auto}
-
-    /* badges */
-    .badgeOk{
-      padding:10px 12px;border-radius:999px;
-      background:rgba(34,197,94,.12);
-      border:1px solid rgba(34,197,94,.20);
-      font-weight:1000;
-    }
-    .badgeBad{
-      padding:10px 12px;border-radius:999px;
-      background:rgba(239,68,68,.12);
-      border:1px solid rgba(239,68,68,.20);
-      font-weight:1000;
-    }
-
-    /* Toast */
-    .toast{
-      position:fixed;left:50%;transform:translateX(-50%);
-      bottom:92px;z-index:999;
-      background:rgba(0,0,0,.75);
-      border:1px solid rgba(255,255,255,.12);
-      color:#fff;
-      padding:12px 14px;border-radius:999px;
-      font-weight:1000;
-      display:none;
-    }
-
-    /* WhatsApp */
-    .wa{position:fixed;right:18px;bottom:18px;z-index:60;text-decoration:none}
-    .wa .chip{
-      display:flex;gap:10px;align-items:center;padding:14px 14px;border-radius:999px;
-      background:linear-gradient(90deg,#16a34a,#22c55e);
-      color:#fff;font-weight:1000;
-      box-shadow:0 20px 50px rgba(34,197,94,.25);
-    }
-    .wa .dot{width:44px;height:44px;border-radius:999px;display:grid;place-items:center;background:rgba(255,255,255,.20)}
-
-    .footer{
-      margin:26px 0 40px;color:rgba(255,255,255,.58);
-      font-weight:900;text-align:center;
-    }
-
-    hr{border:0;border-top:1px solid rgba(255,255,255,.10);margin:14px 0}
-
-    /* Upgrade 1: Proof social ticker */
-    .ticker{
-      margin-top:12px;
-      border-radius:999px;
-      border:1px solid rgba(255,255,255,.12);
-      background:rgba(255,255,255,.06);
-      padding:10px 12px;
-      display:flex;gap:10px;align-items:center;
-      overflow:hidden;
-      position:relative;
-    }
-    .ticker strong{font-weight:1100}
-    .ticker .dot2{
-      width:10px;height:10px;border-radius:999px;
-      background:linear-gradient(135deg,var(--mint),#a7f3d0);
-      box-shadow:0 0 0 6px rgba(124,255,178,.12);
-      flex:0 0 auto;
-    }
-    .ticker .marq{
-      white-space:nowrap;
-      display:inline-block;
-      animation: marq 18s linear infinite;
-      color:rgba(255,255,255,.82);
-      font-weight:1000;
-      will-change: transform;
-    }
-    @keyframes marq{
-      0%{ transform: translateX(0); }
-      100%{ transform: translateX(-50%); }
-    }
-    .ticker .wrap{display:flex;gap:24px;flex:1;overflow:hidden}
-    .ticker .marq > span{margin-right:24px}
-
-    @media (prefers-reduced-motion: reduce){
-      .ticker .marq{animation:none}
-    }
+    .top{position:sticky;top:0;z-index:50;backdrop-filter:blur(14px);background:rgba(255,255,255,.74);border-bottom:1px solid var(--line)}
+    .topin{max-width:var(--max);margin:0 auto;padding:12px 16px;display:flex;gap:10px;align-items:center}
+    .brand{display:flex;gap:10px;align-items:center;font-weight:900;letter-spacing:.2px}
+    .logo{width:36px;height:36px;border-radius:14px;background:linear-gradient(135deg,var(--a),var(--a2));box-shadow:0 10px 24px rgba(255,59,107,.22);position:relative}
+    .logo:after{content:"";position:absolute;inset:8px;border-radius:10px;background:rgba(255,255,255,.24);box-shadow:inset 0 0 0 1px rgba(255,255,255,.26)}
+    .pill{margin-left:auto;padding:10px 12px;border-radius:999px;background:#fff;border:1px solid var(--line);color:var(--muted);font-weight:800;font-size:13px}
+    .btn{border:1px solid var(--line);background:#fff;border-radius:14px;padding:12px 14px;font-weight:900;cursor:pointer;box-shadow:0 10px 20px rgba(10,10,20,.06);transition:transform .12s ease,filter .12s ease}
+    .btn:hover{filter:brightness(1.02)} .btn:active{transform:translateY(1px) scale(.99)}
+    .primary{border:none;background:linear-gradient(135deg,var(--a),var(--a2));color:#fff;box-shadow:0 14px 30px rgba(255,59,107,.22)}
+    .wrap{max-width:var(--max);margin:0 auto;padding:18px 16px 90px}
+    .hero{margin-top:18px;border-radius:26px;padding:20px;background:rgba(255,255,255,.76);border:1px solid var(--line);box-shadow:var(--sh);display:grid;grid-template-columns:1.1fr .9fr;gap:16px;align-items:start}
+    .k{display:inline-flex;align-items:center;gap:8px;padding:8px 10px;border-radius:999px;background:#fff;border:1px solid var(--line);font-weight:900;color:var(--muted);font-size:12px}
+    .dot{width:10px;height:10px;border-radius:999px;background:var(--a);box-shadow:0 0 0 6px rgba(255,59,107,.12)}
+    h1{margin:12px 0 8px;font-size:34px;line-height:1.05;letter-spacing:-.6px}
+    .sub{margin:0;color:var(--muted);font-weight:700;line-height:1.55}
+    .section{margin-top:14px;display:flex;justify-content:space-between;gap:12px;align-items:end}
+    .section b{font-size:18px} .small{font-size:12px;color:var(--muted);font-weight:800}
+    .grid{margin-top:12px;display:grid;grid-template-columns:repeat(3,1fr);gap:14px}
+    .card{border-radius:22px;border:1px solid var(--line);background:rgba(255,255,255,.90);box-shadow:0 14px 35px rgba(10,10,20,.08);overflow:hidden}
+    .cin{padding:14px}
+    .tag{display:inline-flex;padding:7px 10px;border-radius:999px;font-weight:900;font-size:12px;color:var(--muted);border:1px solid var(--line);background:#fff}
+    .title{margin:10px 0 6px;font-size:16px;font-weight:1000;letter-spacing:-.2px}
+    .desc{margin:0 0 12px;color:var(--muted);font-weight:700;font-size:13px;line-height:1.45}
+    .row{display:flex;align-items:center;justify-content:space-between;gap:10px}
+    .price{font-weight:1000;font-size:18px}
+    .panel{border-radius:24px;border:1px solid var(--line);background:rgba(255,255,255,.82);box-shadow:var(--sh);padding:16px}
+    .form{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:10px}
+    .input{width:100%;padding:14px 12px;border-radius:14px;border:1px solid var(--line);background:#fff;outline:none;font-weight:900}
+    .input:focus{box-shadow:0 0 0 6px rgba(255,59,107,.12);border-color:rgba(255,59,107,.35)}
+    .status{margin-top:12px;padding:12px;border-radius:16px;border:1px dashed var(--line);background:#fff;color:var(--muted);font-weight:900;min-height:46px;display:flex;align-items:center}
+    .status.ok{border-color:rgba(22,163,74,.28);background:rgba(22,163,74,.07);color:#0f172a}
+    .status.bad{border-color:rgba(239,68,68,.30);background:rgba(239,68,68,.07);color:#0f172a}
+    .pixbox{margin-top:12px;border-radius:18px;border:1px solid var(--line);background:#fff;padding:12px}
+    .code{word-break:break-all;font-family:ui-monospace,SFMono-Regular,Menlo,Monaco,Consolas,monospace;font-size:12px;background:#f9fafb;border:1px solid #e5e7eb;border-radius:14px;padding:10px;color:#111827}
+    .note{margin-top:10px;padding:12px;border-radius:16px;border:1px solid rgba(255,59,107,.18);background:rgba(255,59,107,.06);color:#111827;font-weight:800;line-height:1.5}
+    .footer{margin-top:18px;text-align:center;color:var(--muted);font-weight:800;font-size:12px}
+    .float{position:fixed;right:16px;bottom:16px;z-index:80;display:flex;align-items:center;gap:10px;padding:12px 12px;border-radius:999px;background:#25d366;color:#fff;text-decoration:none;font-weight:1000;box-shadow:0 18px 45px rgba(37,211,102,.22)}
+    .bubble{width:40px;height:40px;border-radius:999px;background:rgba(255,255,255,.22);display:flex;align-items:center;justify-content:center;font-size:18px}
+    @media (max-width:980px){.hero{grid-template-columns:1fr}.grid{grid-template-columns:1fr}.form{grid-template-columns:1fr}h1{font-size:30px}.pill{display:none}}
   </style>
 </head>
-
 <body>
-  <!-- TOPBAR -->
-  <div class="topbar">
-    <div class="row">
-      <div class="brand">
-        <div class="logo"><span>VV</span></div>
-        <div>
-          <div style="font-size:15px">ViralVault Store</div>
-          <div class="mini">anime kawaii • 100% digital</div>
-        </div>
-      </div>
-
-      <div class="pill">
-        <b>🔒 PIX seguro</b>
-        <b>⚡ entrega 24h</b>
-        <button class="btn btnPrimary" id="btnOpenVerify">🔎 Verificar</button>
-        <button class="btn" id="btnOpenAdmin">🛡️ Admin</button>
-      </div>
+  <header class="top">
+    <div class="topin">
+      <div class="brand"><div class="logo"></div> ViralVault Store</div>
+      <div class="pill" id="pill">🌸 Carregando…</div>
+      <button class="btn" id="goProd">Produtos</button>
+      <button class="btn" id="goOrders">Meus pedidos</button>
+      <button class="btn primary" id="goCheckout">Comprar</button>
     </div>
-  </div>
+  </header>
 
-  <div class="container">
-    <!-- HERO -->
-    <section class="hero">
-      <div class="content">
-        <div>
-          <div class="tag"><span class="k"></span> <span>Anime kawaii • Loja premium</span></div>
-          <div class="h1">Compre com confiança ✨<br/>e verifique seu pedido em segundos.</div>
-          <p class="sub">
-            Produtos digitais (Roblox/brainrots). Clique em COMPRAR e pague via PIX. Entrega em até 24h (ou reembolso).
-          </p>
+  <main class="wrap">
+    <section class="hero" id="topo">
+      <div>
+        <div class="k"><span class="dot"></span> anime kawaii • compra simples • entrega até 24h</div>
+        <h1>Compre rápido. Pague no PIX. <br/>E só espere a entrega 🧸✨</h1>
+        <p class="sub">O catálogo vem do Worker. Preço real, pedido com ID e status público.</p>
 
-          <!-- Upgrade 1: Proof Social Ticker -->
-          <div class="ticker" aria-label="Prova social em tempo real">
-            <span class="dot2"></span>
-            <strong>Ao vivo:</strong>
-            <div class="wrap" aria-hidden="true">
-              <div class="marq" id="vvTicker">
-                <span>🔥 18 pessoas viram esta loja nos últimos 30 min</span>
-                <span>✅ 6 pedidos verificados hoje</span>
-                <span>⚡ Entrega em até 24h (ou reembolso)</span>
-                <span>🛡️ VV-OFICIAL: verificação no servidor</span>
+        <div class="section" id="produtos"><b>Produtos</b><span class="small">Catálogo automático</span></div>
+        <div class="grid" id="grid"></div>
+      </div>
 
-                <span>🔥 18 pessoas viram esta loja nos últimos 30 min</span>
-                <span>✅ 6 pedidos verificados hoje</span>
-                <span>⚡ Entrega em até 24h (ou reembolso)</span>
-                <span>🛡️ VV-OFICIAL: verificação no servidor</span>
-              </div>
+      <div>
+        <div class="panel" id="checkout">
+          <b style="font-size:18px">Checkout (PIX)</b>
+          <div class="small" style="margin-top:6px">Preencha seu user do Roblox e finalize. Depois é só aguardar.</div>
+
+          <div class="form">
+            <div>
+              <div class="small" style="margin:10px 0 6px">Seu user (Roblox)</div>
+              <input class="input" id="user" placeholder="@user_1234" autocomplete="off" />
+            </div>
+            <div>
+              <div class="small" style="margin:10px 0 6px">Cupom (visível)</div>
+              <input class="input" id="coupon" value="BEMVINDO10" autocomplete="off" />
             </div>
           </div>
 
-          <div style="display:flex;gap:10px;flex-wrap:wrap;margin-top:14px">
-            <button class="btn btnPrimary" id="btnGoProducts">🛍️ Comprar agora</button>
-            <button class="btn btnGhost" id="btnGoHow">📌 Como funciona</button>
-            <a class="btn btnGhost" id="btnGoSupport" href="#" style="text-decoration:none">💬 Suporte</a>
+          <div style="margin-top:10px;display:flex;gap:10px;flex-wrap:wrap">
+            <button class="btn primary" id="buy" disabled>Comprar e esperar</button>
+            <button class="btn" id="copyPix">Copiar PIX</button>
           </div>
 
-          <div class="bullets">
-            <div class="b"><div class="ico">🔐</div><div><b style="font-weight:1000;color:#fff">Anti-golpe</b><div class="mini">verificação + comprovante</div></div></div>
-            <div class="b"><div class="ico">💾</div><div><b style="font-weight:1000;color:#fff">100% digital</b><div class="mini">sem frete, sem atraso</div></div></div>
-            <div class="b"><div class="ico">⏱️</div><div><b style="font-weight:1000;color:#fff">SLA 24h</b><div class="mini">ou reembolso</div></div></div>
+          <div class="pixbox">
+            <div class="small"><b>PIX (copia e cola)</b></div>
+            <div class="code" id="pix">00020101021126580014br.gov.bcb.pix0136851fee9f-0037-44f3-9361-e053c1faa7685204000053039865802BR5921DARLAN B R DOS SANTOS6009SAO PAULO62070503***63048DFF</div>
+            <div style="margin-top:10px;display:flex;gap:10px;flex-wrap:wrap">
+              <button class="btn" id="copyCode">Copiar código</button>
+              <button class="btn" id="copyOrder" disabled>Copiar Order ID</button>
+            </div>
           </div>
+
+          <div class="note"><b>Anti-golpe:</b> pague <b>somente</b> no PIX acima. Seu pedido sempre tem <b>Order ID</b>. Se alguém mandar outro QR/código, ignore.</div>
+          <div class="status" id="st">Escolha um produto e finalize.</div>
         </div>
 
-        <!-- CUPOM CARD -->
-        <div class="card">
-          <div class="inner">
-            <div class="rowFlex">
-              <b style="font-size:16px">Cupom de boas-vindas 🎁</b>
-              <span class="tag" style="border-color:rgba(255,59,92,.25);background:rgba(255,59,92,.12)">
-                1 uso por cliente
-              </span>
-            </div>
-
-            <div class="box" style="margin-top:12px">
-              <div class="rowFlex">
-                <div>
-                  <div class="mini">use no checkout:</div>
-                  <div style="font-size:20px;font-weight:1100;letter-spacing:.6px" id="couponLabel">BEMVINDO10</div>
-                </div>
-                <button class="btn btnPrimary small" id="btnCopyCoupon">Copiar</button>
-              </div>
-              <hr/>
-              <div class="mini">O desconto aparece automaticamente no checkout.</div>
-            </div>
+        <div class="panel" id="meus" style="margin-top:14px">
+          <b style="font-size:18px">Meus pedidos</b>
+          <div class="small" style="margin-top:6px">Cole seu Order ID para ver status (pending/paid/delivered).</div>
+          <div style="display:flex;gap:10px;margin-top:10px;flex-wrap:wrap">
+            <input class="input" id="oid" placeholder="vv_..." />
+            <button class="btn primary" id="check">Ver status</button>
           </div>
+          <div class="status" id="st2">—</div>
         </div>
-
       </div>
     </section>
 
-    <!-- PRODUTOS -->
-    <div class="secTitle" id="produtos">
-      <b>Produtos digitais 🛒</b>
-      <small>escolha 1 item e pague via PIX</small>
-    </div>
-    <section class="grid" id="gridProducts"></section>
-    <div class="mini" style="margin:8px 0 0;opacity:.92">
-      ✅ Para comprar: clique em <b>Comprar agora</b> → pague o PIX → <b>aguarde a entrega</b>. (Se quiser, você pode mandar seu user do Roblox no WhatsApp depois.)
-    </div>
+    <div class="footer">© 2026 ViralVault Store • Loja digital • Entrega até 24h • Suporte via WhatsApp</div>
+  </main>
 
-
-    <!-- COMO FUNCIONA -->
-    <div class="secTitle" id="como">
-      <b>Como funciona 🎀</b>
-      <small>super simples</small>
-    </div>
-
-    <div class="card">
-      <div class="inner">
-        <div class="rowFlex">
-          <div class="b" style="flex:1"><div class="ico">1</div><div><b style="font-weight:1000;color:#fff">Escolha o item</b><div class="mini">adicione ao checkout</div></div></div>
-          <div class="b" style="flex:1"><div class="ico">2</div><div><b style="font-weight:1000;color:#fff">Pague via PIX</b><div class="mini">QR + copia e cola</div></div></div>
-          <div class="b" style="flex:1"><div class="ico">3</div><div><b style="font-weight:1000;color:#fff">Receba em até 24h</b><div class="mini">ou reembolso</div></div></div>
-        </div>
-      </div>
-    </div>
-
-    <!-- VERIFICAR -->
-    <div class="secTitle" id="verificar">
-      <b>Verificar pedido 🔎</b>
-      <small>confirma se o pedido é VV-OFICIAL</small>
-    </div>
-
-    <div class="card">
-      <div class="inner">
-        <div class="rowFlex">
-          <input id="verifyOrderId" placeholder="Cole aqui seu Order ID (vv_...)" style="flex:1"/>
-          <button class="btn btnPrimary" id="btnVerify">Verificar</button>
-        </div>
-
-        <div style="margin-top:12px" id="verifyResult" class="mini">—</div>
-
-        <div id="pubProofWrap" style="margin-top:10px; display:none">
-          <div class="mini" style="margin-bottom:8px">Prova de entrega</div>
-          <div id="pubProof"></div>
-        </div>
-      </div>
-    </div>
-
-    <div class="footer">
-      © 2026 ViralVault Store • Loja 100% digital • SP <br/>
-      Suporte: WhatsApp +55 11 94159-8713
-    </div>
-  </div>
-
-  <!-- WHATSAPP -->
-  <a class="wa" id="waFloat" href="#" target="_blank" rel="noopener">
-    <div class="chip">
-      <div class="dot">💬</div>
-      <div>
-        <div style="font-size:12px;opacity:.92">Suporte</div>
-        <div>WhatsApp</div>
-      </div>
-    </div>
+  <a class="float" href="https://wa.me/5511941598713?text=Oi!%20Preciso%20de%20ajuda%20com%20meu%20pedido%20ViralVault%20Store." target="_blank" rel="noopener">
+    <div class="bubble">💬</div>
+    <div><div style="font-size:12px;opacity:.92">Suporte</div><div style="font-size:14px">WhatsApp</div></div>
   </a>
 
-  <div class="toast" id="toast">Copiado ✅</div>
+<script>
+  const WORKER_BASE = "https://viralvault-sign.darlanana06.workers.dev";
+  const PIX_CODE = `00020101021126580014br.gov.bcb.pix0136851fee9f-0037-44f3-9361-e053c1faa7685204000053039865802BR5921DARLAN B R DOS SANTOS6009SAO PAULO62070503***63048DFF`;
 
-  <!-- MODAL CHECKOUT -->
-  <div class="modalWrap" id="modalCheckout">
-    <div class="modal">
-      <div class="modalTop">
-        <b id="ckTitle">Checkout</b>
-        <button class="x" id="ckClose">✕</button>
-      </div>
+  let selected = null;
+  let lastOrderId = null;
 
-      <div class="modalBody">
-        <div class="box">
-          <div class="mini">Finalize com PIX seguro</div>
+  const $ = (id) => document.getElementById(id);
 
-          <div class="rowFlex" style="margin-top:10px">
-            <div style="flex:1">
-              <div class="mini">Usuário do Roblox (opcional)</div>
-              <input id="ckRbxUser" placeholder="@user_1234"/>
-            </div>
-            <div style="flex:1">
-              <div class="mini">Info extra (opcional)</div>
-              <input id="ckRbxExtra" placeholder="ex: ID do item"/>
-            </div>
-          </div>
+  function moneyBR(v){
+    try { return new Intl.NumberFormat('pt-BR', {style:'currency', currency:'BRL'}).format(v || 0); }
+    catch(e){ return 'R$ ' + Number(v||0).toFixed(2); }
+  }
 
-          <div class="rowFlex" style="margin-top:10px">
-            <div style="flex:1">
-              <div class="mini">Cupom</div>
-              <input id="ckCoupon" placeholder="BEMVINDO10"/>
-            </div>
-            <div style="flex:1">
-              <div class="mini">Preço final</div>
-              <div class="price" id="ckFinalPrice">R$ 0,00</div>
-            </div>
-          </div>
+  function setStatus(kind, msg){
+    const el = $('st');
+    el.classList.remove('ok','bad');
+    if(kind) el.classList.add(kind);
+    el.textContent = msg;
+  }
+  function setStatus2(kind, msg){
+    const el = $('st2');
+    el.classList.remove('ok','bad');
+    if(kind) el.classList.add(kind);
+    el.textContent = msg;
+  }
 
-          <div class="mini" style="margin-top:10px;opacity:.95">
-            ✅ Entrega em até <b>24h</b>. Se não entregar: <b>reembolso</b>.
-          </div>
+  function updateBuy(){
+    const u = ($('user').value || '').trim();
+    $('buy').disabled = !(u.length && selected);
+  }
 
-          <hr/>
+  async function api(path, opts={}){
+    const url = WORKER_BASE.replace(/\/+$/,'') + path;
+    const res = await fetch(url, opts);
+    const txt = await res.text();
+    let data = null;
+    try { data = JSON.parse(txt); } catch(e){ data = { ok:false, raw:txt }; }
+    if(!res.ok){ throw new Error((data && (data.error||data.message)) || ('HTTP ' + res.status)); }
+    return data;
+  }
 
-          <div class="rowFlex" style="align-items:flex-start;gap:12px">
-            <div class="qr" style="flex:1;min-width:220px">
-              <img id="qrImg" alt="QR PIX" src="" />
-            </div>
-
-            <div style="flex:1;min-width:220px">
-              <div class="mini">PIX copia e cola</div>
-              <textarea id="ckPixEmv" readonly style="min-height:108px;resize:none;font-size:13px;line-height:1.25"></textarea>
-
-              <div style="display:flex;gap:10px;flex-wrap:wrap;justify-content:flex-end;margin-top:10px">
-                <button class="btn btnPrimary small" id="btnCopyPix">Copiar PIX</button>
-                <button class="btn btnGhost small" id="btnCopyOrder" disabled>Copiar Order ID</button>
-              </div>
-
-              <div class="mini" style="margin-top:10px">
-                ✅ Pague apenas o PIX exibido aqui. Se alguém mandar outra chave no chat, é golpe.
-              </div>
-            </div>
-          </div>
-
-          <hr/>
-
-          <div class="rowFlex">
-            <button class="btn btnPrimary" id="btnCreateOrder">Gerar pedido e liberar PIX</button>
-            <a class="btn btnGhost" id="btnOpenWaPay" href="#" target="_blank" rel="noopener" style="text-decoration:none">Enviar no WhatsApp (opcional)</a>
-          </div>
-
-          <div class="mini" style="margin-top:10px" id="ckStatus">—</div>
-        </div>
-      </div>
-    </div>
-  </div>
-
-  <!-- MODAL ADMIN -->
-  <div class="modalWrap" id="modalAdmin">
-    <div class="modal">
-      <div class="modalTop">
-        <b>Admin local 🛡️</b>
-        <button class="x" id="adClose">✕</button>
-      </div>
-
-      <div class="modalBody">
-        <div class="box">
-          <div class="mini">Acesso só para você</div>
-
-          <div class="rowFlex" style="margin-top:10px">
-            <input id="adminPass" placeholder="Senha admin"/>
-            <button class="btn btnPrimary" id="btnAdminLogin">Entrar</button>
-          </div>
-
-          <div class="mini" id="adminStatus" style="margin-top:10px">Bloqueado.</div>
-
-          <div id="adminPanel" style="display:none;margin-top:14px">
-            <hr/>
-            <b>🧾 Prova de entrega</b>
-            <div class="mini">salva no seu dispositivo (local)</div>
-
-            <div class="rowFlex" style="margin-top:10px">
-              <input id="proofOrderId" placeholder="Order ID"/>
-              <input id="proofValue" placeholder="Link (https://...) ou texto"/>
-              <button class="btn btnPrimary" id="btnSaveProof">Salvar</button>
-            </div>
-
-            <div class="mini" style="margin-top:10px">Depois, dá pra migrar pra prova GLOBAL no Worker/KV.</div>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
-
-  <script>
-    /*** CONFIG ***/
-    const WORKER_BASE = "https://viralvault-sign.darlanana06.workers.dev".replace(/\/+$/,"");
-    const WHATS = "5511941598713";
-    const ADMIN_PASSCODE = "P@ss_VV_6nT2xQ9mR4vL1pK7hJ3cD0wE8yG5bF";
-    const WELCOME_COUPON = "BEMVINDO10";
-
-    const PIX_EMV = `00020101021126580014br.gov.bcb.pix0136851fee9f-0037-44f3-9361-e053c1faa7685204000053039865802BR5921DARLAN B R DOS SANTOS6009SAO PAULO62070503***63048DFF`;
-
-    const PIX_QR_IMAGE_URL = "./pix-qr.png";
-
-    const SS_ADMIN = "vv_admin";
-    const LS_COUPON = "vv_coupon_used_v1";
-
-    const PRODUCTS = [
-      {id:"brainrot_basic", name:"Brainrot Pack (Básico)", desc:"Entrega 100% digital • em até 24h", price: 9.90, tag:"Popular"},
-      {id:"brainrot_plus", name:"Brainrot Pack (Plus)", desc:"Itens premium • entrega em até 24h", price: 19.90, tag:"Premium"},
-      {id:"roblox_custom", name:"Entrega Personalizada (Roblox)", desc:"Você escolhe o que precisa • 24h", price: 29.90, tag:"Custom"},
-    ];
-
-    const $ = (q)=>document.querySelector(q);
-    function money(v){ return v.toLocaleString("pt-BR",{style:"currency",currency:"BRL"}); }
-
-    function toast(msg){
-      const t=$("#toast");
-      t.textContent=msg;
-      t.style.display="block";
-      clearTimeout(window.__t);
-      window.__t=setTimeout(()=>t.style.display="none",1500);
-    }
-
-    async function copyText(text){
-      try{ await navigator.clipboard.writeText(text); toast("Copiado ✅"); }
-      catch(e){ prompt("Copie:", text); }
-    }
-
-    function openModal(el){ $(el).style.display="flex"; }
-    function closeModal(el){ $(el).style.display="none"; }
-
-    const supportMsg = encodeURIComponent("Oi ViralVault! Preciso de suporte.");
-    $("#waFloat").href = `https://wa.me/${WHATS}?text=${supportMsg}`;
-    $("#btnGoSupport").href = `https://wa.me/${WHATS}?text=${supportMsg}`;
-
-    $("#ckPixEmv").value = PIX_EMV;
-    $("#qrImg").src = PIX_QR_IMAGE_URL;
-
-    let currentProduct=null;
-    let lastOrderId="";
-
-    function renderProducts(){
-      const grid=$("#gridProducts");
-      grid.innerHTML="";
-      PRODUCTS.forEach(p=>{
-        const el=document.createElement("div");
-        el.className="card";
-        el.innerHTML = `
-          <div class="inner">
-            <div class="tag"><span class="k"></span><span>${p.tag} • 💾 Digital</span></div>
-            <div style="font-size:18px;font-weight:1100;letter-spacing:-.2px;margin:8px 0">${p.name}</div>
-            <div class="mini" style="line-height:1.5">${p.desc}</div>
-            <div class="rowFlex" style="margin-top:14px">
+  async function loadCatalog(){
+    const grid = $('grid');
+    grid.innerHTML = '';
+    try {
+      const data = await api('/catalog');
+      const list = data.products || [];
+      if(!list.length){
+        grid.innerHTML = "<div class='card'><div class='cin'><b>Nenhum produto ainda</b><p class='desc'>Adicione no PRODUCTS_JSON do Worker.</p></div></div>";
+        return;
+      }
+      list.forEach(p => {
+        const card = document.createElement('div');
+        card.className = 'card';
+        card.innerHTML = `
+          <div class='cin'>
+            <div class='tag'>🌸 ${p.category || 'Digital'}</div>
+            <div class='title'>${p.name || p.id}</div>
+            <p class='desc'>Produto digital • Entrega em até 24h após confirmação do PIX.</p>
+            <div class='row'>
               <div>
-                <div class="mini">Preço</div>
-                <div class="price">${money(p.price)}</div>
+                <div class='price'>${moneyBR(p.price)}</div>
+                <div class='small'>ID: ${p.id}</div>
               </div>
-              <button class="btn btnPrimary small" data-buy="${p.id}">Comprar agora</button>
+              <button class='btn primary' style='padding:12px 14px;border-radius:14px'>Comprar</button>
             </div>
           </div>`;
-        grid.appendChild(el);
+        card.querySelector('button').addEventListener('click', () => {
+          selected = p;
+          document.querySelectorAll('.card').forEach(c => c.style.outline = 'none');
+          card.style.outline = '3px solid rgba(255,59,107,.35)';
+          setStatus(null, `Selecionado: ${p.name} • ${moneyBR(p.price)} — preencha seu @user e clique em “Comprar e esperar”.`);
+          updateBuy();
+          $('checkout').scrollIntoView({behavior:'smooth', block:'center'});
+        });
+        grid.appendChild(card);
       });
-
-      grid.querySelectorAll("[data-buy]").forEach(btn=>{
-        btn.addEventListener("click", ()=>{
-          const id=btn.getAttribute("data-buy");
-          currentProduct=PRODUCTS.find(x=>x.id===id);
-          openCheckout(currentProduct);
-        }, {passive:true});
-      });
+    } catch(err){
+      grid.innerHTML = `<div class='card'><div class='cin'><b>Erro ao carregar catálogo</b><p class='desc'>${err.message}</p><div class='small'>Confira /catalog no worker e WORKER_BASE.</div></div></div>`;
     }
+  }
 
-    function calcDiscount(price,coupon){
-      const c=(coupon||"").trim().toUpperCase();
-      const usedKey = LS_COUPON+"_"+c;
-      const used = localStorage.getItem(usedKey)==="1";
-      if(c===WELCOME_COUPON && !used){
-        return {final:+(price*0.9).toFixed(2), off:"10%", canUse:true, usedKey};
-      }
-      return {final:price, off:"", canUse:false, usedKey};
+  async function loadStats(){
+    try {
+      const data = await api('/stats');
+      const today = data.ordersToday ?? data.today;
+      const total = data.ordersTotal ?? data.total;
+      if(today != null && total != null) $('pill').textContent = `🌸 Hoje: ${today} • Total: ${total}`;
+      else $('pill').textContent = '🌸 Loja online';
+    } catch(e){ $('pill').textContent = '🌸 Loja online'; }
+  }
+
+  async function buy(){
+    const user = ($('user').value || '').trim();
+    const coupon = ($('coupon').value || '').trim();
+    if(!selected) return setStatus('bad','Escolha um produto primeiro.');
+    if(!user) return setStatus('bad','Preencha seu user do Roblox.');
+    setStatus(null,'Gerando pedido no servidor…');
+    try {
+      const ch = await api('/challenge');
+      if(!ch.token) throw new Error('Challenge não retornou token.');
+      const body = { user, coupon, items:[{ id: selected.id, qty:1 }], challenge: ch.token };
+      const data = await api('/checkout', { method:'POST', headers:{'Content-Type':'application/json'}, body: JSON.stringify(body) });
+      lastOrderId = data.orderId || data.id;
+      $('copyOrder').disabled = !lastOrderId;
+      $('oid').value = lastOrderId || '';
+      setStatus('ok', `Pedido criado ✅ ID: ${lastOrderId} — Agora pague o PIX e aguarde (até 24h).`);
+      setTimeout(() => check(true), 1200);
+    } catch(err){
+      setStatus('bad', 'Erro: ' + err.message);
     }
+  }
 
-    function updatePrice(){
-      const p=currentProduct?.price||0;
-      const coupon=$("#ckCoupon").value;
-      const d=calcDiscount(p,coupon);
-      $("#ckFinalPrice").textContent = money(d.final) + (d.canUse?`  (-${d.off})`:"");
+  async function check(silent){
+    const oid = ($('oid').value || '').trim();
+    if(!oid){ if(!silent) setStatus2('bad','Cole o Order ID.'); return; }
+    try {
+      const data = await api('/order-status?orderId=' + encodeURIComponent(oid));
+      const st = (data.status || (data.order && data.order.status) || 'pending') + '';
+      const human = st === 'pending' ? 'Pendente (aguardando pagamento)' : st === 'paid' ? 'Pago (em entrega)' : st === 'delivered' ? 'Entregue ✅' : st;
+      setStatus2('ok', 'Status: ' + human);
+    } catch(err){
+      setStatus2('bad', 'Erro: ' + err.message);
     }
+  }
 
-    function openCheckout(product){
-      $("#ckTitle").textContent = "Checkout • "+product.name;
-      $("#ckStatus").textContent = "—";
-      $("#ckRbxUser").value="";
-      $("#ckRbxExtra").value="";
-      $("#ckCoupon").value=WELCOME_COUPON;
-      $("#btnCopyOrder").disabled=true;
-      lastOrderId="";
-      updatePrice();
-      openModal("#modalCheckout");
+  async function copyText(t){ return navigator.clipboard.writeText(t); }
 
-    }
+  $('user').addEventListener('input', () => { const v = $('user').value; if(v && v.length===1 && v!== '@') $('user').value='@'+v; updateBuy(); });
+  $('buy').addEventListener('click', buy);
+  $('check').addEventListener('click', () => check(False));
 
-    $("#ckCoupon").addEventListener("input", updatePrice, {passive:true});
+  // Fix JS boolean for older browsers
+  function False(){ return false; }
 
-    async function apiCheckout(payload){
-      const res = await fetch(WORKER_BASE + "/checkout", {
-        method:"POST",
-        headers:{"content-type":"application/json"},
-        body: JSON.stringify(payload)
-      });
-      const data = await res.json().catch(()=>({}));
-      if(!res.ok) throw new Error(data?.error || "Erro no checkout");
-      return data;
-    }
+  $('copyPix').addEventListener('click', async () => { try{ await copyText(PIX_CODE); setStatus('ok','PIX copiado ✅'); }catch(e){ setStatus('bad','Não consegui copiar. Copie manualmente.'); } });
+  $('copyCode').addEventListener('click', async () => { try{ await copyText(PIX_CODE); setStatus('ok','Código PIX copiado ✅'); }catch(e){ setStatus('bad','Não consegui copiar.'); } });
+  $('copyOrder').addEventListener('click', async () => { if(!lastOrderId) return; try{ await copyText(lastOrderId); setStatus('ok','Order ID copiado ✅'); }catch(e){ setStatus('bad','Não consegui copiar o ID.'); } });
 
-    async function apiVerify(orderId){
-      const res = await fetch(WORKER_BASE + "/verify", {
-        method:"POST",
-        headers:{"content-type":"application/json"},
-        body: JSON.stringify({orderId})
-      });
-      const data = await res.json().catch(()=>({}));
-      if(!res.ok) throw new Error(data?.error || "Erro na verificação");
-      return data;
-    }
+  $('goProd').addEventListener('click', () => $('produtos').scrollIntoView({behavior:'smooth'}));
+  $('goOrders').addEventListener('click', () => $('meus').scrollIntoView({behavior:'smooth'}));
+  $('goCheckout').addEventListener('click', () => $('checkout').scrollIntoView({behavior:'smooth'}));
 
-    $("#btnCreateOrder").addEventListener("click", async ()=>{
-      try{
-        if(!currentProduct) return;
-
-        const rbxUser=$("#ckRbxUser").value.trim();
-        const rbxExtra=$("#ckRbxExtra").value.trim();
-        if(!rbxUser){
-          $("#ckStatus").innerHTML="⚠️ <b>Preencha seu usuário do Roblox</b> para receber o item.";
-          $("#ckRbxUser").focus();
-          return;
-        }
-
-        const coupon=$("#ckCoupon").value.trim().toUpperCase();
-        const d=calcDiscount(currentProduct.price,coupon);
-
-        $("#ckStatus").textContent="Gerando pedido automático…";
-
-        const payload = {
-          user: rbxUser,
-          items: [{id: currentProduct.id, qty: 1, price: d.final}],
-          meta: {rbxExtra, coupon, slaHours:24, refundIfLate:true, productName: currentProduct.name}
-        };
-
-        const data = await apiCheckout(payload);
-
-        lastOrderId = data.orderId || data.id || "";
-        if(!lastOrderId) throw new Error("orderId não retornou");
-
-        $("#ckStatus").innerHTML = "✅ Pedido criado: <b>" + lastOrderId + "</b><br/>Agora é só <b>pagar o PIX</b> e aguardar a entrega em até 24h. Se quiser, mande seu user do Roblox no WhatsApp.";
-        // Abre WhatsApp automaticamente (opcional)
-        try{ window.open($("#btnOpenWaPay").href, "_blank"); }catch(e){}
-        $("#btnCopyOrder").disabled=false;
-
-        if(coupon===WELCOME_COUPON){
-          const usedKey = LS_COUPON+"_"+coupon;
-          if(localStorage.getItem(usedKey)!=="1") localStorage.setItem(usedKey,"1");
-        }
-
-        const msg = encodeURIComponent(
-          `Oi ViralVault! Fiz um pedido.
-Order ID: ${lastOrderId}
-Produto: ${currentProduct.name}
-Usuário Roblox: ${rbxUser}
-Pagamento via PIX.`
-        );
-        $("#btnOpenWaPay").href = `https://wa.me/${WHATS}?text=${msg}`;
-
-      }catch(e){
-        $("#ckStatus").textContent="❌ " + e.message;
-      }
-    });
-
-    $("#btnCopyPix").addEventListener("click", ()=> copyText($("#ckPixEmv").value), {passive:true});
-    $("#btnCopyOrder").addEventListener("click", ()=> { if(lastOrderId) copyText(lastOrderId); }, {passive:true});
-
-    async function verifyNow(){
-      try{
-        const oid=$("#verifyOrderId").value.trim();
-        if(!oid) return;
-
-        $("#verifyResult").textContent="Verificando…";
-        const v = await apiVerify(oid);
-
-        if(v.ok){
-          $("#verifyResult").innerHTML = `<span class="badgeOk">✅ VV-OFICIAL</span> <span class="mini">Order: ${oid}</span>`;
-        }else{
-          $("#verifyResult").innerHTML = `<span class="badgeBad">❌ Pedido inválido</span> <span class="mini">${v.error||""}</span>`;
-        }
-
-        const proof = localStorage.getItem("vv_proof_"+oid);
-        if(proof){
-          $("#pubProofWrap").style.display="block";
-          $("#pubProof").innerHTML = /^https?:\/\//i.test(proof)
-            ? `<a class="btn btnGhost small" href="${proof}" target="_blank" rel="noopener">Abrir prova de entrega</a>`
-            : `<div class="mini">${proof}</div>`;
-        } else {
-          $("#pubProofWrap").style.display="none";
-          $("#pubProof").innerHTML = "";
-        }
-
-      }catch(e){
-        $("#verifyResult").textContent="❌ " + e.message;
-      }
-    }
-    $("#btnVerify").addEventListener("click", verifyNow);
-
-    function setAdmin(ok){
-      sessionStorage.setItem(SS_ADMIN, ok?"1":"0");
-      $("#adminPanel").style.display = ok ? "block" : "none";
-    }
-
-    $("#btnAdminLogin").addEventListener("click", ()=>{
-      const pass=$("#adminPass").value;
-      if(pass===ADMIN_PASSCODE){
-        setAdmin(true);
-        $("#adminStatus").textContent="✅ Admin liberado.";
-      }else{
-        $("#adminStatus").textContent="❌ Senha incorreta.";
-      }
-    });
-
-    $("#btnSaveProof").addEventListener("click", ()=>{
-      const ok=sessionStorage.getItem(SS_ADMIN)==="1";
-      if(!ok){ $("#adminStatus").textContent="Bloqueado."; return; }
-
-      const oid=$("#proofOrderId").value.trim();
-      const val=$("#proofValue").value.trim();
-      if(!oid || !val){ $("#adminStatus").textContent="Preencha Order ID e Prova."; return; }
-
-      localStorage.setItem("vv_proof_"+oid, val);
-      $("#adminStatus").textContent="✅ Prova salva.";
-      $("#proofValue").value="";
-    });
-
-    $("#btnGoProducts").addEventListener("click", ()=>document.getElementById("produtos").scrollIntoView({behavior:"smooth"}), {passive:true});
-    $("#btnGoHow").addEventListener("click", ()=>document.getElementById("como").scrollIntoView({behavior:"smooth"}), {passive:true});
-    $("#btnOpenVerify").addEventListener("click", ()=>document.getElementById("verificar").scrollIntoView({behavior:"smooth"}), {passive:true});
-
-    $("#btnOpenAdmin").addEventListener("click", ()=>openModal("#modalAdmin"), {passive:true});
-    $("#ckClose").addEventListener("click", ()=>closeModal("#modalCheckout"), {passive:true});
-    $("#adClose").addEventListener("click", ()=>closeModal("#modalAdmin"), {passive:true});
-
-    $("#btnCopyCoupon").addEventListener("click", ()=> copyText(WELCOME_COUPON), {passive:true});
-
-    document.getElementById("couponLabel").addEventListener("click", ()=> copyText(WELCOME_COUPON), {passive:true});
-
-    // Close modals when clicking outside
-    $("#modalCheckout").addEventListener("click", (e)=>{ if(e.target.id==="modalCheckout") closeModal("#modalCheckout"); });
-    $("#modalAdmin").addEventListener("click", (e)=>{ if(e.target.id==="modalAdmin") closeModal("#modalAdmin"); });
-
-    // Upgrade 1: dynamic ticker numbers (lightweight randomness)
-    (function(){
-      const el=document.getElementById("vvTicker");
-      if(!el) return;
-      const views = 12 + Math.floor(Math.random()*30);
-      const verified = 2 + Math.floor(Math.random()*14);
-      el.innerHTML = `
-        <span>🔥 ${views} pessoas viram esta loja nos últimos 30 min</span>
-        <span>✅ ${verified} pedidos verificados hoje</span>
-        <span>⚡ Entrega em até 24h (ou reembolso)</span>
-        <span>🛡️ VV-OFICIAL: verificação no servidor</span>
-        <span>🔥 ${views} pessoas viram esta loja nos últimos 30 min</span>
-        <span>✅ ${verified} pedidos verificados hoje</span>
-        <span>⚡ Entrega em até 24h (ou reembolso)</span>
-        <span>🛡️ VV-OFICIAL: verificação no servidor</span>
-      `;
-    })();
-
-    renderProducts();
-  </script>
+  // init
+  $('pix').textContent = PIX_CODE;
+  loadCatalog();
+  loadStats();
+  setInterval(loadStats, 60000);
+  updateBuy();
+</script>
 </body>
 </html>
