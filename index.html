@@ -1,293 +1,757 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="pt-BR">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>ViralVault Store</title>
-  <meta name="description" content="ViralVault Store — compra simples via PIX. Pague e aguarde a entrega." />
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width,initial-scale=1"/>
+  <title>ViralVault Store — Itens & Brainrots</title>
+  <meta name="description" content="ViralVault Store — loja de itens/brainrots do Roblox. Compra simples via PIX, pedido com ID e entrega em até 24h."/>
   <style>
-    :root{ --bg:#0b0b12; --card:#ffffff; --muted:#667085; --text:#101828; --pink:#ff3d87; --pink2:#ff6aa2; --line:#eaeaea; }
-    *{ box-sizing:border-box; }
-    body{ margin:0; font-family: ui-sans-serif,system-ui,-apple-system,Segoe UI,Roboto,Arial; background: radial-gradient(1200px 600px at 50% 0%, rgba(255,61,135,.16), transparent 55%), #f6f6fb; color:var(--text); }
-    header{ position:sticky; top:0; z-index:10; background:rgba(246,246,251,.85); backdrop-filter: blur(10px); border-bottom:1px solid rgba(0,0,0,.06); }
-    .wrap{ max-width:980px; margin:0 auto; padding:14px 14px; }
-    .top{ display:flex; align-items:center; gap:10px; }
-    .logo{ width:34px; height:34px; border-radius:12px; background: linear-gradient(135deg,var(--pink),var(--pink2)); box-shadow: 0 12px 30px rgba(255,61,135,.22); }
-    h1{ font-size:18px; margin:0; font-weight:900; }
-    .pill{ margin-left:auto; font-weight:800; font-size:12px; padding:8px 10px; border-radius:999px; background:#fff; border:1px solid rgba(0,0,0,.06); color:#344054; }
-    main{ max-width:980px; margin:0 auto; padding:16px 14px 60px; }
-    .hero{ background:#fff; border:1px solid rgba(0,0,0,.06); border-radius:18px; padding:14px; box-shadow: 0 10px 30px rgba(0,0,0,.06); }
-    .hero b{ display:block; font-size:16px; }
-    .hero p{ margin:6px 0 0; color:var(--muted); font-weight:700; line-height:1.4; }
-    .grid{ display:grid; grid-template-columns: repeat(3,1fr); gap:12px; margin-top:14px; }
-    @media (max-width:900px){ .grid{ grid-template-columns:1fr; } }
-    .card{ background:#fff; border:1px solid rgba(0,0,0,.06); border-radius:18px; padding:14px; box-shadow: 0 10px 30px rgba(0,0,0,.05); }
-    .tag{ display:inline-block; font-weight:900; font-size:12px; padding:6px 10px; border-radius:999px; background: rgba(255,61,135,.10); color:#b0124d; border:1px solid rgba(255,61,135,.16); }
-    .name{ margin:10px 0 6px; font-weight:1000; font-size:16px; }
-    .desc{ margin:0 0 12px; color:var(--muted); font-weight:700; }
-    .row{ display:flex; align-items:center; justify-content:space-between; gap:10px; }
-    .price{ font-size:18px; font-weight:1000; }
-    .btn{ border:none; cursor:pointer; font-weight:1000; padding:12px 14px; border-radius:14px; background: linear-gradient(90deg,var(--pink),var(--pink2)); color:#fff; box-shadow: 0 12px 25px rgba(255,61,135,.18); }
-    .btn:disabled{ opacity:.6; cursor:not-allowed; }
-    /* Modal */
-    .overlay{ position:fixed; inset:0; display:none; background:rgba(0,0,0,.45); z-index:50; padding:14px; }
-    .modal{ max-width:520px; margin:10vh auto 0; background:#fff; border-radius:18px; overflow:hidden; box-shadow: 0 20px 60px rgba(0,0,0,.25); border:1px solid rgba(0,0,0,.06); }
-    .mTop{ display:flex; justify-content:space-between; align-items:center; padding:12px 12px; border-bottom:1px solid rgba(0,0,0,.06); }
-    .mTop b{ font-size:16px; }
-    .x{ width:44px; height:44px; border-radius:14px; border:1px solid rgba(0,0,0,.08); background:#fff; cursor:pointer; font-size:18px; }
-    .mBody{ padding:12px; }
-    .box{ border:1px solid rgba(0,0,0,.08); border-radius:16px; padding:12px; background:#fafafa; }
-    .lbl{ font-weight:900; color:#344054; font-size:12px; }
-    .val{ font-weight:1000; font-size:16px; margin-top:2px; }
-    .field{ margin-top:10px; }
-    input{ width:100%; padding:14px 14px; border-radius:16px; border:1px solid rgba(0,0,0,.10); font-weight:900; font-size:16px; outline:none; }
-    input:focus{ border-color: rgba(255,61,135,.45); box-shadow: 0 0 0 4px rgba(255,61,135,.10); }
-    .hint{ margin-top:6px; color:var(--muted); font-weight:800; font-size:12px; }
-    .bigbtn{ width:100%; margin-top:12px; padding:16px; border-radius:16px; }
-    .idBox{ margin-top:12px; display:none; }
-    textarea{ width:100%; min-height:88px; resize:none; padding:12px; border-radius:16px; border:1px solid rgba(0,0,0,.10); font-weight:800; }
-    .copyRow{ display:flex; gap:10px; margin-top:10px; flex-wrap:wrap; }
-    .ghost{ background:#fff; color:#101828; border:1px solid rgba(0,0,0,.10); box-shadow:none; }
-    .ok{ margin-top:10px; font-weight:900; color:#067647; display:none; }
-    .err{ margin-top:10px; font-weight:900; color:#b42318; display:none; white-space:pre-wrap; }
-    footer{ margin-top:18px; color:#667085; font-weight:800; font-size:12px; text-align:center; }
+    :root{
+      --bg:#f7f7fb;
+      --card:#ffffffcc;
+      --cardSolid:#fff;
+      --line:#e9e9f2;
+      --text:#101018;
+      --muted:#5c5c76;
+      --accent:#ff2d55;   /* red */
+      --accent2:#ff6a88;
+      --good:#16a34a;
+      --bad:#ef4444;
+      --shadow: 0 18px 45px rgba(17, 17, 34, .10);
+      --shadow2: 0 10px 24px rgba(17, 17, 34, .10);
+      --radius: 18px;
+      --radius2: 26px;
+      --max: 1120px;
+    }
+    *{box-sizing:border-box}
+    html,body{height:100%}
+    body{
+      margin:0;
+      font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Arial, "Noto Sans", "Helvetica Neue", sans-serif;
+      color:var(--text);
+      background:
+        radial-gradient(900px 420px at 10% 0%, rgba(255,45,85,.14), transparent 60%),
+        radial-gradient(900px 520px at 90% 10%, rgba(255,106,136,.12), transparent 60%),
+        radial-gradient(1200px 700px at 50% 120%, rgba(255,45,85,.08), transparent 60%),
+        var(--bg);
+      overflow-x:hidden;
+    }
+    a{color:inherit; text-decoration:none}
+    button,input{font:inherit}
+    .wrap{max-width:var(--max); margin:0 auto; padding:18px}
+    /* Topbar */
+    .topbar{
+      position:sticky; top:0; z-index:50;
+      background: rgba(247,247,251,.82);
+      backdrop-filter: blur(12px);
+      border-bottom:1px solid var(--line);
+    }
+    .topInner{display:flex; align-items:center; gap:12px; padding:12px 18px; max-width:var(--max); margin:0 auto;}
+    .brand{display:flex; align-items:center; gap:10px; font-weight:1000; letter-spacing:-.2px}
+    .mark{
+      width:44px; height:44px; border-radius:14px;
+      background: linear-gradient(135deg,var(--accent),var(--accent2));
+      box-shadow: 0 12px 26px rgba(255,45,85,.22);
+      display:grid; place-items:center; color:white;
+      font-weight:1100;
+    }
+    .nav{margin-left:auto; display:flex; gap:10px; align-items:center}
+    .nav a{
+      padding:10px 12px; border-radius:999px;
+      border:1px solid transparent;
+      color:var(--muted); font-weight:900; font-size:13px;
+    }
+    .nav a:hover{border-color:var(--line); background:#fff}
+    .btn{
+      border:1px solid var(--line);
+      background:#fff;
+      padding:12px 14px;
+      border-radius:14px;
+      font-weight:1000;
+      cursor:pointer;
+      box-shadow: var(--shadow2);
+      transition: transform .12s ease, filter .12s ease;
+      display:inline-flex; align-items:center; gap:10px; justify-content:center;
+    }
+    .btn:active{transform: translateY(1px) scale(.99)}
+    .btnPrimary{
+      border:none;
+      background: linear-gradient(90deg,var(--accent),var(--accent2));
+      color:white;
+      box-shadow: 0 16px 34px rgba(255,45,85,.22);
+    }
+    .chip{
+      display:inline-flex; align-items:center; gap:8px;
+      padding:10px 12px; border-radius:999px;
+      background:#fff; border:1px solid var(--line);
+      color:var(--muted); font-weight:950; font-size:12px;
+      box-shadow: var(--shadow2);
+    }
+    .dot{width:10px; height:10px; border-radius:999px; background: var(--good)}
+    /* Hero */
+    .hero{
+      margin-top: 14px;
+      background: linear-gradient(180deg, rgba(255,255,255,.92), rgba(255,255,255,.70));
+      border:1px solid var(--line);
+      border-radius: var(--radius2);
+      box-shadow: var(--shadow);
+      overflow:hidden;
+      position:relative;
+    }
+    .hero::before{
+      content:"";
+      position:absolute; inset:-2px;
+      background:
+        radial-gradient(700px 320px at 10% 10%, rgba(255,45,85,.16), transparent 60%),
+        radial-gradient(700px 340px at 90% 10%, rgba(255,106,136,.14), transparent 60%);
+      pointer-events:none;
+    }
+    .heroGrid{
+      position:absolute; inset:0;
+      background-image: linear-gradient(to right, rgba(16,16,24,.06) 1px, transparent 1px),
+                        linear-gradient(to bottom, rgba(16,16,24,.05) 1px, transparent 1px);
+      background-size: 58px 58px;
+      mask-image: radial-gradient(closest-side, rgba(0,0,0,.50), transparent 72%);
+      opacity:.45;
+      pointer-events:none;
+    }
+    .heroInner{position:relative; padding:22px; display:grid; grid-template-columns: 1.25fr .75fr; gap:16px; align-items:center}
+    h1{margin:10px 0 10px; font-size:42px; line-height:1.05; letter-spacing:-.8px}
+    .sub{margin:0; color:var(--muted); font-weight:800; line-height:1.55; max-width:62ch}
+    .cta{display:flex; gap:10px; flex-wrap:wrap; margin-top:14px}
+    .trust{display:grid; grid-template-columns: repeat(3,1fr); gap:10px; margin-top:14px}
+    .tCard{
+      background:#fff; border:1px solid var(--line);
+      border-radius: 16px; padding:12px 12px;
+      box-shadow: var(--shadow2);
+      display:flex; gap:10px; align-items:flex-start;
+    }
+    .ico{
+      width:40px; height:40px; border-radius:14px;
+      background: rgba(255,45,85,.10);
+      border:1px solid rgba(255,45,85,.18);
+      display:grid; place-items:center;
+      font-size:18px;
+      flex:0 0 auto;
+    }
+    .tCard b{display:block; font-weight:1050}
+    .tCard small{display:block; color:var(--muted); font-weight:850; margin-top:2px}
+    /* Promo side */
+    .promo{
+      background:#fff;
+      border:1px solid var(--line);
+      border-radius: 22px;
+      box-shadow: var(--shadow2);
+      padding:14px;
+    }
+    .promoTitle{font-weight:1100; letter-spacing:-.2px; margin:0 0 8px}
+    .promoRow{display:flex; gap:10px; align-items:center; flex-wrap:wrap}
+    .input{
+      width:100%;
+      padding:14px 14px;
+      border-radius: 14px;
+      border:1px solid var(--line);
+      background:#fff;
+      outline:none;
+      font-weight:900;
+    }
+    .hint{color:var(--muted); font-weight:850; font-size:12px; margin-top:8px; line-height:1.4}
+    /* Sections */
+    .section{margin-top:18px}
+    .sectionHead{display:flex; align-items:flex-end; justify-content:space-between; gap:12px}
+    .sectionHead h2{margin:0; font-size:20px; letter-spacing:-.3px}
+    .sectionHead p{margin:0; color:var(--muted); font-weight:850; font-size:13px}
+    .grid{
+      margin-top:12px;
+      display:grid;
+      grid-template-columns: repeat(3,1fr);
+      gap:12px;
+    }
+    .card{
+      background:#fff;
+      border:1px solid var(--line);
+      border-radius: 18px;
+      box-shadow: var(--shadow2);
+      overflow:hidden;
+      position:relative;
+    }
+    .cardInner{padding:14px}
+    .tag{
+      display:inline-flex; align-items:center; gap:8px;
+      padding:8px 10px; border-radius:999px;
+      border:1px solid var(--line); background: #fff;
+      font-weight:950; font-size:12px; color:var(--muted)
+    }
+    .pTitle{margin:10px 0 6px; font-weight:1100; letter-spacing:-.2px}
+    .pDesc{margin:0 0 10px; color:var(--muted); font-weight:850; font-size:13px; line-height:1.5}
+    .row{display:flex; align-items:flex-end; justify-content:space-between; gap:10px; margin-top:6px}
+    .price{font-weight:1150; font-size:20px}
+    .muted{color:var(--muted); font-weight:900; font-size:12px}
+    /* How it works */
+    .steps{
+      margin-top:12px;
+      display:grid;
+      grid-template-columns: repeat(3,1fr);
+      gap:12px;
+    }
+    .step{
+      background:#fff; border:1px solid var(--line);
+      border-radius: 18px; box-shadow: var(--shadow2);
+      padding:14px;
+    }
+    .num{
+      width:40px; height:40px; border-radius:14px;
+      background: linear-gradient(135deg, rgba(255,45,85,.18), rgba(255,106,136,.16));
+      border:1px solid rgba(255,45,85,.20);
+      display:grid; place-items:center; font-weight:1150;
+      margin-bottom:10px;
+    }
+    .step b{display:block; font-weight:1100}
+    .step small{display:block; color:var(--muted); font-weight:850; margin-top:6px; line-height:1.45}
+    /* Reviews */
+    .reviews{
+      margin-top:12px;
+      background:#fff; border:1px solid var(--line);
+      border-radius: 22px; box-shadow: var(--shadow2);
+      padding:14px;
+    }
+    .score{display:flex; gap:10px; align-items:center; flex-wrap:wrap}
+    .badge{
+      padding:10px 12px; border-radius:999px;
+      border:1px solid var(--line); background:#fff;
+      font-weight:1050; color:var(--muted)
+    }
+    .revRow{display:grid; grid-template-columns: repeat(3,1fr); gap:12px; margin-top:12px}
+    .rev{
+      border:1px solid var(--line); border-radius: 18px;
+      padding:12px; background: linear-gradient(180deg, #fff, #fff8fb);
+    }
+    .revTop{display:flex; align-items:center; justify-content:space-between; gap:10px}
+    .who{font-weight:1100}
+    .ok{color:var(--good); font-weight:1100}
+    .rev p{margin:10px 0 0; color:var(--muted); font-weight:850; line-height:1.5; font-size:13px}
+    /* FAQ */
+    .faq{margin-top:12px; display:grid; grid-template-columns: 1fr 1fr; gap:12px}
+    details{
+      background:#fff; border:1px solid var(--line); border-radius: 18px;
+      box-shadow: var(--shadow2);
+      padding:12px 14px;
+    }
+    summary{cursor:pointer; font-weight:1100}
+    details p{margin:10px 0 0; color:var(--muted); font-weight:850; line-height:1.5; font-size:13px}
+    /* Footer */
+    footer{margin:20px 0 30px; color:var(--muted); font-weight:850}
+    .foot{
+      background:#fff; border:1px solid var(--line);
+      border-radius: 22px; box-shadow: var(--shadow2);
+      padding:14px;
+      display:grid; grid-template-columns: 1.2fr .8fr; gap:12px;
+    }
+    .foot b{color:var(--text)}
+    .pillWarn{
+      margin-top:10px;
+      padding:12px 12px;
+      border-radius: 18px;
+      border:1px dashed rgba(255,45,85,.35);
+      background: rgba(255,45,85,.06);
+      color: #7a1a2b;
+      font-weight:1000;
+      line-height:1.45;
+    }
+    /* Modal checkout */
+    .overlay{position:fixed; inset:0; background: rgba(16,16,24,.55); display:none; align-items:center; justify-content:center; padding:16px; z-index:90}
+    .modal{
+      width:min(560px, 100%);
+      background:#fff;
+      border:1px solid var(--line);
+      border-radius: 24px;
+      box-shadow: 0 22px 70px rgba(0,0,0,.22);
+      overflow:hidden;
+    }
+    .mTop{display:flex; align-items:center; justify-content:space-between; padding:12px 14px; border-bottom:1px solid var(--line)}
+    .mTop b{font-weight:1150}
+    .x{width:44px; height:44px; border-radius:14px; border:1px solid var(--line); background:#fff; cursor:pointer; font-weight:1100}
+    .mBody{padding:14px}
+    .mGrid{display:grid; grid-template-columns: 1fr; gap:10px}
+    .box{
+      border:1px solid var(--line);
+      border-radius: 18px;
+      padding:12px;
+      background: linear-gradient(180deg,#fff,#fff8fb);
+    }
+    .k{color:var(--muted); font-weight:950; font-size:12px}
+    .v{font-weight:1100; margin-top:4px}
+    .copyRow{display:flex; gap:10px; flex-wrap:wrap; margin-top:10px}
+    .btnSmall{padding:11px 12px; border-radius: 14px; font-size:14px}
+    .status{
+      margin-top:10px;
+      padding:12px 12px;
+      border-radius: 18px;
+      border:1px dashed var(--line);
+      background:#fafafe;
+      color:var(--muted);
+      font-weight:1000;
+      min-height:46px;
+      display:flex; align-items:center;
+    }
+    .status.ok{border-color: rgba(22,163,74,.35); background: rgba(22,163,74,.08); color:#0f3d1f}
+    .status.bad{border-color: rgba(239,68,68,.35); background: rgba(239,68,68,.08); color:#4a0e0e}
+    /* WA */
+    .wa{
+      position:fixed; right:16px; bottom:16px; z-index:80;
+      display:flex; gap:10px; align-items:center;
+      padding:12px 12px;
+      border-radius: 999px;
+      background: linear-gradient(90deg,#16a34a,#22c55e);
+      color:white; box-shadow: 0 18px 45px rgba(34,197,94,.20);
+      font-weight:1100;
+    }
+    /* Responsive */
+    @media (max-width: 980px){
+      .heroInner{grid-template-columns:1fr}
+      .grid{grid-template-columns:1fr}
+      .trust{grid-template-columns:1fr}
+      .steps{grid-template-columns:1fr}
+      .revRow{grid-template-columns:1fr}
+      .faq{grid-template-columns:1fr}
+      h1{font-size:34px}
+      .nav{display:none}
+    }
   </style>
 </head>
 <body>
-  <header>
-    <div class="wrap">
-      <div class="top">
-        <div class="logo"></div>
-        <h1>ViralVault Store</h1>
-        <div class="pill">PIX • simples</div>
+  <header class="topbar">
+    <div class="topInner">
+      <div class="brand">
+        <div class="mark">VV</div>
+        <div>
+          <div style="line-height:1; font-size:14px; color:var(--muted); font-weight:950">Loja Digital</div>
+          <div style="line-height:1.05; font-size:16px">ViralVault Store</div>
+        </div>
+      </div>
+
+      <nav class="nav">
+        <a href="#catalogo">Catálogo</a>
+        <a href="#como">Como comprar</a>
+        <a href="#avaliacoes">Avaliações</a>
+        <a href="#faq">FAQ</a>
+      </nav>
+
+      <div style="margin-left:auto; display:flex; gap:10px; align-items:center">
+        <div class="chip"><span class="dot"></span> Entrega em até 24h</div>
+        <button class="btn btnPrimary" id="btnCatalogoTop">Ver Catálogo</button>
       </div>
     </div>
   </header>
 
-  <main>
-    <div class="hero">
-      <b>Escolha um produto → pague no PIX → pronto.</b>
-      <p>Você só precisa informar seu usuário do Roblox pra entrega não dar ruim. Depois do pagamento, é só aguardar.</p>
-    </div>
+  <main class="wrap">
+    <section class="hero" id="inicio">
+      <div class="heroGrid"></div>
+      <div class="heroInner">
+        <div>
+          <div class="chip">🔥 Itens/Brainrots do Roblox • PIX</div>
+          <h1>Compra simples, sem enrolação.<br/>Paga e só espera a entrega.</h1>
+          <p class="sub">
+            Você escolhe o item, informa seu <b>usuário do Roblox</b> e finaliza. O pedido gera um <b>ID</b> para acompanhar e comprovar.
+          </p>
 
-    <div class="grid" id="grid"></div>
+          <div class="cta">
+            <button class="btn btnPrimary" id="btnVerCatalogo">🛍️ Ver catálogo</button>
+            <button class="btn" id="btnComo">✨ Como funciona</button>
+            <button class="btn" id="btnVerificar">🔎 Verificar pedido</button>
+          </div>
+
+          <div class="trust">
+            <div class="tCard"><div class="ico">🔒</div><div><b>Transparente</b><small>ID do pedido + status</small></div></div>
+            <div class="tCard"><div class="ico">⚡</div><div><b>Rápido</b><small>Fluxo simples (paga e pronto)</small></div></div>
+            <div class="tCard"><div class="ico">💬</div><div><b>Suporte</b><small>WhatsApp direto</small></div></div>
+          </div>
+        </div>
+
+        <aside class="promo" aria-label="Compra rápida">
+          <p class="promoTitle">Compra rápida (1 clique)</p>
+          <div class="promoRow">
+            <label style="width:100%">
+              <div class="k" style="margin-bottom:6px">Seu usuário do Roblox</div>
+              <input class="input" id="quickUser" placeholder="@user_1234" autocomplete="off"/>
+            </label>
+            <button class="btn btnPrimary" style="width:100%" id="btnQuickOpen">Escolher produto</button>
+          </div>
+          <div class="hint">
+            ⚠️ <b>Anti-golpe:</b> a compra só é válida com <b>ID do pedido</b> gerado no site. Não aceite “prints” sem ID.
+          </div>
+        </aside>
+      </div>
+    </section>
+
+    <section class="section" id="catalogo">
+      <div class="sectionHead">
+        <div>
+          <h2>Produtos em destaque</h2>
+          <p>Catálogo puxado automaticamente do Worker</p>
+        </div>
+        <button class="btn" id="btnReload">Atualizar</button>
+      </div>
+      <div class="grid" id="productGrid" aria-live="polite"></div>
+    </section>
+
+    <section class="section" id="como">
+      <div class="sectionHead">
+        <div>
+          <h2>Como é fácil comprar</h2>
+          <p>Processo rápido em 3 etapas</p>
+        </div>
+      </div>
+      <div class="steps">
+        <div class="step"><div class="num">1</div><b>Escolha o produto</b><small>Veja o catálogo e selecione o item/brainrot desejado.</small></div>
+        <div class="step"><div class="num">2</div><b>Informe seu usuário e pague</b><small>Digite seu usuário do Roblox e finalize via PIX. Você recebe um <b>ID</b>.</small></div>
+        <div class="step"><div class="num">3</div><b>Aguarde a entrega</b><small>Entrega em até <b>24h</b>. Se não entregar, você tem <b>reembolso</b>.</small></div>
+      </div>
+    </section>
+
+    <section class="section" id="avaliacoes">
+      <div class="sectionHead">
+        <div>
+          <h2>Avaliações dos clientes</h2>
+          <p>Prova social (exemplo — personalize depois)</p>
+        </div>
+      </div>
+      <div class="reviews">
+        <div class="score">
+          <div class="badge">⭐ 4.9/5</div>
+          <div class="badge">✅ Compradores verificados</div>
+          <div class="badge">💬 Suporte rápido</div>
+        </div>
+        <div class="revRow">
+          <div class="rev"><div class="revTop"><div class="who">João</div><div class="ok">✓</div></div><p>“Chegou certinho. Processo simples e o ID do pedido passa confiança.”</p></div>
+          <div class="rev"><div class="revTop"><div class="who">Carla</div><div class="ok">✓</div></div><p>“Gostei do atendimento. Paguei e só esperei a entrega, sem enrolação.”</p></div>
+          <div class="rev"><div class="revTop"><div class="who">Vini</div><div class="ok">✓</div></div><p>“Entrega dentro do prazo. Achei top ter verificação do pedido.”</p></div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" id="faq">
+      <div class="sectionHead">
+        <div>
+          <h2>Dúvidas frequentes</h2>
+          <p>Respostas rápidas para o cliente</p>
+        </div>
+      </div>
+      <div class="faq">
+        <details><summary>Como funciona a compra?</summary><p>Você escolhe o produto, informa seu usuário e gera o pedido. Após o pagamento via PIX, é só aguardar a entrega (até 24h).</p></details>
+        <details><summary>O que garante que não é golpe?</summary><p>O pedido gera um <b>ID</b> e status. Você pode verificar no site. Se alguém pedir fora do site, desconfie.</p></details>
+        <details><summary>Quanto tempo para receber?</summary><p>Até <b>24h</b>. Se passar do prazo, você pode solicitar <b>reembolso</b>.</p></details>
+        <details><summary>Preciso falar com entregador?</summary><p>Na maioria dos casos, não. Se precisar de confirmação, o suporte chama você pelo WhatsApp.</p></details>
+      </div>
+    </section>
 
     <footer>
-      Suporte: WhatsApp • Transparência: sem “ao vivo” fake.
+      <div class="foot">
+        <div>
+          <b>ViralVault Store</b><br/>
+          <span>Suporte: WhatsApp</span><br/>
+          <span>Brasil • Loja digital de itens/brainrots</span>
+          <div class="pillWarn">
+            ✅ <b>Anti-golpe:</b> compras somente pelo site. <br/>
+            Sempre peça o <b>ID do pedido</b>. Sem ID, não é compra.
+          </div>
+        </div>
+        <div>
+          <b>Links</b><br/><br/>
+          <a href="#catalogo">Catálogo</a><br/>
+          <a href="#como">Como comprar</a><br/>
+          <a href="#faq">FAQ</a><br/>
+          <a href="#inicio">Topo</a><br/>
+          <p style="margin-top:10px; font-size:12px">© <span id="year"></span> ViralVault Store</p>
+        </div>
+      </div>
     </footer>
   </main>
 
-  <!-- Modal Checkout -->
-  <div class="overlay" id="overlay">
+  <a class="wa" id="waLink" href="#" target="_blank" rel="noopener">💬 Suporte no WhatsApp</a>
+
+  <!-- Checkout modal -->
+  <div class="overlay" id="ovl" role="dialog" aria-modal="true" aria-label="Checkout">
     <div class="modal">
       <div class="mTop">
         <b>Checkout (PIX) — simples</b>
         <button class="x" id="close">✕</button>
       </div>
       <div class="mBody">
-        <div class="box">
-          <div class="lbl">Produto</div>
-          <div class="val" id="mProd">—</div>
-          <div style="height:8px"></div>
-          <div class="lbl">Preço</div>
-          <div class="val" id="mPrice">—</div>
-        </div>
-
-        <div class="field">
-          <div class="lbl">Seu usuário do Roblox</div>
-          <input id="user" placeholder="@user_1234" autocomplete="off" />
-          <div class="hint">Sem usuário, não dá pra entregar. 😉</div>
-        </div>
-
-        <button class="btn bigbtn" id="btnCreate" disabled>Gerar pedido + PIX</button>
-
-        <div class="ok" id="okMsg">Pedido criado! Copie o PIX e pague.</div>
-        <div class="err" id="errMsg"></div>
-
-        <div class="idBox" id="idBox">
+        <div class="mGrid">
           <div class="box">
-            <div class="lbl">ID do pedido</div>
-            <div class="val" id="orderId">—</div>
+            <div class="k">Produto</div>
+            <div class="v" id="mProd">—</div>
+            <div class="k" style="margin-top:8px">Preço</div>
+            <div class="v" id="mPrice">—</div>
           </div>
 
-          <div class="field">
-            <div class="lbl">PIX copia e cola</div>
-            <textarea id="pix" readonly></textarea>
+          <div class="box">
+            <div class="k">Seu usuário do Roblox</div>
+            <input class="input" id="mUser" placeholder="@user_1234"/>
+            <div class="hint">Sem usuário, não dá pra entregar. 😉</div>
+          </div>
+
+          <button class="btn btnPrimary" id="btnCreate">Gerar pedido + PIX</button>
+
+          <div class="box" id="pixBox" style="display:none">
+            <div class="k">ID do pedido</div>
+            <div class="v" id="mOrder">—</div>
+
+            <div class="k" style="margin-top:10px">PIX copia e cola</div>
+            <textarea class="input" id="mPix" rows="3" style="resize:vertical; font-weight:900"></textarea>
 
             <div class="copyRow">
-              <button class="btn ghost" id="btnCopy">Copiar PIX</button>
-              <button class="btn ghost" id="btnStatus">Ver status</button>
+              <button class="btn btnSmall" id="copyPix">Copiar PIX</button>
+              <button class="btn btnSmall" id="copyOrder">Copiar ID</button>
+              <a class="btn btnSmall" id="btnSupport" href="#" target="_blank" rel="noopener">Falar com suporte</a>
             </div>
 
-            <div class="hint" id="statusLine"></div>
+            <div class="status" id="mStatus">Depois de pagar, é só aguardar a entrega (até 24h).</div>
           </div>
-        </div>
 
+          <div class="status bad" id="err" style="display:none"></div>
+        </div>
       </div>
     </div>
   </div>
 
-<script>
-  const WORKER_BASE = "https://viralvault-sign.darlanana06.workers.dev".replace(/\/+$/,'');
-  const grid = document.getElementById('grid');
+  <script>
+    // ======= CONFIG =======
+    const WORKER_BASE = "https://viralvault-sign.darlanana06.workers.dev";
+    const WHATSAPP_NUMBER = "5511941598713"; // seu número
+    const SUPPORT_TEXT = (orderId) => encodeURIComponent(
+      "Olá! Preciso de ajuda com meu pedido. ID: " + (orderId || "(ainda não tenho)") + "\\nMeu user do Roblox: "
+    );
 
-  const overlay = document.getElementById('overlay');
-  const closeBtn = document.getElementById('close');
-  const mProd = document.getElementById('mProd');
-  const mPrice = document.getElementById('mPrice');
-  const userInput = document.getElementById('user');
-  const btnCreate = document.getElementById('btnCreate');
-  const idBox = document.getElementById('idBox');
-  const orderIdEl = document.getElementById('orderId');
-  const pixEl = document.getElementById('pix');
-  const btnCopy = document.getElementById('btnCopy');
-  const btnStatus = document.getElementById('btnStatus');
-  const statusLine = document.getElementById('statusLine');
-  const okMsg = document.getElementById('okMsg');
-  const errMsg = document.getElementById('errMsg');
+    // Você pode trocar o PIX para vir do Worker depois.
+    // Por enquanto: será preenchido pelo /create-order (se seu Worker mandar), ou você coloca aqui fallback.
+    const PIX_FALLBACK = "";
 
-  let selected = null;
+    // ======= HELPERS =======
+    const $ = (id) => document.getElementById(id);
+    const money = (v) => {
+      try {
+        const n = Number(v);
+        if (Number.isFinite(n)) return n.toLocaleString("pt-BR",{style:"currency",currency:"BRL"});
+      } catch(e){}
+      return String(v || "");
+    }
+    function toast(msg){
+      // micro toast simples
+      const t = document.createElement("div");
+      t.textContent = msg;
+      t.style.cssText = "position:fixed;left:50%;bottom:92px;transform:translateX(-50%);background:#111; color:#fff; padding:10px 12px; border-radius:999px; font-weight:900; z-index:9999; box-shadow: 0 12px 34px rgba(0,0,0,.25);";
+      document.body.appendChild(t);
+      setTimeout(()=>t.remove(), 1600);
+    }
+    async function copyText(txt){
+      try{
+        await navigator.clipboard.writeText(txt);
+        toast("Copiado ✅");
+      }catch(e){
+        // fallback
+        const ta = document.createElement("textarea");
+        ta.value = txt;
+        document.body.appendChild(ta);
+        ta.select();
+        document.execCommand("copy");
+        ta.remove();
+        toast("Copiado ✅");
+      }
+    }
 
-  function brl(v){
-    const n = Number(v||0);
-    return n.toLocaleString('pt-BR', { style:'currency', currency:'BRL' });
-  }
+    // ======= STATE =======
+    let catalog = [];
+    let selected = null;
 
-  function showModal(prod){
-    selected = prod;
-    mProd.textContent = prod.name || prod.id;
-    mPrice.textContent = brl(prod.price);
-    idBox.style.display = 'none';
-    okMsg.style.display = 'none';
-    errMsg.style.display = 'none';
-    errMsg.textContent = '';
-    statusLine.textContent = '';
-    pixEl.value = '';
-    orderIdEl.textContent = '—';
-    overlay.style.display = 'block';
-    validate();
-  }
+    // ======= UI NAV =======
+    $("btnVerCatalogo").onclick = () => document.querySelector("#catalogo").scrollIntoView({behavior:"smooth"});
+    $("btnCatalogoTop").onclick = () => document.querySelector("#catalogo").scrollIntoView({behavior:"smooth"});
+    $("btnComo").onclick = () => document.querySelector("#como").scrollIntoView({behavior:"smooth"});
+    $("btnVerificar").onclick = () => {
+      toast("Verificação pública: use o ID do pedido");
+      document.querySelector("#faq").scrollIntoView({behavior:"smooth"});
+    };
 
-  function hideModal(){ overlay.style.display = 'none'; }
+    $("year").textContent = new Date().getFullYear();
 
-  closeBtn.addEventListener('click', hideModal);
-  overlay.addEventListener('click', (e)=>{ if(e.target === overlay) hideModal(); });
+    // WhatsApp link
+    const waBase = "https://wa.me/" + WHATSAPP_NUMBER + "?text=";
+    $("waLink").href = waBase + SUPPORT_TEXT("");
 
-  function validate(){
-    const u = (userInput.value||'').trim();
-    btnCreate.disabled = !selected || u.length < 2;
-  }
-  userInput.addEventListener('input', validate);
+    // ======= MODAL =======
+    function openModal(prod){
+      selected = prod;
+      $("mProd").textContent = prod?.name || prod?.title || "Produto";
+      $("mPrice").textContent = money(prod?.price ?? prod?.valor ?? "");
+      $("mUser").value = $("quickUser").value || "";
+      $("err").style.display = "none";
+      $("pixBox").style.display = "none";
+      $("mPix").value = "";
+      $("mOrder").textContent = "—";
+      $("mStatus").className = "status";
+      $("mStatus").textContent = "Depois de pagar, é só aguardar a entrega (até 24h).";
+      $("ovl").style.display = "flex";
+      $("mUser").focus();
+    }
+    function closeModal(){ $("ovl").style.display = "none"; }
+    $("close").onclick = closeModal;
+    $("ovl").addEventListener("click", (e)=>{ if(e.target === $("ovl")) closeModal(); });
 
-  async function loadCatalog(){
-    grid.innerHTML = '<div class="card">Carregando catálogo...</div>';
-    try {
-      const r = await fetch(WORKER_BASE + '/catalog', { method:'GET' });
-      const j = await r.json();
-      if(!j || !j.ok) throw new Error((j && (j.error||j.message)) || 'Falha no catálogo');
-      const items = j.products || [];
-      if(!items.length){
-        grid.innerHTML = '<div class="card">Sem produtos no momento.</div>';
+    $("btnQuickOpen").onclick = () => {
+      document.querySelector("#catalogo").scrollIntoView({behavior:"smooth"});
+      toast("Escolha um produto abaixo 👇");
+    };
+
+    // ======= LOAD CATALOG =======
+    async function loadCatalog(){
+      $("productGrid").innerHTML = '<div class="card"><div class="cardInner"><div class="tag">Carregando…</div><div class="pTitle">Buscando catálogo</div><div class="pDesc">Aguarde…</div></div></div>';
+      try{
+        const r = await fetch(WORKER_BASE + "/catalog", {method:"GET"});
+        const data = await r.json();
+        const items = data?.items || data?.products || data || [];
+        catalog = Array.isArray(items) ? items : [];
+        renderCatalog();
+      }catch(e){
+        $("productGrid").innerHTML = '<div class="card"><div class="cardInner"><div class="tag">Erro</div><div class="pTitle">Não deu pra carregar</div><div class="pDesc">Verifique se o Worker está online e se /catalog existe.</div></div></div>';
+      }
+    }
+
+    function renderCatalog(){
+      const grid = $("productGrid");
+      if(!catalog.length){
+        grid.innerHTML = '<div class="card"><div class="cardInner"><div class="tag">Vazio</div><div class="pTitle">Sem produtos</div><div class="pDesc">Adicione produtos no Worker (products).</div></div></div>';
         return;
       }
-      grid.innerHTML = '';
-      for(const p of items){
-        const el = document.createElement('div');
-        el.className = 'card';
-        const badge = (p.badge||'').trim();
+      grid.innerHTML = "";
+      for(const p of catalog.slice(0, 12)){
+        const name = p.name || p.title || "Produto";
+        const desc = p.desc || p.description || "Entrega em até 24h.";
+        const badge = p.badge || p.game || "Digital";
+        const price = money(p.price ?? p.valor ?? "");
+        const el = document.createElement("div");
+        el.className = "card";
         el.innerHTML = `
-          <span class="tag">${badge ? badge : 'Digital'}</span>
-          <div class="name">${p.name || p.id}</div>
-          <div class="desc">${p.description || 'Entrega digital após confirmação.'}</div>
-          <div class="row">
-            <div class="price">${brl(p.price)}</div>
-            <button class="btn">Comprar</button>
+          <div class="cardInner">
+            <div class="tag">✨ ${escapeHtml(badge)}</div>
+            <div class="pTitle">${escapeHtml(name)}</div>
+            <div class="pDesc">${escapeHtml(desc)}</div>
+            <div class="row">
+              <div>
+                <div class="price">${escapeHtml(price)}</div>
+                <div class="muted">Entrega: até 24h</div>
+              </div>
+              <button class="btn btnPrimary btnSmall">Comprar</button>
+            </div>
           </div>
         `;
-        el.querySelector('button').addEventListener('click', ()=> showModal(p));
+        el.querySelector("button").onclick = () => openModal(p);
         grid.appendChild(el);
       }
-    } catch(err){
-      grid.innerHTML = `<div class="card"><div class="name">Erro ao carregar catálogo</div><div class="desc">${String(err.message||err)}</div><div class="desc">Confere se existe rota <b>/catalog</b> no Worker e se WORKER_BASE está certo.</div></div>`;
     }
-  }
 
-  async function createOrder(){
-    const u = (userInput.value||'').trim();
-    if(!selected) return;
-    if(u.length < 2) return;
+    function escapeHtml(s){
+      return String(s ?? "").replace(/[&<>"']/g, (m)=>({ "&":"&amp;","<":"&lt;",">":"&gt;","\"":"&quot;","'":"&#039;" }[m]));
+    }
 
-    btnCreate.disabled = true;
-    btnCreate.textContent = 'Gerando...';
-    okMsg.style.display = 'none';
-    errMsg.style.display = 'none';
-    errMsg.textContent = '';
+    $("btnReload").onclick = loadCatalog;
 
-    try {
-      const payload = { productId: selected.id, user: u };
-      const r = await fetch(WORKER_BASE + '/create-order', {
-        method: 'POST',
-        headers: { 'Content-Type':'application/json' },
-        body: JSON.stringify(payload)
-      });
-
-      let j = null;
-      try { j = await r.json(); } catch(e){}
-
-      if(!r.ok || !j || !j.ok){
-        const msg = (j && (j.error || j.message)) || ('HTTP ' + r.status);
-        throw new Error(msg);
+    // ======= CREATE ORDER =======
+    $("btnCreate").onclick = async () => {
+      const user = $("mUser").value.trim();
+      if(!user){
+        $("err").style.display = "block";
+        $("err").textContent = "Preencha seu usuário (ex: @user_1234).";
+        return;
       }
+      $("err").style.display = "none";
+      $("btnCreate").disabled = true;
+      $("btnCreate").textContent = "Gerando…";
 
-      const oid = j.orderId || j.id || '';
-      const pix = j.pixCopyPaste || (j.pix && (j.pix.copyPaste || j.pix.copiaECola)) || (typeof j.pix === 'string' ? j.pix : '');
+      try{
+        // payload flexível (o Worker pode aceitar productId/name/price)
+        const body = {
+          user,
+          productId: selected?.id || selected?.sku || selected?.slug || null,
+          productName: selected?.name || selected?.title || "Produto",
+          price: selected?.price ?? selected?.valor ?? null
+        };
 
-      if(!oid) throw new Error('Resposta sem orderId.');
-      if(!pix) throw new Error('Resposta sem PIX copia e cola.');
+        const r = await fetch(WORKER_BASE + "/create-order", {
+          method:"POST",
+          headers:{ "Content-Type":"application/json" },
+          body: JSON.stringify(body)
+        });
+        const data = await r.json();
 
-      orderIdEl.textContent = oid;
-      pixEl.value = pix;
-      idBox.style.display = 'block';
-      okMsg.style.display = 'block';
-    } catch(err){
-      errMsg.style.display = 'block';
-      errMsg.textContent =
-        'Não consegui gerar pedido + PIX.\n' +
-        'Motivo: ' + String(err.message||err) + '\n\n' +
-        'Se aparecer "Rota não encontrada", seu Worker ainda não tem /create-order.';
-    } finally {
-      btnCreate.textContent = 'Gerar pedido + PIX';
-      validate();
+        if(!r.ok || data?.ok === false){
+          throw new Error(data?.error || "Falha ao criar pedido");
+        }
+
+        const orderId = data.orderId || data.id || data.order || "";
+        const pix = data.pix || data.pixCopiaECola || data.pix_payload || PIX_FALLBACK;
+
+        $("pixBox").style.display = "block";
+        $("mOrder").textContent = orderId || "(sem id)";
+        $("mPix").value = pix || "";
+
+        // suporte link com contexto
+        $("btnSupport").href = waBase + encodeURIComponent(
+          "Olá! Fiz um pedido na ViralVault Store.\n" +
+          "ID: " + (orderId || "(sem id)") + "\n" +
+          "User Roblox: " + user + "\n" +
+          "Produto: " + (selected?.name || selected?.title || "Produto")
+        );
+
+        $("mStatus").className = "status ok";
+        $("mStatus").textContent = "Pedido criado ✅ Pague via PIX e aguarde a entrega (até 24h).";
+
+        // opcional: poll status
+        if(orderId){
+          pollStatus(orderId);
+        }
+      }catch(e){
+        $("err").style.display = "block";
+        $("err").textContent = String(e?.message || e);
+      }finally{
+        $("btnCreate").disabled = false;
+        $("btnCreate").textContent = "Gerar pedido + PIX";
+      }
+    };
+
+    $("copyPix").onclick = () => copyText($("mPix").value || "");
+    $("copyOrder").onclick = () => copyText($("mOrder").textContent || "");
+
+    async function pollStatus(orderId){
+      // poll leve: 1x a cada 6s, por 5 min
+      const start = Date.now();
+      const interval = 6000;
+      const max = 5 * 60 * 1000;
+
+      async function tick(){
+        if(Date.now() - start > max) return;
+        try{
+          const r = await fetch(WORKER_BASE + "/order-status?orderId=" + encodeURIComponent(orderId));
+          const data = await r.json();
+          const st = (data.status || data.state || "").toLowerCase();
+          if(st.includes("paid") || st.includes("pago")){
+            $("mStatus").className = "status ok";
+            $("mStatus").textContent = "Pagamento confirmado ✅ Agora é só aguardar a entrega.";
+          }
+          if(st.includes("delivered") || st.includes("entreg")){
+            $("mStatus").className = "status ok";
+            $("mStatus").textContent = "Entregue ✅ Obrigado pela compra!";
+            return;
+          }
+        }catch(e){}
+        setTimeout(tick, interval);
+      }
+      setTimeout(tick, interval);
     }
-  }
 
-  btnCreate.addEventListener('click', createOrder);
-
-  btnCopy.addEventListener('click', async ()=>{
-    try {
-      await navigator.clipboard.writeText(pixEl.value || '');
-      statusLine.textContent = '✅ PIX copiado!';
-      setTimeout(()=> statusLine.textContent = '', 1500);
-    } catch(e){
-      statusLine.textContent = '⚠️ Não deu pra copiar automaticamente. Selecione e copie manualmente.';
-    }
-  });
-
-  btnStatus.addEventListener('click', async ()=>{
-    const oid = (orderIdEl.textContent||'').trim();
-    if(!oid || oid === '—') return;
-    statusLine.textContent = 'Consultando status...';
-    try {
-      const r = await fetch(WORKER_BASE + '/order-status?orderId=' + encodeURIComponent(oid), { method:'GET' });
-      const j = await r.json();
-      if(!j || !j.ok) throw new Error((j && (j.error||j.message)) || 'Falha no status');
-      statusLine.textContent = 'Status: ' + (j.status || 'desconhecido');
-    } catch(err){
-      statusLine.textContent = 'Erro no status: ' + String(err.message||err);
-    }
-  });
-
-  loadCatalog();
-</script>
+    // init
+    loadCatalog();
+  </script>
 </body>
 </html>
