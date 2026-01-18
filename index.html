@@ -1,694 +1,1021 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="pt-BR">
 <head>
-  <meta charset="UTF-8" />
+  <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>ViralVault Store</title>
-  <meta name="description" content="Loja digital — checkout simples via PIX, status do pedido e suporte." />
+  <title>ViralVault</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&display=swap" rel="stylesheet">
+
   <style>
     :root{
-      --bg:#0b0d10;
-      --card:#11151b;
-      --card2:#0f1319;
-      --line:rgba(255,255,255,.08);
-      --text:rgba(255,255,255,.92);
+      --bg0:#060607;
+      --bg1:#0b0b0d;
+
+      --text:#ffffff;
       --muted:rgba(255,255,255,.68);
-      --yellow:#f6c945;
-      --yellow2:#ffd86a;
-      --good:#22c55e;
-      --bad:#ef4444;
-      --shadow: 0 18px 60px rgba(0,0,0,.55);
-      --r:18px;
-      --max:1100px;
+
+      --card:rgba(255,255,255,.06);
+      --line:rgba(255,255,255,.10);
+
+      --yellow:#ffd400;
+      --red:#ff2b2b;
+
+      --shadow: 0 16px 40px rgba(0,0,0,.62);
+      --radius:22px;
     }
-    *{box-sizing:border-box}
-    html,body{margin:0;padding:0;background:radial-gradient(900px 600px at 20% 0%, rgba(246,201,69,.10), transparent 60%),
-                                 radial-gradient(900px 600px at 80% 10%, rgba(255,216,106,.07), transparent 60%),
-                                 var(--bg); color:var(--text);
-      font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Arial, "Noto Sans", sans-serif;
+
+    *{ box-sizing:border-box; }
+    html,body{ height:100%; }
+    body{
+      margin:0;
+      font-family: Inter, system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
+      color:var(--text);
+      background:
+        radial-gradient(900px 600px at 20% -10%, rgba(255,212,0,.10), transparent 58%),
+        radial-gradient(900px 650px at 85% 5%, rgba(255,43,43,.09), transparent 60%),
+        linear-gradient(180deg, var(--bg0), var(--bg1));
       overflow-x:hidden;
     }
-    a{color:inherit}
-    .wrap{max-width:var(--max); margin:0 auto; padding:18px;}
-    header{
-      position:sticky; top:0; z-index:50;
+
+    /* Topbar */
+    .topbar{
+      position:sticky;
+      top:0;
+      z-index:50;
+      padding:14px 14px 10px;
       backdrop-filter: blur(14px);
-      background: rgba(11,13,16,.72);
+      -webkit-backdrop-filter: blur(14px);
+      background: rgba(6,6,7,.78);
       border-bottom:1px solid var(--line);
     }
-    .top{
-      display:flex; align-items:center; justify-content:space-between;
-      padding:14px 18px;
-      max-width:var(--max); margin:0 auto;
+    .topbar__row{
+      display:flex;
+      align-items:center;
+      gap:10px;
+      max-width:1100px;
+      margin:0 auto;
     }
-    .brand{display:flex; align-items:center; gap:10px; font-weight:950; letter-spacing:.2px;}
-    .mark{width:14px;height:14px;border-radius:999px;background:linear-gradient(135deg,var(--yellow),var(--yellow2));
-      box-shadow:0 0 0 6px rgba(246,201,69,.14);
+    .brand{
+      display:flex;
+      align-items:center;
+      gap:10px;
+      min-width:170px;
     }
-    .actions{display:flex; gap:10px; align-items:center;}
-    .btn{
+    .logo{
+      width:34px;height:34px;border-radius:12px;
+      background:
+        radial-gradient(circle at 30% 25%, rgba(255,255,255,.25), transparent 58%),
+        linear-gradient(135deg, rgba(255,212,0,.95), rgba(255,43,43,.92));
+      box-shadow: 0 14px 30px rgba(0,0,0,.45);
+      border:1px solid rgba(255,255,255,.16);
+    }
+    .brand b{ font-weight:900; letter-spacing:.2px; }
+    .brand small{
+      display:block;
+      font-size:11px;
+      color: rgba(255,255,255,.68);
+      font-weight:600;
+      margin-top:2px;
+    }
+
+    .pill{
+      flex:1;
+      display:flex;
+      align-items:center;
+      gap:10px;
+      padding:10px 12px;
+      border-radius:999px;
+      background: rgba(255,255,255,.05);
       border:1px solid rgba(255,255,255,.10);
-      background: rgba(255,255,255,.04);
+      box-shadow: 0 10px 25px rgba(0,0,0,.25);
+    }
+    .pill input{
+      width:100%;
+      border:0;
+      outline:none;
+      background:transparent;
       color:var(--text);
-      padding:12px 14px;
+      font-size:14px;
+    }
+    .pill input::placeholder{ color: rgba(255,255,255,.55); }
+
+    .iconbtn{
+      width:40px;height:40px;
+      display:grid;place-items:center;
       border-radius:14px;
+      border:1px solid rgba(255,255,255,.12);
+      background: rgba(255,255,255,.05);
       cursor:pointer;
+      transition: transform .12s ease, box-shadow .12s ease, border-color .12s ease;
+      position: relative;
+    }
+    .iconbtn:active{ transform: scale(.97); }
+    .iconbtn:hover{
+      border-color: rgba(255,212,0,.28);
+      box-shadow: 0 0 0 4px rgba(255,212,0,.08);
+    }
+
+    .badge{
+      position:absolute;
+      right:-8px;
+      top:-8px;
+      padding:4px 7px;
+      font-size:11px;
+      border-radius:999px;
+      background: linear-gradient(135deg, var(--yellow), var(--red));
+      color: #111;
+      border:1px solid rgba(255,255,255,.18);
+      box-shadow: 0 14px 26px rgba(0,0,0,.45);
       font-weight:900;
-      transition: transform .12s ease, filter .12s ease, background .12s ease;
-      user-select:none;
+      min-width: 22px;
+      text-align: center;
     }
-    .btn:hover{filter:brightness(1.08)}
-    .btn:active{transform: translateY(1px) scale(.99)}
-    .btnPrimary{
-      border:none;
-      background: linear-gradient(90deg,var(--yellow),var(--yellow2));
-      color:#1a1a1a;
-      box-shadow:0 14px 34px rgba(246,201,69,.22);
+
+    /* Layout */
+    .wrap{
+      max-width:1100px;
+      margin:0 auto;
+      padding:18px 14px 130px;
     }
-    .pill{display:none; padding:10px 12px; border-radius:999px; border:1px solid rgba(255,255,255,.10);
-      background: rgba(255,255,255,.04); color:var(--muted); font-weight:900; font-size:13px;
-    }
-    @media (max-width: 860px){ .pill{display:flex} }
 
     .hero{
-      margin-top:18px;
-      border-radius: 26px;
-      border:1px solid var(--line);
-      background: linear-gradient(180deg, rgba(255,255,255,.04), rgba(255,255,255,.02));
-      box-shadow: var(--shadow);
-      overflow:hidden;
-      position:relative;
-    }
-    .hero::before{
-      content:"";
-      position:absolute; inset:-1px;
-      background: radial-gradient(800px 260px at 10% 0%, rgba(246,201,69,.18), transparent 60%),
-                  radial-gradient(800px 260px at 90% 40%, rgba(255,216,106,.12), transparent 60%);
-      pointer-events:none;
-    }
-    .heroIn{position:relative; padding:22px; display:grid; grid-template-columns:1.2fr .8fr; gap:16px; align-items:center;}
-    @media (max-width: 900px){ .heroIn{grid-template-columns:1fr;} }
-    h1{margin:10px 0 8px; font-size:40px; letter-spacing:-.7px; line-height:1.05;}
-    .sub{margin:0; color:var(--muted); font-weight:800; line-height:1.55}
-    .chips{margin-top:14px; display:flex; flex-wrap:wrap; gap:10px;}
-    .chip{
-      display:flex; gap:10px; align-items:center;
+      margin:6px 0 14px;
+      padding:18px;
+      border-radius: var(--radius);
+      background: rgba(255,255,255,.06);
       border:1px solid rgba(255,255,255,.10);
-      background: rgba(255,255,255,.03);
-      padding:12px 12px;
-      border-radius: 16px;
-      color:var(--muted);
-      font-weight:900;
-      font-size:13px;
+      box-shadow: var(--shadow);
     }
-    .dot{width:10px;height:10px;border-radius:999px;background:var(--yellow); box-shadow:0 0 0 5px rgba(246,201,69,.12)}
-    .card{
-      border:1px solid var(--line);
-      background: rgba(15,19,25,.65);
-      border-radius: 22px;
-      box-shadow: 0 14px 50px rgba(0,0,0,.35);
-      overflow:hidden;
-    }
-    .cardIn{padding:16px;}
-    .miniTitle{font-weight:950; margin:0 0 6px; letter-spacing:-.2px}
-    .miniSub{margin:0; color:var(--muted); font-weight:850; font-size:13px; line-height:1.5}
-    .searchRow{margin-top:12px; display:flex; gap:10px; flex-wrap:wrap}
-    .input{
-      flex:1 1 240px;
-      padding:14px 14px;
-      border-radius:14px;
-      border:1px solid rgba(255,255,255,.12);
-      background: rgba(0,0,0,.20);
-      color:var(--text);
-      outline:none;
-      font-weight:900;
-    }
-    .grid{margin-top:16px; display:grid; grid-template-columns: repeat(3, 1fr); gap:14px;}
-    @media (max-width: 980px){ .grid{grid-template-columns:1fr;} }
+    .hero h1{ margin:0; font-size:22px; letter-spacing:.2px; }
+    .hero p{ margin:8px 0 0; color:var(--muted); font-size:13px; line-height:1.35; }
 
-    .prod{
+    .filters{
+      display:flex;
+      gap:10px;
+      flex-wrap:wrap;
+      margin-top:12px;
+    }
+    .chip{
+      padding:8px 10px;
+      border-radius:999px;
+      border:1px solid rgba(255,255,255,.12);
+      background: rgba(255,255,255,.05);
+      color: rgba(255,255,255,.85);
+      font-weight:900;
+      font-size:12px;
+      cursor:pointer;
+      transition: transform .12s ease, border-color .12s ease;
+      user-select:none;
+    }
+    .chip:active{ transform: scale(.98); }
+    .chip.active{
+      border-color: rgba(255,212,0,.42);
+      box-shadow: 0 0 0 4px rgba(255,212,0,.08);
+      color:#fff;
+    }
+
+    /* Pages */
+    .page{ display:none; }
+    .page.active{ display:block; }
+
+    .grid{
+      display:grid;
+      grid-template-columns: repeat(2, minmax(0,1fr));
+      gap:14px;
+    }
+    @media (min-width:900px){
+      .grid{ grid-template-columns: repeat(4, minmax(0,1fr)); }
+      .brand{ min-width:220px; }
+    }
+
+    .card{
       position:relative;
-      border:1px solid var(--line);
-      background: rgba(255,255,255,.03);
       border-radius: 22px;
       overflow:hidden;
+      background: var(--card);
+      border:1px solid rgba(255,255,255,.10);
+      box-shadow: 0 18px 40px rgba(0,0,0,.42);
+      transition: transform .14s ease, border-color .14s ease, box-shadow .14s ease;
+      cursor:pointer;
+      user-select:none;
     }
-    .prod::before{
+    .card:hover{
+      transform: translateY(-2px);
+      border-color: rgba(255,212,0,.22);
+      box-shadow: 0 18px 52px rgba(0,0,0,.55), 0 0 0 5px rgba(255,212,0,.06);
+    }
+    .card:active{ transform: translateY(0px) scale(.99); }
+
+    .thumb{ height: 148px; background: rgba(255,255,255,.04); position:relative; }
+    .thumb img{
+      width:100%;
+      height:100%;
+      object-fit: cover;
+      display:block;
+      filter: saturate(1.05) contrast(1.05);
+    }
+    .thumb::after{
       content:"";
       position:absolute; inset:0;
-      background: radial-gradient(420px 220px at 20% 0%, rgba(246,201,69,.13), transparent 60%);
+      background: linear-gradient(180deg, rgba(0,0,0,.0), rgba(0,0,0,.35));
       pointer-events:none;
     }
-    .prodIn{position:relative; padding:16px;}
-    .tag{display:inline-flex; align-items:center; gap:8px; padding:10px 12px; border-radius:999px;
-      border:1px solid rgba(255,255,255,.10); background: rgba(255,255,255,.03);
-      font-weight:950; font-size:12px; color:rgba(255,255,255,.82);
-      margin-bottom:10px;
-    }
-    .pName{margin:2px 0 6px; font-size:18px; font-weight:1000; letter-spacing:-.2px}
-    .pDesc{margin:0 0 12px; color:var(--muted); font-weight:850; font-size:14px; line-height:1.45}
-    .row{display:flex; align-items:flex-end; justify-content:space-between; gap:10px;}
-    .price{font-weight:1100; font-size:20px}
-    .small{color:var(--muted); font-weight:900; font-size:12px}
-    .btnSmall{padding:12px 14px; border-radius:14px; font-size:14px}
 
-    /* Modal checkout */
-    .overlay{position:fixed; inset:0; background: rgba(0,0,0,.62); display:none; align-items:center; justify-content:center; padding:16px; z-index:100;}
-    .modal{width:min(560px,100%); border-radius:26px; border:1px solid rgba(255,255,255,.12); background: rgba(12,14,18,.96);
-      box-shadow: 0 24px 80px rgba(0,0,0,.60); overflow:hidden;
-    }
-    .mTop{display:flex; align-items:center; justify-content:space-between; padding:14px 14px; border-bottom:1px solid var(--line)}
-    .mTitle{font-weight:1000}
-    .x{width:46px;height:46px;border-radius:14px;border:1px solid rgba(255,255,255,.12);background:rgba(255,255,255,.04);color:var(--text);cursor:pointer;font-weight:1000}
-    .mBody{padding:14px}
-    .warn{
-      margin-top:10px;
-      padding:12px 12px;
-      border-radius:16px;
-      border:1px dashed rgba(246,201,69,.35);
-      background: rgba(246,201,69,.08);
-      color: rgba(255,255,255,.86);
+    .meta{ padding:12px 12px 14px; }
+    .title{
       font-weight:900;
-      font-size:13px;
-      line-height:1.45;
+      font-size:13.5px;
+      line-height:1.25;
+      display:-webkit-box;
+      -webkit-line-clamp:2;
+      -webkit-box-orient:vertical;
+      overflow:hidden;
+      min-height: 34px;
     }
-    .pixBox{
-      margin-top:10px;
-      padding:12px;
-      border-radius:18px;
-      border:1px solid rgba(255,255,255,.10);
-      background: rgba(255,255,255,.03);
-      display:none;
+
+    .sub{
+      margin-top:6px;
+      font-size:12px;
+      color:var(--muted);
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
       gap:10px;
     }
-    .pixArea{display:grid; gap:8px;}
-    textarea{
-      width:100%;
-      min-height:96px;
-      resize:none;
-      border-radius:14px;
-      border:1px solid rgba(255,255,255,.12);
-      background: rgba(0,0,0,.20);
-      color:var(--text);
-      padding:12px;
-      font-weight:900;
-      outline:none;
+    .tag{
+      display:inline-flex;
+      align-items:center;
+      gap:8px;
+      min-width:0;
     }
-    .copyRow{display:flex; gap:10px; flex-wrap:wrap; justify-content:flex-end;}
-    .hint{margin-top:10px; color:var(--muted); font-weight:850; font-size:13px; line-height:1.55}
-    .ok{color:rgba(255,255,255,.92); border-left:4px solid rgba(34,197,94,.55); padding-left:10px;}
-    .bad{color:rgba(255,255,255,.92); border-left:4px solid rgba(239,68,68,.55); padding-left:10px;}
-    .kvs{display:grid; gap:6px; margin-top:10px; font-weight:900; color:var(--muted); font-size:13px}
-    .kvs b{color:rgba(255,255,255,.92)}
-    .qrWrap{display:none; margin-top:10px; border-radius:18px; border:1px solid rgba(255,255,255,.10); background: rgba(255,255,255,.02); padding:12px}
-    .qrRow{display:flex; align-items:center; justify-content:space-between; gap:10px; flex-wrap:wrap}
-    .qrRow b{font-weight:1000}
-    .qrImg{margin-top:10px; width:100%; border-radius:16px; border:1px solid rgba(255,255,255,.10); background:#fff; overflow:hidden}
-    .qrImg img{width:100%; display:block}
-
-    /* Timeline */
-    .timeline{
-      margin-top:12px;
-      display:grid; gap:10px;
-    }
-    .step{
-      display:flex; gap:10px; align-items:flex-start;
-      border:1px solid rgba(255,255,255,.10);
-      background: rgba(255,255,255,.02);
-      padding:12px 12px;
-      border-radius:18px;
-    }
-    .sIcon{
-      width:36px;height:36px;border-radius:14px;
-      display:flex;align-items:center;justify-content:center;
-      background: rgba(246,201,69,.12);
-      border:1px solid rgba(246,201,69,.22);
-      color: rgba(255,255,255,.92);
-      font-weight:1100;
+    .dot{
+      width:7px;height:7px;border-radius:50%;
+      background: var(--yellow);
+      box-shadow: 0 0 22px rgba(255,212,0,.22);
       flex:0 0 auto;
     }
-    .sText b{display:block; font-weight:1000}
-    .sText small{display:block; color:var(--muted); font-weight:850; line-height:1.45}
-    .done .sIcon{background: rgba(34,197,94,.12); border-color: rgba(34,197,94,.25)}
-    .done .sIcon::after{content:"✓";}
-    .wait .sIcon::after{content:"…";}
-    .paid .sIcon{background: rgba(246,201,69,.14); border-color: rgba(246,201,69,.28)}
-    .paid .sIcon::after{content:"$";}
-    .deliv .sIcon{background: rgba(34,197,94,.12); border-color: rgba(34,197,94,.25)}
-    .deliv .sIcon::after{content:"📩";}
+    .cat{
+      white-space:nowrap;
+      overflow:hidden;
+      text-overflow:ellipsis;
+    }
+    .price{
+      font-weight:900;
+      color:#fff;
+      white-space:nowrap;
+    }
 
-    footer{margin:26px 0 34px; text-align:center; color:rgba(255,255,255,.52); font-weight:900}
-    .footLinks{margin-top:10px; display:flex; justify-content:center; gap:10px; flex-wrap:wrap}
-    .footLinks a{padding:10px 12px; border-radius:999px; border:1px solid rgba(255,255,255,.10); background: rgba(255,255,255,.03); text-decoration:none; color:rgba(255,255,255,.76)}
+    /* Toast */
+    .toast{
+      position: fixed;
+      left: 50%;
+      bottom: 92px;
+      transform: translateX(-50%);
+      background: rgba(15,15,18,.88);
+      border: 1px solid rgba(255,255,255,.12);
+      padding: 10px 12px;
+      border-radius: 14px;
+      box-shadow: 0 22px 70px rgba(0,0,0,.65);
+      color: rgba(255,255,255,.9);
+      font-weight: 900;
+      font-size: 12px;
+      display:none;
+      z-index: 200;
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+    }
+    .toast b{ color: var(--yellow); }
+
+    /* Bottom bar */
+    .cartbar{
+      position:fixed;
+      left:0; right:0; bottom:0;
+      z-index:60;
+      padding:12px 12px 16px;
+      pointer-events:none;
+    }
+    .cartbar__inner{
+      pointer-events:auto;
+      max-width:1100px;
+      margin:0 auto;
+      border-radius: 18px;
+      background: rgba(10,10,12,.78);
+      backdrop-filter: blur(14px);
+      -webkit-backdrop-filter: blur(14px);
+      border:1px solid rgba(255,255,255,.12);
+      box-shadow: 0 24px 65px rgba(0,0,0,.65);
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:12px;
+      padding:12px 14px;
+    }
+    .cartleft{
+      display:flex;
+      align-items:center;
+      gap:10px;
+      min-width: 0;
+    }
+    .carticon{
+      width:40px;height:40px;border-radius:14px;
+      display:grid;place-items:center;
+      background: linear-gradient(135deg, rgba(255,212,0,.22), rgba(255,43,43,.18));
+      border:1px solid rgba(255,255,255,.14);
+      box-shadow: 0 14px 32px rgba(0,0,0,.45);
+      flex:0 0 auto;
+    }
+    .carttext{ min-width:0; display:flex; flex-direction:column; gap:2px; }
+    .carttext b{
+      font-size:13.5px;
+      white-space:nowrap;
+      overflow:hidden;
+      text-overflow:ellipsis;
+    }
+    .carttext span{ font-size:12px; color:var(--muted); }
+
+    .totalBtn{
+      font-weight:900;
+      font-size:14px;
+      padding:10px 12px;
+      border-radius:14px;
+      background: linear-gradient(135deg, var(--yellow), var(--red));
+      color:#111;
+      border:1px solid rgba(255,255,255,.18);
+      box-shadow: 0 20px 46px rgba(0,0,0,.55);
+      cursor:pointer;
+      transition: transform .12s ease;
+      white-space:nowrap;
+      text-decoration:none;
+      display:inline-flex;
+      align-items:center;
+      gap:8px;
+    }
+    .totalBtn:active{ transform: scale(.98); }
+
+    /* Checkout */
+    .panel{
+      border-radius: var(--radius);
+      background: rgba(255,255,255,.06);
+      border:1px solid rgba(255,255,255,.10);
+      box-shadow: var(--shadow);
+      overflow:hidden;
+    }
+    .panelTop{
+      padding:14px;
+      border-bottom:1px solid rgba(255,255,255,.08);
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:12px;
+    }
+    .panelTop h2{ margin:0; font-size:18px; }
+    .panelTop span{ color:var(--muted); font-size:12px; }
+
+    .btn{
+      padding:10px 12px;
+      border-radius:14px;
+      border:1px solid rgba(255,255,255,.12);
+      background: rgba(255,255,255,.05);
+      color:rgba(255,255,255,.90);
+      font-weight:900;
+      cursor:pointer;
+      text-decoration:none;
+      display:inline-flex;
+      align-items:center;
+      gap:8px;
+    }
+    .btn:active{ transform: scale(.99); }
+    .danger{
+      border-color: rgba(255,43,43,.30);
+      background: rgba(255,43,43,.08);
+    }
+
+    .items{
+      padding:14px;
+      display:flex;
+      flex-direction:column;
+      gap:10px;
+    }
+    .item{
+      padding:12px;
+      border-radius:16px;
+      background: rgba(0,0,0,.18);
+      border:1px solid rgba(255,255,255,.10);
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:12px;
+    }
+    .left{ min-width:0; }
+    .left b{
+      display:block;
+      white-space:nowrap;
+      overflow:hidden;
+      text-overflow:ellipsis;
+      font-size:13px;
+    }
+    .left small{ color:var(--muted); font-weight:800; }
+
+    .qty{
+      display:flex;
+      align-items:center;
+      gap:8px;
+      flex:0 0 auto;
+    }
+    .qbtn{
+      width:36px;height:36px;
+      border-radius:12px;
+      border:1px solid rgba(255,255,255,.12);
+      background: rgba(255,255,255,.06);
+      color:#fff;
+      font-weight:900;
+      cursor:pointer;
+    }
+    .qbtn:active{ transform: scale(.98); }
+    .num{ min-width:22px; text-align:center; font-weight:900; }
+
+    .price2{ font-weight:900; white-space:nowrap; }
+
+    .empty{ padding:18px; color:var(--muted); display:none; }
+
+    /* Side menu */
+    .menuOverlay{
+      position:fixed; inset:0;
+      background: rgba(0,0,0,.55);
+      display:none;
+      z-index:999;
+    }
+    .menu{
+      position:fixed;
+      top:0; right:0;
+      height:100%;
+      width:min(320px, 92%);
+      background: rgba(12,12,15,.92);
+      backdrop-filter: blur(14px);
+      -webkit-backdrop-filter: blur(14px);
+      border-left:1px solid rgba(255,255,255,.10);
+      box-shadow: -22px 0 80px rgba(0,0,0,.65);
+      transform: translateX(100%);
+      transition: transform .18s ease;
+      z-index:1000;
+      padding:14px;
+      display:flex;
+      flex-direction:column;
+      gap:12px;
+    }
+    .menu.open{ transform: translateX(0); }
+    .menuHead{
+      display:flex; align-items:center; justify-content:space-between; gap:10px;
+      padding-bottom:10px;
+      border-bottom:1px solid rgba(255,255,255,.08);
+    }
+    .menuHead b{ font-size:14px; }
+    .closeBtn{
+      padding:10px 12px;
+      border-radius:14px;
+      border:1px solid rgba(255,255,255,.12);
+      background: rgba(255,255,255,.05);
+      color: rgba(255,255,255,.9);
+      font-weight:900;
+      cursor:pointer;
+    }
+    .link{
+      padding:12px 12px;
+      border-radius:16px;
+      border:1px solid rgba(255,255,255,.12);
+      background: rgba(255,255,255,.05);
+      color: rgba(255,255,255,.92);
+      text-decoration:none;
+      font-weight:900;
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:10px;
+    }
+    .link small{ color: rgba(255,255,255,.65); font-weight:800; }
+    .link:hover{ border-color: rgba(255,212,0,.22); }
+    .menuFoot{
+      margin-top:auto;
+      padding-top:10px;
+      border-top:1px solid rgba(255,255,255,.08);
+      color: rgba(255,255,255,.65);
+      font-size: 11px;
+      font-weight:800;
+      line-height:1.35;
+    }
   </style>
 </head>
+
 <body>
-<header>
-  <div class="top">
-    <div class="brand"><span class="mark"></span><span>ViralVault Store</span></div>
-    <div class="actions">
-      <div class="pill">⚡ Compra rápida</div>
-      <button class="btn" id="btnOpenOrder">Ver pedido</button>
-      <button class="btn btnPrimary" id="btnSupport">Suporte</button>
+  <header class="topbar">
+    <div class="topbar__row">
+      <div class="brand">
+        <div class="logo" aria-hidden="true"></div>
+        <div>
+          <b>ViralVault</b>
+          <small id="subtitle">Catálogo • Itens e contas</small>
+        </div>
+      </div>
+
+      <div class="pill" role="search" id="searchWrap">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+          <path d="M10.5 18a7.5 7.5 0 1 1 0-15 7.5 7.5 0 0 1 0 15Z" stroke="rgba(255,255,255,.75)" stroke-width="2"/>
+          <path d="M16.5 16.5 21 21" stroke="rgba(255,255,255,.75)" stroke-width="2" stroke-linecap="round"/>
+        </svg>
+        <input id="search" placeholder="Pesquisar..." autocomplete="off" />
+      </div>
+
+      <button class="iconbtn" id="openCart" title="Checkout">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+          <path d="M7 7h15l-2 9H9L7 7Z" stroke="rgba(255,255,255,.85)" stroke-width="2" stroke-linejoin="round"/>
+          <path d="M7 7 6 3H3" stroke="rgba(255,255,255,.85)" stroke-width="2" stroke-linecap="round"/>
+          <path d="M9 20a1 1 0 1 0 0-2 1 1 0 0 0 0 2Zm10 0a1 1 0 1 0 0-2 1 1 0 0 0 0 2Z" fill="rgba(255,255,255,.85)"/>
+        </svg>
+        <span class="badge" id="cartCount">0</span>
+      </button>
+
+      <button class="iconbtn" id="openMenu" title="Menu">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+          <path d="M4 7h16M4 12h16M4 17h16" stroke="rgba(255,255,255,.85)" stroke-width="2" stroke-linecap="round"/>
+        </svg>
+      </button>
+    </div>
+  </header>
+
+  <main class="wrap">
+    <!-- CATALOGO -->
+    <section class="page active" id="pageCatalog">
+      <section class="hero">
+        <h1>Escolha o que você quer</h1>
+        <p>Filtre por categoria e toque nos cards pra adicionar no carrinho.</p>
+        <div class="filters" id="filters"></div>
+      </section>
+      <section class="grid" id="grid"></section>
+    </section>
+
+    <!-- CHECKOUT -->
+    <section class="page" id="pageCheckout">
+      <section class="hero">
+        <h1>Checkout</h1>
+        <p>Revise seu carrinho e finalize (demo). Você pode editar as quantidades.</p>
+      </section>
+
+      <div class="panel">
+        <div class="panelTop">
+          <div>
+            <h2>Seu carrinho</h2>
+            <span>Edite as quantidades antes de finalizar.</span>
+          </div>
+          <button class="btn danger" id="clearBtn">Limpar</button>
+        </div>
+
+        <div class="items" id="items"></div>
+        <div class="empty" id="empty">Carrinho vazio. Volte no catálogo e adicione itens.</div>
+      </div>
+    </section>
+  </main>
+
+  <div class="toast" id="toast">Adicionado: <b id="toastName"></b></div>
+
+  <div class="cartbar">
+    <div class="cartbar__inner">
+      <div class="cartleft">
+        <div class="carticon" aria-hidden="true">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none">
+            <path d="M7 7h15l-2 9H9L7 7Z" stroke="rgba(255,255,255,.92)" stroke-width="2" stroke-linejoin="round"/>
+            <path d="M7 7 6 3H3" stroke="rgba(255,255,255,.92)" stroke-width="2" stroke-linecap="round"/>
+          </svg>
+        </div>
+        <div class="carttext">
+          <b><span id="barCount">0</span> item(ns) no carrinho</b>
+          <span id="barHint">Toque para ir ao checkout</span>
+        </div>
+      </div>
+
+      <button class="totalBtn" id="primaryBtn">
+        R$ <span id="barTotal">0,00</span> • Checkout →
+      </button>
     </div>
   </div>
-</header>
 
-<div class="wrap">
-  <section class="hero">
-    <div class="heroIn">
-      <div>
-        <div class="chip"><span class="dot"></span> Loja digital • PIX • Entrega em até 24h</div>
-        <h1>Compra simples. <br/>Acompanhe seu pedido sozinho.</h1>
-        <p class="sub">Escolha o item, informe seu <b>@user</b> e pague via PIX. Você recebe um <b>link do pedido</b> para acompanhar o status (Pago / Entregue).</p>
-        <div class="chips">
-          <div class="chip">🔐 Verificação no servidor</div>
-          <div class="chip">🧾 ID do pedido para suporte</div>
-          <div class="chip">🟡 Visual clean</div>
-        </div>
-      </div>
-
-      <div class="card">
-        <div class="cardIn">
-          <p class="miniTitle">Buscar produto</p>
-          <p class="miniSub">Filtre rápido pelo nome do item.</p>
-          <div class="searchRow">
-            <input class="input" id="search" placeholder="Ex: brainrot, item, bundle..." />
-            <button class="btn btnPrimary" id="reload">Atualizar</button>
-          </div>
-          <p class="hint">Dica: se o catálogo não carregar, confirme seu Worker (rota <b>/catalog</b>).</p>
-        </div>
-      </div>
+  <!-- Side Menu -->
+  <div class="menuOverlay" id="menuOverlay"></div>
+  <aside class="menu" id="menu">
+    <div class="menuHead">
+      <b>Menu • ViralVault</b>
+      <button class="closeBtn" id="closeMenu">Fechar</button>
     </div>
-  </section>
 
-  <div class="grid" id="grid"></div>
+    <a class="link" href="#catalog" data-nav="catalog">
+      Catálogo <small>Home</small>
+    </a>
 
-  <footer>
-    <div>⚠️ Anti-golpe: confira o domínio e o ID do pedido.</div>
-    <div class="footLinks">
-      <a href="#" id="openOrderFooter">Acompanhar pedido</a>
-      <a href="#" id="openSupportFooter">Falar no WhatsApp</a>
+    <a class="link" href="#checkout" data-nav="checkout">
+      Checkout <small>Carrinho</small>
+    </a>
+
+    <a class="link" href="#support" id="supportLink">
+      Suporte <small>Contato</small>
+    </a>
+
+    <div class="menuFoot">
+      Dica: edite os produtos no código para mudar nomes/preços/categorias.
     </div>
-  </footer>
-</div>
+  </aside>
 
-<!-- Checkout Modal -->
-<div class="overlay" id="ov">
-  <div class="modal" role="dialog" aria-modal="true">
-    <div class="mTop">
-      <div class="mTitle" id="mTitle">Checkout</div>
-      <button class="x" id="xBtn">✕</button>
-    </div>
-    <div class="mBody">
-      <div class="kvs" id="kvs"></div>
+  <script>
+    // ===== PRODUTOS (edita aqui depois) =====
+    const produtos = [
+      { nome: "Robux 80 (Entrega rápida)", categoria: "Robux", preco: 9.60, img: "https://i.imgur.com/TbY4xvZ.png" },
+      { nome: "Robux 400 (Promo)", categoria: "Robux", preco: 39.90, img: "https://i.imgur.com/TbY4xvZ.png" },
+      { nome: "Conta Dragon (Blox Fruits)", categoria: "Conta", preco: 49.90, img: "https://i.imgur.com/4mVb1Xj.jpg" },
+      { nome: "Conta PVP (Jujutsu)", categoria: "Conta", preco: 29.90, img: "https://i.imgur.com/86tWjvX.jpg" },
+      { nome: "Itens Raros (Adopt Me)", categoria: "Itens", preco: 19.90, img: "https://i.imgur.com/8p8j0m0.jpg" },
+      { nome: "Som de Matança", categoria: "Itens", preco: 4.80, img: "https://i.imgur.com/c7vXj3o.png" },
+      { nome: "Gamepass VIP (Anime)", categoria: "Gamepass", preco: 14.90, img: "https://i.imgur.com/7yYxj0p.jpg" },
+      { nome: "Pacote de Gems (Anime)", categoria: "Moeda", preco: 12.90, img: "https://i.imgur.com/2TQZ2nA.jpg" }
+    ];
 
-      <label class="small">Seu user (Roblox)</label>
-      <input class="input" id="user" placeholder="@user_1234" />
+    // ===== CARRINHO (salva no navegador) =====
+    const CART_KEY = "viralvault_cart_v1";
 
-      <div class="warn">
-        ✅ Pague e aguarde. Após confirmação, sua entrega entra na fila e é feita em até <b>24h</b>.
-      </div>
-
-      <div class="timeline" id="timeline" style="display:none;">
-        <div class="step done" id="t1"><div class="sIcon"></div><div class="sText"><b>Pedido criado</b><small>Geramos seu ID no servidor.</small></div></div>
-        <div class="step wait" id="t2"><div class="sIcon"></div><div class="sText"><b>Aguardando pagamento</b><small>Após pagar, a confirmação pode levar alguns minutos.</small></div></div>
-        <div class="step wait" id="t3"><div class="sIcon"></div><div class="sText"><b>Entrega</b><small>Após “Pago”, entregamos em até 24h.</small></div></div>
-      </div>
-
-      <div class="pixBox" id="pixBox">
-        <div class="pixArea" style="width:100%">
-          <label class="small">PIX copia e cola</label>
-          <textarea id="pix" readonly></textarea>
-
-          <div class="copyRow">
-            <button class="btn btnPrimary" id="copyPix">Copiar PIX e pagar</button>
-            <button class="btn" id="copyId">Copiar ID</button>
-            <button class="btn" id="copyLink">Copiar link</button>
-          </div>
-        </div>
-      </div>
-
-      <div class="qrWrap" id="qrWrap">
-        <div class="qrRow">
-          <b>QR Code</b>
-          <span class="small">Abra seu app do banco → Ler QR</span>
-        </div>
-        <div class="qrImg"><img id="qr" alt="QR Code PIX" /></div>
-      </div>
-
-      <p class="hint" id="statusText"></p>
-
-      <div class="copyRow" style="margin-top:12px; justify-content:space-between;">
-        <button class="btn" id="backBtn" style="display:none;">← Voltar</button>
-        <button class="btn btnPrimary" id="goBtn">Gerar pedido + PIX</button>
-      </div>
-    </div>
-  </div>
-</div>
-
-<script>
-  // ====== CONFIG ======
-  const WORKER_BASE = "https://viralvault-sign.darlanana06.workers.dev";
-  const SUPPORT_WA = "5511941598713"; // troque se quiser
-  const FALLBACK_PIX = "00020101021126580014br.gov.bcb.pix0136851fee9f-0037-44f3-9361-e053c1faa7685204000053039865802BR5921DARLAN B R DOS SANTOS6009SAO PAULO62070503***63048DFF"; // PIX copia e cola (fallback)
-
-  // ====== HELPERS ======
-  const $ = (id)=>document.getElementById(id);
-  const fmt = (n)=> (typeof n==="number" ? n.toFixed(2).replace(".",",") : String(n||""));
-  const money = (cents)=> "R$ " + fmt((cents||0)/100);
-  const cleanUser = (s)=> (s||"").trim().replace(/\s+/g,"");
-  const ensureAt = (s)=> s.startsWith("@") ? s : ("@"+s);
-
-  function toast(el, msg, cls=""){
-    el.className = "hint " + cls;
-    el.textContent = msg;
-  }
-
-  function qrFromPix(pix){
-    // Use API pública de QR apenas para visual (não envia dinheiro)
-    // Encode compact
-    const encoded = encodeURIComponent(pix);
-    return "https://api.qrserver.com/v1/create-qr-code/?size=600x600&data=" + encoded;
-  }
-
-  function normalizePixFromResponse(data){
-    // tenta vários nomes comuns
-    return data?.pixCopyPaste
-      || data?.pix_copia_cola
-      || data?.pix
-      || data?.brcode
-      || data?.pixPayload
-      || data?.pix_copia_e_cola
-      || data?.pixCopiaECola
-      || data?.copyPaste
-      || data?.payload
-      || "";
-  }
-
-  function getOrderIdFromUrl(){
-    const u = new URL(location.href);
-    return u.searchParams.get("orderId") || "";
-  }
-
-  function setOrderIdToUrl(orderId){
-    const u = new URL(location.href);
-    u.searchParams.set("orderId", orderId);
-    history.replaceState({}, "", u.toString());
-  }
-
-  async function safeFetchJson(url, opts){
-    const res = await fetch(url, opts);
-    const text = await res.text();
-    let json;
-    try{ json = JSON.parse(text); }catch(e){ json = { ok:false, error:"Resposta inválida do servidor", raw:text?.slice(0,200) }; }
-    if(!res.ok) json = { ...(json||{}), ok:false, http: res.status, statusText: res.statusText };
-    return json;
-  }
-
-  // ====== CATALOG ======
-  let catalog = [];
-  let currentProduct = null;
-  let polling = null;
-  let lastOrderId = "";
-
-  function render(list){
-    const grid = $("grid");
-    grid.innerHTML = "";
-    if(!list.length){
-      const d = document.createElement("div");
-      d.className = "card";
-      d.innerHTML = '<div class="cardIn"><p class="miniTitle">Sem itens</p><p class="miniSub">Seu catálogo está vazio ou falhou ao carregar.</p></div>';
-      grid.appendChild(d);
-      return;
+    function loadCart(){
+      try{
+        const raw = localStorage.getItem(CART_KEY);
+        if(!raw) return new Map();
+        return new Map(JSON.parse(raw));
+      }catch(e){
+        return new Map();
+      }
     }
-    list.forEach(p=>{
-      const el = document.createElement("div");
-      el.className = "prod";
-      el.innerHTML = `
-        <div class="prodIn">
-          <div class="tag">⭐ Premium</div>
-          <div class="pName">${escapeHtml(p.name||"Item")}</div>
-          <div class="pDesc">${escapeHtml(p.desc||"Produto digital. Entrega em até 24h após pagamento.")}</div>
-          <div class="row">
-            <div>
-              <div class="price">${money(p.priceCents||p.price||0)}</div>
-              <div class="small">PIX • Entrega 24h</div>
+    function saveCart(map){
+      localStorage.setItem(CART_KEY, JSON.stringify([...map.entries()]));
+    }
+
+    const carrinho = loadCart();
+
+    // ===== DOM =====
+    const pageCatalog = document.getElementById("pageCatalog");
+    const pageCheckout = document.getElementById("pageCheckout");
+
+    const subtitle = document.getElementById("subtitle");
+    const searchWrap = document.getElementById("searchWrap");
+    const search = document.getElementById("search");
+    const filters = document.getElementById("filters");
+    const grid = document.getElementById("grid");
+
+    const itemsEl = document.getElementById("items");
+    const emptyEl = document.getElementById("empty");
+    const clearBtn = document.getElementById("clearBtn");
+
+    const cartCount = document.getElementById("cartCount");
+    const barCount = document.getElementById("barCount");
+    const barTotal = document.getElementById("barTotal");
+    const barHint = document.getElementById("barHint");
+    const primaryBtn = document.getElementById("primaryBtn");
+
+    const toast = document.getElementById("toast");
+    const toastName = document.getElementById("toastName");
+
+    let activeCategory = "Todos";
+
+    function moneyBR(v){ return v.toFixed(2).replace(".", ","); }
+
+    // ===== Pages =====
+    function setPage(name){
+      const isCatalog = name === "catalog";
+      pageCatalog.classList.toggle("active", isCatalog);
+      pageCheckout.classList.toggle("active", !isCatalog);
+
+      subtitle.textContent = isCatalog ? "Catálogo • Itens e contas" : "Checkout • Carrinho";
+      searchWrap.style.display = isCatalog ? "flex" : "none";
+
+      barHint.textContent = isCatalog ? "Toque para ir ao checkout" : "Finalizar pedido (demo)";
+      primaryBtn.innerHTML = isCatalog
+        ? `R$ <span id="barTotal">0,00</span> • Checkout →`
+        : `R$ <span id="barTotal">0,00</span> • Finalizar →`;
+
+      // rebind span ref after innerHTML change
+      window._barTotalSpan = primaryBtn.querySelector("#barTotal");
+
+      if(!isCatalog){
+        renderCheckout();
+      }
+      updateCartUI();
+      closeMenu();
+      window.location.hash = isCatalog ? "#catalog" : "#checkout";
+    }
+
+    // ===== Filters =====
+    function getCategories(){
+      const set = new Set(produtos.map(p => p.categoria));
+      return ["Todos", ...Array.from(set)];
+    }
+
+    function renderFilters(){
+      filters.innerHTML = "";
+      getCategories().forEach(cat => {
+        const btn = document.createElement("div");
+        btn.className = "chip" + (cat === activeCategory ? " active" : "");
+        btn.textContent = cat;
+        btn.addEventListener("click", () => {
+          activeCategory = cat;
+          renderFilters();
+          applyAndRender();
+        });
+        filters.appendChild(btn);
+      });
+    }
+
+    // ===== Catalog =====
+    function renderCatalog(lista){
+      grid.innerHTML = "";
+      lista.forEach((p) => {
+        const el = document.createElement("article");
+        el.className = "card";
+        el.innerHTML = `
+          <div class="thumb">
+            <img src="${p.img}" alt="${p.nome}">
+          </div>
+          <div class="meta">
+            <div class="title">${p.nome}</div>
+            <div class="sub">
+              <div class="tag">
+                <span class="dot"></span>
+                <span class="cat">${p.categoria}</span>
+              </div>
+              <div class="price">R$ ${moneyBR(p.preco)}</div>
             </div>
-            <button class="btn btnPrimary btnSmall">Comprar</button>
           </div>
-        </div>`;
-      el.querySelector("button").onclick = ()=> openCheckout(p);
-      grid.appendChild(el);
-    });
-  }
-
-  function escapeHtml(s){
-    return String(s||"").replace(/[&<>"']/g, (m)=>({ "&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#039;" }[m]));
-  }
-
-  async function loadCatalog(){
-    const data = await safeFetchJson(WORKER_BASE + "/catalog", { method:"GET" });
-    if(data?.ok && Array.isArray(data.items)){
-      catalog = data.items;
-    } else if(Array.isArray(data)){
-      catalog = data;
-    } else if(Array.isArray(data?.catalog)){
-      catalog = data.catalog;
-    } else {
-      catalog = [];
-      console.warn("catalog fail:", data);
-    }
-    applyFilter();
-  }
-
-  function applyFilter(){
-    const q = ($("search").value||"").toLowerCase().trim();
-    const list = !q ? catalog : catalog.filter(p=> (p.name||"").toLowerCase().includes(q) || (p.desc||"").toLowerCase().includes(q));
-    render(list);
-  }
-
-  // ====== CHECKOUT ======
-  function openModal(){
-    $("ov").style.display = "flex";
-    document.body.style.overflow = "hidden";
-  }
-  function closeModal(){
-    $("ov").style.display = "none";
-    document.body.style.overflow = "";
-    stopPolling();
-  }
-
-  function stopPolling(){
-    if(polling){ clearInterval(polling); polling = null; }
-  }
-
-  function setTimeline(status){
-    $("timeline").style.display = "grid";
-    const t2 = $("t2"), t3 = $("t3");
-    // reset
-    t2.className = "step wait";
-    t3.className = "step wait";
-    if(status === "pending" || status === "created"){
-      t2.className = "step wait";
-      t3.className = "step wait";
-    } else if(status === "paid"){
-      t2.className = "step paid";
-      t3.className = "step wait";
-    } else if(status === "delivered"){
-      t2.className = "step paid";
-      t3.className = "step deliv";
-    }
-  }
-
-  function openCheckout(product){
-    currentProduct = product;
-    $("mTitle").textContent = "Checkout • " + (product?.name || "Item");
-    $("kvs").innerHTML = `
-      <div><b>Produto:</b> ${escapeHtml(product?.name||"")}</div>
-      <div><b>Preço:</b> ${money(product?.priceCents||product?.price||0)}</div>
-      <div><b>Entrega:</b> até 24h após “Pago”</div>
-    `;
-    $("pixBox").style.display = "none";
-    $("qrWrap").style.display = "none";
-    $("pix").value = "";
-    $("user").value = "";
-    $("goBtn").disabled = false;
-    $("goBtn").textContent = "Gerar pedido + PIX";
-    $("backBtn").style.display = "none";
-    toast($("statusText"), "Preencha seu @user e gere o pedido.", "");
-    $("timeline").style.display = "none";
-    lastOrderId = "";
-
-    openModal();
-  }
-
-  async function createOrder(){
-    if(!currentProduct) return;
-    const raw = cleanUser($("user").value);
-    if(raw.length < 3){
-      toast($("statusText"), "Digite seu user do Roblox (ex: @user_1234).", "bad");
-      return;
-    }
-    const u = ensureAt(raw);
-
-    $("goBtn").disabled = true;
-    $("goBtn").textContent = "Gerando…";
-    toast($("statusText"), "Criando pedido no servidor…", "");
-
-    const body = {
-      productId: currentProduct.id || currentProduct.productId || currentProduct.sku || currentProduct.name,
-      user: u,
-      username: u,
-      robloxUser: u
-    };
-
-    const data = await safeFetchJson(WORKER_BASE + "/create-order", {
-      method:"POST",
-      headers: { "Content-Type":"application/json" },
-      body: JSON.stringify(body)
-    });
-
-    if(!data?.ok){
-      $("goBtn").disabled = false;
-      $("goBtn").textContent = "Gerar pedido + PIX";
-      toast($("statusText"), "Erro: " + (data?.error || "não foi possível criar o pedido."), "bad");
-      return;
+        `;
+        el.addEventListener("click", () => addToCart(p));
+        grid.appendChild(el);
+      });
     }
 
-    lastOrderId = data.orderId || data.id || data.order_id || "";
-    if(!lastOrderId){
-      toast($("statusText"), "Pedido criado, mas sem orderId. Verifique o Worker.", "bad");
-      $("goBtn").disabled = false;
-      $("goBtn").textContent = "Tentar de novo";
-      return;
-    }
+    function applyAndRender(){
+      const q = search.value.trim().toLowerCase();
+      let lista = produtos.slice();
 
-    setOrderIdToUrl(lastOrderId);
-
-    // PIX
-    const pix = normalizePixFromResponse(data) || FALLBACK_PIX;
-    if(!pix){
-      toast($("statusText"), "Pedido criado ✅ Mas sem PIX no retorno. Configure PIX_COPYPASTE no Worker.", "bad");
-    } else {
-      $("pix").value = pix;
-      $("pixBox").style.display = "grid";
-      $("qr").src = qrFromPix(pix);
-      $("qrWrap").style.display = "block";
-      toast($("statusText"), "Pedido criado ✅ Copie o PIX e pague. Depois, aguarde a confirmação.", "ok");
-    }
-
-    // Timeline + polling
-    setTimeline("pending");
-    startPolling(lastOrderId);
-
-    $("goBtn").disabled = true;
-    $("goBtn").textContent = "Aguardando pagamento…";
-    $("backBtn").style.display = "inline-flex";
-  }
-
-  async function checkStatus(orderId){
-    const url = WORKER_BASE + "/order-status?orderId=" + encodeURIComponent(orderId);
-    const data = await safeFetchJson(url, { method:"GET" });
-    if(!data?.ok) return null;
-    const stRaw = (data.status || data.state || "").toLowerCase();
-    if(stRaw.includes("deliver")) return "delivered";
-    if(stRaw.includes("entreg")) return "delivered";
-    if(stRaw.includes("paid") || stRaw.includes("pago")) return "paid";
-    if(stRaw.includes("pend") || stRaw.includes("wait") || stRaw.includes("criad")) return "pending";
-    return stRaw || "pending";
-  }
-
-  function startPolling(orderId){
-    stopPolling();
-    polling = setInterval(async ()=>{
-      const st = await checkStatus(orderId);
-      if(!st) return;
-      setTimeline(st);
-      if(st === "paid"){
-        toast($("statusText"), "Pagamento confirmado ✅ Entrega em até 24h.", "ok");
-        $("goBtn").textContent = "Pagamento confirmado ✅";
+      if(activeCategory !== "Todos"){
+        lista = lista.filter(p => p.categoria === activeCategory);
       }
-      if(st === "delivered"){
-        toast($("statusText"), "Entregue ✅ Se precisar, chame o suporte com o ID.", "ok");
-        $("goBtn").textContent = "Entregue ✅";
-        stopPolling();
+      if(q){
+        lista = lista.filter(p =>
+          p.nome.toLowerCase().includes(q) ||
+          p.categoria.toLowerCase().includes(q)
+        );
       }
-    }, 4000);
-  }
-
-  // ====== ORDER LOOKUP ======
-  async function openOrderLookup(){
-    const existing = getOrderIdFromUrl();
-    const orderId = prompt("Cole o ID do pedido (vv_...):", existing || "");
-    if(!orderId) return;
-    lastOrderId = orderId.trim();
-    openModal();
-    $("mTitle").textContent = "Pedido • " + lastOrderId;
-    $("kvs").innerHTML = `<div><b>ID:</b> ${escapeHtml(lastOrderId)}</div><div><b>Status:</b> verificando…</div>`;
-    $("pixBox").style.display = "none";
-    $("qrWrap").style.display = "none";
-    $("timeline").style.display = "grid";
-    $("goBtn").disabled = true;
-    $("goBtn").textContent = "Acompanhando…";
-    $("backBtn").style.display = "inline-flex";
-    toast($("statusText"), "Acompanhando status no servidor…", "");
-    setOrderIdToUrl(lastOrderId);
-    setTimeline("pending");
-    startPolling(lastOrderId);
-  }
-
-  // ====== EVENTS ======
-  $("reload").onclick = loadCatalog;
-  $("search").addEventListener("input", applyFilter);
-
-  $("btnSupport").onclick = ()=> window.open("https://wa.me/" + SUPPORT_WA + "?text=" + encodeURIComponent("Oi! Preciso de ajuda na ViralVault Store."), "_blank");
-  $("openSupportFooter").onclick = (e)=>{ e.preventDefault(); $("btnSupport").click(); };
-
-  $("btnOpenOrder").onclick = openOrderLookup;
-  $("openOrderFooter").onclick = (e)=>{ e.preventDefault(); openOrderLookup(); };
-
-  $("xBtn").onclick = closeModal;
-  $("ov").addEventListener("click", (e)=>{ if(e.target === $("ov")) closeModal(); });
-
-  $("goBtn").onclick = createOrder;
-  $("backBtn").onclick = ()=>{ stopPolling(); $("goBtn").disabled=false; $("goBtn").textContent="Gerar pedido + PIX"; $("backBtn").style.display="none"; $("timeline").style.display="none"; toast($("statusText"), "Você pode gerar de novo se precisar.", ""); };
-
-  $("copyPix").onclick = async ()=>{
-    const v = $("pix").value.trim();
-    if(!v){ toast($("statusText"), "PIX vazio. Configure PIX_COPYPASTE no Worker.", "bad"); return; }
-    await navigator.clipboard.writeText(v);
-    $("copyPix").textContent = "PIX copiado ✅";
-    setTimeout(()=> $("copyPix").textContent = "Copiar PIX e pagar", 1600);
-    window.open("https://wa.me/" + SUPPORT_WA + "?text=" + encodeURIComponent("Acabei de pagar meu pedido " + (lastOrderId||"") + ". Aguardo entrega."), "_blank");
-  };
-
-  $("copyId").onclick = async ()=>{
-    if(!lastOrderId){ toast($("statusText"), "Sem ID ainda.", "bad"); return; }
-    await navigator.clipboard.writeText(lastOrderId);
-    $("copyId").textContent = "ID copiado ✅";
-    setTimeout(()=> $("copyId").textContent = "Copiar ID", 1400);
-  };
-
-  $("copyLink").onclick = async ()=>{
-    if(!lastOrderId){ toast($("statusText"), "Sem ID ainda.", "bad"); return; }
-    const u = new URL(location.href);
-    u.searchParams.set("orderId", lastOrderId);
-    await navigator.clipboard.writeText(u.toString());
-    $("copyLink").textContent = "Link copiado ✅";
-    setTimeout(()=> $("copyLink").textContent = "Copiar link", 1400);
-  };
-
-  // ====== INIT ======
-  (async ()=>{
-    await loadCatalog();
-
-    // If page opened with orderId in URL, auto open tracking
-    const id = getOrderIdFromUrl();
-    if(id){
-      setTimeout(()=>{ lastOrderId = id; openOrderLookup(); }, 250);
+      renderCatalog(lista);
     }
-  })();
-</script>
+
+    function showToast(nome){
+      toastName.textContent = nome;
+      toast.style.display = "block";
+      clearTimeout(showToast._t);
+      showToast._t = setTimeout(() => toast.style.display = "none", 1300);
+    }
+
+    function addToCart(p){
+      const atual = carrinho.get(p.nome) || { qtd: 0, preco: p.preco, categoria: p.categoria };
+      atual.qtd += 1;
+      carrinho.set(p.nome, atual);
+      saveCart(carrinho);
+      updateCartUI();
+      showToast(p.nome);
+      if (navigator.vibrate) navigator.vibrate(14);
+    }
+
+    // ===== Checkout =====
+    function calcTotal(){
+      let total = 0;
+      carrinho.forEach(v => total += v.qtd * v.preco);
+      return total;
+    }
+
+    function renderCheckout(){
+      itemsEl.innerHTML = "";
+
+      if(carrinho.size === 0){
+        emptyEl.style.display = "block";
+        itemsEl.style.display = "none";
+        updateCartUI();
+        return;
+      }
+
+      emptyEl.style.display = "none";
+      itemsEl.style.display = "flex";
+
+      carrinho.forEach((v, nome) => {
+        const row = document.createElement("div");
+        row.className = "item";
+        row.innerHTML = `
+          <div class="left">
+            <b>${nome}</b>
+            <small>${v.categoria} • R$ ${moneyBR(v.preco)} cada</small>
+          </div>
+
+          <div class="qty">
+            <button class="qbtn" data-act="dec">−</button>
+            <div class="num">${v.qtd}</div>
+            <button class="qbtn" data-act="inc">+</button>
+          </div>
+
+          <div class="price2">R$ ${moneyBR(v.qtd * v.preco)}</div>
+        `;
+
+        row.querySelectorAll(".qbtn").forEach(btn => {
+          btn.addEventListener("click", () => {
+            const act = btn.getAttribute("data-act");
+            const cur = carrinho.get(nome);
+
+            if(act === "inc") cur.qtd += 1;
+            if(act === "dec") cur.qtd -= 1;
+
+            if(cur.qtd <= 0) carrinho.delete(nome);
+            else carrinho.set(nome, cur);
+
+            saveCart(carrinho);
+            renderCheckout();
+          });
+        });
+
+        itemsEl.appendChild(row);
+      });
+
+      updateCartUI();
+    }
+
+    // ===== Cart UI =====
+    function updateCartUI(){
+      let totalQtd = 0;
+      carrinho.forEach((v) => totalQtd += v.qtd);
+
+      const totalValor = calcTotal();
+
+      cartCount.textContent = totalQtd;
+      barCount.textContent = totalQtd;
+
+      // bar total span could be replaced on page switch
+      const span = window._barTotalSpan || document.getElementById("barTotal");
+      if(span) span.textContent = moneyBR(totalValor);
+    }
+
+    // ===== Primary button behavior =====
+    function primaryAction(){
+      const isCatalog = pageCatalog.classList.contains("active");
+      if(isCatalog){
+        setPage("checkout");
+      } else {
+        const total = calcTotal();
+        alert("Checkout demo ✅\\nTotal: R$ " + moneyBR(total) + "\\n\\nDepois dá pra integrar Pix/checkout real.");
+      }
+    }
+
+    // ===== Menu =====
+    const menu = document.getElementById("menu");
+    const overlay = document.getElementById("menuOverlay");
+
+    function openMenu(){
+      overlay.style.display = "block";
+      requestAnimationFrame(() => menu.classList.add("open"));
+    }
+    function closeMenu(){
+      menu.classList.remove("open");
+      setTimeout(() => overlay.style.display = "none", 170);
+    }
+
+    document.getElementById("openMenu").addEventListener("click", openMenu);
+    document.getElementById("closeMenu").addEventListener("click", closeMenu);
+    overlay.addEventListener("click", closeMenu);
+
+    document.querySelectorAll("[data-nav]").forEach(a => {
+      a.addEventListener("click", (e) => {
+        e.preventDefault();
+        setPage(a.getAttribute("data-nav"));
+      });
+    });
+
+    document.getElementById("supportLink").addEventListener("click", (e) => {
+      e.preventDefault();
+      closeMenu();
+      alert("Suporte ViralVault ✅\\n\\nColoque aqui seu WhatsApp/Discord/Instagram.\\nSe quiser, eu monto a página de suporte dentro do HTML também.");
+    });
+
+    // ===== Events =====
+    search.addEventListener("input", applyAndRender);
+    document.getElementById("openCart").addEventListener("click", () => setPage("checkout"));
+    primaryBtn.addEventListener("click", primaryAction);
+
+    clearBtn.addEventListener("click", () => {
+      carrinho.clear();
+      saveCart(carrinho);
+      renderCheckout();
+    });
+
+    // ===== Hash routing =====
+    function handleHash(){
+      const h = (window.location.hash || "#catalog").toLowerCase();
+      if(h.includes("checkout")) setPage("checkout");
+      else setPage("catalog");
+    }
+    window.addEventListener("hashchange", handleHash);
+
+    
+    // ===== Modal helpers =====
+    const modalOverlay = document.getElementById("vvModalOverlay");
+    const modalTitle = document.getElementById("vvModalTitle");
+    const modalBody = document.getElementById("vvModalBody");
+    const modalClose = document.getElementById("vvModalClose");
+
+    function openModal(title, bodyHtml){
+      modalTitle.textContent = title;
+      modalBody.innerHTML = bodyHtml;
+      modalOverlay.style.display = "flex";
+    }
+    function closeModal(){
+      modalOverlay.style.display = "none";
+    }
+    modalClose.addEventListener("click", closeModal);
+    modalOverlay.addEventListener("click", (e) => { if(e.target === modalOverlay) closeModal(); });
+
+    // ===== PIX checkout (demo) =====
+    const PIX_KEY = "00020101021126580014br.gov.bcb.pix0136851fee9f-0037-44f3-9361-e053c1faa7685204000053039865802BR5921DARLAN B R DOS SANTOS6009SAO PAULO62070503***63048DFF";
+    function openPix(total){
+      const totalTxt = moneyBR(total);
+      openModal("Pagamento via Pix", `
+        <div style="display:flex; flex-direction:column; gap:10px;">
+          <div style="padding:12px; border-radius:16px; border:1px solid rgba(255,255,255,.10); background:rgba(255,255,255,.05);">
+            <b style="display:block; font-size:13px;">Total</b>
+            <div style="font-weight:900; font-size:18px; margin-top:4px; color:#fff;">R$ ${totalTxt}</div>
+            <div style="margin-top:6px; color:rgba(255,255,255,.70); font-weight:800; font-size:12px;">
+              Copie a chave Pix abaixo e pague no seu banco.
+            </div>
+          </div>
+
+          <div style="padding:12px; border-radius:16px; border:1px solid rgba(255,255,255,.10); background:rgba(0,0,0,.18);">
+            <div style="font-weight:900; font-size:12px; color:rgba(255,255,255,.75);">Chave Pix</div>
+            <div id="pixKeyBox" style="margin-top:6px; font-weight:900; word-break:break-all; color:#fff;">${PIX_KEY}</div>
+
+            <button id="copyPixBtn" class="totalBtn" style="margin-top:10px; width:100%; justify-content:center;">
+              Copiar chave Pix
+            </button>
+          </div>
+
+          <div style="padding:12px; border-radius:16px; border:1px solid rgba(255,43,43,.22); background:rgba(255,43,43,.08);">
+            <b style="color:var(--red);">Aviso:</b>
+            <span style="color:rgba(255,255,255,.85); font-weight:800;">
+              isso é um checkout demo. Depois dá pra ligar com confirmação automática.
+            </span>
+          </div>
+        </div>
+      `);
+
+      setTimeout(() => {
+        const btn = document.getElementById("copyPixBtn");
+        if(btn){
+          btn.addEventListener("click", async () => {
+            try{
+              await navigator.clipboard.writeText(PIX_KEY);
+              btn.textContent = "✅ Copiado!";
+              setTimeout(() => btn.textContent = "Copiar chave Pix", 1400);
+            }catch(e){
+              // fallback
+              const t = document.createElement("textarea");
+              t.value = PIX_KEY;
+              document.body.appendChild(t);
+              t.select();
+              document.execCommand("copy");
+              document.body.removeChild(t);
+              btn.textContent = "✅ Copiado!";
+              setTimeout(() => btn.textContent = "Copiar chave Pix", 1400);
+            }
+          });
+        }
+      }, 40);
+    }
+
+
+    // ===== Init =====
+    renderFilters();
+    applyAndRender();
+    handleHash();
+    updateCartUI();
+  </script>
+
+  <!-- MODALS -->
+  <div id="vvModalOverlay" style="position:fixed; inset:0; background:rgba(0,0,0,.62); display:none; z-index:1200; padding:14px; align-items:flex-end; justify-content:center;">
+    <div id="vvModal" style="width:min(720px,100%); border-radius:22px; background:rgba(15,15,18,.92); border:1px solid rgba(255,255,255,.12); backdrop-filter:blur(16px); -webkit-backdrop-filter:blur(16px); box-shadow:0 30px 90px rgba(0,0,0,.75); overflow:hidden;">
+      <div style="padding:14px; display:flex; align-items:center; justify-content:space-between; gap:12px; border-bottom:1px solid rgba(255,255,255,.08);">
+        <b id="vvModalTitle" style="font-size:14px;">Modal</b>
+        <button id="vvModalClose" class="closeBtn" style="padding:10px 12px;">Fechar</button>
+      </div>
+      <div id="vvModalBody" style="padding:14px; color:rgba(255,255,255,.86); font-size:13px; line-height:1.45;"></div>
+    </div>
+  </div>
+
 </body>
 </html>
