@@ -23,6 +23,13 @@
 
   <title>ViralVault Store</title>
 
+  <link rel="canonical" href="https://viralvault-store.vercel.app/" />
+  <meta name="robots" content="index,follow" />
+  <meta name="format-detection" content="telephone=no" />
+  <meta name="referrer" content="strict-origin-when-cross-origin" />
+  <meta http-equiv="Permissions-Policy" content="geolocation=(), microphone=(), camera=()" />
+
+
   <meta name="color-scheme" content="dark light" />
   <meta name="mobile-web-app-capable" content="yes" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -818,9 +825,57 @@
     }
     html[data-theme="light"] .pMedia::before{opacity:.55}
 
+
+    /* A11y */
+    .skipLink{
+      position:absolute; left:-999px; top:10px;
+      background:rgba(11,11,16,.92); color:#fff;
+      padding:10px 12px; border-radius:14px;
+      border:1px solid rgba(255,255,255,.14);
+      z-index:2000;
+    }
+    .skipLink:focus{left:12px; outline: 3px solid rgba(255,210,74,.35)}
+    :focus-visible{
+      outline: 3px solid rgba(255,210,74,.35);
+      outline-offset: 2px;
+    }
+
+
+    /* Skeleton loading */
+    .skeletonGrid{
+      display:grid;
+      grid-template-columns:repeat(3,minmax(0,1fr));
+      gap:14px;
+    }
+    @media(max-width:860px){ .skeletonGrid{grid-template-columns:1fr} }
+    .skCard{
+      border:1px solid rgba(255,255,255,.10);
+      background:rgba(11,11,16,.22);
+      border-radius:22px;
+      padding:16px;
+      overflow:hidden;
+      position:relative;
+      box-shadow: 0 12px 30px rgba(0,0,0,.25);
+    }
+    .skLine{height:12px; border-radius:999px; background:rgba(255,255,255,.10); margin-top:10px}
+    .skLine.big{height:18px; width:70%}
+    .skLine.mid{width:90%}
+    .skLine.small{width:55%}
+    .skMedia{height:92px; border-radius:16px; background:rgba(255,255,255,.08)}
+    .skShimmer{
+      position:absolute; inset:-40% -60%;
+      background: linear-gradient(90deg, transparent, rgba(255,255,255,.10), transparent);
+      transform: translateX(-60%);
+      animation: vvSk 1.2s infinite;
+      pointer-events:none;
+    }
+    @keyframes vvSk{ to{ transform: translateX(60%); } }
+
 </style>
+<script type="application/ld+json">{"@context": "https://schema.org", "@graph": [{"@type": "Organization", "@id": "https://viralvault-store.vercel.app/#org", "name": "ViralVault Store", "url": "https://viralvault-store.vercel.app/", "logo": "https://viralvault-store.vercel.app/og.png", "sameAs": []}, {"@type": "WebSite", "@id": "https://viralvault-store.vercel.app/#website", "url": "https://viralvault-store.vercel.app/", "name": "ViralVault Store", "publisher": {"@id": "https://viralvault-store.vercel.app/#org"}, "inLanguage": "pt-BR", "potentialAction": {"@type": "SearchAction", "target": "https://viralvault-store.vercel.app/?q={search_term_string}", "query-input": "required name=search_term_string"}}]}</script>
 </head>
 <body>
+  <a class="skipLink" href="#produtos">Pular para o catálogo</a>
 
   <!-- ===== Status Banner ===== -->
   <div id="vvBanner" style="display:none; position:sticky; top:0; z-index:1700;">
@@ -855,10 +910,9 @@
         <div class="chip"><i></i> Entrega até <b>24h</b></div>
       </div>
 
-      <h1 style="margin:14px 0 6px; font-size:30px; letter-spacing:.2px">ViralVault Store</h1>
+      <h1 style="margin:14px 0 6px; font-size:30px; letter-spacing:.2px"><span data-i18n="heroTitle">ViralVault Store</span></h1>
       <p class="desc" style="max-width:760px; font-size:14px; opacity:.92">
-        Loja digital com checkout via PIX e verificação por <b>Order ID</b>.
-        Se não for oficial, não cai. Simples, rápido e com suporte no WhatsApp.
+        <span data-i18n="heroDesc">Loja digital com checkout via PIX e verificação por <b>Order ID</b>. Se não for oficial, não cai. Simples, rápido e com suporte no WhatsApp.</span>
       </p>
 
       <div style="display:flex; gap:10px; flex-wrap:wrap; margin-top:14px">
@@ -880,15 +934,27 @@
           <div style="width:34px;height:34px;border-radius:14px;background:linear-gradient(135deg, rgba(255,210,74,1), rgba(255,59,74,1)); box-shadow:0 10px 18px rgba(0,0,0,.35)"></div>
           <span>ViralVault</span>
           <span style="opacity:.65; font-weight:800; font-size:12px">Store</span>
+          <span class="chip" id="vvUptimeChip" style="display:inline-flex; align-items:center; gap:8px;"><i></i> Status: —</span>
         </div>
 
         <div style="display:flex; gap:8px; flex-wrap:wrap; justify-content:flex-end">
           <a class="chip" href="#produtos" style="text-decoration:none"><i></i> Catálogo</a>
           <a class="chip" href="#checkout" style="text-decoration:none"><i style="background:var(--yellow)"></i> Checkout</a>
-          <a class="chip" href="#pedido" style="text-decoration:none"><i style="background:var(--red)"></i> Pedido</a>
+          <a class="chip" href="#status" style="text-decoration:none"><i style="background:var(--red)"></i> Pedido</a>
           <a class="chip" href="#faq" style="text-decoration:none"><i></i> FAQ</a>
           <button class="chip" id="vvThemeBtn" type="button" style="cursor:pointer"><i style="background:var(--yellow)"></i> Tema</button>
+          <button class="chip" id="vvLangBtn" type="button" style="cursor:pointer"><i></i> PT</button>
         </div>
+
+      <div class="card" id="vvHistoryCard" style="margin-top:12px; background:rgba(11,11,16,.25)">
+        <div class="krow" style="justify-content:space-between; gap:10px; flex-wrap:wrap">
+          <b data-i18n="historyTitle">Histórico</b>
+          <button class="chip" id="vvHistoryClear" type="button" style="cursor:pointer"><i style="background:var(--red)"></i> Limpar</button>
+        </div>
+        <div class="desc" id="vvHistoryList" style="margin-top:10px">—</div>
+        <div class="currency" style="margin-top:8px" data-i18n="historyHint">Toque em um Order ID para verificar de novo.</div>
+      </div>
+
       </div>
     </div>
   </div>
@@ -1055,7 +1121,33 @@
     
     
     
-    <!-- ===== Trust / Provas ===== -->
+    
+    <!-- ===== STATUS PAGE (INLINE) ===== -->
+    <div class="sectionTitle" id="status" style="margin-top:18px">
+      <h2 data-i18n="statusTitle">Status do serviço</h2>
+      <small data-i18n="statusSubtitle">monitoramento simples (site, catálogo e pedidos)</small>
+    </div>
+
+    <div class="grid" style="grid-template-columns:repeat(3,minmax(0,1fr)); gap:12px">
+      <div class="card" id="vvStatApi">
+        <div class="krow"><div class="chip"><i></i> API</div></div>
+        <h3 class="title" id="vvStatApiTitle">—</h3>
+        <p class="desc" id="vvStatApiDesc">—</p>
+      </div>
+      <div class="card" id="vvStatCatalog">
+        <div class="krow"><div class="chip prem"><i></i> Catálogo</div></div>
+        <h3 class="title" id="vvStatCatalogTitle">—</h3>
+        <p class="desc" id="vvStatCatalogDesc">—</p>
+      </div>
+      <div class="card" id="vvStatOrders">
+        <div class="krow"><div class="chip custom"><i></i> Pedidos</div></div>
+        <h3 class="title" id="vvStatOrdersTitle">—</h3>
+        <p class="desc" id="vvStatOrdersDesc">—</p>
+      </div>
+    </div>
+
+
+<!-- ===== Trust / Provas ===== -->
     <div class="sectionTitle" id="provas" style="margin-top:18px">
       <h2>Por que a ViralVault?</h2>
       <small>confiança + velocidade + anti-golpe</small>
@@ -1308,9 +1400,9 @@
           <h4>Suporte</h4>
           <div class="flinks">
             <a href="#como">FAQ (como comprar)</a>
-            <a href="#como">Política de Reembolso</a>
-            <a href="#como">Termos</a>
-            <a href="#como">Privacidade</a>
+            <a href="javascript:void(0)" data-legal="refund">Política de Reembolso</a>
+            <a href="javascript:void(0)" data-legal="terms">Termos</a>
+            <a href="javascript:void(0)" data-legal="privacy">Privacidade</a>
           </div>
           <div class="socials">
             <div class="socialBtn" title="Instagram" aria-label="Instagram">📷</div>
@@ -1433,6 +1525,23 @@
         // mantém erro
       }
       return data;
+    }
+
+
+    function vvMarkCatalog(ok, ms, err){
+      window.__vvCatalogState = { ok: !!ok, lastMs: ms || null, err: err || null };
+      const t = ok ? "Online" : "Falha";
+      const d = ok ? `Carregado em ${ms}ms` : (err || "Não foi possível carregar");
+      const ttl = ok ? `✅ Catálogo ${t}` : `⚠️ Catálogo ${t}`;
+      const desc = ok ? d : d;
+      try{
+        const cT = document.getElementById("vvStatCatalogTitle");
+        const cD = document.getElementById("vvStatCatalogDesc");
+        const card = document.getElementById("vvStatCatalog");
+        if(cT) cT.textContent = ttl;
+        if(cD) cD.textContent = desc;
+        if(card) card.style.borderColor = ok ? "rgba(62,240,143,.24)" : "rgba(255,59,74,.22)";
+      }catch(e){}
     }
 
     function safeCopy(text){
@@ -1932,7 +2041,9 @@
 
       // Load catalog
       try{
-        const cat = await api('/catalog');
+        showSkeleton();
+      const t0 = performance.now();
+      const cat = await api('/catalog');
         if(cat && cat.ok && Array.isArray(cat.products)){
           PRODUCTS = cat.products;
         }
@@ -2272,5 +2383,21 @@ if(adminDelivered) adminDelivered.addEventListener('click', async ()=>{
   <div id="vvToast" style="position:fixed; left:50%; transform:translateX(-50%); bottom:80px; z-index:1600;
        background:rgba(18,18,26,.92); border:1px solid rgba(255,255,255,.12); padding:10px 12px; border-radius:16px;
        box-shadow:0 18px 50px rgba(0,0,0,.55); display:none; max-width:min(720px, calc(100% - 24px));"></div>
+
+  <!-- ===== Legal Modal ===== -->
+  <div id="vvLegal" aria-hidden="true" role="dialog" aria-modal="true"
+       style="position:fixed; inset:0; z-index:1900; display:none; align-items:center; justify-content:center; padding:14px;">
+    <div id="vvLegalBackdrop" style="position:absolute; inset:0; background:rgba(0,0,0,.55)"></div>
+    <div class="card" style="position:relative; max-width:860px; width:100%; max-height:80vh; overflow:auto">
+      <div class="krow" style="justify-content:space-between; gap:10px; align-items:center">
+        <h3 class="title" style="margin:0" id="vvLegalTitle">Políticas</h3>
+        <button class="totalBtn" type="button" id="vvLegalClose" style="justify-content:center">Fechar</button>
+      </div>
+      <div class="desc" id="vvLegalBody" style="margin-top:10px; line-height:1.7">
+        <!-- conteúdo dinâmico -->
+      </div>
+    </div>
+  </div>
+
 </body>
 </html>
