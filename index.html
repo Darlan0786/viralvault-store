@@ -550,6 +550,44 @@ button:active, .btn:active{ transform: translateY(1px) scale(.99); }
   #vv-ai-drawer .vv-ai-panel{ transition:none !important; }
 }
 
+
+/* === ENDLESS BUTTON ANIMATIONS (V1) === */
+@keyframes vvPulse {
+  0% { transform: translateZ(0) scale(1); filter: brightness(1); }
+  50% { transform: translateZ(0) scale(1.03); filter: brightness(1.08); }
+  100% { transform: translateZ(0) scale(1); filter: brightness(1); }
+}
+@keyframes vvGlowShift {
+  0% { box-shadow: 0 10px 30px rgba(0,0,0,.35), 0 0 0 rgba(255,209,26,0); }
+  50% { box-shadow: 0 14px 46px rgba(0,0,0,.45), 0 0 28px rgba(255,209,26,.20); }
+  100% { box-shadow: 0 10px 30px rgba(0,0,0,.35), 0 0 0 rgba(255,209,26,0); }
+}
+@keyframes vvSheen {
+  0% { background-position: -200% 0; }
+  100% { background-position: 200% 0; }
+}
+.vv-endless {
+  position: relative;
+  animation: vvPulse 1.8s ease-in-out infinite, vvGlowShift 2.4s ease-in-out infinite;
+  will-change: transform, filter, box-shadow;
+}
+.vv-endless::after{
+  content:"";
+  position:absolute;
+  inset:0;
+  border-radius: inherit;
+  pointer-events:none;
+  background: linear-gradient(110deg, transparent 20%, rgba(255,255,255,.16) 35%, transparent 50%);
+  background-size: 220% 100%;
+  mix-blend-mode: overlay;
+  opacity:.65;
+  animation: vvSheen 2.1s linear infinite;
+}
+@media (prefers-reduced-motion: reduce){
+  .vv-endless{ animation:none !important; }
+  .vv-endless::after{ animation:none !important; }
+}
+
 </style>
 
 <style>
@@ -595,8 +633,8 @@ button:active, .btn:active{ transform: translateY(1px) scale(.99); }
         </select>
       </div>
 
-      <button class="btn" id="discordBtn" type="button" aria-label="Abrir Discord">Discord</button>
-      <button class="btn" id="installBtn" type="button" style="display:none" aria-label="Instalar app">Instalar</button>
+      <button class="btn vv-endless" id="discordBtn" type="button" aria-label="Abrir Discord">Discord</button>
+      <button class="btn vv-endless" id="installBtn" type="button" style="display:none" aria-label="Instalar app">Instalar</button>
     </div>
   </header>
 
@@ -610,9 +648,9 @@ button:active, .btn:active{ transform: translateY(1px) scale(.99); }
             <p class="lead" id="heroLead">Catálogo dinâmico + pedido com PIX + verificação por Order ID. Fluxo rápido, sem confusão. Suporte via Discord.</p>
 
             <div class="cta-row">
-              <button class="btn primary" id="ctaCatalog" type="button">Ver catálogo</button>
-              <button class="btn" id="ctaCheckout" type="button">Ir pro checkout</button>
-              <button class="btn" id="ctaOrder" type="button">Ver pedido</button>
+              <button class="btn vv-endless primary" id="ctaCatalog" type="button">Ver catálogo</button>
+              <button class="btn vv-endless" id="ctaCheckout" type="button">Ir pro checkout</button>
+              <button class="btn vv-endless" id="ctaOrder" type="button">Ver pedido</button>
             </div>
 
             <div class="catalog-controls" style="margin-top:14px">
@@ -632,8 +670,8 @@ button:active, .btn:active{ transform: translateY(1px) scale(.99); }
             <div class="hint" id="quickHint">Dica: finalize o pedido e guarde seu <b>Order ID</b> para acompanhar.</div>
 
             <div class="row" style="margin-top: 10px">
-              <button class="btn" id="reloadCatalog" type="button">Recarregar catálogo</button>
-              <button class="btn" id="resetLocal" type="button">Reset local</button>
+              <button class="btn vv-endless" id="reloadCatalog" type="button">Recarregar catálogo</button>
+              <button class="btn vv-endless" id="resetLocal" type="button">Reset local</button>
             </div>
           </aside>
         </div>
@@ -650,8 +688,8 @@ button:active, .btn:active{ transform: translateY(1px) scale(.99); }
             <span aria-hidden="true">🔎</span>
             <input id="searchInput" placeholder="Buscar produto…" autocomplete="off" />
           </div>
-          <button class="btn" id="viewCart" type="button">Ver carrinho</button>
-          <button class="btn" id="toCheckout" type="button">Ir pro checkout</button>
+          <button class="btn vv-endless" id="viewCart" type="button">Ver carrinho</button>
+          <button class="btn vv-endless" id="toCheckout" type="button">Ir pro checkout</button>
         </div>
 
         <div class="products" id="products"></div>
@@ -687,8 +725,8 @@ button:active, .btn:active{ transform: translateY(1px) scale(.99); }
             </div>
 
             <div class="row">
-              <button class="btn" id="reviewBtn" type="button">Revisar pedido</button>
-              <button class="btn primary" id="createOrderBtn" type="button">Gerar Order ID + PIX</button>
+              <button class="btn vv-endless" id="reviewBtn" type="button">Revisar pedido</button>
+              <button class="btn vv-endless primary" id="createOrderBtn" type="button">Gerar Order ID + PIX</button>
             </div>
             <div class="note" id="coHint">Você precisa ter itens no carrinho para gerar pedido.</div>
           </div>
@@ -702,8 +740,8 @@ button:active, .btn:active{ transform: translateY(1px) scale(.99); }
             <div id="cartList" style="margin-top:10px"></div>
 
             <div class="row">
-              <button class="btn" id="clearCart" type="button">Limpar carrinho</button>
-              <button class="btn" id="saveCart" type="button">Salvar</button>
+              <button class="btn vv-endless" id="clearCart" type="button">Limpar carrinho</button>
+              <button class="btn vv-endless" id="saveCart" type="button">Salvar</button>
             </div>
           </div>
         </div>
@@ -712,8 +750,8 @@ button:active, .btn:active{ transform: translateY(1px) scale(.99); }
           <strong id="pixTitle">PIX</strong>
           <p class="note" id="pixLead">Após gerar o pedido, o PIX aparece aqui. Guarde seu Order ID.</p>
           <div class="row">
-            <button class="btn" id="copyPix" type="button" disabled>Copiar PIX</button>
-            <button class="btn" id="copyOrderId" type="button" disabled>Copiar Order ID</button>
+            <button class="btn vv-endless" id="copyPix" type="button" disabled>Copiar PIX</button>
+            <button class="btn vv-endless" id="copyOrderId" type="button" disabled>Copiar Order ID</button>
           </div>
           <div class="note" id="pixOut" style="margin-top:10px"></div>
         </div>
@@ -732,8 +770,8 @@ button:active, .btn:active{ transform: translateY(1px) scale(.99); }
               <input id="orderIdIn" placeholder="Ex: VV-2026-…" autocomplete="off" inputmode="text" />
             </div>
             <div class="row">
-              <button class="btn primary" id="checkOrderBtn" type="button">Verificar</button>
-              <button class="btn" id="useLastOrder" type="button">Usar último</button>
+              <button class="btn vv-endless primary" id="checkOrderBtn" type="button">Verificar</button>
+              <button class="btn vv-endless" id="useLastOrder" type="button">Usar último</button>
             </div>
             <div class="note" id="orderOut" style="margin-top:10px"></div>
           </div>
@@ -742,8 +780,8 @@ button:active, .btn:active{ transform: translateY(1px) scale(.99); }
             <strong id="purchasesTitle">Minhas Compras</strong>
             <p class="note" id="purchasesLead" style="margin-top:6px">Lista local + (se disponível) histórico real do Worker pelo seu user.</p>
             <div class="row" style="margin-top:10px">
-              <button class="btn" id="loadPurchases" type="button">Carregar por user</button>
-              <button class="btn" id="clearPurchases" type="button">Limpar histórico</button>
+              <button class="btn vv-endless" id="loadPurchases" type="button">Carregar por user</button>
+              <button class="btn vv-endless" id="clearPurchases" type="button">Limpar histórico</button>
             </div>
             <div id="purchases" style="margin-top:10px"></div>
           </div>
@@ -762,7 +800,7 @@ button:active, .btn:active{ transform: translateY(1px) scale(.99); }
             <p id="ambLead">Misture som suave (gerado localmente) para foco. Não usa arquivos externos.</p>
 
             <div class="row" style="margin-top:8px">
-              <button class="btn" id="ambToggle" type="button">Ativar</button>
+              <button class="btn vv-endless" id="ambToggle" type="button">Ativar</button>
               <span class="chip"><b>Status</b> <span id="ambState">off</span></span>
             </div>
 
@@ -778,8 +816,8 @@ button:active, .btn:active{ transform: translateY(1px) scale(.99); }
             <p id="sandLead">Toque/arraste para “despejar” areia digital. Funciona offline.</p>
             <canvas class="sand" id="sandCanvas" width="900" height="480" aria-label="Areia digital"></canvas>
             <div class="row">
-              <button class="btn" id="sandClear" type="button">Limpar</button>
-              <button class="btn" id="sandPause" type="button">Pausar</button>
+              <button class="btn vv-endless" id="sandClear" type="button">Limpar</button>
+              <button class="btn vv-endless" id="sandPause" type="button">Pausar</button>
               <span class="chip"><b>FPS</b> <span id="sandFps">—</span></span>
             </div>
           </div>
@@ -796,9 +834,9 @@ button:active, .btn:active{ transform: translateY(1px) scale(.99); }
               <textarea id="futureMsg" placeholder="Escreva aqui…"></textarea>
             </div>
             <div class="row">
-              <button class="btn primary" id="futureSave" type="button">Salvar</button>
-              <button class="btn" id="futureOpen" type="button">Ver</button>
-              <button class="btn" id="futureDel" type="button">Apagar</button>
+              <button class="btn vv-endless primary" id="futureSave" type="button">Salvar</button>
+              <button class="btn vv-endless" id="futureOpen" type="button">Ver</button>
+              <button class="btn vv-endless" id="futureDel" type="button">Apagar</button>
             </div>
             <div class="note" id="futureOut" style="margin-top:10px"></div>
           </div>
@@ -807,7 +845,7 @@ button:active, .btn:active{ transform: translateY(1px) scale(.99); }
             <h3 id="randomTitle">Useless-ish Button</h3>
             <p id="randomLead">Um botão “aleatório”, mas sempre útil: alterna entre dicas rápidas do site.</p>
             <div class="row">
-              <button class="btn" id="randomTip" type="button">Me dá uma dica</button>
+              <button class="btn vv-endless" id="randomTip" type="button">Me dá uma dica</button>
               <span class="chip"><b>Modo</b> <span id="tipMode">prod</span></span>
             </div>
             <div class="note" id="tipOut" style="margin-top:10px">—</div>
@@ -834,7 +872,7 @@ button:active, .btn:active{ transform: translateY(1px) scale(.99); }
             <summary id="faq3" style="cursor:pointer; padding:10px;">Suporte</summary>
             <div class="note" style="padding: 0 10px 10px;">Entre no Discord e abra um ticket/DM.</div>
             <div class="row" style="padding: 0 10px 10px;">
-              <button class="btn primary" id="discordBtn2" type="button">Abrir Discord</button>
+              <button class="btn vv-endless primary" id="discordBtn2" type="button">Abrir Discord</button>
             </div>
           </details>
         </div>
@@ -1087,9 +1125,9 @@ button:active, .btn:active{ transform: translateY(1px) scale(.99); }
               <div style="color:var(--muted2); font-size:12px">${fmtBRL(it.price)} • qnt: ${it.qty}</div>
             </div>
             <div style="display:flex; gap:8px; align-items:center;">
-              <button class="btn" style="padding:10px 12px" data-dec="${it.id}">-</button>
-              <button class="btn" style="padding:10px 12px" data-inc="${it.id}">+</button>
-              <button class="btn" style="padding:10px 12px" data-rem="${it.id}">Remover</button>
+              <button class="btn vv-endless" style="padding:10px 12px" data-dec="${it.id}">-</button>
+              <button class="btn vv-endless" style="padding:10px 12px" data-inc="${it.id}">+</button>
+              <button class="btn vv-endless" style="padding:10px 12px" data-rem="${it.id}">Remover</button>
             </div>
           </div>
         `;
@@ -1143,7 +1181,7 @@ button:active, .btn:active{ transform: translateY(1px) scale(.99); }
                 <input value="${curQty}" readonly aria-label="Quantidade atual" />
                 <button type="button" data-qinc="${p.id}">+</button>
               </div>
-              <button class="btn primary" type="button" data-add="${p.id}">${curQty ? 'Atualizar' : 'Adicionar'}</button>
+              <button class="btn vv-endless primary" type="button" data-add="${p.id}">${curQty ? 'Atualizar' : 'Adicionar'}</button>
             </div>
           </article>
         `;
