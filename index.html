@@ -884,83 +884,36 @@ button:active, .btn:active{ transform: translateY(1px) scale(.99); }
         </div>
       </div>
     
-      <!-- ===== ViralVault Lab: ENTERTAINMENT PACK (V19) ===== -->
-      <div class="lab-grid" style="display:grid; grid-template-columns:1fr; gap:12px; margin-top:14px">
-        <div class="card glow" style="overflow:hidden">
-          <div class="card-head" style="display:flex; align-items:center; justify-content:space-between; gap:10px">
-            <div>
-              <h3 style="margin:0">Neon Clicker</h3>
-              <p class="muted" style="margin:6px 0 0">Um mini-game rápido pra matar o tempo. Pontos ficam salvos.</p>
-            </div>
-            <div class="pill" style="margin:0">Score: <b id="labScore" style="margin-left:6px">0</b></div>
+      
+      <!-- ===== ViralVault Lab: ONE BEST ENTERTAINMENT (V20) ===== -->
+      <div class="card glow" style="margin-top:14px; overflow:hidden">
+        <div class="card-head" style="display:flex; align-items:center; justify-content:space-between; gap:10px; flex-wrap:wrap">
+          <div>
+            <h3 style="margin:0">ViralVault Lab — Neon Sand</h3>
+            <p class="muted" style="margin:6px 0 0">Areia digital “absolute premium”: desenhe, derrame e veja cair com física leve. Funciona offline.</p>
           </div>
-          <div style="display:flex; gap:10px; flex-wrap:wrap; margin-top:12px">
-            <button class="btn primary vv-endless" id="labClickBtn" type="button">CLICAR ✨</button>
-            <button class="btn vv-endless" id="labBoostBtn" type="button">Boost (x2 por 10s)</button>
-            <button class="btn danger vv-endless" id="labResetBtn" type="button">Reset</button>
-          </div>
-          <div class="muted" style="margin-top:10px" id="labClickHint">Dica: boost tem cooldown.</div>
+          <div class="pill" style="margin:0">FPS: <b id="labFps" style="margin-left:6px">—</b></div>
         </div>
 
-        <div class="card glow">
-          <div class="card-head" style="display:flex; align-items:center; justify-content:space-between; gap:10px">
-            <div>
-              <h3 style="margin:0">Loot Generator</h3>
-              <p class="muted" style="margin:6px 0 0">Gera um “drop” aleatório de Brainrot só pra diversão.</p>
-            </div>
-            <div class="pill" style="margin:0">Raridade: <b id="lootRarity" style="margin-left:6px">—</b></div>
-          </div>
-          <div style="display:flex; gap:10px; flex-wrap:wrap; margin-top:12px">
-            <button class="btn primary vv-endless" id="lootBtn" type="button">Gerar Loot 🎲</button>
-            <button class="btn vv-endless" id="lootSaveBtn" type="button">Salvar no “Museu”</button>
-            <button class="btn danger vv-endless" id="lootClearBtn" type="button">Limpar Museu</button>
-          </div>
-          <div class="pre" id="lootOut" style="margin-top:12px; max-height:220px">Clique em “Gerar Loot”.</div>
-          <div class="muted" style="margin-top:10px">Museu (últimos 10):</div>
-          <div class="pre" id="lootMuseum" style="margin-top:8px; max-height:200px">—</div>
+        <canvas id="labSand" width="900" height="420"
+          style="width:100%; height:auto; border-radius:16px; border:1px solid rgba(255,255,255,.10); background:rgba(0,0,0,.22); margin-top:12px"></canvas>
+
+        <div style="display:flex; gap:10px; flex-wrap:wrap; margin-top:12px; align-items:center">
+          <button class="btn primary vv-endless" id="labMode" type="button">Modo: Neon</button>
+          <button class="btn vv-endless" id="labColor" type="button">Cor: Rainbow</button>
+          <button class="btn vv-endless" id="labClear" type="button">Limpar</button>
+          <button class="btn vv-endless" id="labLess" type="button">Menos</button>
+          <button class="btn vv-endless" id="labMore" type="button">Mais</button>
+          <button class="btn vv-endless" id="labSnap" type="button">Snapshot</button>
+          <a class="btn vv-endless" href="#catalog" style="margin-left:auto">Voltar pra Loja</a>
         </div>
 
-        <div class="card glow">
-          <div class="card-head" style="display:flex; align-items:center; justify-content:space-between; gap:10px">
-            <div>
-              <h3 style="margin:0">Particle Sandbox</h3>
-              <p class="muted" style="margin:6px 0 0">Clique/arraste pra soltar partículas. Zero dependências.</p>
-            </div>
-            <div class="pill" style="margin:0">FPS: <b id="labFps" style="margin-left:6px">—</b></div>
-          </div>
-
-          <canvas id="labCanvas" width="920" height="360"
-            style="width:100%; height:auto; border-radius:16px; border:1px solid rgba(255,255,255,.10); background:rgba(0,0,0,.22); margin-top:12px"></canvas>
-
-          <div style="display:flex; gap:10px; flex-wrap:wrap; margin-top:12px">
-            <button class="btn primary vv-endless" id="labCanvasMode" type="button">Modo: Neon</button>
-            <button class="btn vv-endless" id="labCanvasClear" type="button">Limpar</button>
-            <button class="btn vv-endless" id="labCanvasLess" type="button">Menos</button>
-            <button class="btn vv-endless" id="labCanvasMore" type="button">Mais</button>
-          </div>
-          <div class="muted" style="margin-top:10px">Funciona offline e é leve. Se travar no celular, use “Menos”.</div>
-        </div>
-
-        <div class="card glow">
-          <div class="card-head" style="display:flex; align-items:center; justify-content:space-between; gap:10px">
-            <div>
-              <h3 style="margin:0">Brainrot Sound FX</h3>
-              <p class="muted" style="margin:6px 0 0">Efeitos gerados por WebAudio (sem copyright).</p>
-            </div>
-            <div class="pill" style="margin:0">Volume</div>
-          </div>
-
-          <div style="display:flex; gap:10px; flex-wrap:wrap; align-items:center; margin-top:12px">
-            <button class="btn primary vv-endless" id="sfxPop" type="button">Pop</button>
-            <button class="btn vv-endless" id="sfxZap" type="button">Zap</button>
-            <button class="btn vv-endless" id="sfxWin" type="button">Win</button>
-            <button class="btn vv-endless" id="sfxFail" type="button">Fail</button>
-            <input id="sfxVol" type="range" min="0" max="100" value="45" style="flex:1; min-width:160px"/>
-          </div>
-
-          <div class="muted" style="margin-top:10px">Observação: alguns navegadores só liberam áudio após um clique.</div>
+        <div class="muted" style="margin-top:10px">
+          Dica: clique e arraste pra derramar. Em celular, “Menos” melhora performance.
+          Snapshot salva uma imagem (se o navegador permitir).
         </div>
       </div>
+
 </section>
 
     <section class="section reveal" id="sec-faq">
@@ -2564,256 +2517,176 @@ Posso te ajudar com pedido, entrega, reembolso e checkout.');
 
 <script>
 // V18 ULTRA: smart interactions + tilt + haptics (android)
-(function(){
-  const prefersReduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-  const haptic = (ms=10)=>{ try{ if(navigator.vibrate) navigator.vibrate(ms);}catch(e){} };
-
-  // Tilt effect for cards/buttons
-  function bindTilt(el){
-    if(prefersReduce) return;
-    el.classList.add('vv-tilt');
-    let r;
-    el.addEventListener('pointermove', (e)=>{
-      const b=el.getBoundingClientRect();
-      const x=(e.clientX-b.left)/b.width-0.5;
-      const y=(e.clientY-b.top)/b.height-0.5;
-      const rx=(-y*6).toFixed(2), ry=(x*10).toFixed(2);
-      cancelAnimationFrame(r);
-      r=requestAnimationFrame(()=>{el.style.transform=`perspective(700px) rotateX(${rx}deg) rotateY(${ry}deg) translateY(-2px)`;});
-    });
-    el.addEventListener('pointerleave', ()=>{el.style.transform='';});
-  }
-
-  const apply=()=>{
-    document.querySelectorAll('.vv-card, .vv-btn, button, a.vv-btn').forEach(bindTilt);
-    document.querySelectorAll('.vv-btn, button, a').forEach(el=>{
-      el.addEventListener('click', ()=>haptic(12), {passive:true});
-    });
-    document.querySelectorAll('.vv-btn, button').forEach(el=>el.classList.add('vv-shimmer'));
-  };
-
-  if(document.readyState==='loading') document.addEventListener('DOMContentLoaded', apply);
-  else apply();
-
-  // AI drawer helper chips if exists
-  function ensureChips(){
-    const drawer=document.querySelector('#vv-ai-drawer');
-    if(!drawer || drawer.querySelector('.vv-chip-row')) return;
-    const row=document.createElement('div');
-    row.className='vv-chip-row';
-    row.style.cssText='display:flex;gap:10px;flex-wrap:wrap;margin:10px 0 2px;';
-    const chips=[
-      ['Catálogo','Me mostre as ofertas e como comprar.'],
-      ['Pagamentos','Quais formas de pagamento vocês aceitam?'],
-      ['Entrega','Qual o prazo de entrega e como rastrear?'],
-      ['Suporte','Como falo com o suporte no Discord?'],
-    ];
-    chips.forEach(([t,q])=>{
-      const b=document.createElement('button');
-      b.type='button';
-      b.className='vv-chip';
-      b.textContent=t;
-      b.addEventListener('click', ()=>{
-        const inp=drawer.querySelector('textarea,input');
-        if(inp){ inp.value=q; inp.dispatchEvent(new Event('input',{bubbles:true})); }
-        const send=drawer.querySelector('[data-send],button[type=submit]');
-        if(send) send.click();
-      });
-      row.appendChild(b);
-    });
-    const top=drawer.querySelector('.vv-ai-head')||drawer.firstElementChild;
-    drawer.insertBefore(row, top?top.nextSibling:null);
-  }
-  setTimeout(ensureChips, 800);
-})();
 
 /* ===========================
-   ViralVault Lab Entertainment (V19)
+   ViralVault Lab — Neon Sand (V20)
+   One premium entertainment module
    =========================== */
 (function(){
   const $ = (id)=>document.getElementById(id);
 
-  // ----- Neon Clicker -----
-  const SCORE_KEY = "vv_lab_score_v19";
-  const BOOST_KEY = "vv_lab_boost_cd_v19";
-  let score = Number(localStorage.getItem(SCORE_KEY)||0) || 0;
-  let boostUntil = 0;
-
-  function renderScore(){
-    const el = $("labScore");
-    if(el) el.textContent = String(score);
-  }
-  function canBoost(){
-    const cd = Number(localStorage.getItem(BOOST_KEY)||0) || 0;
-    return Date.now() >= cd;
-  }
-  function setBoostCooldown(ms){
-    localStorage.setItem(BOOST_KEY, String(Date.now()+ms));
-  }
-
-  function clickAdd(){
-    const mult = Date.now() < boostUntil ? 2 : 1;
-    score += 1*mult;
-    localStorage.setItem(SCORE_KEY, String(score));
-    renderScore();
-
-    const hint = $("labClickHint");
-    if(hint){
-      hint.textContent = (mult===2 ? "Boost ativo: +2 por clique ⚡" : "Clique infinito. Use boost quando estiver disponível.");
-    }
-  }
-
-  function boost(){
-    const hint = $("labClickHint");
-    if(!canBoost()){
-      if(hint) hint.textContent = "Boost em cooldown. Aguarde alguns segundos…";
-      return;
-    }
-    boostUntil = Date.now() + 10_000;
-    setBoostCooldown(25_000); // 25s cooldown
-    if(hint) hint.textContent = "BOOST ATIVO (10s) ⚡";
-  }
-
-  function reset(){
-    score = 0;
-    localStorage.setItem(SCORE_KEY, "0");
-    renderScore();
-    const hint = $("labClickHint");
-    if(hint) hint.textContent = "Resetado. Bora de novo.";
-  }
-
-  // ----- Loot Generator -----
-  const MUSEUM_KEY = "vv_loot_museum_v19";
-  const lootNames = [
-    "Brainrot Crate", "Roblox Essence", "No-Sleep Potion", "Viral Token",
-    "Neon Aura", "Glitch Crown", "Lag Shield", "VIP Drift",
-    "Quantum Emote", "Void Hoodie", "Suiii Booster", "XP Injector"
-  ];
-  const rarities = [
-    {name:"Common", w:52},
-    {name:"Rare", w:28},
-    {name:"Epic", w:14},
-    {name:"Legendary", w:5},
-    {name:"Mythic", w:1}
-  ];
-
-  function pickWeighted(items){
-    const total = items.reduce((s,x)=>s+x.w,0);
-    let r = Math.random()*total;
-    for(const it of items){ r -= it.w; if(r<=0) return it; }
-    return items[items.length-1];
-  }
-
-  function formatLoot(obj){
-    const dt = new Date(obj.ts);
-    const when = dt.toLocaleString("pt-BR");
-    return `• ${obj.name}\n  Raridade: ${obj.rarity}\n  Seed: ${obj.seed}\n  Quando: ${when}`;
-  }
-
-  function renderMuseum(){
-    const box = $("lootMuseum");
-    if(!box) return;
-    let arr = [];
-    try{ arr = JSON.parse(localStorage.getItem(MUSEUM_KEY)||"[]"); }catch{}
-    if(!Array.isArray(arr) || !arr.length){ box.textContent = "—"; return; }
-    box.textContent = arr.map(formatLoot).join("\n\n");
-  }
-
-  let currentLoot = null;
-  function genLoot(){
-    const rarity = pickWeighted(rarities).name;
-    const name = lootNames[Math.floor(Math.random()*lootNames.length)];
-    const seed = Math.random().toString(16).slice(2,10);
-    currentLoot = { name, rarity, seed, ts: Date.now() };
-
-    const out = $("lootOut");
-    if(out) out.textContent = formatLoot(currentLoot);
-
-    const rEl = $("lootRarity");
-    if(rEl) rEl.textContent = rarity;
-  }
-
-  function saveLoot(){
-    if(!currentLoot){ genLoot(); }
-    let arr = [];
-    try{ arr = JSON.parse(localStorage.getItem(MUSEUM_KEY)||"[]"); }catch{}
-    if(!Array.isArray(arr)) arr = [];
-    arr.unshift(currentLoot);
-    arr = arr.slice(0,10);
-    localStorage.setItem(MUSEUM_KEY, JSON.stringify(arr));
-    renderMuseum();
-  }
-
-  function clearMuseum(){
-    localStorage.removeItem(MUSEUM_KEY);
-    renderMuseum();
-  }
-
-  // ----- Particle Sandbox -----
-  let particles = [];
-  let density = 240;
-  let mode = "neon";
+  // Settings
+  let mode = "neon";       // neon | gold
+  let colorMode = "rainbow"; // rainbow | gold | ice | lava
+  let density = 160;       // grains per stroke
   let isDown = false;
+
+  // FPS
   let lastT = performance.now();
   let fps = 0;
 
-  function rand(min,max){ return min + Math.random()*(max-min); }
+  // Grid-based falling sand (fast + stable)
+  // We simulate on a low-res grid then render scaled.
+  const canvas = $("labSand");
+  if(!canvas) return;
+  const ctx = canvas.getContext("2d", { alpha:true });
 
-  function spawn(x,y){
-    const count = Math.max(1, Math.floor(density/24));
-    for(let i=0;i<count;i++){
-      particles.push({
-        x: x + rand(-8,8),
-        y: y + rand(-8,8),
-        vx: rand(-1.6,1.6),
-        vy: rand(-2.0,1.2),
-        life: rand(40, 120),
-        r: rand(1.2, 3.2),
-        hue: rand(0, 360)
-      });
-    }
-    if(particles.length > 5200) particles = particles.slice(-5200);
+  // internal grid
+  let W = 240, H = 120; // will be adapted
+  let grid = new Uint32Array(W*H); // 0 = empty, otherwise packed RGBA
+  let img = null;
+
+  function clamp(v,a,b){ return Math.max(a, Math.min(b, v)); }
+
+  function rgbaToU32(r,g,b,a){
+    // pack as ABGR for ImageData on little endian
+    return (a<<24) | (b<<16) | (g<<8) | (r);
   }
 
-  function draw(){
-    const c = $("labCanvas");
-    if(!c) return;
-    const ctx = c.getContext("2d", { alpha:true });
-    const w = c.width, h = c.height;
+  function pickColor(){
+    const t = Date.now()/1000;
+    if(colorMode === "gold"){
+      return rgbaToU32(255, 209, 26, 255);
+    }
+    if(colorMode === "ice"){
+      return rgbaToU32(80, 200, 255, 255);
+    }
+    if(colorMode === "lava"){
+      // oscillate orange/red
+      const s = (Math.sin(t*3)+1)/2;
+      const r = Math.floor(255);
+      const g = Math.floor(60 + s*90);
+      const b = Math.floor(20);
+      return rgbaToU32(r,g,b,255);
+    }
+    // rainbow
+    const hue = (t*60 + Math.random()*40) % 360;
+    // HSV -> RGB
+    const c = 1;
+    const x = c*(1-Math.abs(((hue/60)%2)-1));
+    let r1=0,g1=0,b1=0;
+    if(hue<60){r1=c;g1=x;b1=0}
+    else if(hue<120){r1=x;g1=c;b1=0}
+    else if(hue<180){r1=0;g1=c;b1=x}
+    else if(hue<240){r1=0;g1=x;b1=c}
+    else if(hue<300){r1=x;g1=0;b1=c}
+    else {r1=c;g1=0;b1=x}
+    const r = Math.floor((r1)*255);
+    const g = Math.floor((g1)*255);
+    const b = Math.floor((b1)*255);
+    return rgbaToU32(r,g,b,255);
+  }
 
-    // fade
-    ctx.fillStyle = "rgba(0,0,0,.18)";
-    ctx.fillRect(0,0,w,h);
+  function resize(){
+    // Set real canvas resolution with DPR, but keep CSS size fluid
+    const dpr = Math.min(2, window.devicePixelRatio || 1);
+    const rect = canvas.getBoundingClientRect();
+    const cw = Math.max(680, Math.floor(rect.width * dpr));
+    const ch = Math.max(360, Math.floor(420 * dpr));
+    canvas.width = cw;
+    canvas.height = ch;
 
-    for(const p of particles){
-      p.vy += 0.03;
-      p.x += p.vx;
-      p.y += p.vy;
-      p.life -= 1;
+    // Grid scales with canvas size (keep under ~320x160)
+    W = clamp(Math.floor(cw / 3.5), 180, 320);
+    H = clamp(Math.floor(ch / 3.5), 90, 180);
+    grid = new Uint32Array(W*H);
+    img = ctx.createImageData(W, H);
 
-      // wrap / bounce
-      if(p.x < 0) p.x = w;
-      if(p.x > w) p.x = 0;
-      if(p.y > h+20) { p.y = rand(-10, 10); p.vy *= -0.3; }
+    // Clear
+    ctx.fillStyle = "rgba(0,0,0,1)";
+    ctx.fillRect(0,0,cw,ch);
+  }
 
-      const alpha = Math.max(0, Math.min(1, p.life/80));
-      if(mode === "neon"){
-        ctx.fillStyle = `hsla(${p.hue}, 100%, 60%, ${alpha})`;
-        ctx.shadowColor = `hsla(${p.hue}, 100%, 60%, ${alpha})`;
-        ctx.shadowBlur = 14;
-      } else {
-        ctx.fillStyle = `rgba(255,209,26,${alpha})`;
-        ctx.shadowColor = `rgba(255,209,26,${alpha})`;
-        ctx.shadowBlur = 8;
+  function idx(x,y){ return y*W + x; }
+
+  function sprinkle(gx, gy){
+    for(let i=0;i<density;i++){
+      const x = clamp(gx + ((Math.random()*9)|0) - 4, 1, W-2);
+      const y = clamp(gy + ((Math.random()*9)|0) - 4, 1, H-2);
+      const k = idx(x,y);
+      if(grid[k] === 0) grid[k] = pickColor();
+    }
+  }
+
+  function step(){
+    // iterate bottom-up for gravity
+    for(let y=H-2; y>=1; y--){
+      const row = y*W;
+      for(let x=1; x<W-1; x++){
+        const k = row + x;
+        const v = grid[k];
+        if(v === 0) continue;
+
+        const below = k + W;
+        if(grid[below] === 0){
+          grid[below] = v; grid[k] = 0; continue;
+        }
+        // diagonals
+        const dl = below - 1;
+        const dr = below + 1;
+        const goLeft = (Math.random() < 0.5);
+        if(goLeft){
+          if(grid[dl] === 0){ grid[dl]=v; grid[k]=0; continue; }
+          if(grid[dr] === 0){ grid[dr]=v; grid[k]=0; continue; }
+        } else {
+          if(grid[dr] === 0){ grid[dr]=v; grid[k]=0; continue; }
+          if(grid[dl] === 0){ grid[dl]=v; grid[k]=0; continue; }
+        }
       }
-      ctx.beginPath();
-      ctx.arc(p.x,p.y,p.r,0,Math.PI*2);
-      ctx.fill();
+    }
+  }
+
+  function render(){
+    const data = new Uint32Array(img.data.buffer);
+    // background fade based on mode (neon = darker)
+    const bg = (mode === "neon") ? rgbaToU32(8,10,14,255) : rgbaToU32(10,10,10,255);
+    data.fill(bg);
+
+    // draw sand pixels
+    for(let i=0;i<grid.length;i++){
+      const v = grid[i];
+      if(v !== 0) data[i] = v;
     }
 
-    // cleanup
-    particles = particles.filter(p => p.life > 0);
+    // draw upscaled with smoothing off
+    ctx.imageSmoothingEnabled = false;
+    // subtle bloom vibe by drawing twice with alpha
+    ctx.clearRect(0,0,canvas.width,canvas.height);
+    ctx.globalAlpha = 1;
+    ctx.drawImage(bitmapFromImageData(img), 0, 0, canvas.width, canvas.height);
+    ctx.globalAlpha = 0.22;
+    ctx.filter = "blur(8px)";
+    ctx.drawImage(bitmapFromImageData(img), 0, 0, canvas.width, canvas.height);
+    ctx.filter = "none";
+    ctx.globalAlpha = 1;
+  }
 
+  let cachedBitmap = null;
+  function bitmapFromImageData(id){
+    // cache last ImageData object reference; recreate bitmap only when needed
+    // Use putImageData fallback if createImageBitmap isn't available.
+    // We keep it simple: draw ImageData to an offscreen canvas.
+    if(!cachedBitmap || cachedBitmap.width !== W || cachedBitmap.height !== H){
+      const off = document.createElement("canvas");
+      off.width = W; off.height = H;
+      cachedBitmap = off;
+    }
+    const octx = cachedBitmap.getContext("2d");
+    octx.putImageData(id, 0, 0);
+    return cachedBitmap;
+  }
+
+  function loop(){
     // fps
     const now = performance.now();
     const dt = now - lastT;
@@ -2822,126 +2695,95 @@ Posso te ajudar com pedido, entrega, reembolso e checkout.');
     const fpsEl = $("labFps");
     if(fpsEl) fpsEl.textContent = fps.toFixed(0);
 
-    requestAnimationFrame(draw);
+    // steps (adaptive)
+    const steps = (density > 220) ? 2 : 1;
+    for(let i=0;i<steps;i++) step();
+    render();
+    requestAnimationFrame(loop);
   }
 
-  function canvasInit(){
-    const c = $("labCanvas");
-    if(!c) return;
-
-    // scale for DPR
-    const dpr = Math.min(2, window.devicePixelRatio || 1);
-    const rect = c.getBoundingClientRect();
-    c.width = Math.max(600, Math.floor(rect.width * dpr));
-    c.height = Math.max(260, Math.floor(360 * dpr));
-    particles = [];
-    const ctx = c.getContext("2d");
-    ctx.fillStyle = "rgba(0,0,0,1)";
-    ctx.fillRect(0,0,c.width,c.height);
-
-    const getPos = (ev)=>{
-      const r = c.getBoundingClientRect();
-      const x = (("touches" in ev) ? ev.touches[0].clientX : ev.clientX) - r.left;
-      const y = (("touches" in ev) ? ev.touches[0].clientY : ev.clientY) - r.top;
-      return { x: x * (c.width / r.width), y: y * (c.height / r.height) };
-    };
-
-    const onDown = (ev)=>{ isDown = true; const p = getPos(ev); spawn(p.x,p.y); };
-    const onMove = (ev)=>{ if(!isDown) return; const p = getPos(ev); spawn(p.x,p.y); };
-    const onUp = ()=>{ isDown = false; };
-
-    c.addEventListener("mousedown", onDown);
-    c.addEventListener("mousemove", onMove);
-    window.addEventListener("mouseup", onUp);
-    c.addEventListener("touchstart", onDown, {passive:true});
-    c.addEventListener("touchmove", onMove, {passive:true});
-    window.addEventListener("touchend", onUp, {passive:true});
-
-    window.addEventListener("resize", ()=>{
-      // lightweight resize
-      const dpr2 = Math.min(2, window.devicePixelRatio || 1);
-      const r2 = c.getBoundingClientRect();
-      c.width = Math.max(600, Math.floor(r2.width * dpr2));
-      c.height = Math.max(260, Math.floor(360 * dpr2));
-    });
-
-    requestAnimationFrame(draw);
+  function getGridPos(ev){
+    const r = canvas.getBoundingClientRect();
+    const cx = ("touches" in ev) ? ev.touches[0].clientX : ev.clientX;
+    const cy = ("touches" in ev) ? ev.touches[0].clientY : ev.clientY;
+    const x = (cx - r.left) / r.width;
+    const y = (cy - r.top) / r.height;
+    return { gx: clamp(Math.floor(x*W), 0, W-1), gy: clamp(Math.floor(y*H), 0, H-1) };
   }
 
-  // ----- WebAudio SFX (no copyright) -----
-  let audioCtx = null;
-  function ctx(){
-    if(!audioCtx) audioCtx = new (window.AudioContext || window.webkitAudioContext)();
-    return audioCtx;
-  }
-  function vol(){
-    const v = $("sfxVol");
-    return (Number(v?.value || 45)/100) || 0.45;
-  }
-  function beep(freq, dur, type="sine", detune=0){
-    const ac = ctx();
-    const o = ac.createOscillator();
-    const g = ac.createGain();
-    o.type = type;
-    o.frequency.value = freq;
-    o.detune.value = detune;
-    g.gain.value = 0.0001;
-    o.connect(g); g.connect(ac.destination);
-    const t = ac.currentTime;
-    g.gain.setValueAtTime(0.0001, t);
-    g.gain.exponentialRampToValueAtTime(Math.max(0.001, vol()), t+0.02);
-    g.gain.exponentialRampToValueAtTime(0.0001, t+dur);
-    o.start(t);
-    o.stop(t+dur+0.02);
-  }
-  function pop(){
-    beep(240, 0.08, "triangle", -400);
-    beep(420, 0.07, "sine", 120);
-  }
-  function zap(){
-    beep(820, 0.06, "square", 0);
-    beep(180, 0.12, "sawtooth", -1200);
-  }
-  function win(){
-    beep(392, 0.12, "sine");
-    setTimeout(()=>beep(523, 0.12, "sine"), 120);
-    setTimeout(()=>beep(659, 0.14, "sine"), 240);
-  }
-  function fail(){
-    beep(240, 0.15, "sawtooth", -800);
-    setTimeout(()=>beep(180, 0.18, "square", -200), 90);
-  }
+  function wire(){
+    const down = (ev)=>{ isDown=true; const p=getGridPos(ev); sprinkle(p.gx,p.gy); };
+    const move = (ev)=>{ if(!isDown) return; const p=getGridPos(ev); sprinkle(p.gx,p.gy); };
+    const up = ()=>{ isDown=false; };
 
-  // wire up
-  document.addEventListener("DOMContentLoaded", ()=>{
-    renderScore();
-    renderMuseum();
+    canvas.addEventListener("mousedown", down);
+    canvas.addEventListener("mousemove", move);
+    window.addEventListener("mouseup", up);
+    canvas.addEventListener("touchstart", down, {passive:true});
+    canvas.addEventListener("touchmove", move, {passive:true});
+    window.addEventListener("touchend", up, {passive:true});
 
-    $("labClickBtn")?.addEventListener("click", clickAdd);
-    $("labBoostBtn")?.addEventListener("click", boost);
-    $("labResetBtn")?.addEventListener("click", reset);
-
-    $("lootBtn")?.addEventListener("click", genLoot);
-    $("lootSaveBtn")?.addEventListener("click", saveLoot);
-    $("lootClearBtn")?.addEventListener("click", clearMuseum);
-
-    $("labCanvasMode")?.addEventListener("click", ()=>{
+    $("labMode")?.addEventListener("click", ()=>{
       mode = (mode === "neon") ? "gold" : "neon";
-      const b = $("labCanvasMode");
+      const b = $("labMode");
       if(b) b.textContent = "Modo: " + (mode === "neon" ? "Neon" : "Gold");
     });
-    $("labCanvasClear")?.addEventListener("click", ()=>{ particles = []; });
-    $("labCanvasLess")?.addEventListener("click", ()=>{ density = Math.max(60, density - 60); });
-    $("labCanvasMore")?.addEventListener("click", ()=>{ density = Math.min(420, density + 60); });
 
-    $("sfxPop")?.addEventListener("click", pop);
-    $("sfxZap")?.addEventListener("click", zap);
-    $("sfxWin")?.addEventListener("click", win);
-    $("sfxFail")?.addEventListener("click", fail);
+    $("labColor")?.addEventListener("click", ()=>{
+      const order = ["rainbow","gold","ice","lava"];
+      const i = order.indexOf(colorMode);
+      colorMode = order[(i+1) % order.length];
+      const b = $("labColor");
+      if(b){
+        const label = (colorMode==="rainbow")?"Rainbow":(colorMode==="gold")?"Gold":(colorMode==="ice")?"Ice":"Lava";
+        b.textContent = "Cor: " + label;
+      }
+    });
 
-    canvasInit();
+    $("labClear")?.addEventListener("click", ()=>{
+      grid.fill(0);
+    });
+
+    $("labLess")?.addEventListener("click", ()=>{
+      density = clamp(density - 40, 60, 300);
+    });
+
+    $("labMore")?.addEventListener("click", ()=>{
+      density = clamp(density + 40, 60, 300);
+    });
+
+    $("labSnap")?.addEventListener("click", async ()=>{
+      try{
+        const blob = await new Promise(res=>canvas.toBlob(res, "image/png"));
+        if(!blob) throw new Error("blob");
+        if(navigator.clipboard && window.ClipboardItem){
+          await navigator.clipboard.write([new ClipboardItem({ "image/png": blob })]);
+          alert("Snapshot copiado ✅ (cole no Discord/WhatsApp)");
+        } else {
+          const url = URL.createObjectURL(blob);
+          const a = document.createElement("a");
+          a.href = url; a.download = "viralvault-lab.png";
+          document.body.appendChild(a); a.click(); a.remove();
+          setTimeout(()=>URL.revokeObjectURL(url), 1000);
+        }
+      }catch{
+        alert("Snapshot não disponível nesse navegador. Tente no Chrome.");
+      }
+    });
+
+    window.addEventListener("resize", ()=>{
+      // keep current grid (best-effort) by resizing & clearing for stability
+      resize();
+    });
+  }
+
+  document.addEventListener("DOMContentLoaded", ()=>{
+    resize();
+    wire();
+    requestAnimationFrame(loop);
   });
 })();
+;
 
 </script>
 </body>
