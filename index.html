@@ -902,6 +902,24 @@
   </div>
 
 
+  <!-- ===== Catalog Notice ===== -->
+  <div id="vvNotice" style="display:none; position:sticky; top:0; z-index:1750;">
+    <div style="max-width:980px; margin:0 auto; padding:10px 12px 0;">
+      <div style="display:flex; gap:10px; flex-wrap:wrap; align-items:center; justify-content:space-between;
+           padding:10px 12px; border-radius:18px; border:1px solid rgba(255,255,255,.12);
+           background:rgba(255,210,74,.14); backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px);
+           box-shadow:0 18px 44px rgba(0,0,0,.30);">
+        <div style="display:flex; gap:10px; align-items:center; font-weight:950;">
+          <span style="width:10px;height:10px;border-radius:50%;background:var(--yellow);display:inline-block"></span>
+          <span id="vvNoticeText">Catálogo em modo fallback (offline). Alguns itens podem estar desatualizados.</span>
+        </div>
+        <button class="totalBtn" id="vvNoticeRetry" type="button" style="justify-content:center">Recarregar</button>
+      </div>
+    </div>
+  </div>
+
+
+
     <!-- ===== HERO UPGRADE ===== -->
     <div class="card" id="vvHero" style="margin-top:14px; padding:18px; overflow:hidden; position:relative">
       <div style="position:absolute; inset:-60px -80px auto auto; width:260px; height:260px; border-radius:60px;
@@ -2470,6 +2488,223 @@ if(adminDelivered) adminDelivered.addEventListener('click', async ()=>{
       </div>
     </div>
   </div>
+
+
+<script>
+/* ===== ViralVault: Functional Patch (no bugs) ===== */
+(function(){
+  // helpers
+  const $id = (id)=>document.getElementById(id);
+  const toast = (msg)=>{
+    const t = $id("vvToast");
+    if(!t) return;
+    t.textContent = msg;
+    t.style.display = "block";
+    clearTimeout(window.__vvToastT);
+    window.__vvToastT = setTimeout(()=>{ t.style.display="none"; }, 2200);
+  };
+
+  // Use existing moneyBR if available
+  const moneyBR = window.moneyBR || function(v){
+    const n = Number(v||0);
+    return n.toLocaleString("pt-BR", {minimumFractionDigits:2, maximumFractionDigits:2});
+  };
+
+  // API: reuse existing api() if present; else fallback to API_BASE if present.
+  const api = window.api || (async function(path, opts={}){
+    const base = window.API_BASE || "https://viralvault-sign.darlanana06.workers.dev";
+    const res = await fetch(base + path, {
+      method: opts.method || "GET",
+      headers: {
+        "content-type":"application/json",
+        ...(opts.headers||{})
+      },
+      body: opts.body
+    });
+    const text = await res.text();
+    try{ return JSON.parse(text); }catch{ return { ok:false, error:text || ("HTTP "+res.status) }; }
+  });
+
+  // ===== Checkout inline =====
+  window.populateInlineCheckout = function(p){
+    if(!p) return;
+    window.__vvSelected = p;
+    $id("vvCkName") && ($id("vvCkName").textContent = p.name || p.title || "Produto");
+    $id("vvCkDesc") && ($id("vvCkDesc").textContent = p.description || p.desc || "—");
+    $id("vvCkPrice") && ($id("vvCkPrice").textContent = "R$ " + moneyBR(p.price || 0));
+  };
+
+  async function createOrderInline(){
+    const p = window.__vvSelected;
+    const user = (($id("vvCkUser")?.value)||"").trim();
+    const qty = window.__vvQty || 1;
+
+    if(!p){ $id("vvCkStatus").textContent="⚠️ Selecione um produto."; toast("Selecione um produto"); return; }
+    if(!user){ $id("vvCkStatus").textContent="⚠️ user do Roblox é obrigatório."; toast("Coloque seu user do Roblox"); return; }
+    if(qty !== 1){ $id("vvCkStatus").textContent="ℹ️ Quantidade > 1: faça pedidos separados (1 por vez)."; toast("Quantidade > 1: faça pedidos separados"); return; }
+
+    const btn = $id("vvBtnCreate");
+    if(btn){ btn.disabled = true; btn.style.opacity = ".65"; btn.textContent = "Gerando…"; }
+
+    $id("vvCkStatus").textContent = "criando pedido…";
+
+    try{
+      const data = await api("/create-order", {
+        method:"POST",
+        body: JSON.stringify({ productId: p.id, user })
+      });
+
+      if(!data || data.ok !== true){
+        $id("vvCkStatus").textContent = "❌ erro";
+        toast("Falha ao criar pedido");
+        return;
+      }
+
+      const orderId = data.orderId || (data.order && data.order.orderId) || "";
+      const pix = String(data.pixCopiaECola || "").trim();
+
+      if($id("vvOrderIdBox")) $id("vvOrderIdBox").textContent = orderId || "—";
+      if($id("vvPixBox")) $id("vvPixBox").value = pix || "";
+      if($id("vvCkStatus")) $id("vvCkStatus").innerHTML = orderId ? ("✅ pedido criado. Order ID: <b>"+orderId+"</b>") : "✅ pedido criado.";
+
+      // auto-fill checker + persist
+      if($id("vvCheckOrderId")) $id("vvCheckOrderId").value = orderId || $id("vvCheckOrderId").value;
+      try{ localStorage.setItem("vv_last_orderId", orderId); }catch(e){}
+      if(pix) toast("PIX gerado ✅"); else toast("Pedido criado ✅");
+    }catch(e){
+      $id("vvCkStatus").textContent = "❌ erro";
+      toast("Erro no checkout");
+    }finally{
+      if(btn){ btn.disabled = false; btn.style.opacity = "1"; btn.textContent = "Gerar pedido + PIX"; }
+      try{ if(window.updateResumo) window.updateResumo(); }catch(e){}
+    }
+  }
+
+  async function checkOrderInline(){
+    const oid = (($id("vvCheckOrderId")?.value)||"").trim();
+    if(!oid){ toast("Cole o Order ID"); return; }
+
+    const btn = $id("vvBtnCheck");
+    if(btn){ btn.disabled = true; btn.style.opacity = ".65"; btn.textContent = "Consultando…"; }
+
+    try{
+      const data = await api("/order-status?orderId=" + encodeURIComponent(oid));
+      if(!data || data.ok !== true){
+        toast("Pedido não encontrado");
+        if($id("vvTimeline")) $id("vvTimeline").style.display = "none";
+        return;
+      }
+      const o = data.order || {};
+      const st = String(o.status || "").toLowerCase();
+
+      if($id("vvTimeline")) $id("vvTimeline").style.display = "grid";
+      if($id("vvKStatus")) $id("vvKStatus").textContent = st || "—";
+      if($id("vvKProd")) $id("vvKProd").textContent = o.productName || o.productId || "—";
+      if($id("vvKUser")) $id("vvKUser").textContent = o.user || "—";
+
+      // timeline highlight
+      const t1=$id("vvT1"), t2=$id("vvT2"), t3=$id("vvT3");
+      const on = (el, yes)=>{ if(!el) return; el.style.opacity = yes ? "1" : ".55"; };
+      on(t1, st==="created" || st==="paid" || st==="delivered");
+      on(t2, st==="paid" || st==="delivered");
+      on(t3, st==="delivered");
+
+      toast(st==="delivered" ? "Entregue 📦" : st==="paid" ? "Pago ✅" : "Criado 🧾");
+
+      // history hook if present
+      try{ window.__vvPushHistory && window.__vvPushHistory(oid); }catch(e){}
+    }catch(e){
+      toast("Erro ao verificar");
+    }finally{
+      if(btn){ btn.disabled = false; btn.style.opacity = "1"; btn.textContent = "Verificar"; }
+    }
+  }
+
+  // bind buttons
+  $id("vvBtnCreate")?.addEventListener("click", createOrderInline);
+  $id("vvBtnCheck")?.addEventListener("click", checkOrderInline);
+
+  // restore last order id
+  try{
+    const saved = localStorage.getItem("vv_last_orderId") || "";
+    if(saved && $id("vvCheckOrderId") && !$id("vvCheckOrderId").value) $id("vvCheckOrderId").value = saved;
+  }catch(e){}
+})();
+</script>
+
+
+<script>
+/* ===== ViralVault Catalog from Worker (with fallback) ===== */
+(function(){
+  const API_BASE = "https://viralvault-sign.darlanana06.workers.dev";
+  const fallback = [{"id": "robux-80", "name": "80 Robux", "description": "Entrega digital. Envio rápido.", "price": 9.9}, {"id": "robux-400", "name": "400 Robux", "description": "Entrega digital. Envio rápido.", "price": 39.9}, {"id": "conta-premium", "name": "Conta Premium", "description": "Conta com benefícios. Consulte o suporte.", "price": 59.9}, {"id": "itens-pack", "name": "Pack de Itens", "description": "Pacote de itens digitais. Consulte disponibilidade.", "price": 29.9}];
+
+  async function fetchCatalog(){
+    const ctrl = new AbortController();
+    const to = setTimeout(()=>ctrl.abort(), 4500);
+    try{
+      const res = await fetch(API_BASE + "/catalog", {signal: ctrl.signal, headers:{"accept":"application/json"}});
+      clearTimeout(to);
+      if(!res.ok) throw new Error("HTTP " + res.status);
+      const data = await res.json();
+      if(data && data.ok && Array.isArray(data.products)) return data.products;
+      if(Array.isArray(data)) return data;
+      throw new Error("Formato inválido");
+    }catch(e){
+      clearTimeout(to);
+      return null;
+    }
+  }
+
+  // Hook into existing site: set window.__products then render
+  window.__vvLoadCatalog = async function(){
+    try{
+      if(typeof showSkeleton === "function") showSkeleton();
+    }catch(e){}
+    const t0 = performance.now();
+    const products = await fetchCatalog();
+    if(products && products.length){
+      window.__products = window.__products || products;
+      try{ if(typeof vvMarkCatalog === "function") vvMarkCatalog(true, Math.round(performance.now()-t0)); }catch(e){}
+    } else {
+      window.__products = fallback;
+      try{ if(window.__vvSetNotice) window.__vvSetNotice(true, "Catálogo em modo fallback (offline). Alguns itens podem estar desatualizados."); }catch(e){}
+      try{ if(typeof vvMarkCatalog === "function") vvMarkCatalog(false, Math.round(performance.now()-t0), "Usando catálogo local (fallback)"); }catch(e){}
+      try{ if(typeof vvToast === "function") vvToast("Catálogo do Worker indisponível — usando fallback"); }catch(e){}
+    }
+    try{ if(typeof renderProducts === "function") renderProducts(); }catch(e){}
+  };
+
+  // Auto load on ready
+  document.addEventListener("DOMContentLoaded", ()=>{
+    window.__vvLoadCatalog();
+  });
+})();
+</script>
+
+// ===== Notice: Catalog fallback banner =====
+(function(){
+  const n = document.getElementById("vvNotice");
+  const t = document.getElementById("vvNoticeText");
+  const r = document.getElementById("vvNoticeRetry");
+  if(!n || !t || !r) return;
+
+  window.__vvSetNotice = function(on, msg){
+    if(on){
+      if(msg) t.textContent = msg;
+      n.style.display = "block";
+    } else {
+      n.style.display = "none";
+    }
+  };
+
+  r.addEventListener("click", ()=>{
+    try{
+      window.__vvLoadCatalog && window.__vvLoadCatalog();
+    }catch(e){}
+  });
+})();
+
 
 </body>
 </html>
