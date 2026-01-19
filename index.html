@@ -395,7 +395,183 @@
 
     /* Hide any sensitive technical labels */
     [data-private]{display:none !important}
-  </style>
+  
+/* === V18 ULTRA: cinematic + micro-interactions === */
+:root{
+  --vv-neon1:#7c3aed; --vv-neon2:#22d3ee; --vv-neon3:#f97316; --vv-neon4:#10b981;
+  --vv-bg0:#04040a; --vv-bg1:#070a16; --vv-card:rgba(255,255,255,.08);
+  --vv-card2:rgba(255,255,255,.06);
+}
+
+/* animated mesh gradient */
+.vv-mesh{
+  position:fixed; inset:-20%; z-index:-3; filter: blur(28px) saturate(140%);
+  background:
+   radial-gradient(900px 520px at 15% 25%, rgba(124,58,237,.55), transparent 60%),
+   radial-gradient(820px 540px at 85% 35%, rgba(34,211,238,.50), transparent 60%),
+   radial-gradient(840px 520px at 45% 85%, rgba(249,115,22,.35), transparent 60%),
+   radial-gradient(900px 600px at 65% 70%, rgba(16,185,129,.30), transparent 62%),
+   radial-gradient(1200px 900px at 50% 50%, rgba(255,255,255,.06), transparent 60%);
+  animation: vvMesh 12s ease-in-out infinite alternate;
+}
+@keyframes vvMesh{
+  0%{ transform: translate3d(-1%, -1%,0) rotate(-1deg) scale(1.02); }
+  50%{ transform: translate3d(1.4%, -0.5%,0) rotate(0.8deg) scale(1.03); }
+  100%{ transform: translate3d(-0.6%, 1.2%,0) rotate(-0.4deg) scale(1.02); }
+}
+
+/* floating sparkles */
+.vv-sparkles{ position:fixed; inset:0; z-index:-2; pointer-events:none; opacity:.55; }
+.vv-spark{ position:absolute; width:6px; height:6px; border-radius:50%;
+  background: radial-gradient(circle, rgba(255,255,255,.95), rgba(255,255,255,.0) 70%);
+  filter: drop-shadow(0 0 10px rgba(255,255,255,.18));
+  animation: vvSpark 10s linear infinite;
+}
+@keyframes vvSpark{ from{ transform: translate3d(0,0,0); opacity:.0; }
+  10%{ opacity:.55; }
+  70%{ opacity:.38; }
+  to{ transform: translate3d(0,-120vh,0); opacity:0; }
+}
+
+/* premium card hover */
+.vv-card, .card, .glass{
+  backdrop-filter: blur(14px);
+}
+.vv-card:hover, .card:hover{
+  transform: translateY(-4px) scale(1.01);
+  box-shadow: 0 18px 70px rgba(0,0,0,.55);
+}
+
+/* button micro */
+button, .btn{
+  transition: transform .12s ease, box-shadow .18s ease, filter .18s ease;
+}
+button:active, .btn:active{ transform: translateY(1px) scale(.99); }
+
+/* AI drawer */
+#vv-ai-fab{
+  position:fixed; right:16px; bottom:92px; z-index:9998;
+  width:58px; height:58px; border-radius:18px;
+  background: linear-gradient(135deg, rgba(124,58,237,.95), rgba(34,211,238,.85));
+  border:1px solid rgba(255,255,255,.18);
+  box-shadow: 0 16px 60px rgba(124,58,237,.30);
+  display:flex; align-items:center; justify-content:center;
+}
+#vv-ai-fab svg{ filter: drop-shadow(0 8px 30px rgba(0,0,0,.45)); }
+#vv-ai-fab:after{
+  content:''; position:absolute; inset:-10px; border-radius:22px;
+  background: radial-gradient(circle at 30% 20%, rgba(255,255,255,.35), transparent 55%);
+  opacity:.22; pointer-events:none;
+}
+#vv-ai-fab:hover{ filter: brightness(1.05); transform: translateY(-2px); }
+
+#vv-ai-drawer{
+  position:fixed; inset:0; z-index:9999; display:none;
+}
+#vv-ai-drawer[aria-hidden="false"]{ display:block; }
+#vv-ai-drawer .vv-ai-backdrop{
+  position:absolute; inset:0; background: rgba(0,0,0,.58);
+  backdrop-filter: blur(10px);
+}
+#vv-ai-drawer .vv-ai-panel{
+  position:absolute; right:0; top:0; height:100%; width:min(420px, 92vw);
+  background: linear-gradient(180deg, rgba(10,12,24,.92), rgba(8,10,18,.92));
+  border-left: 1px solid rgba(255,255,255,.12);
+  box-shadow: -30px 0 90px rgba(0,0,0,.65);
+  transform: translate3d(100%,0,0);
+  transition: transform .28s cubic-bezier(.2,.8,.2,1);
+  display:flex; flex-direction:column;
+}
+#vv-ai-drawer[aria-hidden="false"] .vv-ai-panel{ transform: translate3d(0,0,0); }
+
+.vv-ai-header{
+  padding:16px 16px 10px; border-bottom:1px solid rgba(255,255,255,.10);
+  display:flex; gap:10px; align-items:center; justify-content:space-between;
+}
+.vv-ai-brand{ display:flex; gap:10px; align-items:center; }
+.vv-ai-avatar{
+  width:40px; height:40px; border-radius:14px;
+  background: linear-gradient(135deg, rgba(124,58,237,.95), rgba(34,211,238,.75));
+  display:flex; align-items:center; justify-content:center;
+}
+.vv-ai-title{ line-height:1.05; }
+.vv-ai-title b{ display:block; font-size:14px; }
+.vv-ai-title span{ font-size:12px; opacity:.75; }
+.vv-ai-close{
+  width:40px; height:40px; border-radius:14px;
+  background: rgba(255,255,255,.08);
+  border:1px solid rgba(255,255,255,.12);
+}
+
+.vv-ai-body{ flex:1; overflow:auto; padding:12px 14px 10px; }
+.vv-ai-msg{
+  max-width: 92%; margin:10px 0; padding:12px 12px; border-radius:18px;
+  border:1px solid rgba(255,255,255,.10);
+  background: rgba(255,255,255,.06);
+  box-shadow: 0 12px 40px rgba(0,0,0,.25);
+}
+.vv-ai-msg.user{ margin-left:auto; background: linear-gradient(135deg, rgba(124,58,237,.26), rgba(34,211,238,.12)); }
+.vv-ai-msg .meta{ font-size:11px; opacity:.72; margin-bottom:6px; }
+.vv-ai-msg .txt{ white-space:pre-wrap; font-size:13px; line-height:1.55; }
+
+.vv-ai-suggest{
+  display:flex; flex-wrap:wrap; gap:8px; padding: 10px 14px 14px;
+}
+.vv-chip{
+  border-radius:999px; padding:9px 11px; font-size:12px;
+  background: rgba(255,255,255,.07);
+  border:1px solid rgba(255,255,255,.10);
+}
+.vv-chip:active{ transform: translateY(1px) scale(.99); }
+
+.vv-ai-input{
+  padding:12px 14px 16px; border-top:1px solid rgba(255,255,255,.10);
+  background: linear-gradient(180deg, rgba(8,10,18,.4), rgba(8,10,18,.85));
+}
+.vv-ai-row{ display:flex; gap:10px; align-items:flex-end; }
+#vv-ai-text{
+  width:100%; min-height:44px; max-height:120px;
+  resize:none; padding:12px 12px;
+  border-radius:18px; outline:none;
+  border:1px solid rgba(255,255,255,.12);
+  background: rgba(255,255,255,.06);
+  color:inherit;
+}
+#vv-ai-send{
+  width:46px; height:46px; border-radius:16px;
+  background: linear-gradient(135deg, rgba(124,58,237,.92), rgba(34,211,238,.78));
+  border:1px solid rgba(255,255,255,.12);
+}
+.vv-ai-note{ font-size:11px; opacity:.72; margin-top:8px; }
+
+/* reduced motion */
+@media (prefers-reduced-motion: reduce){
+  .vv-mesh, .vv-spark{ animation:none !important; }
+  #vv-ai-drawer .vv-ai-panel{ transition:none !important; }
+}
+
+</style>
+
+<style>
+/* V18 ULTRA PATCH */
+@keyframes vvFloat{0%{transform:translate3d(0,0,0)}50%{transform:translate3d(0,-8px,0)}100%{transform:translate3d(0,0,0)}}
+@keyframes vvGlow{0%{filter:drop-shadow(0 0 0 rgba(34,211,238,.0))}50%{filter:drop-shadow(0 0 18px rgba(34,211,238,.55))}100%{filter:drop-shadow(0 0 0 rgba(34,211,238,.0))}}
+.vv-tilt{transform-style:preserve-3d; will-change:transform}
+.vv-btn, button{transition:transform .18s ease, filter .18s ease, box-shadow .18s ease}
+.vv-btn:active, button:active{transform:scale(.98)}
+.vv-shimmer{position:relative;overflow:hidden}
+.vv-shimmer:before{content:"";position:absolute;inset:-120% -40%;background:linear-gradient(90deg,transparent,rgba(255,255,255,.20),transparent);transform:rotate(25deg);animation:vvSh 2.8s linear infinite}
+@keyframes vvSh{0%{transform:translateX(-60%) rotate(25deg)}100%{transform:translateX(60%) rotate(25deg)}}
+/* AI drawer premium */
+#vv-ai-fab{animation:vvFloat 3.2s ease-in-out infinite}
+#vv-ai-fab:hover{animation:vvGlow 1.4s ease-in-out infinite}
+#vv-ai-drawer{backdrop-filter: blur(18px) saturate(130%);-webkit-backdrop-filter: blur(18px) saturate(130%)}
+.vv-chip{border:1px solid rgba(255,255,255,.14);background:rgba(255,255,255,.06);padding:10px 12px;border-radius:999px;font-weight:700}
+.vv-chip:active{transform:scale(.98)}
+/* Better product cards */
+.vv-card:hover{transform:translateY(-4px) scale(1.01)}
+.vv-card{transition:transform .2s ease, box-shadow .2s ease}
+</style>
 </head>
 <body>
   <header class="topbar">
@@ -2031,6 +2207,277 @@
     }, clamp(350 + Math.random()*350, 250, 900));
   });
 
+})();
+</script>
+<script>
+// === V18 ULTRA: sparkles + AI drawer ===
+(function(){
+  // Mesh background
+  if(!document.querySelector('.vv-mesh')){
+    const mesh=document.createElement('div');
+    mesh.className='vv-mesh';
+    document.body.prepend(mesh);
+  }
+  // Sparkles
+  if(!document.querySelector('.vv-sparkles')){
+    const wrap=document.createElement('div'); wrap.className='vv-sparkles';
+    const count = Math.min(26, Math.max(12, Math.floor(window.innerWidth/28)));
+    for(let i=0;i<count;i++){
+      const s=document.createElement('div'); s.className='vv-spark';
+      s.style.left=(Math.random()*100)+'%';
+      s.style.bottom=(-(Math.random()*80))+'vh';
+      const dur=8+Math.random()*10;
+      const delay=Math.random()*8;
+      s.style.animationDuration=dur+'s';
+      s.style.animationDelay=delay+'s';
+      s.style.opacity=(0.25+Math.random()*0.5).toFixed(2);
+      s.style.transform='translate3d(0,0,0) scale('+(0.6+Math.random()*1.4).toFixed(2)+')';
+      wrap.appendChild(s);
+    }
+    document.body.prepend(wrap);
+  }
+
+  // AI UI elements
+  if(!document.getElementById('vv-ai-fab')){
+    const fab=document.createElement('button');
+    fab.id='vv-ai-fab';
+    fab.type='button';
+    fab.setAttribute('aria-label','Assistente IA');
+    fab.innerHTML = `
+      <svg width="26" height="26" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <path d="M7.5 16.5C6.67157 16.5 6 17.1716 6 18C6 18.8284 6.67157 19.5 7.5 19.5H16.5C17.3284 19.5 18 18.8284 18 18C18 17.1716 17.3284 16.5 16.5 16.5H7.5Z" fill="rgba(255,255,255,.95)"/>
+        <path d="M8 4C6.34315 4 5 5.34315 5 7V12C5 13.6569 6.34315 15 8 15H16C17.6569 15 19 13.6569 19 12V7C19 5.34315 17.6569 4 16 4H8Z" fill="rgba(255,255,255,.95)" opacity="0.9"/>
+      </svg>`;
+    document.body.appendChild(fab);
+  }
+
+  if(!document.getElementById('vv-ai-drawer')){
+    const drawer=document.createElement('div');
+    drawer.id='vv-ai-drawer';
+    drawer.setAttribute('aria-hidden','true');
+    drawer.innerHTML=`
+      <div class="vv-ai-backdrop" data-close="1"></div>
+      <aside class="vv-ai-panel" role="dialog" aria-modal="true" aria-label="Assistente ViralVault">
+        <div class="vv-ai-header">
+          <div class="vv-ai-brand">
+            <div class="vv-ai-avatar">VV</div>
+            <div class="vv-ai-title"><b>VV Assist</b><span>Suporte instantâneo (Free)</span></div>
+          </div>
+          <button class="vv-ai-close" type="button" data-close="1">✕</button>
+        </div>
+        <div class="vv-ai-body" id="vv-ai-body"></div>
+        <div class="vv-ai-suggest" id="vv-ai-suggest"></div>
+        <div class="vv-ai-input">
+          <div class="vv-ai-row">
+            <textarea id="vv-ai-text" placeholder="Escreva sua dúvida… (ex: rastrear pedido 123, como comprar, reembolso)"></textarea>
+            <button id="vv-ai-send" type="button" aria-label="Enviar">➤</button>
+          </div>
+          <div class="vv-ai-note">Anti-spam ativo • Sem custos • Se precisar de humano: Discord</div>
+        </div>
+      </aside>`;
+    document.body.appendChild(drawer);
+  }
+
+  const fab = document.getElementById('vv-ai-fab');
+  const drawer = document.getElementById('vv-ai-drawer');
+  const body = document.getElementById('vv-ai-body');
+  const suggest = document.getElementById('vv-ai-suggest');
+  const ta = document.getElementById('vv-ai-text');
+  const send = document.getElementById('vv-ai-send');
+
+  const chips=[
+    {t:'Rastrear pedido', q:'Quero rastrear meu pedido. Meu ID é 123'},
+    {t:'Como comprar', q:'Como faço o checkout e envio o nick do Roblox?'},
+    {t:'Prazo de entrega', q:'Qual o prazo normal e prioritário?'},
+    {t:'Reembolso', q:'Quero solicitar reembolso. Como funciona?'},
+  ];
+  function renderChips(){
+    suggest.innerHTML='';
+    chips.forEach(c=>{
+      const b=document.createElement('button'); b.className='vv-chip'; b.type='button'; b.textContent=c.t;
+      b.onclick=()=>{ ta.value=c.q; ta.focus(); };
+      suggest.appendChild(b);
+    });
+  }
+
+  function now(){
+    const d=new Date();
+    return d.toLocaleTimeString([], {hour:'2-digit', minute:'2-digit'});
+  }
+  function addMsg(role, text){
+    const div=document.createElement('div');
+    div.className='vv-ai-msg ' + (role==='user'?'user':'bot');
+    div.innerHTML=`<div class="meta">${role==='user'?'Você':'VV Assist'} • ${now()}</div><div class="txt"></div>`;
+    div.querySelector('.txt').textContent=text;
+    body.appendChild(div);
+    body.scrollTop=body.scrollHeight;
+  }
+
+  // Free AI = rule-based + order status passthrough
+  async function freeAssist(input){
+    const t=input.trim();
+    const lower=t.toLowerCase();
+
+    // Detect order id
+    const m=t.match(/(\d{3,})/);
+    const orderId=m?m[1]:null;
+
+    if(lower.includes('rastre') || lower.includes('pedido') || lower.includes('order') || orderId){
+      if(!orderId){
+        return 'Me manda o número do pedido (ex: 123) pra eu verificar o status.';
+      }
+      // Try your worker verify endpoint if exists in page config
+      const api = (window.VV_API_BASE || window.API_BASE || '').trim();
+      if(api){
+        try{
+          const res = await fetch(api.replace(/\/+$/,'') + '/verify', {
+            method:'POST', headers:{'content-type':'application/json'},
+            body: JSON.stringify({ orderId })
+          });
+          const js = await res.json().catch(()=>null);
+          if(js && (js.ok===true || js.status || js.orderId)){
+            const st = js.status || js.state || (js.data && js.data.status) || 'OK';
+            return `Status do pedido ${orderId}: ${st}.
+Se precisar abrir ticket, use o Discord.`;
+          }
+        }catch(e){/* ignore */}
+      }
+      return `Consigo te ajudar: vá em **Pedido** e cole o número ${orderId}.
+Se continuar com erro, abra ticket no Discord.`;
+    }
+
+    if(lower.includes('prazo') || lower.includes('entrega') || lower.includes('demora')){
+      return 'Prazo médio: **até 24h** (prioridade entrega primeiro).
+Alguns itens podem ser instantâneos. Qual item você comprou?';
+    }
+    if(lower.includes('reembolso') || lower.includes('cancel')){
+      return 'Reembolso: caso o item não tenha sido entregue ou exista problema confirmado.
+Abra um ticket no Discord com o ID do pedido e o nick do Roblox.';
+    }
+    if(lower.includes('como') || lower.includes('compr')){
+      return 'Como comprar: 1) escolha item no catálogo 2) checkout 3) envie nick/ID do Roblox 4) pague via Pix 5) acompanhe em **Pedido**.';
+    }
+    if(lower.includes('pix')){
+      return 'Pix: copie e cole o código Pix no seu banco. Depois volte e clique em **Já paguei** no checkout.';
+    }
+
+    return 'Entendi. Me diga: você quer **comprar**, **rastrear pedido**, **prazo** ou **reembolso**?';
+  }
+
+  function openDrawer(){
+    drawer.setAttribute('aria-hidden','false');
+    document.body.style.overflow='hidden';
+    if(!body.dataset.welcome){
+      body.dataset.welcome='1';
+      addMsg('bot','Fala! Eu sou o VV Assist 🤖
+Posso te ajudar com pedido, entrega, reembolso e checkout.');
+    }
+    renderChips();
+    setTimeout(()=>ta.focus(), 50);
+  }
+  function closeDrawer(){
+    drawer.setAttribute('aria-hidden','true');
+    document.body.style.overflow='';
+  }
+
+  fab.addEventListener('click', openDrawer);
+  drawer.addEventListener('click', (e)=>{
+    if(e.target && e.target.getAttribute('data-close')==='1') closeDrawer();
+  });
+  window.addEventListener('keydown', (e)=>{ if(e.key==='Escape' && drawer.getAttribute('aria-hidden')==='false') closeDrawer(); });
+
+  function autoGrow(){
+    ta.style.height='auto';
+    ta.style.height=Math.min(120, ta.scrollHeight)+'px';
+  }
+  ta.addEventListener('input', autoGrow);
+
+  async function onSend(){
+    const text=ta.value.trim();
+    if(!text) return;
+    ta.value=''; autoGrow();
+    addMsg('user', text);
+    addMsg('bot','Digitando…');
+    const last=body.lastElementChild;
+    try{
+      const out = await freeAssist(text);
+      last.querySelector('.txt').textContent=out;
+    }catch(e){
+      last.querySelector('.txt').textContent='Ops, falhou aqui. Tenta de novo ou chama no Discord.';
+    }
+  }
+
+  send.addEventListener('click', onSend);
+  ta.addEventListener('keydown', (e)=>{
+    if(e.key==='Enter' && !e.shiftKey){ e.preventDefault(); onSend(); }
+  });
+
+})();
+</script>
+
+<script>
+// V18 ULTRA: smart interactions + tilt + haptics (android)
+(function(){
+  const prefersReduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  const haptic = (ms=10)=>{ try{ if(navigator.vibrate) navigator.vibrate(ms);}catch(e){} };
+
+  // Tilt effect for cards/buttons
+  function bindTilt(el){
+    if(prefersReduce) return;
+    el.classList.add('vv-tilt');
+    let r;
+    el.addEventListener('pointermove', (e)=>{
+      const b=el.getBoundingClientRect();
+      const x=(e.clientX-b.left)/b.width-0.5;
+      const y=(e.clientY-b.top)/b.height-0.5;
+      const rx=(-y*6).toFixed(2), ry=(x*10).toFixed(2);
+      cancelAnimationFrame(r);
+      r=requestAnimationFrame(()=>{el.style.transform=`perspective(700px) rotateX(${rx}deg) rotateY(${ry}deg) translateY(-2px)`;});
+    });
+    el.addEventListener('pointerleave', ()=>{el.style.transform='';});
+  }
+
+  const apply=()=>{
+    document.querySelectorAll('.vv-card, .vv-btn, button, a.vv-btn').forEach(bindTilt);
+    document.querySelectorAll('.vv-btn, button, a').forEach(el=>{
+      el.addEventListener('click', ()=>haptic(12), {passive:true});
+    });
+    document.querySelectorAll('.vv-btn, button').forEach(el=>el.classList.add('vv-shimmer'));
+  };
+
+  if(document.readyState==='loading') document.addEventListener('DOMContentLoaded', apply);
+  else apply();
+
+  // AI drawer helper chips if exists
+  function ensureChips(){
+    const drawer=document.querySelector('#vv-ai-drawer');
+    if(!drawer || drawer.querySelector('.vv-chip-row')) return;
+    const row=document.createElement('div');
+    row.className='vv-chip-row';
+    row.style.cssText='display:flex;gap:10px;flex-wrap:wrap;margin:10px 0 2px;';
+    const chips=[
+      ['Catálogo','Me mostre as ofertas e como comprar.'],
+      ['Pagamentos','Quais formas de pagamento vocês aceitam?'],
+      ['Entrega','Qual o prazo de entrega e como rastrear?'],
+      ['Suporte','Como falo com o suporte no Discord?'],
+    ];
+    chips.forEach(([t,q])=>{
+      const b=document.createElement('button');
+      b.type='button';
+      b.className='vv-chip';
+      b.textContent=t;
+      b.addEventListener('click', ()=>{
+        const inp=drawer.querySelector('textarea,input');
+        if(inp){ inp.value=q; inp.dispatchEvent(new Event('input',{bubbles:true})); }
+        const send=drawer.querySelector('[data-send],button[type=submit]');
+        if(send) send.click();
+      });
+      row.appendChild(b);
+    });
+    const top=drawer.querySelector('.vv-ai-head')||drawer.firstElementChild;
+    drawer.insertBefore(row, top?top.nextSibling:null);
+  }
+  setTimeout(ensureChips, 800);
 })();
 </script>
 </body>
