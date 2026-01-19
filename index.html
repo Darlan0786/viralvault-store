@@ -1570,5 +1570,468 @@
 
   })();
   </script>
+
+<!-- ========= IA SUPPORT (FREE / SEM OPENAI) ========= -->
+<div id="aiFab" aria-label="Abrir IA de suporte" title="IA de Suporte">
+  <span class="aiFabIcon">✦</span>
+  <span class="aiFabText">IA</span>
+</div>
+
+<div id="aiPanel" role="dialog" aria-modal="true" aria-hidden="true">
+  <div class="aiTop">
+    <div class="aiBrand">
+      <div class="aiDot"></div>
+      <div>
+        <div class="aiTitle">ViralVault Assist</div>
+        <div class="aiSub">Suporte inteligente (sem custos)</div>
+      </div>
+    </div>
+    <button id="aiClose" class="aiClose" aria-label="Fechar">×</button>
+  </div>
+
+  <div id="aiMsgs" class="aiMsgs" aria-live="polite"></div>
+
+  <div class="aiQuick" id="aiQuick">
+    <button class="aiChip" data-q="Como comprar?">Como comprar</button>
+    <button class="aiChip" data-q="Quanto tempo para entrega?">Entrega</button>
+    <button class="aiChip" data-q="Como acompanhar meu pedido?">Pedido</button>
+    <button class="aiChip" data-q="Formas de pagamento">Pagamento</button>
+    <button class="aiChip" data-q="Suporte Discord">Discord</button>
+  </div>
+
+  <form id="aiForm" class="aiForm" autocomplete="off">
+    <input id="aiInput" class="aiInput" type="text" inputmode="text" placeholder="Pergunte algo… (ex: rastrear pedido 123)" maxlength="400" />
+    <button id="aiSend" class="aiSend" type="submit">Enviar</button>
+  </form>
+
+  <div class="aiFoot">
+    <div class="aiFootNote">Dica: escreva <b>pedido 123</b>, <b>pix</b>, <b>prazo</b>, <b>reembolso</b>.</div>
+    <a class="aiDiscord" href="https://discord.gg/fWAWquBu" target="_blank" rel="noopener">Abrir Discord</a>
+  </div>
+</div>
+
+<style id="aiSupportStyles">
+  :root{
+    --ai-bg: rgba(10,12,18,.72);
+    --ai-card: rgba(255,255,255,.06);
+    --ai-stroke: rgba(255,255,255,.12);
+    --ai-text: rgba(255,255,255,.92);
+    --ai-muted: rgba(255,255,255,.68);
+    --ai-accent: rgba(120,180,255,.95);
+    --ai-accent2: rgba(178,120,255,.95);
+  }
+
+  #aiFab{
+    position: fixed;
+    right: 16px;
+    bottom: 18px;
+    z-index: 99999;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 12px 14px;
+    border-radius: 999px;
+    color: var(--ai-text);
+    background: linear-gradient(135deg, rgba(90,160,255,.35), rgba(190,90,255,.28));
+    border: 1px solid rgba(255,255,255,.16);
+    backdrop-filter: blur(18px);
+    -webkit-backdrop-filter: blur(18px);
+    box-shadow: 0 16px 48px rgba(0,0,0,.35);
+    cursor: pointer;
+    user-select: none;
+    transform: translateZ(0);
+  }
+  #aiFab:active{ transform: scale(.98); }
+  .aiFabIcon{
+    width: 34px;
+    height: 34px;
+    display: grid;
+    place-items: center;
+    border-radius: 14px;
+    background: radial-gradient(circle at 30% 30%, rgba(255,255,255,.22), rgba(255,255,255,.06));
+    border: 1px solid rgba(255,255,255,.14);
+    box-shadow: inset 0 0 0 1px rgba(255,255,255,.04);
+    font-weight: 800;
+  }
+  .aiFabText{ font-weight: 800; letter-spacing: .5px; }
+
+  #aiPanel{
+    position: fixed;
+    right: 16px;
+    bottom: 72px;
+    width: min(420px, calc(100vw - 32px));
+    height: min(560px, calc(100vh - 120px));
+    z-index: 99999;
+    display: none;
+    flex-direction: column;
+    border-radius: 22px;
+    overflow: hidden;
+    background: linear-gradient(180deg, rgba(16,20,30,.72), rgba(10,12,18,.78));
+    border: 1px solid rgba(255,255,255,.14);
+    backdrop-filter: blur(18px);
+    -webkit-backdrop-filter: blur(18px);
+    box-shadow: 0 28px 80px rgba(0,0,0,.45);
+  }
+  #aiPanel[aria-hidden="false"]{ display: flex; }
+
+  .aiTop{
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 14px 14px;
+    background: linear-gradient(90deg, rgba(110,170,255,.16), rgba(190,110,255,.12));
+    border-bottom: 1px solid rgba(255,255,255,.10);
+  }
+  .aiBrand{ display:flex; align-items:center; gap: 10px; }
+  .aiDot{
+    width: 12px; height: 12px; border-radius: 99px;
+    background: radial-gradient(circle at 30% 30%, rgba(255,255,255,.9), rgba(255,255,255,.0)),
+                linear-gradient(135deg, var(--ai-accent), var(--ai-accent2));
+    box-shadow: 0 0 0 6px rgba(120,180,255,.12);
+  }
+  .aiTitle{ font-weight: 900; color: var(--ai-text); line-height: 1.1; }
+  .aiSub{ font-size: 12px; color: var(--ai-muted); margin-top: 2px; }
+  .aiClose{
+    width: 36px; height: 36px;
+    border-radius: 12px;
+    border: 1px solid rgba(255,255,255,.14);
+    background: rgba(255,255,255,.06);
+    color: var(--ai-text);
+    cursor: pointer;
+  }
+
+  .aiMsgs{
+    flex: 1;
+    padding: 14px;
+    overflow: auto;
+  }
+  .aiRow{ display: flex; margin: 10px 0; }
+  .aiRow.user{ justify-content: flex-end; }
+  .aiRow.bot{ justify-content: flex-start; }
+  .aiBubble{
+    max-width: 86%;
+    padding: 12px 12px;
+    border-radius: 16px;
+    border: 1px solid rgba(255,255,255,.12);
+    background: rgba(255,255,255,.06);
+    color: var(--ai-text);
+    line-height: 1.35;
+    white-space: pre-wrap;
+    word-break: break-word;
+  }
+  .aiRow.user .aiBubble{
+    background: linear-gradient(135deg, rgba(120,180,255,.18), rgba(178,120,255,.14));
+    border-color: rgba(255,255,255,.16);
+  }
+  .aiMeta{ font-size: 11px; color: var(--ai-muted); margin-top: 6px; }
+
+  .aiQuick{
+    display: flex;
+    gap: 8px;
+    padding: 10px 12px;
+    overflow-x: auto;
+    border-top: 1px solid rgba(255,255,255,.08);
+    border-bottom: 1px solid rgba(255,255,255,.08);
+    background: rgba(0,0,0,.12);
+  }
+  .aiChip{
+    flex: 0 0 auto;
+    padding: 8px 10px;
+    border-radius: 999px;
+    border: 1px solid rgba(255,255,255,.12);
+    background: rgba(255,255,255,.06);
+    color: var(--ai-text);
+    cursor: pointer;
+    font-weight: 700;
+    font-size: 12px;
+  }
+  .aiChip:active{ transform: scale(.99); }
+
+  .aiForm{
+    display: flex;
+    gap: 10px;
+    padding: 12px;
+    background: rgba(0,0,0,.14);
+  }
+  .aiInput{
+    flex: 1;
+    padding: 12px 12px;
+    border-radius: 14px;
+    border: 1px solid rgba(255,255,255,.14);
+    background: rgba(255,255,255,.06);
+    color: var(--ai-text);
+    outline: none;
+  }
+  .aiSend{
+    padding: 12px 14px;
+    border-radius: 14px;
+    border: 1px solid rgba(255,255,255,.14);
+    background: linear-gradient(135deg, rgba(120,180,255,.22), rgba(178,120,255,.18));
+    color: var(--ai-text);
+    cursor: pointer;
+    font-weight: 900;
+  }
+
+  .aiFoot{
+    display:flex;
+    justify-content: space-between;
+    gap: 12px;
+    align-items: center;
+    padding: 10px 12px;
+    border-top: 1px solid rgba(255,255,255,.10);
+    background: rgba(255,255,255,.03);
+  }
+  .aiFootNote{ font-size: 12px; color: var(--ai-muted); }
+  .aiDiscord{
+    padding: 8px 10px;
+    border-radius: 12px;
+    border: 1px solid rgba(255,255,255,.14);
+    background: rgba(255,255,255,.06);
+    color: var(--ai-text);
+    text-decoration: none;
+    font-weight: 900;
+  }
+
+  @media (prefers-reduced-motion: reduce){
+    #aiFab, .aiSend, .aiChip{ transition: none !important; }
+  }
+</style>
+
+<script>
+(() => {
+  const DISCORD_INVITE = "https://discord.gg/fWAWquBu";
+
+  const fab = document.getElementById("aiFab");
+  const panel = document.getElementById("aiPanel");
+  const closeBtn = document.getElementById("aiClose");
+  const msgs = document.getElementById("aiMsgs");
+  const form = document.getElementById("aiForm");
+  const input = document.getElementById("aiInput");
+
+  const chips = Array.from(document.querySelectorAll(".aiChip"));
+
+  const now = () => Date.now();
+  const clamp = (n, a, b) => Math.max(a, Math.min(b, n));
+
+  // ===== Anti-spam (client-side) =====
+  const RL_KEY = "vv_ai_rl_v1";
+  function readRL(){
+    try{ return JSON.parse(localStorage.getItem(RL_KEY) || "{}") || {}; }catch{ return {}; }
+  }
+  function writeRL(obj){
+    try{ localStorage.setItem(RL_KEY, JSON.stringify(obj)); }catch{}
+  }
+  function canSend(){
+    const t = now();
+    const rl = readRL();
+    const last = rl.last || 0;
+    const bucket = (rl.bucket || []).filter(x => (t - x) < 60_000);
+
+    // hard throttle: 1 msg / 1200ms
+    if (t - last < 1200) return { ok:false, reason:"Rápido demais. Aguarde 1s." };
+
+    // per minute: 20
+    if (bucket.length >= 20) return { ok:false, reason:"Limite de mensagens por minuto atingido." };
+
+    bucket.push(t);
+    writeRL({ last: t, bucket });
+    return { ok:true };
+  }
+
+  // ===== Basic safety filter =====
+  const blocked = [
+    "spam", "phishing", "cartao clonado", "cc", "bin", "fraude", "golpe",
+    "hack", "roubar", "invadir", "cheat", "exploit", "dupe"
+  ];
+  const profanity = ["porra","caralho","foda","fdp","puta","buceta","pau","pinto","arromb"];
+
+  function normalize(s){
+    return (s||"")
+      .toLowerCase()
+      .normalize("NFD").replace(/[\u0300-\u036f]/g, "")
+      .replace(/[^a-z0-9\s\-_.]/g, " ")
+      .replace(/\s+/g, " ")
+      .trim();
+  }
+
+  function containsAny(s, arr){
+    return arr.some(w => s.includes(w));
+  }
+
+  // ===== Knowledge base (editável) =====
+  const KB = [
+    {
+      q: "como comprar",
+      a: "1) Abra o Catálogo\n2) Escolha o produto\n3) Clique em Comprar\n4) Pague via PIX\n5) Vá em Pedido e cole o ID/Comprovante quando solicitado.\n\nSe quiser atendimento humano: Discord.",
+      tags: ["comprar","checkout","pix"]
+    },
+    {
+      q: "entrega prazo tempo",
+      a: "O prazo depende do produto e da fila. Normalmente: prioridade (24h) entra primeiro.\n\nDica: em Pedido, use seu número/ID para acompanhar.",
+      tags: ["entrega","prazo","24h"]
+    },
+    {
+      q: "acompanhar pedido status",
+      a: "Abra a aba Pedido e informe o ID do pedido (ou o identificador que você recebeu).\nSe o status estiver offline/erro, tente novamente em alguns minutos ou chame no Discord.",
+      tags: ["pedido","status","rastrear"]
+    },
+    {
+      q: "pagamento pix",
+      a: "Aceitamos PIX. Copie e cole o código PIX e finalize no seu banco.\nDepois, guarde o comprovante.\n\nSe o PIX expirar: gere um novo checkout e pague novamente.",
+      tags: ["pix","pagamento","banco"]
+    },
+    {
+      q: "reembolso estorno",
+      a: "Reembolso varia por tipo de produto e estágio do pedido.\nSe o produto não foi entregue ou houve erro, abra ticket no Discord com: ID do pedido + comprovante + print do erro.",
+      tags: ["reembolso","estorno"]
+    },
+    {
+      q: "discord suporte",
+      a: "Suporte oficial é pelo Discord. Entre por aqui: " + DISCORD_INVITE,
+      tags: ["discord","suporte"]
+    },
+    {
+      q: "seguranca oficial",
+      a: "Canal oficial: somente pelo site + Discord do link dentro do site.\nNunca peça ajuda por DM aleatória.\nSe alguém pedir senha/código, é golpe.",
+      tags: ["oficial","seguranca","golpe"]
+    }
+  ];
+
+  function score(query, item){
+    const q = normalize(query);
+    const hay = normalize(item.q + " " + (item.tags||[]).join(" ") + " " + item.a);
+    if (!q) return 0;
+
+    const words = q.split(" ").filter(w => w.length >= 3);
+    let s = 0;
+    for (const w of words){
+      if (hay.includes(w)) s += 1;
+    }
+
+    // boost for exact intent keywords
+    if (hay.includes(q)) s += 2;
+    return s;
+  }
+
+  function bestAnswer(text){
+    const qn = normalize(text);
+
+    if (containsAny(qn, profanity)){
+      return {
+        a: "Consigo ajudar, mas sem palavrões. Reenvie sua dúvida de forma objetiva.",
+        conf: 1
+      };
+    }
+
+    if (containsAny(qn, blocked)){
+      return {
+        a: "Não posso ajudar com isso. Se sua dúvida for sobre compra/entrega/suporte, descreva sem termos de risco.",
+        conf: 1
+      };
+    }
+
+    // Try to detect order id
+    const idMatch = qn.match(/\b(pedido|order)\s*#?\s*(\d{2,})\b/);
+    if (idMatch){
+      const id = idMatch[2];
+      return {
+        a: `Entendi. Para acompanhar o pedido ${id}:\n\n1) Abra a aba Pedido\n2) Cole o ID ${id}\n3) Veja o status\n\nSe der \"offline\" ou erro, tente de novo mais tarde e chame no Discord com o ID.` ,
+        conf: 3
+      };
+    }
+
+    let best = null;
+    let bestS = 0;
+    for (const item of KB){
+      const s = score(text, item);
+      if (s > bestS){ bestS = s; best = item; }
+    }
+
+    if (!best || bestS <= 0){
+      return {
+        a: "Não tenho certeza pelo que você escreveu.\n\nMe diga: você quer *comprar*, *pagar via PIX*, *acompanhar pedido* ou *suporte*?\n\nSe preferir atendimento humano, use o Discord: " + DISCORD_INVITE,
+        conf: 0
+      };
+    }
+
+    return { a: best.a, conf: bestS };
+  }
+
+  function addMsg(who, text){
+    const row = document.createElement("div");
+    row.className = "aiRow " + who;
+
+    const bub = document.createElement("div");
+    bub.className = "aiBubble";
+    bub.textContent = text;
+
+    row.appendChild(bub);
+    msgs.appendChild(row);
+    msgs.scrollTop = msgs.scrollHeight;
+  }
+
+  function greet(){
+    addMsg("bot", "Oi! Eu sou o ViralVault Assist.\n\nPosso ajudar com: compra, PIX, prazo, pedido e segurança.\nSe quiser humano: Discord.");
+  }
+
+  function openPanel(){
+    panel.setAttribute("aria-hidden", "false");
+    if (!msgs.dataset.inited){
+      msgs.dataset.inited = "1";
+      greet();
+    }
+    setTimeout(() => input.focus(), 30);
+  }
+
+  function closePanel(){
+    panel.setAttribute("aria-hidden", "true");
+  }
+
+  fab.addEventListener("click", openPanel);
+  closeBtn.addEventListener("click", closePanel);
+
+  // click outside to close (mobile friendly)
+  document.addEventListener("keydown", (e) => {
+    if (e.key === "Escape") closePanel();
+  });
+
+  chips.forEach(ch => {
+    ch.addEventListener("click", () => {
+      const q = ch.getAttribute("data-q") || "";
+      input.value = q;
+      form.dispatchEvent(new Event("submit", { cancelable: true }));
+    });
+  });
+
+  form.addEventListener("submit", (e) => {
+    e.preventDefault();
+    const txt = (input.value || "").trim();
+    if (!txt) return;
+
+    const rl = canSend();
+    if (!rl.ok){
+      addMsg("bot", rl.reason);
+      return;
+    }
+
+    addMsg("user", txt);
+    input.value = "";
+
+    // tiny "thinking" effect
+    const typing = document.createElement("div");
+    typing.className = "aiRow bot";
+    typing.innerHTML = '<div class="aiBubble">…</div>';
+    msgs.appendChild(typing);
+    msgs.scrollTop = msgs.scrollHeight;
+
+    setTimeout(() => {
+      typing.remove();
+      const { a } = bestAnswer(txt);
+      addMsg("bot", a);
+    }, clamp(350 + Math.random()*350, 250, 900));
+  });
+
+})();
+</script>
 </body>
 </html>
