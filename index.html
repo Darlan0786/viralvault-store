@@ -4,11 +4,14 @@
   <meta charset="utf-8"/>
   <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"/>
   <meta name="theme-color" content="#0b0f1a"/>
-  <meta name="color-scheme" content="dark light"/>
-  <meta name="description" content="ViralVault — loja de itens/serviços para Roblox com checkout PIX, verificação de pedido e anti-golpe via Order ID."/>
+  <meta name="color-scheme" content="dark"/>
+
+  <title>ViralVault Store — Checkout PIX & Pedido</title>
+  <meta name="description" content="ViralVault — loja de itens/serviços para Roblox com checkout PIX, verificação de pedido por Order ID e histórico de compras."/>
   <meta name="robots" content="index,follow,max-image-preview:large"/>
   <link rel="canonical" href="https://viralvault-store.vercel.app/"/>
 
+  <!-- Open Graph / Social -->
   <meta property="og:type" content="website"/>
   <meta property="og:title" content="ViralVault Store"/>
   <meta property="og:description" content="Checkout PIX, verificação por Order ID e histórico de compras."/>
@@ -19,693 +22,1170 @@
   <meta name="twitter:title" content="ViralVault Store"/>
   <meta name="twitter:description" content="Checkout PIX, verificação por Order ID e histórico de compras."/>
 
-  <link rel="preconnect" href="https://fonts.googleapis.com" crossorigin>
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-
-  <title>ViralVault Store</title>
-
+  <!-- JSON-LD (WebSite) -->
   <script type="application/ld+json">
   {
-    "@context":"https://schema.org",
-    "@type":"WebSite",
-    "name":"ViralVault Store",
-    "url":"https://viralvault-store.vercel.app/",
-    "potentialAction":{
-      "@type":"SearchAction",
-      "target":"https://viralvault-store.vercel.app/?q={search_term_string}",
-      "query-input":"required name=search_term_string"
+    "@context": "https://schema.org",
+    "@type": "WebSite",
+    "name": "ViralVault Store",
+    "url": "https://viralvault-store.vercel.app/",
+    "potentialAction": {
+      "@type": "SearchAction",
+      "target": "https://viralvault-store.vercel.app/?q={search_term_string}",
+      "query-input": "required name=search_term_string"
     }
   }
   </script>
 
+  <!-- PWA: manifest + icons (data URIs) -->
+  <link rel="manifest" href="data:application/manifest+json,%7B%22name%22%3A%22ViralVault%20Store%22%2C%22short_name%22%3A%22ViralVault%22%2C%22start_url%22%3A%22.%2F%22%2C%22display%22%3A%22standalone%22%2C%22background_color%22%3A%22%230b0f1a%22%2C%22theme_color%22%3A%22%230b0f1a%22%2C%22icons%22%3A%5B%7B%22src%22%3A%22data%3Aimage%2Fsvg%2Bxml%2C%3Csvg%20xmlns%3D'http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg'%20viewBox%3D'0%200%201024%201024'%3E%3Cdefs%3E%3CradialGradient%20id%3D'g'%20cx%3D'30%25'%20cy%3D'20%25'%20r%3D'90%25'%3E%3Cstop%20offset%3D'0'%20stop-color%3D'%2390b7ff'%2F%3E%3Cstop%20offset%3D'1'%20stop-color%3D'%235f64ff'%2F%3E%3C%2FradialGradient%3E%3C%2Fdefs%3E%3Crect%20width%3D'1024'%20height%3D'1024'%20rx%3D'220'%20fill%3D'%230b0f1a'%2F%3E%3Ccircle%20cx%3D'512'%20cy%3D'512'%20r%3D'420'%20fill%3D'url(%23g)'%2F%3E%3Ctext%20x%3D'50%25'%20y%3D'56%25'%20text-anchor%3D'middle'%20font-family%3D'Inter%2C%20system-ui%2C%20Segoe%20UI'%20font-size%3D'320'%20font-weight%3D'800'%20fill%3D'%230b0f1a'%3EVV%3C%2Ftext%3E%3C%2Fsvg%3E%22%2C%22sizes%22%3A%221024x1024%22%2C%22type%22%3A%22image%2Fsvg%2Bxml%22%7D%5D%7D"/>
+
+  <!-- Apple -->
+  <meta name="apple-mobile-web-app-capable" content="yes"/>
+  <meta name="apple-mobile-web-app-title" content="ViralVault"/>
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent"/>
+
+  <!-- Preconnect + minimal font strategy (system-first) -->
   <style>
     :root{
       --bg:#070a12;
-      --panel: rgba(255,255,255,.06);
-      --stroke: rgba(255,255,255,.12);
-      --text: rgba(255,255,255,.92);
-      --muted: rgba(255,255,255,.68);
-      --muted2: rgba(255,255,255,.52);
-      --brand: #7c6cff;
-      --brand2:#4dd3ff;
-      --ok:#3ddc97;
-      --bad:#ff5a6a;
-      --shadow: 0 16px 50px rgba(0,0,0,.55);
-      --r22:22px;
-      --r28:28px;
-      --max:1100px;
-      --tap: 44px;
+      --panel:#0c1120cc;
+      --panel2:#0b1020a6;
+      --stroke:#ffffff14;
+      --text:#eef2ff;
+      --muted:#b7c0dd;
+      --muted2:#8f98b6;
+      --brand1:#7a7cff;
+      --brand2:#47b3ff;
+      --good:#23d18b;
+      --warn:#ffcc66;
+      --bad:#ff4d6d;
+      --shadow: 0 20px 80px rgba(0,0,0,.55);
+      --shadow2: 0 12px 40px rgba(0,0,0,.35);
+      --r1: 28px;
+      --r2: 22px;
+      --r3: 16px;
+      --ease: cubic-bezier(.2,.8,.2,1);
+      --max: 1120px;
     }
-    *{box-sizing:border-box}
-    html,body{height:100%}
+
+    *{ box-sizing:border-box; }
+    html,body{ height:100%; }
     body{
       margin:0;
-      font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Arial;
+      font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial;
       color:var(--text);
-      background:
-        radial-gradient(900px 600px at 20% 10%, rgba(124,108,255,.28), transparent 60%),
-        radial-gradient(900px 600px at 85% 30%, rgba(77,211,255,.18), transparent 55%),
-        radial-gradient(900px 800px at 50% 120%, rgba(61,220,151,.12), transparent 60%),
-        var(--bg);
+      background: radial-gradient(1200px 800px at 15% 10%, rgba(122,124,255,.25), transparent 60%),
+                  radial-gradient(900px 600px at 85% 18%, rgba(71,179,255,.22), transparent 55%),
+                  radial-gradient(900px 700px at 50% 90%, rgba(35,209,139,.08), transparent 60%),
+                  var(--bg);
       overflow-x:hidden;
     }
-    .wrap{max-width:var(--max); margin:0 auto; padding: 18px 16px 96px;}
-    .topbar{
-      position:sticky; top:0; z-index:20;
+
+    /* subtle “agency” texture */
+    body:before{
+      content:"";
+      position:fixed; inset:0;
+      pointer-events:none;
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.8' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='160' height='160' filter='url(%23n)' opacity='.25'/%3E%3C/svg%3E");
+      opacity:.06;
+      mix-blend-mode: overlay;
+    }
+
+    a{ color:inherit; text-decoration:none; }
+    button{ font:inherit; }
+
+    .wrap{ max-width:var(--max); margin:0 auto; padding: 18px 16px 120px; }
+
+    /* Top bar */
+    .top{
+      position:sticky; top:0; z-index:50;
       backdrop-filter: blur(14px);
-      background: linear-gradient(to bottom, rgba(7,10,18,.82), rgba(7,10,18,.45));
-      border-bottom: 1px solid rgba(255,255,255,.08);
+      background: linear-gradient(180deg, rgba(7,10,18,.85), rgba(7,10,18,.35));
+      border-bottom: 1px solid rgba(255,255,255,.06);
     }
-    .topbar .inner{
-      max-width:var(--max); margin:0 auto; padding: 12px 16px;
-      display:flex; align-items:center; justify-content:space-between; gap:12px;
+    .topInner{ max-width:var(--max); margin:0 auto; padding: 14px 16px; display:flex; align-items:center; gap:12px; }
+
+    .brand{
+      display:flex; align-items:center; gap:12px;
+      min-width: 180px;
     }
-    .brand{display:flex; align-items:center; gap:10px; min-width:0;}
     .logo{
-      width:42px; height:42px; border-radius: 14px;
-      background: linear-gradient(135deg, var(--brand), var(--brand2));
-      box-shadow: 0 10px 30px rgba(124,108,255,.25);
+      width:40px; height:40px; border-radius:14px;
+      background: radial-gradient(circle at 30% 20%, #90b7ff, #5f64ff 65%, #2b2f8f);
+      box-shadow: 0 12px 30px rgba(110,120,255,.28);
       display:grid; place-items:center;
-      font-weight:900;
-      letter-spacing:.5px;
       color:#0b0f1a;
+      font-weight:900;
+      letter-spacing:-.5px;
     }
-    .brand .t{display:flex; flex-direction:column; min-width:0}
-    .brand .t b{font-size:14px; line-height:1.1}
-    .brand .t span{font-size:12px; color:var(--muted); white-space:nowrap; overflow:hidden; text-overflow:ellipsis}
-    .actions{display:flex; gap:10px; align-items:center; flex-wrap:wrap; justify-content:flex-end}
+    .brandTitle{ line-height:1.1; }
+    .brandTitle b{ display:block; font-size:15px; }
+    .brandTitle span{ font-size:12px; color:var(--muted2); }
+
+    .spacer{ flex:1; }
+
+    .pill{
+      display:inline-flex; align-items:center; gap:10px;
+      padding: 10px 12px;
+      border-radius: 999px;
+      border: 1px solid var(--stroke);
+      background: linear-gradient(180deg, rgba(255,255,255,.08), rgba(255,255,255,.03));
+      box-shadow: var(--shadow2);
+      color: var(--text);
+    }
+    .pill select{
+      background: transparent; border:0; outline:0; color: var(--text);
+      font-weight:650;
+      -webkit-appearance:none; appearance:none;
+    }
+
     .btn{
-      appearance:none; border:1px solid var(--stroke);
-      background: linear-gradient(180deg, rgba(255,255,255,.10), rgba(255,255,255,.06));
-      color:var(--text);
-      height: var(--tap);
-      padding: 0 14px;
-      border-radius: 14px;
-      display:inline-flex; align-items:center; justify-content:center; gap:10px;
       cursor:pointer;
+      border:1px solid var(--stroke);
+      background: linear-gradient(180deg, rgba(255,255,255,.10), rgba(255,255,255,.04));
+      color: var(--text);
+      padding: 12px 14px;
+      border-radius: 14px;
+      display:inline-flex; align-items:center; gap:10px;
+      transition: transform .12s var(--ease), filter .2s var(--ease), border-color .2s var(--ease);
       user-select:none;
-      text-decoration:none;
-      box-shadow: 0 10px 30px rgba(0,0,0,.2);
-      touch-action: manipulation;
+      -webkit-tap-highlight-color: transparent;
     }
-    .btn:active{transform: translateY(1px)}
-    .btn.primary{
-      border-color: rgba(124,108,255,.40);
-      background: linear-gradient(135deg, rgba(124,108,255,.95), rgba(77,211,255,.65));
+    .btn:active{ transform: translateY(1px) scale(.99); }
+    .btnPrimary{
+      border-color: rgba(122,124,255,.55);
+      background: linear-gradient(135deg, rgba(122,124,255,.95), rgba(71,179,255,.85));
       color: #0b0f1a;
       font-weight:800;
     }
-    .btn.ghost{background: transparent; box-shadow:none;}
-    .lang{
-      border:1px solid rgba(255,255,255,.12);
-      background: rgba(0,0,0,.18);
-      height: var(--tap);
-      border-radius: 14px;
-      padding: 0 10px;
-      color: var(--text);
+    .btnGhost{ background: rgba(255,255,255,.03); }
+
+    /* Hero */
+    .hero{
+      padding: 22px 0 14px;
     }
-    .pill{
-      display:inline-flex; align-items:center; gap:8px;
-      border:1px solid rgba(255,255,255,.10);
-      background: rgba(0,0,0,.18);
-      padding: 8px 12px;
-      border-radius: 999px;
-      color: var(--muted);
-      font-size:12px;
+    .heroGrid{
+      display:grid; grid-template-columns: 1.2fr .8fr;
+      gap: 18px;
+      align-items: stretch;
     }
-    .dot{width:9px;height:9px;border-radius:99px;background:var(--ok); box-shadow: 0 0 0 6px rgba(61,220,151,.12)}
+
+    @media (max-width: 860px){
+      .heroGrid{ grid-template-columns: 1fr; }
+      .brand{ min-width: unset; }
+    }
+
     .card{
-      background: linear-gradient(180deg, rgba(255,255,255,.08), rgba(255,255,255,.04));
-      border: 1px solid rgba(255,255,255,.10);
-      border-radius: var(--r28);
+      border:1px solid rgba(255,255,255,.08);
+      background: linear-gradient(180deg, rgba(255,255,255,.06), rgba(255,255,255,.02));
+      border-radius: var(--r1);
       box-shadow: var(--shadow);
       overflow:hidden;
     }
-    .hero{padding: 20px 18px 18px;}
-    h1{margin: 18px 0 10px; font-size: 44px; line-height: 1.02; letter-spacing: -1px;}
-    @media (max-width: 520px){ h1{font-size: 34px} }
-    .sub{color:var(--muted); margin:0 0 18px; max-width: 65ch}
-    .cta{display:flex; gap:10px; flex-wrap:wrap; margin-top: 14px}
-    .grid{display:grid; grid-template-columns: 1.25fr .75fr; gap: 16px; margin-top: 18px;}
-    @media (max-width: 960px){ .grid{grid-template-columns:1fr} }
-    .tabs{display:flex; gap:10px; flex-wrap:wrap; padding: 12px 12px 0;}
-    .tab{
-      flex: 1 1 auto;
-      min-width: 120px;
-      text-align:center;
-      height: var(--tap);
-      border-radius: 16px;
-      border:1px solid rgba(255,255,255,.10);
-      background: rgba(0,0,0,.12);
-      cursor:pointer;
-      display:flex; align-items:center; justify-content:center;
+    .cardInner{ padding: 22px; }
+
+    .kicker{
+      display:inline-flex; align-items:center; gap:10px;
+      padding: 10px 12px;
+      border-radius: 999px;
+      border: 1px solid rgba(255,255,255,.10);
+      background: rgba(11,16,32,.55);
       color: var(--muted);
-      user-select:none;
-      touch-action: manipulation;
+      font-size: 13px;
     }
-    .tab[aria-selected="true"]{
+    .dot{ width:10px; height:10px; border-radius:50%; background: var(--good); box-shadow: 0 0 0 6px rgba(35,209,139,.14); }
+
+    h1{
+      margin: 14px 0 10px;
+      font-size: clamp(34px, 4.2vw, 54px);
+      line-height: 1.02;
+      letter-spacing: -1.2px;
+    }
+    .sub{
+      margin:0;
+      color: var(--muted);
+      font-size: 15px;
+      line-height:1.55;
+      max-width: 62ch;
+    }
+
+    .heroActions{ display:flex; flex-wrap:wrap; gap:12px; margin-top: 16px; }
+
+    .mini{
+      display:grid; gap:10px;
+    }
+    .stat{
+      border-radius: var(--r2);
+      border:1px solid rgba(255,255,255,.08);
+      background: rgba(11,16,32,.55);
+      padding: 14px 14px;
+    }
+    .statTop{ display:flex; justify-content:space-between; align-items:center; gap:12px; }
+    .statTop b{ font-size: 13px; color: var(--muted); font-weight:700; }
+    .badge{
+      font-size: 12px; font-weight:750;
+      padding: 6px 10px; border-radius: 999px;
+      border:1px solid rgba(255,255,255,.10);
+      background: rgba(255,255,255,.04);
       color: var(--text);
-      border-color: rgba(124,108,255,.35);
-      background: linear-gradient(135deg, rgba(124,108,255,.26), rgba(77,211,255,.12));
     }
-    .section{padding: 14px 18px 18px;}
-    .pane{display:none}
-    .pane.active{display:block}
-    .row{display:grid; gap:10px; margin-top: 10px}
-    label{font-size:12px;color:var(--muted)}
+    .statVal{ margin-top:10px; font-size: 14px; color: var(--muted2); }
+
+    /* Sections */
+    .section{ margin-top: 18px; }
+    .sectionHead{ display:flex; align-items:flex-end; justify-content:space-between; gap:12px; margin-bottom: 10px; }
+    .sectionHead h2{ margin:0; font-size: 22px; letter-spacing:-.4px; }
+    .sectionHead p{ margin:0; color: var(--muted2); font-size: 13px; }
+
+    .grid{ display:grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+    @media (max-width: 860px){ .grid{ grid-template-columns: 1fr; } }
+
+    .panel{
+      border:1px solid rgba(255,255,255,.08);
+      background: linear-gradient(180deg, rgba(12,17,32,.82), rgba(12,17,32,.50));
+      border-radius: var(--r1);
+      box-shadow: var(--shadow2);
+      overflow:hidden;
+    }
+    .panel .inner{ padding: 18px; }
+
+    .row{ display:flex; gap:10px; flex-wrap:wrap; }
+
+    label{ display:block; font-size: 12px; color: var(--muted2); margin: 10px 0 8px; }
     input, textarea{
       width:100%;
-      color:var(--text);
-      background: rgba(0,0,0,.18);
       border:1px solid rgba(255,255,255,.12);
-      border-radius: 16px;
-      padding: 12px 14px;
+      background: rgba(255,255,255,.04);
+      color: var(--text);
+      padding: 12px 12px;
+      border-radius: 14px;
       outline:none;
-      min-height: var(--tap);
     }
-    textarea{min-height: 96px; resize: vertical}
-    input:focus, textarea:focus{
-      border-color: rgba(124,108,255,.50);
-      box-shadow: 0 0 0 6px rgba(124,108,255,.12);
-    }
-    .list{display:grid; gap:10px; margin-top:10px}
+    input:focus, textarea:focus{ border-color: rgba(122,124,255,.55); box-shadow: 0 0 0 4px rgba(122,124,255,.12); }
+
+    .help{ margin-top:8px; color: var(--muted2); font-size: 12px; }
+
+    /* Catalog */
+    .catGrid{ display:grid; grid-template-columns: 1fr; gap:10px; margin-top:10px; }
     .item{
-      display:flex; justify-content:space-between; gap:12px; align-items:flex-start;
-      padding: 12px;
-      border-radius: 18px;
       border:1px solid rgba(255,255,255,.10);
-      background: rgba(0,0,0,.14);
+      background: rgba(255,255,255,.03);
+      border-radius: 18px;
+      padding: 14px;
+      display:flex; justify-content:space-between; gap:12px; align-items:center;
     }
-    .itemBtn{
-      width:100%;
-      text-align:left;
+    .itemLeft{ min-width:0; }
+    .itemLeft b{ display:block; font-size: 14px; letter-spacing:-.2px; }
+    .itemLeft span{ display:block; font-size: 12px; color: var(--muted2); margin-top:4px; }
+    .price{ font-weight:850; }
+    .qty{
+      display:inline-flex; align-items:center; gap:8px;
+      border:1px solid rgba(255,255,255,.10);
+      background: rgba(255,255,255,.03);
+      border-radius: 999px;
+      padding: 6px 10px;
+    }
+    .qty button{
+      width:30px; height:30px; border-radius:999px;
+      border:1px solid rgba(255,255,255,.12);
+      background: rgba(255,255,255,.05);
+      color: var(--text);
       cursor:pointer;
     }
-    .meta{min-width:0}
-    .meta b{display:block}
-    .meta span{display:block; color:var(--muted); font-size:12px; margin-top:3px}
-    .price{font-weight:900}
-    .line{height:1px;background:rgba(255,255,255,.10); margin: 14px 0}
-    .small{font-size:12px;color:var(--muted)}
-    .mono{font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono","Courier New", monospace;}
-    .footerbar{
-      position:fixed; left:0; right:0; bottom:0; z-index:30;
+    .qty i{ font-style:normal; min-width:18px; text-align:center; color: var(--muted); font-weight:800; }
+
+    .divider{ height:1px; background: rgba(255,255,255,.08); margin: 12px 0; }
+
+    /* Toast */
+    .toast{
+      position:fixed; left:50%; bottom: 92px; transform: translateX(-50%);
+      padding: 12px 14px;
+      border-radius: 16px;
+      border: 1px solid rgba(255,255,255,.10);
+      background: rgba(8,12,22,.92);
+      box-shadow: var(--shadow2);
+      color: var(--text);
+      max-width: min(560px, calc(100vw - 24px));
+      opacity:0;
+      pointer-events:none;
+      transition: opacity .2s var(--ease), transform .2s var(--ease);
+    }
+    .toast.show{ opacity:1; transform: translateX(-50%) translateY(-2px); }
+    .toast small{ color: var(--muted2); display:block; margin-top:4px; }
+
+    /* Bottom tab bar */
+    .tabs{
+      position:fixed; left:0; right:0; bottom:0;
       padding: 10px 12px calc(10px + env(safe-area-inset-bottom));
+      background: linear-gradient(180deg, rgba(7,10,18,0), rgba(7,10,18,.92) 28%, rgba(7,10,18,.98));
       backdrop-filter: blur(16px);
-      background: linear-gradient(to top, rgba(7,10,18,.88), rgba(7,10,18,.55));
+      z-index:60;
       border-top: 1px solid rgba(255,255,255,.08);
     }
-    .footerbar .nav{
-      max-width:var(--max); margin:0 auto;
-      display:grid; grid-template-columns: repeat(4,1fr); gap:10px;
+    .tabsInner{
+      max-width:var(--max);
+      margin:0 auto;
+      display:grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 10px;
     }
-    .navbtn{
-      height: 52px;
+    .tab{
+      display:flex; align-items:center; justify-content:center; gap:10px;
       border-radius: 18px;
+      padding: 12px 10px;
       border:1px solid rgba(255,255,255,.10);
-      background: rgba(0,0,0,.12);
+      background: rgba(255,255,255,.03);
       color: var(--muted);
       cursor:pointer;
-      display:flex; align-items:center; justify-content:center;
       user-select:none;
-      touch-action: manipulation;
-      font-weight:700;
+      -webkit-tap-highlight-color: transparent;
     }
-    .navbtn.active{
-      color: var(--text);
-      border-color: rgba(124,108,255,.35);
-      background: linear-gradient(135deg, rgba(124,108,255,.26), rgba(77,211,255,.12));
+    .tab.active{ color: var(--text); border-color: rgba(122,124,255,.42); background: rgba(122,124,255,.10); }
+    .tab span{ font-weight:800; font-size: 13px; }
+
+    /* Utility */
+    .hidden{ display:none !important; }
+    .mono{ font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace; }
+
+    /* Reduced motion */
+    @media (prefers-reduced-motion: reduce){
+      *{ scroll-behavior:auto !important; transition:none !important; }
     }
-    .adminOnly{display:none !important}
-  body.admin .adminOnly{display:none !important}
-</style>
+  </style>
 </head>
 <body>
-  <div class="topbar">
-    <div class="inner">
-      <div class="brand">
+  <header class="top">
+    <div class="topInner">
+      <div class="brand" role="button" tabindex="0" data-scroll="#home">
         <div class="logo" aria-hidden="true">VV</div>
-        <div class="t">
+        <div class="brandTitle">
           <b>ViralVault Store</b>
-          <span id="envLine">Conectando ao sistema…</span>
+          <span id="netStatus">Sistema online</span>
         </div>
       </div>
 
-      <div class="actions">
-        <select id="lang" class="lang" aria-label="Idioma">
-          <option value="pt-BR">PT-BR</option>
+      <div class="spacer"></div>
+
+      <div class="pill" title="Idioma">
+        <span aria-hidden="true">🌐</span>
+        <select id="langSel" aria-label="Idioma">
+          <option value="pt">PT-BR</option>
           <option value="en">EN</option>
           <option value="es">ES</option>
         </select>
-
-        <a id="discordBtn" class="btn" href="https://discord.gg/fWAWquBu" target="_blank" rel="noopener">Discord</a>
-        <button id="installBtn" class="btn ghost" type="button" style="display:none">Instalar</button>
       </div>
+
+      <button class="btn btnGhost" id="btnDiscord" type="button" title="Abrir Discord" aria-label="Abrir Discord">
+        <span aria-hidden="true">💬</span>
+        <span>Discord</span>
+      </button>
+
+      <button class="btn btnPrimary" id="btnInstall" type="button" title="Instalar app" aria-label="Instalar PWA">
+        <span aria-hidden="true">⬇️</span>
+        <span>Instalar</span>
+      </button>
     </div>
-  </div>
+  </header>
 
-  <main class="wrap">
-    <section class="card hero">
-      <div class="pill"><span class="dot" aria-hidden="true"></span><span id="heroPill">Checkout PIX • Verificação de pedido • Anti-golpe</span></div>
-      <h1 id="heroTitle">Turbine seus itens do Roblox.</h1>
-      <p class="sub" id="heroSub">Compra rápida, entrega organizada e suporte no Discord. Gere seu pedido, pague via PIX e acompanhe tudo pelo Order ID.</p>
+  <main class="wrap" id="home">
+    <section class="hero">
+      <div class="heroGrid">
+        <div class="card">
+          <div class="cardInner">
+            <div class="kicker"><span class="dot" aria-hidden="true"></span><span id="kickerText">Checkout PIX • Verificação por Order ID • Anti-golpe</span></div>
+            <h1 id="heroTitle">Turbine seus itens do Roblox.</h1>
+            <p class="sub" id="heroSub">Escolha no catálogo, finalize o checkout em etapas e acompanhe o pedido no app. Suporte exclusivo via Discord.</p>
 
-      <div class="cta">
-        <button class="btn primary" id="goCatalog" type="button">Ver catálogo</button>
-        <button class="btn" id="goCheckout" type="button">Ir pro checkout</button>
-        <button class="btn" id="goOrder" type="button">Ver pedido</button>
+            <div class="heroActions">
+              <button class="btn btnPrimary" type="button" data-scroll="#catalog">
+                <span aria-hidden="true">🛍️</span><span id="ctaCatalog">Ver catálogo</span>
+              </button>
+              <button class="btn" type="button" data-scroll="#checkout">
+                <span aria-hidden="true">🧾</span><span id="ctaCheckout">Ir pro checkout</span>
+              </button>
+              <button class="btn" type="button" data-scroll="#order">
+                <span aria-hidden="true">🔎</span><span id="ctaOrder">Ver pedido</span>
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <div class="mini">
+          <div class="stat">
+            <div class="statTop">
+              <b id="s1">Status</b>
+              <span class="badge" id="badgeOnline">OK</span>
+            </div>
+            <div class="statVal" id="s1v">Conectando ao sistema…</div>
+          </div>
+          <div class="stat">
+            <div class="statTop">
+              <b id="s2">Carrinho</b>
+              <span class="badge" id="badgeCart">0 itens</span>
+            </div>
+            <div class="statVal" id="s2v">Seu carrinho está vazio.</div>
+          </div>
+          <div class="stat">
+            <div class="statTop">
+              <b id="s3">Suporte</b>
+              <span class="badge">Discord</span>
+            </div>
+            <div class="statVal" id="s3v">Abra um ticket/DM no servidor.</div>
+          </div>
+        </div>
       </div>
     </section>
 
-    <div class="grid">
-      <section class="card">
-        <div class="tabs" role="tablist" aria-label="Navegação">
-          <button class="tab" role="tab" aria-selected="true" aria-controls="paneCatalog" id="tabCatalog" type="button">Catálogo</button>
-          <button class="tab" role="tab" aria-selected="false" aria-controls="paneCheckout" id="tabCheckout" type="button">Checkout</button>
-          <button class="tab" role="tab" aria-selected="false" aria-controls="paneOrder" id="tabOrder" type="button">Pedido</button>
-          <button class="tab" role="tab" aria-selected="false" aria-controls="paneFaq" id="tabFaq" type="button">FAQ</button>
+    <!-- Catalog -->
+    <section class="section" id="catalog">
+      <div class="sectionHead">
+        <div>
+          <h2 id="catTitle">Catálogo</h2>
+          <p id="catSub">Toque em + para adicionar ao carrinho.</p>
         </div>
-
-        <div class="section pane active" id="paneCatalog" role="tabpanel" aria-labelledby="tabCatalog">
-          <h3 id="catTitle">Catálogo</h3>
-          <p class="small" id="catSub">Toque em um produto para adicionar ao carrinho.</p>
-
-          <div class="row">
-            <label for="search" id="searchLbl">Buscar</label>
-            <input id="search" placeholder="Ex: brainrot, pack, entrega..." autocomplete="off"/>
-          </div>
-
-          <div class="list" id="productList" aria-live="polite"></div>
-
-          <div class="line"></div>
-
-          <div class="small" id="cartLine">Carrinho: <b id="cartCount">0</b> item(s) • Total: <b id="cartTotal">R$ 0,00</b></div>
-          <div style="display:flex; gap:10px; flex-wrap:wrap; margin-top:10px">
-            <button class="btn" id="clearCart" type="button">Limpar</button>
-            <button class="btn primary" id="startCheckout" type="button">Finalizar</button>
-          </div>
+        <div class="row">
+          <button class="btn" id="btnReloadCatalog" type="button"><span aria-hidden="true">⟳</span><span id="reloadTxt">Recarregar</span></button>
+          <button class="btn" id="btnViewCart" type="button"><span aria-hidden="true">🧺</span><span id="viewCartTxt">Ver carrinho</span></button>
         </div>
+      </div>
 
-        <div class="section pane" id="paneCheckout" role="tabpanel" aria-labelledby="tabCheckout">
-          <h3 id="coTitle">Checkout</h3>
-          <p class="small" id="coSub">Passo a passo. Sem confusão.</p>
+      <div class="panel">
+        <div class="inner">
+          <div id="catalogState" class="help">Carregando catálogo…</div>
+          <div class="catGrid" id="catalogList"></div>
+        </div>
+      </div>
+    </section>
 
-          <div class="row">
-            <label for="robloxUser" id="userLbl">Seu user do Roblox (obrigatório)</label>
-            <input id="robloxUser" placeholder="Ex: MeuUser_123" autocomplete="username"/>
-            <div class="small" id="userHint">Dica: só letras, números e _ (3–20 caracteres).</div>
-          </div>
+    <!-- Checkout -->
+    <section class="section" id="checkout">
+      <div class="sectionHead">
+        <div>
+          <h2 id="coTitle">Checkout</h2>
+          <p id="coSub">Finalize em etapas — simples e sem confusão.</p>
+        </div>
+        <div class="row">
+          <span class="badge" id="stepBadge">1/3</span>
+        </div>
+      </div>
 
-          <div class="row">
-            <label id="reviewLbl">Revisão</label>
-            <div class="item">
-              <div class="meta">
-                <b id="reviewItems">0 item(s)</b>
-                <span id="reviewTotal">Total: R$ 0,00</span>
+      <div class="grid">
+        <div class="panel">
+          <div class="inner">
+            <div class="row" style="gap:10px; margin-bottom:10px;">
+              <button class="btn" type="button" id="step1Btn"><b>1</b> <span id="st1">Dados</span></button>
+              <button class="btn" type="button" id="step2Btn"><b>2</b> <span id="st2">Revisão</span></button>
+              <button class="btn" type="button" id="step3Btn"><b>3</b> <span id="st3">PIX</span></button>
+            </div>
+
+            <div id="step1">
+              <label id="lbUser">Seu user do Roblox (obrigatório)</label>
+              <input id="rbxUser" autocomplete="username" inputmode="text" placeholder="Ex: SeuUser_123"/>
+              <div class="help" id="userHelp">Dica: só letras, números e _ (3–20 caracteres).</div>
+              <div class="divider"></div>
+              <button class="btn btnPrimary" id="btnNext" type="button"><span id="nextTxt">Próximo</span> <span aria-hidden="true">→</span></button>
+            </div>
+
+            <div id="step2" class="hidden">
+              <div class="help" id="reviewHelp">Revise seu carrinho e confirme.</div>
+              <div id="reviewBox"></div>
+              <div class="divider"></div>
+              <div class="row">
+                <button class="btn" id="btnBack" type="button">← <span id="backTxt">Voltar</span></button>
+                <button class="btn btnPrimary" id="btnCreateOrder" type="button"><span aria-hidden="true">🧾</span><span id="createTxt">Gerar pedido</span></button>
               </div>
-              <button class="btn" id="openCart" type="button">Ver carrinho</button>
+            </div>
+
+            <div id="step3" class="hidden">
+              <div class="help" id="pixHelp">Copie o PIX e conclua o pagamento. Depois, acompanhe pelo Order ID.</div>
+              <div class="divider"></div>
+              <div class="row">
+                <button class="btn" id="btnCopyPix" type="button"><span aria-hidden="true">📋</span><span id="copyPixTxt">Copiar PIX</span></button>
+                <button class="btn" id="btnGoOrder" type="button"><span aria-hidden="true">🔎</span><span id="goOrderTxt">Ir pra pedido</span></button>
+              </div>
+              <div class="divider"></div>
+              <div class="help"><b id="orderIdLabel">Order ID:</b> <span class="mono" id="createdOrderId">—</span></div>
+              <div class="help" id="pixBoxWrap"></div>
             </div>
           </div>
+        </div>
 
-          <div class="row" style="margin-top:14px">
-            <button class="btn primary" id="createOrder" type="button">Gerar Order ID + PIX</button>
-            <div class="small" id="coNote">O Order ID é sua prova e também serve para consultar o status.</div>
+        <div class="panel">
+          <div class="inner">
+            <h3 style="margin:0 0 6px; letter-spacing:-.3px;">Resumo</h3>
+            <p style="margin:0; color:var(--muted2); font-size:13px;">Total, itens e lembretes de segurança.</p>
+            <div class="divider"></div>
+            <div class="help" id="sumCart">Carrinho vazio.</div>
+            <div class="divider"></div>
+            <div class="help" id="securityNote">Use apenas o app oficial ViralVault e confirme o Order ID antes de pagar.</div>
           </div>
+        </div>
+      </div>
+    </section>
 
-          <div class="line"></div>
+    <!-- Order -->
+    <section class="section" id="order">
+      <div class="sectionHead">
+        <div>
+          <h2 id="ordTitle">Pedido</h2>
+          <p id="ordSub">Verifique se é oficial e veja o andamento.</p>
+        </div>
+        <div class="row">
+          <button class="btn" id="btnMyBuys" type="button"><span aria-hidden="true">🧾</span><span id="myBuysTxt">Minhas compras</span></button>
+        </div>
+      </div>
 
-          <div class="row">
-            <label id="pixLbl">PIX (copia e cola)</label>
-            <textarea id="pixBox" readonly class="mono" placeholder="Quando você gerar o pedido, o PIX aparece aqui."></textarea>
-            <div style="display:flex; gap:10px; flex-wrap:wrap">
-              <button class="btn" id="copyPix" type="button">Copiar PIX</button>
-              <button class="btn" id="copyOrder" type="button">Copiar Order ID</button>
+      <div class="panel">
+        <div class="inner">
+          <label id="lbOrderId">Cole o Order ID</label>
+          <div class="row" style="gap:10px; align-items:stretch;">
+            <input id="orderId" placeholder="Ex: VV-2026-..."/>
+            <button class="btn btnPrimary" id="btnCheck" type="button"><span aria-hidden="true">🔎</span><span id="checkTxt">Verificar</span></button>
+          </div>
+          <div class="help" id="orderResult">Cole um Order ID e toque em Verificar.</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- FAQ / Support -->
+    <section class="section" id="faq">
+      <div class="sectionHead">
+        <div>
+          <h2>FAQ</h2>
+          <p>Rápido e direto.</p>
+        </div>
+      </div>
+
+      <div class="grid">
+        <div class="panel">
+          <div class="inner">
+            <details>
+              <summary style="cursor:pointer; font-weight:800;">Como sei que é oficial?</summary>
+              <p class="help">Use “Pedido” e verifique o status do seu Order ID. Se não aparecer, não pague.</p>
+            </details>
+            <div class="divider"></div>
+            <details>
+              <summary style="cursor:pointer; font-weight:800;">Quanto tempo para entrega?</summary>
+              <p class="help">Depende do produto. “Prioridade (24h)” entrega primeiro.</p>
+            </details>
+          </div>
+        </div>
+        <div class="panel">
+          <div class="inner">
+            <h3 style="margin:0 0 6px; letter-spacing:-.3px;">Suporte</h3>
+            <p class="help" style="margin:0 0 10px;">Entre no Discord e abra um ticket/DM.</p>
+            <div class="row">
+              <button class="btn btnPrimary" id="btnDiscord2" type="button"><span aria-hidden="true">💬</span><span>Abrir Discord</span></button>
             </div>
-            <div class="small" id="pixHint">Após pagar, use “Pedido” para acompanhar (created → paid → delivered).</div>
+            <div class="divider"></div>
+            <div class="help" style="margin:0;">Rede oficial: <span class="mono">discord.gg/fWAWquBu</span></div>
           </div>
         </div>
-
-        <div class="section pane" id="paneOrder" role="tabpanel" aria-labelledby="tabOrder">
-          <h3 id="ordTitle">Status do pedido</h3>
-          <p class="small" id="ordSub">Verifique se é oficial e veja o andamento.</p>
-
-          <div class="row">
-            <label for="orderId" id="orderLbl">Cole o Order ID</label>
-            <input id="orderId" placeholder="Ex: vv_..." autocomplete="off" class="mono"/>
-          </div>
-
-          <div style="display:flex; gap:10px; flex-wrap:wrap; margin-top:10px">
-            <button class="btn primary" id="checkOrder" type="button">Verificar</button>
-            <button class="btn" id="loadMyOrders" type="button">Minhas compras</button>
-          </div>
-
-          <div class="line"></div>
-
-          <pre id="orderOut" class="mono" style="margin:0; white-space:pre-wrap; color:rgba(255,255,255,.86)"></pre>
-        </div>
-
-        <div class="section pane" id="paneFaq" role="tabpanel" aria-labelledby="tabFaq">
-          <h3>FAQ</h3>
-          <div class="list">
-            <div class="item"><div class="meta"><b>Como sei que é oficial?</b><span>Use “Pedido” e verifique o status no sistema oficial.</span></div></div>
-            <div class="item"><div class="meta"><b>Quanto tempo para entrega?</b><span>Depende do produto. Prioridade (24h) entrega primeiro.</span></div></div>
-            <div class="item">
-              <div class="meta"><b>Suporte</b><span>Entre no Discord e abra um ticket/DM.</span></div>
-              <a class="btn" href="https://discord.gg/fWAWquBu" target="_blank" rel="noopener">Abrir Discord</a>
-            </div>
-          </div>
-
-          <div class="line"></div>
-        </div>
-      </section>
-
-      <aside class="card">
-        <div class="section">
-          <h3>Painel</h3>
-          <div class="small">Status + ações rápidas</div>
-
-          <div class="line"></div>
-          <div class="small">Suporte: Discord</div>
-
-          <div style="margin-top:12px; display:flex; gap:10px; flex-wrap:wrap">
-            <button class="btn" id="refreshCatalog" type="button">Recarregar catálogo</button>
-            <button class="btn" id="resetLocal" type="button">Reset local</button>
-          </div>
-        </div>
-      </aside>
-    </div>
+      </div>
+    </section>
   </main>
 
-  <div class="footerbar" role="navigation" aria-label="Atalhos">
-    <div class="nav">
-      <button class="navbtn active" id="navCatalog" type="button">Catálogo</button>
-      <button class="navbtn" id="navCheckout" type="button">Checkout</button>
-      <button class="navbtn" id="navOrder" type="button">Pedido</button>
-      <button class="navbtn" id="navFaq" type="button">FAQ</button>
+  <div class="tabs" role="navigation" aria-label="Navegação">
+    <div class="tabsInner">
+      <div class="tab active" data-scroll="#catalog"><span aria-hidden="true">🛍️</span><span id="tabCat">Catálogo</span></div>
+      <div class="tab" data-scroll="#checkout"><span aria-hidden="true">🧾</span><span id="tabCo">Checkout</span></div>
+      <div class="tab" data-scroll="#order"><span aria-hidden="true">📦</span><span id="tabOrd">Pedido</span></div>
+      <div class="tab" data-scroll="#faq"><span aria-hidden="true">❓</span><span id="tabFaq">FAQ</span></div>
     </div>
   </div>
 
+  <div class="toast" id="toast" role="status" aria-live="polite"></div>
+
   <script>
-  const CONFIG = {
-    API_BASE: "",
-    DISCORD_INVITE: "https://discord.gg/fWAWquBu",
-    STORAGE_KEY: "viralvault:v10",
-    CURRENCY: "BRL"
-  };
+    // =========================
+    // CONFIG
+    // =========================
+    const DISCORD_INVITE = "https://discord.gg/fWAWquBu";
 
-  const ADMIN_MODE = new URLSearchParams(location.search).has('admin') || localStorage.getItem('vv_admin') === '1';
-  if (ADMIN_MODE) document.body.classList.add('admin');
+    // IMPORTANT: esconder o Worker (não mostrar na UI)
+    // Ainda precisa da API para funcionar.
+    // Se você trocar de Worker, altere SOMENTE aqui.
+    const API_BASE = "https://viralvault-sign.darlanana06.workers.dev";
 
-  const I18N = {
-    "pt-BR": {},
-    "en": {
-      heroPill: "PIX checkout • Order verification • Anti-scam",
-      heroTitle: "Boost your Roblox items.",
-      heroSub: "Fast purchase, organized delivery, support on Discord. Create your order, pay via PIX and track everything by Order ID.",
-      catTitle:"Catalog", catSub:"Tap a product to add to cart.", searchLbl:"Search",
-      coTitle:"Checkout", coSub:"Step by step. No confusion.", userLbl:"Roblox username (required)",
-      userHint:"Tip: letters, numbers and _ (3–20 chars).",
-      ordTitle:"Order status", ordSub:"Verify it’s official and track progress.", orderLbl:"Paste the Order ID",
-    },
-    "es": {
-      heroPill: "Checkout PIX • Verificación • Anti-estafa",
-      heroTitle: "Mejora tus ítems de Roblox.",
-      heroSub: "Compra rápida, entrega organizada y soporte en Discord. Crea tu pedido, paga con PIX y sigue todo por Order ID.",
-      catTitle:"Catálogo", catSub:"Toca un producto para añadir al carrito.", searchLbl:"Buscar",
-      coTitle:"Checkout", coSub:"Paso a paso. Sin confusión.", userLbl:"Usuario de Roblox (obligatorio)",
-      userHint:"Tip: letras, números y _ (3–20 caracteres).",
-      ordTitle:"Estado del pedido", ordSub:"Verifica que sea oficial y sigue el progreso.", orderLbl:"Pega el Order ID",
+    // =========================
+    // STATE
+    // =========================
+    const LS = {
+      cart: "vv_cart_v3",
+      profile: "vv_profile_v3",
+      buysIndex: "vv_buys_v3" // fallback local
+    };
+
+    let deferredPrompt = null;
+    let catalog = [];
+
+    const $ = (s) => document.querySelector(s);
+    const $$ = (s) => Array.from(document.querySelectorAll(s));
+
+    function toast(msg, sub){
+      const t = $("#toast");
+      t.innerHTML = `${escapeHtml(msg)}${sub?`<small>${escapeHtml(sub)}</small>`:""}`;
+      t.classList.add("show");
+      clearTimeout(toast._tm);
+      toast._tm = setTimeout(()=>t.classList.remove("show"), 2800);
     }
-  };
 
-  const $ = (id)=>document.getElementById(id);
-  const fmt = (n)=> new Intl.NumberFormat("pt-BR",{style:"currency",currency:CONFIG.CURRENCY}).format(Number(n||0));
-
-  function getStore(){ try { return JSON.parse(localStorage.getItem(CONFIG.STORAGE_KEY) || "{}"); } catch { return {}; } }
-  function setStore(v){ localStorage.setItem(CONFIG.STORAGE_KEY, JSON.stringify(v)); }
-  function getCart(){ const s=getStore(); return Array.isArray(s.cart)?s.cart:[]; }
-  function setCart(cart){ const s=getStore(); s.cart=cart; setStore(s); renderCartLine(); }
-
-  function validateUser(u){ return /^[A-Za-z0-9_]{3,20}$/.test(String(u||"").trim()); }
-
-  async function api(path, opts={}){
-    const url = CONFIG.API_BASE.replace(/\/+$/,"") + path;
-    const headers = Object.assign({"content-type":"application/json"}, opts.headers||{});
-    const res = await fetch(url, Object.assign({}, opts, {headers}));
-    const txt = await res.text();
-    let data = {};
-    try { data = JSON.parse(txt||"{}"); } catch { data = { ok:false, error:"Resposta inválida", raw: txt }; }
-    if(!res.ok || data.ok === false) throw new Error(data.error || ("HTTP " + res.status));
-    return data;
-  }
-
-  const tabs = [
-    {tab:"tabCatalog", pane:"paneCatalog", nav:"navCatalog"},
-    {tab:"tabCheckout", pane:"paneCheckout", nav:"navCheckout"},
-    {tab:"tabOrder", pane:"paneOrder", nav:"navOrder"},
-    {tab:"tabFaq", pane:"paneFaq", nav:"navFaq"},
-  ];
-  function openPane(paneId){
-    for(const t of tabs){
-      const is = t.pane === paneId;
-      $(t.pane).classList.toggle("active", is);
-      $(t.tab).setAttribute("aria-selected", is ? "true":"false");
-      $(t.nav).classList.toggle("active", is);
+    function escapeHtml(str){
+      return String(str)
+        .replaceAll("&","&amp;")
+        .replaceAll("<","&lt;")
+        .replaceAll(">","&gt;")
+        .replaceAll('"',"&quot;")
+        .replaceAll("'","&#039;");
     }
-    window.scrollTo({top:0, behavior:"smooth"});
-  }
-  tabs.forEach(t=>{
-    $(t.tab).addEventListener("click", ()=> openPane(t.pane));
-    $(t.nav).addEventListener("click", ()=> openPane(t.pane));
-  });
-  $("goCatalog").addEventListener("click", ()=> openPane("paneCatalog"));
-  $("goCheckout").addEventListener("click", ()=> openPane("paneCheckout"));
-  $("goOrder").addEventListener("click", ()=> openPane("paneOrder"));
-  $("startCheckout").addEventListener("click", ()=> openPane("paneCheckout"));
 
-  function renderCartLine(){
-    const cart = getCart();
-    $("cartCount").textContent = String(cart.length);
-    const total = cart.reduce((a,i)=>a+(Number(i.price)||0),0);
-    $("cartTotal").textContent = fmt(total);
-    $("reviewItems").textContent = cart.length + " item(s)";
-    $("reviewTotal").textContent = "Total: " + fmt(total);
-  }
-
-  let PRODUCTS = [];
-  function escapeHtml(s){ return String(s||"").replace(/[&<>"']/g, m=>({ "&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#039;" }[m])); }
-
-  function renderProducts(){
-    const q = $("search").value.trim().toLowerCase();
-    const list = $("productList");
-    list.innerHTML = "";
-    const items = PRODUCTS.filter(p=>{
-      if(!q) return true;
-      return (p.name||"").toLowerCase().includes(q) || (p.id||"").toLowerCase().includes(q) || (p.description||"").toLowerCase().includes(q);
-    });
-    if(items.length === 0){
-      list.innerHTML = '<div class="item"><div class="meta"><b>Nenhum produto</b><span>Tente outro termo de busca.</span></div></div>';
-      return;
+    function moneyBRL(v){
+      const n = Number(v||0);
+      return n.toLocaleString("pt-BR", { style: "currency", currency: "BRL" });
     }
-    for(const p of items){
-      const el = document.createElement("button");
-      el.type = "button";
-      el.className = "item itemBtn";
-      el.innerHTML = '<div class="meta"><b>'+escapeHtml(p.name)+'</b><span>'+escapeHtml(p.description||"Toque para adicionar ao carrinho.")+'</span></div><div class="price">'+fmt(p.price)+'</div>';
-      el.addEventListener("click", ()=>{
-        const cart = getCart();
-        cart.push({ id:p.id, name:p.name, price:p.price, ts: Date.now() });
-        setCart(cart);
+
+    function loadJSON(key, fallback){
+      try{ const v = localStorage.getItem(key); return v ? JSON.parse(v) : fallback; }catch{ return fallback; }
+    }
+    function saveJSON(key, val){
+      try{ localStorage.setItem(key, JSON.stringify(val)); }catch{}
+    }
+
+    function getCart(){ return loadJSON(LS.cart, { items: {} }); }
+    function setCart(c){ saveJSON(LS.cart, c); syncCartBadges(); }
+
+    function cartCount(){
+      const c = getCart();
+      return Object.values(c.items||{}).reduce((a,b)=>a+Number(b||0),0);
+    }
+
+    function cartTotal(){
+      const c = getCart();
+      let total = 0;
+      for(const [id,qty] of Object.entries(c.items||{})){
+        const p = catalog.find(x=>x.id===id);
+        if(p) total += (Number(p.price)||0) * Number(qty||0);
+      }
+      return total;
+    }
+
+    function syncCartBadges(){
+      const n = cartCount();
+      $("#badgeCart").textContent = `${n} itens`;
+      $("#s2v").textContent = n ? `Total: ${moneyBRL(cartTotal())}` : "Seu carrinho está vazio.";
+      $("#sumCart").textContent = n ? `Itens: ${n} • Total: ${moneyBRL(cartTotal())}` : "Carrinho vazio.";
+    }
+
+    // =========================
+    // NAV / SCROLL
+    // =========================
+    function smoothScrollTo(sel){
+      const el = document.querySelector(sel);
+      if(!el) return;
+      el.scrollIntoView({ behavior: "smooth", block: "start" });
+    }
+
+    function setActiveTab(targetId){
+      $$(".tab").forEach(t=>t.classList.toggle("active", t.getAttribute("data-scroll")===`#${targetId}`));
+    }
+
+    function wireScrollButtons(){
+      document.addEventListener("click", (e)=>{
+        const btn = e.target.closest("[data-scroll]");
+        if(!btn) return;
+        const sel = btn.getAttribute("data-scroll");
+        if(!sel) return;
+        e.preventDefault();
+        smoothScrollTo(sel);
+        const id = sel.replace("#","");
+        setActiveTab(id);
       });
-      list.appendChild(el);
     }
-  }
 
-  async function loadCatalog(){
-    $("productList").innerHTML = '<div class="item"><div class="meta"><b>Carregando…</b><span>Buscando catálogo no sistema.</span></div></div>';
-    try{
-      const data = await api("/catalog", { method:"GET" });
-      PRODUCTS = Array.isArray(data.products) ? data.products : [];
-      renderProducts();
-    }catch(e){
-      $("productList").innerHTML = '<div class="item"><div class="meta"><b>Falha ao carregar</b><span>'+escapeHtml(e.message)+'</span></div></div>';
+    // =========================
+    // NETWORK / HEALTH
+    // =========================
+    async function api(path, opt={}){
+      const url = API_BASE.replace(/\/+$/,'') + path;
+      const headers = { "content-type": "application/json", ...(opt.headers||{}) };
+      const res = await fetch(url, { ...opt, headers });
+      const txt = await res.text();
+      let data = null;
+      try{ data = txt ? JSON.parse(txt) : null; }catch{ data = { ok:false, error:"Resposta inválida" }; }
+      if(!res.ok) throw new Error(data?.error || `HTTP ${res.status}`);
+      return data;
     }
-  }
 
-  $("search").addEventListener("input", renderProducts);
-  $("refreshCatalog").addEventListener("click", loadCatalog);
-
-  $("clearCart").addEventListener("click", ()=> setCart([]));
-
-  $("openCart").addEventListener("click", ()=>{
-    const cart = getCart();
-    if(cart.length === 0) return alert("Carrinho vazio.");
-    const total = cart.reduce((a,i)=>a+(Number(i.price)||0),0);
-    alert(cart.map((i,idx)=> (idx+1)+". "+i.name+" — "+fmt(i.price)).join("\n") + "\n\nTotal: "+fmt(total));
-  });
-
-  $("createOrder").addEventListener("click", async ()=>{
-    const user = $("robloxUser").value.trim();
-    if(!validateUser(user)) return alert("User obrigatório (3–20, letras/números/_).");
-    const cart = getCart();
-    if(cart.length === 0) return alert("Carrinho vazio.");
-    const first = cart[0];
-    $("createOrder").disabled = true;
-    try{
-      const data = await api("/create-order", { method:"POST", body: JSON.stringify({ productId: first.id, user }) });
-      const orderId = data.orderId || (data.order && data.order.orderId) || "";
-      const pix = data.pixCopiaECola || "";
-      const s = getStore();
-      s.lastOrderId = orderId;
-      s.lastUser = user;
-      s.myOrders = Array.isArray(s.myOrders) ? s.myOrders : [];
-      if(orderId) s.myOrders.unshift({ orderId, user, productId:first.id, productName:first.name, price:first.price, createdAt: Date.now(), status:"created" });
-      setStore(s);
-      if(orderId) $("orderId").value = orderId;
-      $("pixBox").value = pix || "PIX não configurado no sistema.";
-      openPane("paneCheckout");
-    }catch(e){
-      alert("Erro: " + e.message);
-    }finally{
-      $("createOrder").disabled = false;
+    async function health(){
+      try{
+        const h = await api("/health", { method:"GET" });
+        $("#badgeOnline").textContent = "OK";
+        $("#s1v").textContent = "Sistema operacional.";
+        $("#netStatus").textContent = "Worker OK";
+        return h;
+      }catch(err){
+        $("#badgeOnline").textContent = "OFF";
+        $("#badgeOnline").style.borderColor = "rgba(255,77,109,.45)";
+        $("#s1v").textContent = "Sistema offline (tentando…)";
+        $("#netStatus").textContent = "Sistema offline";
+        return null;
+      }
     }
-  });
 
-  $("copyPix").addEventListener("click", async ()=>{
-    const v = $("pixBox").value.trim();
-    if(!v) return;
-    try{ await navigator.clipboard.writeText(v); }catch{ $("pixBox").select(); document.execCommand("copy"); }
-  });
-  $("copyOrder").addEventListener("click", async ()=>{
-    const v = ($("orderId").value||"").trim();
-    if(!v) return;
-    try{ await navigator.clipboard.writeText(v); }catch{ $("orderId").select(); document.execCommand("copy"); }
-  });
+    // =========================
+    // CATALOG
+    // =========================
+    function renderCatalog(){
+      const wrap = $("#catalogList");
+      wrap.innerHTML = "";
 
-  $("checkOrder").addEventListener("click", async ()=>{
-    const orderId = $("orderId").value.trim();
-    if(!orderId) return alert("Cole um Order ID.");
-    $("orderOut").textContent = "Consultando…";
-    try{
-      const data = await api("/order-status?orderId=" + encodeURIComponent(orderId), { method:"GET" });
-      $("orderOut").textContent = JSON.stringify(data.order, null, 2);
-    }catch(e){
-      $("orderOut").textContent = JSON.stringify({ ok:false, error:e.message }, null, 2);
+      if(!catalog.length){
+        $("#catalogState").textContent = "Nenhum produto disponível.";
+        return;
+      }
+
+      $("#catalogState").textContent = "";
+      const c = getCart();
+
+      for(const p of catalog){
+        const qty = Number(c.items?.[p.id]||0);
+        const el = document.createElement("div");
+        el.className = "item";
+        el.innerHTML = `
+          <div class="itemLeft">
+            <b>${escapeHtml(p.name || p.id)}</b>
+            <span>${escapeHtml(p.description || "")}</span>
+          </div>
+          <div style="display:flex; align-items:center; gap:10px;">
+            <div class="price">${moneyBRL(p.price || 0)}</div>
+            <div class="qty" aria-label="Quantidade">
+              <button type="button" data-act="dec" data-id="${escapeHtml(p.id)}" aria-label="Diminuir">−</button>
+              <i id="q_${escapeHtml(p.id)}">${qty}</i>
+              <button type="button" data-act="inc" data-id="${escapeHtml(p.id)}" aria-label="Aumentar">+</button>
+            </div>
+          </div>
+        `;
+        wrap.appendChild(el);
+      }
+
+      wrap.addEventListener("click", (e)=>{
+        const b = e.target.closest("button[data-act]");
+        if(!b) return;
+        const act = b.getAttribute("data-act");
+        const id = b.getAttribute("data-id");
+        const cart = getCart();
+        cart.items = cart.items || {};
+        const cur = Number(cart.items[id]||0);
+        const next = act === "inc" ? cur + 1 : Math.max(0, cur - 1);
+        if(next === 0) delete cart.items[id];
+        else cart.items[id] = next;
+        setCart(cart);
+        const qEl = document.getElementById(`q_${CSS.escape(id)}`);
+        if(qEl) qEl.textContent = String(next);
+      }, { once:true });
+
+      syncCartBadges();
     }
-  });
 
-  $("loadMyOrders").addEventListener("click", ()=>{
-    const s = getStore();
-    const arr = Array.isArray(s.myOrders) ? s.myOrders : [];
-    $("orderOut").textContent = JSON.stringify(arr.slice(0,20), null, 2);
-  });
-
-  $("resetLocal").addEventListener("click", ()=>{
-    localStorage.removeItem(CONFIG.STORAGE_KEY);
-    $("pixBox").value = "";
-    $("orderOut").textContent = "";
-    setCart([]);
-    loadCatalog();
-  });
-
-  function applyLang(lang){
-    const d = I18N[lang] || {};
-    if(d.heroPill) $("heroPill").textContent = d.heroPill;
-    if(d.heroTitle) $("heroTitle").textContent = d.heroTitle;
-    if(d.heroSub) $("heroSub").textContent = d.heroSub;
-    if(d.catTitle) $("catTitle").textContent = d.catTitle;
-    if(d.catSub) $("catSub").textContent = d.catSub;
-    if(d.searchLbl) $("searchLbl").textContent = d.searchLbl;
-    if(d.coTitle) $("coTitle").textContent = d.coTitle;
-    if(d.coSub) $("coSub").textContent = d.coSub;
-    if(d.userLbl) $("userLbl").textContent = d.userLbl;
-    if(d.userHint) $("userHint").textContent = d.userHint;
-    if(d.ordTitle) $("ordTitle").textContent = d.ordTitle;
-    if(d.ordSub) $("ordSub").textContent = d.ordSub;
-    if(d.orderLbl) $("orderLbl").textContent = d.orderLbl;
-    const s=getStore(); s.lang=lang; setStore(s);
-    document.documentElement.lang = lang;
-  }
-  $("lang").addEventListener("change", (e)=> applyLang(e.target.value));
-
-  (async function init(){
-    if (ADMIN_MODE) {
-    document.body.classList.add("admin");
-      $("apiUrl").textContent = CONFIG.API_BASE;
-} else {
-      $("apiUrl").textContent = "";
-}
-    const s = getStore();
-    if(s.lang) $("lang").value = s.lang;
-    applyLang($("lang").value);
-    if(s.lastOrderId) $("orderId").value = s.lastOrderId;
-    if(s.lastUser) $("robloxUser").value = s.lastUser;
-    renderCartLine();
-    try{
-      const home = await api("/", { method:"GET" });
-      $("envLine").textContent = "Sistema online";
-    }catch{
-      $("envLine").textContent = "Conexão instável • tente novamente";
+    async function loadCatalog(){
+      $("#catalogState").textContent = "Carregando catálogo…";
+      try{
+        const r = await api("/catalog", { method:"GET" });
+        catalog = Array.isArray(r.products) ? r.products : [];
+        renderCatalog();
+        toast("Catálogo carregado", `${catalog.length} produtos`);
+      }catch(err){
+        $("#catalogState").textContent = "Falha ao carregar catálogo. Tente novamente.";
+        toast("Erro no catálogo", err.message);
+      }
     }
-    await loadCatalog();
-  })();
 
-  // PWA: manifest + SW (blob)
-  const manifest = {
-    name: "ViralVault Store",
-    short_name: "ViralVault",
-    start_url: ".",
-    scope: ".",
-    display: "standalone",
-    background_color: "#070a12",
-    theme_color: "#0b0f1a",
-    icons: [
-      { src: "data:image/svg+xml," + encodeURIComponent(svgIcon("#7c6cff","#4dd3ff")), sizes:"192x192", type:"image/svg+xml" },
-      { src: "data:image/svg+xml," + encodeURIComponent(svgIcon("#7c6cff","#4dd3ff")), sizes:"512x512", type:"image/svg+xml" }
-    ]
-  };
-  function svgIcon(a,b){
-    return `<svg xmlns="http://www.w3.org/2000/svg" width="512" height="512" viewBox="0 0 512 512">
-      <defs><linearGradient id="g" x1="0" y1="0" x2="1" y2="1">
-        <stop offset="0" stop-color="${a}"/><stop offset="1" stop-color="${b}"/></linearGradient></defs>
-      <rect width="512" height="512" rx="140" fill="url(#g)"/>
-      <text x="50%" y="54%" text-anchor="middle" font-family="Arial, sans-serif" font-size="210" font-weight="900" fill="#0b0f1a">VV</text>
-    </svg>`;
-  }
-  const murl = URL.createObjectURL(new Blob([JSON.stringify(manifest)], {type:"application/manifest+json"}));
-  const ml = document.createElement("link"); ml.rel="manifest"; ml.href=murl; document.head.appendChild(ml);
+    // =========================
+    // CHECKOUT
+    // =========================
+    let step = 1;
+    let created = { orderId:null, pix:null };
 
-  if("serviceWorker" in navigator){
-    const swCode = `
-      const CACHE = "viralvault-v10";
-      self.addEventListener("install", (e)=> e.waitUntil(caches.open(CACHE).then(c=>c.addAll(["./"])).then(()=>self.skipWaiting())));
-      self.addEventListener("activate", (e)=> e.waitUntil(self.clients.claim()));
-      self.addEventListener("fetch", (e)=>{
-        const req=e.request;
-        if(req.method!=="GET") return;
-        const url=new URL(req.url);
-        if(url.origin===location.origin){
-          e.respondWith(caches.match(req).then(c=>c||fetch(req).then(r=>{const rc=r.clone();caches.open(CACHE).then(cache=>cache.put(req,rc));return r;})));
+    function setStep(n){
+      step = n;
+      $("#stepBadge").textContent = `${n}/3`;
+      $("#step1").classList.toggle("hidden", n!==1);
+      $("#step2").classList.toggle("hidden", n!==2);
+      $("#step3").classList.toggle("hidden", n!==3);
+    }
+
+    function validateUser(u){
+      const ok = /^[A-Za-z0-9_]{3,20}$/.test(u||"");
+      return ok;
+    }
+
+    function buildReview(){
+      const c = getCart();
+      const items = Object.entries(c.items||{});
+      if(!items.length){
+        $("#reviewBox").innerHTML = `<div class="help">Carrinho vazio.</div>`;
+        return;
+      }
+      const lines = items.map(([id,qty])=>{
+        const p = catalog.find(x=>x.id===id);
+        const name = p?.name || id;
+        const price = (Number(p?.price||0) * Number(qty||0));
+        return `<div class="help"><b>${escapeHtml(name)}</b> • x${qty} • ${moneyBRL(price)}</div>`;
+      }).join("");
+      $("#reviewBox").innerHTML = lines + `<div class="divider"></div><div class="help"><b>Total:</b> ${moneyBRL(cartTotal())}</div>`;
+    }
+
+    async function createOrder(){
+      const user = $("#rbxUser").value.trim();
+      if(!validateUser(user)){
+        toast("User inválido", "Use letras/números/_ (3–20)");
+        return;
+      }
+      const c = getCart();
+      const items = Object.entries(c.items||{}).map(([id,qty])=>({ id, qty:Number(qty||0) })).filter(x=>x.qty>0);
+      if(!items.length){
+        toast("Carrinho vazio", "Adicione produtos no catálogo");
+        return;
+      }
+
+      $("#btnCreateOrder").disabled = true;
+      $("#btnCreateOrder").style.filter = "saturate(.7)";
+      toast("Gerando pedido…");
+
+      try{
+        const r = await api("/create-order", {
+          method:"POST",
+          body: JSON.stringify({ user, items })
+        });
+        if(!r?.ok) throw new Error(r?.error || "Falha ao criar pedido");
+
+        created.orderId = r.orderId;
+        created.pix = r.pix || r.pixCopiaCola || r.pix_payload || null;
+
+        // Persist perfil local para "Minhas compras" (fallback)
+        saveJSON(LS.profile, { user, lastOrderId: created.orderId, t: Date.now() });
+
+        // Add to local buys index (fallback)
+        const idx = loadJSON(LS.buysIndex, { user: user, orders: [] });
+        if(idx.user !== user) idx.user = user;
+        idx.orders = Array.isArray(idx.orders) ? idx.orders : [];
+        if(!idx.orders.includes(created.orderId)) idx.orders.unshift(created.orderId);
+        saveJSON(LS.buysIndex, idx);
+
+        // UI
+        $("#createdOrderId").textContent = created.orderId || "—";
+        $("#pixBoxWrap").innerHTML = created.pix
+          ? `<div class="help"><b>PIX copia e cola:</b></div><textarea rows="4" readonly>${escapeHtml(created.pix)}</textarea>`
+          : `<div class="help">PIX não disponível no momento. Aguarde ou peça suporte no Discord.</div>`;
+
+        toast("Pedido gerado", `Order ID: ${created.orderId}`);
+        setStep(3);
+
+        // Optional: limpar carrinho após gerar pedido
+        setCart({ items: {} });
+        renderCatalog();
+
+      }catch(err){
+        toast("Erro ao gerar pedido", err.message);
+      }finally{
+        $("#btnCreateOrder").disabled = false;
+        $("#btnCreateOrder").style.filter = "";
+      }
+    }
+
+    async function checkOrder(orderId){
+      const id = (orderId||"").trim();
+      if(!id){ toast("Cole um Order ID"); return; }
+      $("#orderResult").textContent = "Consultando…";
+      try{
+        const r = await api(`/order-status?orderId=${encodeURIComponent(id)}`, { method:"GET" });
+        if(!r?.ok) throw new Error(r?.error || "Pedido não encontrado");
+        const s = r.status || "unknown";
+        const paid = !!r.paid;
+        const delivered = !!r.delivered;
+        const msg = `Status: ${s}${paid?" • Pago":""}${delivered?" • Entregue":""}`;
+        $("#orderResult").textContent = msg;
+        toast("Pedido encontrado", msg);
+      }catch(err){
+        $("#orderResult").textContent = `Não encontrado: ${err.message}`;
+        toast("Pedido não encontrado", err.message);
+      }
+    }
+
+    async function showMyBuys(){
+      // "real" depende do Worker ter endpoint de compras por user.
+      // Se não existir, usamos fallback local (o que foi criado neste dispositivo).
+      const prof = loadJSON(LS.profile, null);
+      const user = prof?.user;
+      if(!user){
+        toast("Sem histórico neste dispositivo", "Crie um pedido primeiro");
+        return;
+      }
+
+      // Tenta endpoint opcional: /user-orders?user=<name>
+      try{
+        const r = await api(`/user-orders?user=${encodeURIComponent(user)}`, { method:"GET" });
+        if(r?.ok && Array.isArray(r.orders) && r.orders.length){
+          const first = r.orders[0];
+          $("#orderId").value = first;
+          smoothScrollTo("#order");
+          toast("Histórico carregado", `${r.orders.length} pedidos`);
+          return;
+        }
+      }catch(_){ /* ignora */ }
+
+      // fallback
+      const idx = loadJSON(LS.buysIndex, { user, orders: [] });
+      const first = idx?.orders?.[0];
+      if(first){
+        $("#orderId").value = first;
+        smoothScrollTo("#order");
+        toast("Histórico local", `Último: ${first}`);
+      } else {
+        toast("Sem pedidos salvos", "Crie um pedido primeiro");
+      }
+    }
+
+    // =========================
+    // PWA: service worker (embedded)
+    // =========================
+    async function registerSW(){
+      if(!('serviceWorker' in navigator)) return;
+      const swCode = `
+        const CACHE = 'vv-cache-v13';
+        const CORE = [
+          '/',
+          self.location.href
+        ];
+
+        self.addEventListener('install', (e)=>{
+          e.waitUntil(
+            caches.open(CACHE).then(c=>c.addAll(CORE)).then(()=>self.skipWaiting())
+          );
+        });
+
+        self.addEventListener('activate', (e)=>{
+          e.waitUntil(
+            caches.keys().then(keys=>Promise.all(keys.map(k=>k!==CACHE?caches.delete(k):null))).then(()=>self.clients.claim())
+          );
+        });
+
+        self.addEventListener('fetch', (e)=>{
+          const req = e.request;
+          const url = new URL(req.url);
+
+          // Network-first for API
+          if(url.origin.includes('workers.dev') || url.pathname.startsWith('/create-order') || url.pathname.startsWith('/order-status')){
+            e.respondWith(
+              fetch(req).then(res=>{
+                const copy = res.clone();
+                caches.open(CACHE).then(c=>c.put(req, copy)).catch(()=>{});
+                return res;
+              }).catch(()=>caches.match(req))
+            );
+            return;
+          }
+
+          // Cache-first for everything else
+          e.respondWith(
+            caches.match(req).then(cached=> cached || fetch(req).then(res=>{
+              const copy = res.clone();
+              caches.open(CACHE).then(c=>c.put(req, copy)).catch(()=>{});
+              return res;
+            }))
+          );
+        });
+      `;
+      const blob = new Blob([swCode], { type: 'text/javascript' });
+      const swUrl = URL.createObjectURL(blob);
+      try{ await navigator.serviceWorker.register(swUrl); }catch{}
+    }
+
+    // =========================
+    // i18n (minimal)
+    // =========================
+    const I18N = {
+      pt: {
+        online:"Sistema online",
+        offline:"Sistema offline",
+        hTitle:"Turbine seus itens do Roblox.",
+        hSub:"Escolha no catálogo, finalize o checkout em etapas e acompanhe o pedido no app. Suporte exclusivo via Discord.",
+        ctaCat:"Ver catálogo",
+        ctaCo:"Ir pro checkout",
+        ctaOrd:"Ver pedido",
+        catTitle:"Catálogo",
+        catSub:"Toque em + para adicionar ao carrinho.",
+        coTitle:"Checkout",
+        coSub:"Finalize em etapas — simples e sem confusão.",
+        ordTitle:"Pedido",
+        ordSub:"Verifique se é oficial e veja o andamento."
+      },
+      en: {
+        online:"Online",
+        offline:"Offline",
+        hTitle:"Boost your Roblox items.",
+        hSub:"Pick from the catalog, checkout in steps and track your order. Support via Discord.",
+        ctaCat:"View catalog",
+        ctaCo:"Go to checkout",
+        ctaOrd:"Track order",
+        catTitle:"Catalog",
+        catSub:"Tap + to add to cart.",
+        coTitle:"Checkout",
+        coSub:"Step-by-step — simple and clear.",
+        ordTitle:"Order",
+        ordSub:"Verify it’s official and track progress."
+      },
+      es: {
+        online:"En línea",
+        offline:"Sin conexión",
+        hTitle:"Mejora tus ítems de Roblox.",
+        hSub:"Elige del catálogo, paga por pasos y sigue tu pedido. Soporte por Discord.",
+        ctaCat:"Ver catálogo",
+        ctaCo:"Ir a pago",
+        ctaOrd:"Ver pedido",
+        catTitle:"Catálogo",
+        catSub:"Toca + para agregar al carrito.",
+        coTitle:"Pago",
+        coSub:"Por pasos — simple y claro.",
+        ordTitle:"Pedido",
+        ordSub:"Verifica si es oficial y mira el progreso."
+      }
+    };
+
+    function applyLang(code){
+      const t = I18N[code] || I18N.pt;
+      $("#heroTitle").textContent = t.hTitle;
+      $("#heroSub").textContent = t.hSub;
+      $("#ctaCatalog").textContent = t.ctaCat;
+      $("#ctaCheckout").textContent = t.ctaCo;
+      $("#ctaOrder").textContent = t.ctaOrd;
+      $("#catTitle").textContent = t.catTitle;
+      $("#catSub").textContent = t.catSub;
+      $("#coTitle").textContent = t.coTitle;
+      $("#coSub").textContent = t.coSub;
+      $("#ordTitle").textContent = t.ordTitle;
+      $("#ordSub").textContent = t.ordSub;
+    }
+
+    // =========================
+    // INIT
+    // =========================
+    function wireButtons(){
+      const openDiscord = ()=>{
+        try{ window.open(DISCORD_INVITE, '_blank', 'noopener,noreferrer'); }catch{ location.href = DISCORD_INVITE; }
+      };
+      $("#btnDiscord").addEventListener("click", openDiscord);
+      $("#btnDiscord2").addEventListener("click", openDiscord);
+
+      $("#btnReloadCatalog").addEventListener("click", loadCatalog);
+      $("#btnViewCart").addEventListener("click", ()=>{
+        const n = cartCount();
+        toast("Carrinho", n? `Itens: ${n} • Total: ${moneyBRL(cartTotal())}` : "Vazio");
+        smoothScrollTo("#checkout");
+        setActiveTab("checkout");
+      });
+
+      $("#step1Btn").addEventListener("click", ()=>setStep(1));
+      $("#step2Btn").addEventListener("click", ()=>{ buildReview(); setStep(2); });
+      $("#step3Btn").addEventListener("click", ()=>setStep(3));
+
+      $("#btnNext").addEventListener("click", ()=>{
+        const u = $("#rbxUser").value.trim();
+        if(!validateUser(u)) return toast("User inválido", "Use letras/números/_ (3–20)");
+        buildReview();
+        setStep(2);
+      });
+
+      $("#btnBack").addEventListener("click", ()=>setStep(1));
+      $("#btnCreateOrder").addEventListener("click", createOrder);
+
+      $("#btnCopyPix").addEventListener("click", async ()=>{
+        if(!created.pix){ toast("PIX indisponível"); return; }
+        try{ await navigator.clipboard.writeText(created.pix); toast("PIX copiado"); }
+        catch{ toast("Não deu pra copiar", "Selecione e copie manualmente"); }
+      });
+
+      $("#btnGoOrder").addEventListener("click", ()=>{
+        if(created.orderId) $("#orderId").value = created.orderId;
+        smoothScrollTo("#order");
+        setActiveTab("order");
+      });
+
+      $("#btnCheck").addEventListener("click", ()=>checkOrder($("#orderId").value));
+      $("#btnMyBuys").addEventListener("click", showMyBuys);
+
+      // Brand clickable
+      $(".brand").addEventListener("click", ()=>smoothScrollTo("#home"));
+
+      // Tabs
+      $$(".tab").forEach(t=>{
+        t.addEventListener("click", ()=>{
+          const sel = t.getAttribute("data-scroll");
+          smoothScrollTo(sel);
+          setActiveTab(sel.replace("#",""));
+        });
+      });
+
+      // Language
+      $("#langSel").addEventListener("change", (e)=>{
+        const v = e.target.value;
+        saveJSON("vv_lang", v);
+        applyLang(v);
+        toast("Idioma", v.toUpperCase());
+      });
+
+      // Install
+      $("#btnInstall").addEventListener("click", async ()=>{
+        if(deferredPrompt){
+          deferredPrompt.prompt();
+          const r = await deferredPrompt.userChoice;
+          deferredPrompt = null;
+          toast("Instalação", r.outcome === 'accepted' ? "Aceita" : "Cancelada");
+        } else {
+          toast("Instalar", "Use: Menu do navegador → Adicionar à tela inicial");
         }
       });
-    `;
-    const swUrl = URL.createObjectURL(new Blob([swCode], {type:"text/javascript"}));
-    navigator.serviceWorker.register(swUrl).catch(()=>{});
-  }
+    }
 
-  let deferredPrompt=null;
-  window.addEventListener("beforeinstallprompt",(e)=>{
-    e.preventDefault();
-    deferredPrompt=e;
-    $("installBtn").style.display="";
-  });
-  $("installBtn").addEventListener("click", async ()=>{
-    if(!deferredPrompt) return;
-    deferredPrompt.prompt();
-    await deferredPrompt.userChoice;
-    deferredPrompt=null;
-    $("installBtn").style.display="none";
-  });
+    function wirePWA(){
+      window.addEventListener('beforeinstallprompt', (e)=>{
+        e.preventDefault();
+        deferredPrompt = e;
+        toast("Instalação disponível", "Toque em Instalar");
+      });
+    }
+
+    function wireOnlineOffline(){
+      const upd = ()=>{
+        const ok = navigator.onLine;
+        $("#netStatus").textContent = ok ? "Sistema online" : "Sistema offline";
+      };
+      window.addEventListener('online', ()=>{ upd(); toast("Online"); health(); loadCatalog(); });
+      window.addEventListener('offline', ()=>{ upd(); toast("Offline", "Modo limitado"); });
+      upd();
+    }
+
+    (async function init(){
+      document.documentElement.style.scrollBehavior = "smooth";
+      wireScrollButtons();
+      wireButtons();
+      wirePWA();
+      wireOnlineOffline();
+      await registerSW();
+
+      const lang = loadJSON("vv_lang", "pt");
+      $("#langSel").value = lang;
+      applyLang(lang);
+
+      syncCartBadges();
+      await health();
+      await loadCatalog();
+
+      // Prepare checkout state
+      setStep(1);
+      buildReview();
+    })();
   </script>
 </body>
 </html>
