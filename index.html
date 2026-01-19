@@ -958,6 +958,41 @@
     #vvBanner{top:0}
     #vvNotice{top:0}
 
+
+    /* ===== Fix: floating buttons overlap/click ===== */
+    #vvBottomNav{z-index:1800;}
+    /* Keep FAB above content but below modal/cart */
+    #vvFab{z-index:1850;}
+    #vvCart{z-index:2100;}
+    #vvPModal{z-index:2200;}
+    /* Ensure FAB buttons accept clicks */
+    #vvFab, #vvFab *{pointer-events:auto;}
+    /* Push FAB up when bottom nav is visible */
+    @media(max-width:860px){
+      #vvFab{bottom:150px !important;}
+      /* Extra breathing room for content at bottom */
+      body{padding-bottom:170px;}
+    }
+    @media(min-width:861px){
+      body{padding-bottom:40px;}
+    }
+    /* If there are multiple floating buttons inside vvFab, stack nicely */
+    #vvFab .fabWrap{display:flex; flex-direction:column; gap:10px; align-items:flex-end;}
+    #vvFab .totalBtn{min-width:160px;}
+
+
+    /* Bottom nav should not block clicks outside its bar */
+    #vvBottomNav{pointer-events:none;}
+    #vvBottomNav .bar{pointer-events:auto;}
+
+
+    /* ===== Fix2: WhatsApp + Suporte IA floating buttons ===== */
+    #btnZap, #fab{z-index:1875;}
+    @media(max-width:860px){
+      #btnZap{bottom:calc(150px + env(safe-area-inset-bottom, 0px)) !important;}
+      #fab{bottom:calc(96px + env(safe-area-inset-bottom, 0px)) !important;}
+    }
+
 </style>
 <script type="application/ld+json">{"@context": "https://schema.org", "@graph": [{"@type": "Organization", "@id": "https://viralvault-store.vercel.app/#org", "name": "ViralVault Store", "url": "https://viralvault-store.vercel.app/", "logo": "https://viralvault-store.vercel.app/og.png", "sameAs": []}, {"@type": "WebSite", "@id": "https://viralvault-store.vercel.app/#website", "url": "https://viralvault-store.vercel.app/", "name": "ViralVault Store", "publisher": {"@id": "https://viralvault-store.vercel.app/#org"}, "inLanguage": "pt-BR", "potentialAction": {"@type": "SearchAction", "target": "https://viralvault-store.vercel.app/?q={search_term_string}", "query-input": "required name=search_term_string"}}]}</script>
 
@@ -2511,7 +2546,8 @@ if(adminDelivered) adminDelivered.addEventListener('click', async ()=>{
        border-radius:22px; border:1px solid rgba(255,255,255,.12);
        background:rgba(10,10,14,.70); backdrop-filter: blur(14px); -webkit-backdrop-filter: blur(14px);
        box-shadow:0 18px 50px rgba(0,0,0,.55);">
-    <div style="display:flex; gap:10px; flex-wrap:wrap; align-items:center; justify-content:space-between;">
+  <div class="fabWrap">
+<div style="display:flex; gap:10px; flex-wrap:wrap; align-items:center; justify-content:space-between;">
       <div style="display:flex; gap:10px; flex-wrap:wrap;">
         <button id="vvGoCheckout" class="totalBtn" style="justify-content:center">🧾 Checkout</button>
         <button id="vvGoPedido" class="totalBtn" style="justify-content:center">🔎 Ver Pedido</button>
@@ -2528,7 +2564,9 @@ if(adminDelivered) adminDelivered.addEventListener('click', async ()=>{
 
   <div id="vvToast" style="position:fixed; left:50%; transform:translateX(-50%); bottom:80px; z-index:1600;
        background:rgba(18,18,26,.92); border:1px solid rgba(255,255,255,.12); padding:10px 12px; border-radius:16px;
-       box-shadow:0 18px 50px rgba(0,0,0,.55); display:none; max-width:min(720px, calc(100% - 24px));"></div>
+       box-shadow:0 18px 50px rgba(0,0,0,.55); display:none; max-width:min(720px, calc(100% - 24px));">
+  </div>
+</div>
 
   
   <!-- ===== Settings Modal ===== -->
@@ -3245,6 +3283,93 @@ if(adminDelivered) adminDelivered.addEventListener('click', async ()=>{
 
   // init count
   setCount(loadCart().length);
+})();
+</script>
+
+
+<script>
+/* ===== Fix: FAB / BottomNav overlap + safe area ===== */
+(function(){
+  const fab = document.getElementById("vvFab");
+  const nav = document.getElementById("vvBottomNav");
+  function px(n){ return `${Math.max(0, Math.round(n))}px`; }
+
+  function apply(){
+    if(!fab || !nav) return;
+    const navVisible = window.matchMedia("(max-width: 860px)").matches;
+    const navH = navVisible ? nav.getBoundingClientRect().height : 0;
+    const safe = parseFloat(getComputedStyle(document.documentElement).getPropertyValue("--vvSafeBottom")||"0") || 0;
+    // place FAB above bottom nav + margin
+    if(navVisible){
+      fab.style.bottom = px(navH + 26 + safe);
+    } else {
+      fab.style.bottom = px(18 + safe);
+    }
+  }
+
+  // Use env(safe-area-inset-bottom) when available
+  try{
+    const probe = document.createElement("div");
+    probe.style.cssText = "position:fixed; bottom:0; height:constant(safe-area-inset-bottom); height:env(safe-area-inset-bottom);";
+    document.body.appendChild(probe);
+    const h = probe.getBoundingClientRect().height || 0;
+    document.documentElement.style.setProperty("--vvSafeBottom", String(h));
+    probe.remove();
+  }catch(e){}
+
+  window.addEventListener("resize", apply);
+  window.addEventListener("orientationchange", apply);
+  setTimeout(apply, 50);
+  setTimeout(apply, 350);
+
+  // If any element accidentally covers the FAB, bring FAB to front on first tap
+  document.addEventListener("pointerdown", (e)=>{
+    if(!fab) return;
+    const r = fab.getBoundingClientRect();
+    const x = e.clientX, y = e.clientY;
+    if(x>=r.left && x<=r.right && y>=r.top && y<=r.bottom){
+      fab.style.zIndex = "1900";
+      nav && (nav.style.zIndex = "1800");
+    }
+  }, {passive:true});
+})();
+</script>
+
+
+<script>
+/* ===== Fix2 JS: position floating WhatsApp/Suporte above bottom nav ===== */
+(function(){
+  const nav = document.getElementById("vvBottomNav");
+  const zap = document.getElementById("btnZap");
+  const sup = document.getElementById("fab");
+  function px(n){ return `${Math.max(0, Math.round(n))}px`; }
+
+  function apply(){
+    if(!nav) return;
+    const navVisible = window.matchMedia("(max-width: 860px)").matches;
+    const navH = navVisible ? nav.getBoundingClientRect().height : 0;
+    const safe = parseFloat(getComputedStyle(document.documentElement).getPropertyValue("--vvSafeBottom")||"0") || 0;
+
+    // base above nav
+    const base = (navVisible ? (navH + 18) : 18) + safe;
+
+    // Stack: Support above nav, WhatsApp above support
+    if(sup){
+      sup.style.position = "fixed";
+      sup.style.right = "16px";
+      sup.style.bottom = px(base);
+    }
+    if(zap){
+      zap.style.position = "fixed";
+      zap.style.right = "16px";
+      zap.style.bottom = px(base + 64);
+    }
+  }
+
+  window.addEventListener("resize", apply);
+  window.addEventListener("orientationchange", apply);
+  setTimeout(apply, 80);
+  setTimeout(apply, 350);
 })();
 </script>
 
