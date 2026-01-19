@@ -879,8 +879,103 @@
       scroll-behavior: auto !important;
     }
 
+
+    /* ===== Global-grade UI Pack ===== */
+    .container{max-width:1060px; margin:0 auto; padding:0 12px}
+    .muted{color:var(--muted)}
+    .mono{font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;}
+    .btnPrimary{
+      border:1px solid rgba(255,255,255,.16);
+      background: linear-gradient(135deg, rgba(255,210,74,1), rgba(255,59,74,1));
+      color:#0b0b10;
+      font-weight:1000;
+      box-shadow: 0 18px 50px rgba(0,0,0,.40);
+    }
+    .btnPrimary:hover{filter: brightness(1.03)}
+    .btnGhost{
+      border:1px solid rgba(255,255,255,.14);
+      background: rgba(11,11,16,.18);
+    }
+    .pill{
+      display:inline-flex; align-items:center; gap:8px;
+      padding:10px 12px; border-radius:999px;
+      border:1px solid rgba(255,255,255,.12);
+      background: rgba(11,11,16,.18);
+      font-weight:900;
+    }
+    /* Product modal */
+    #vvPModal{display:none; position:fixed; inset:0; z-index:2000; align-items:center; justify-content:center; padding:14px;}
+    #vvPBackdrop{position:absolute; inset:0; background:rgba(0,0,0,.58);}
+    #vvPPanel{position:relative; width:100%; max-width:920px; max-height:84vh; overflow:auto;}
+    .pGrid{display:grid; grid-template-columns: 1.1fr .9fr; gap:12px}
+    @media(max-width:860px){ .pGrid{grid-template-columns:1fr} }
+    .pBigMedia{
+      height:260px; border-radius:22px; border:1px solid rgba(255,255,255,.10);
+      background:
+        radial-gradient(900px 320px at 20% 0%, rgba(255,210,74,.32), transparent 55%),
+        radial-gradient(900px 360px at 85% 10%, rgba(255,59,74,.18), transparent 55%),
+        rgba(11,11,16,.32);
+      position:relative; overflow:hidden;
+    }
+    .pBigMedia:before{
+      content:""; position:absolute; inset:-40% -60%;
+      background: linear-gradient(90deg, transparent, rgba(255,255,255,.09), transparent);
+      transform: translateX(-60%); animation: vvSk 1.2s infinite;
+    }
+
+    /* Mobile bottom nav (global app vibe) */
+    #vvBottomNav{
+      position:fixed; left:50%; transform:translateX(-50%);
+      bottom:10px; z-index:1800;
+      width:min(980px, calc(100% - 20px));
+      display:none;
+    }
+    #vvBottomNav .bar{
+      display:flex; gap:10px; justify-content:space-between; align-items:center;
+      padding:10px 12px;
+      border-radius:22px;
+      border:1px solid rgba(255,255,255,.12);
+      background:rgba(10,10,14,.72);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      box-shadow:0 18px 50px rgba(0,0,0,.50);
+    }
+    #vvBottomNav .tab{
+      flex:1; display:flex; flex-direction:column; align-items:center; justify-content:center;
+      gap:4px; padding:8px 6px; border-radius:18px;
+      border:1px solid rgba(255,255,255,.10);
+      background: rgba(11,11,16,.18);
+      color:#fff; text-decoration:none; font-weight:900; font-size:12px;
+    }
+    #vvBottomNav .tab small{opacity:.75; font-weight:900}
+    #vvBottomNav .tab:active{transform:scale(.99)}
+    @media(max-width:860px){
+      #vvBottomNav{display:block}
+      #vvFab{bottom:88px}
+    }
+
+    /* stack sticky banners nicely */
+    #vvBanner{top:0}
+    #vvNotice{top:0}
+
 </style>
 <script type="application/ld+json">{"@context": "https://schema.org", "@graph": [{"@type": "Organization", "@id": "https://viralvault-store.vercel.app/#org", "name": "ViralVault Store", "url": "https://viralvault-store.vercel.app/", "logo": "https://viralvault-store.vercel.app/og.png", "sameAs": []}, {"@type": "WebSite", "@id": "https://viralvault-store.vercel.app/#website", "url": "https://viralvault-store.vercel.app/", "name": "ViralVault Store", "publisher": {"@id": "https://viralvault-store.vercel.app/#org"}, "inLanguage": "pt-BR", "potentialAction": {"@type": "SearchAction", "target": "https://viralvault-store.vercel.app/?q={search_term_string}", "query-input": "required name=search_term_string"}}]}</script>
+
+  <!-- ===== Social / Share ===== -->
+  <meta property="og:type" content="website" />
+  <meta property="og:site_name" content="ViralVault Store" />
+  <meta property="og:title" content="ViralVault Store" />
+  <meta property="og:description" content="Loja digital com checkout PIX e verificação por Order ID." />
+  <meta property="og:image" content="https://viralvault-store.vercel.app/og.png" />
+  <meta property="og:url" content="https://viralvault-store.vercel.app/" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="ViralVault Store" />
+  <meta name="twitter:description" content="Loja digital com checkout PIX e verificação por Order ID." />
+  <meta name="twitter:image" content="https://viralvault-store.vercel.app/og.png" />
+  <meta name="theme-color" content="#0b0b10" />
+  <link rel="preconnect" href="https://viralvault-sign.darlanana06.workers.dev" crossorigin />
+  <link rel="dns-prefetch" href="https://viralvault-sign.darlanana06.workers.dev" />
+
 </head>
 <body>
   <a class="skipLink" href="#produtos">Pular para o catálogo</a>
@@ -897,7 +992,21 @@
           <span id="vvBannerText">Serviço instável. Tente novamente em alguns minutos.</span>
         </div>
         <button class="totalBtn" id="vvBannerRetry" type="button" style="justify-content:center">Tentar de novo</button>
+      
+      <div class="card" id="vvTrustBanner" style="margin-top:12px; background:rgba(11,11,16,.18)">
+        <div class="krow" style="justify-content:space-between; gap:10px; flex-wrap:wrap">
+          <div class="pill"><span style="width:10px;height:10px;border-radius:50%;background:rgba(62,240,143,1)"></span> Pagamento verificado</div>
+          <div class="pill"><span style="width:10px;height:10px;border-radius:50%;background:var(--yellow)"></span> Order ID oficial</div>
+          <div class="pill"><span style="width:10px;height:10px;border-radius:50%;background:var(--red)"></span> Anti-golpe</div>
+          <button class="totalBtn btnGhost" id="vvTrustWpp" type="button" style="justify-content:center">💬 Suporte</button>
+        </div>
+        <div class="desc" style="margin-top:10px; line-height:1.7">
+          Sempre confira o <b>destinatário do PIX</b> no seu banco e valide o pedido pelo <b>Order ID</b>.
+          Suporte rápido via WhatsApp.
+        </div>
       </div>
+
+</div>
     </div>
   </div>
 
@@ -972,6 +1081,7 @@
           <button class="chip" id="vvThemeBtn" type="button" style="cursor:pointer"><i style="background:var(--yellow)"></i> Tema</button>
           <button class="chip" id="vvLangBtn" type="button" style="cursor:pointer"><i></i> PT</button>
           <button class="chip" id="vvSettingsBtn" type="button" style="cursor:pointer"><i></i> ⚙️</button>
+          <button class="chip" id="vvCartBtn" type="button" style="cursor:pointer"><i></i> 🛒 <span id="vvCartCount">0</span></button>
         </div>
 
       <div class="card" id="vvHistoryCard" style="margin-top:12px; background:rgba(11,11,16,.25)">
@@ -2411,6 +2521,7 @@ if(adminDelivered) adminDelivered.addEventListener('click', async ()=>{
       </button>
       <button id="vvFabTheme" class="totalBtn" type="button" style="justify-content:center">🌓 Tema</button>
       <button id="vvFabSettings" class="totalBtn" type="button" style="justify-content:center">⚙️ Ajustes</button>
+      <button id="vvFabCart" class="totalBtn" type="button" style="justify-content:center">🛒 Carrinho</button>
     </div>
   </div>
 
@@ -2705,6 +2816,437 @@ if(adminDelivered) adminDelivered.addEventListener('click', async ()=>{
   });
 })();
 
+
+
+  <!-- ===== Bottom Nav (mobile) ===== -->
+  <div id="vvBottomNav" aria-label="Navegação rápida">
+    <div class="bar">
+      <a class="tab" href="#produtos"><span>🛒</span><small>Catálogo</small></a>
+      <a class="tab" href="#checkout"><span>🧾</span><small>Checkout</small></a>
+      <a class="tab" href="#pedido"><span>🔎</span><small>Pedido</small></a>
+      <a class="tab" href="#faq"><span>❓</span><small>FAQ</small></a>
+    </div>
+  </div>
+
+
+  <!-- ===== Product Modal ===== -->
+  <div id="vvPModal" role="dialog" aria-modal="true" aria-hidden="true">
+    <div id="vvPBackdrop"></div>
+    <div class="card" id="vvPPanel">
+      <div class="krow" style="justify-content:space-between; align-items:center; gap:10px">
+        <div class="krow" style="gap:10px; flex-wrap:wrap">
+          <span class="pill"><span style="width:10px;height:10px;border-radius:50%;background:var(--yellow)"></span> <span id="vvPTag">Digital</span></span>
+          <span class="pill"><span style="width:10px;height:10px;border-radius:50%;background:rgba(62,240,143,1)"></span> Entrega até 24h</span>
+        </div>
+        <button class="totalBtn btnGhost" id="vvPClose" type="button" style="justify-content:center">Fechar</button>
+      </div>
+
+      <div class="pGrid" style="margin-top:12px">
+        <div>
+          <div class="pBigMedia" aria-hidden="true"></div>
+          <div class="desc" style="margin-top:10px; line-height:1.7">
+            <b>Garantia anti-golpe:</b> confirme o Order ID no verificador antes de pagar.
+          </div>
+        </div>
+
+        <div>
+          <h2 style="margin:0 0 6px; font-size:22px" id="vvPName">—</h2>
+          <div class="muted" id="vvPDesc" style="line-height:1.7">—</div>
+
+          <div class="card" style="margin-top:12px; background:rgba(11,11,16,.20)">
+            <div class="krow" style="justify-content:space-between; gap:10px; flex-wrap:wrap">
+              <div>
+                <div class="currency">Preço</div>
+                <div style="font-size:26px; font-weight:1000" id="vvPPrice">—</div>
+              </div>
+              <button class="totalBtn btnPrimary" id="vvPBuy" type="button" style="justify-content:center">Comprar agora</button>
+            </div>
+            <div class="desc" style="margin-top:10px">
+              Ao comprar, você será levado ao checkout com o item selecionado.
+            </div>
+          </div>
+
+          <div class="grid" style="grid-template-columns:1fr; gap:10px; margin-top:12px">
+            <div class="card" style="background:rgba(11,11,16,.18)">
+              <b>Suporte</b>
+              <div class="desc" style="margin-top:6px">Envie comprovante pelo WhatsApp quando gerar o PIX.</div>
+            </div>
+            <div class="card" style="background:rgba(11,11,16,.18)">
+              <b>Checklist rápido</b>
+              <div class="desc" style="margin-top:6px; line-height:1.6">
+                1) Selecione o produto ✅<br>
+                2) Informe seu user ✅<br>
+                3) Gere pedido + PIX ✅<br>
+                4) Pague e envie comprovante ✅
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+<script>
+/* ===== Global-grade interactions ===== */
+(function(){
+  const $id = (id)=>document.getElementById(id);
+
+  function moneyBR(v){
+    try{ return window.moneyBR ? window.moneyBR(v) : (Number(v||0)).toLocaleString("pt-BR",{minimumFractionDigits:2, maximumFractionDigits:2}); }
+    catch(e){ return String(v); }
+  }
+
+  // WhatsApp helper (global)
+  window.__vvWhatsAppNumber = "5511941598713";
+  window.__vvOpenWpp = function(msg){
+    const n = window.__vvWhatsAppNumber;
+    const url = "https://wa.me/" + n + "?text=" + encodeURIComponent(msg||"Olá! Preciso de suporte na ViralVault.");
+    window.open(url, "_blank", "noopener");
+  };
+
+  // Product modal logic
+  const modal = $id("vvPModal");
+  const closeBtn = $id("vvPClose");
+  const back = $id("vvPBackdrop");
+  const buyBtn = $id("vvPBuy");
+  const tag = $id("vvPTag");
+  const nameEl = $id("vvPName");
+  const descEl = $id("vvPDesc");
+  const priceEl = $id("vvPPrice");
+
+  let lastFocus = null;
+  let current = null;
+
+  function inferTag(p){
+    const s = (String(p.name||"")+" "+String(p.description||"")+" "+String(p.id||"")).toLowerCase();
+    if(/robux|rbx/.test(s)) return "Robux";
+    if(/conta|account|premium/.test(s)) return "Conta";
+    if(/item|itens|pass|passe/.test(s)) return "Itens";
+    return "Digital";
+  }
+
+  function openModal(p){
+    if(!modal) return;
+    current = p;
+    lastFocus = document.activeElement;
+    if(tag) tag.textContent = inferTag(p);
+    if(nameEl) nameEl.textContent = p.name || p.id || "Produto";
+    if(descEl) descEl.textContent = p.description || "Produto digital.";
+    if(priceEl) priceEl.textContent = "R$ " + moneyBR(p.price||0);
+
+    modal.style.display = "flex";
+    modal.setAttribute("aria-hidden","false");
+    if(closeBtn) closeBtn.focus();
+  }
+
+  function closeModal(){
+    if(!modal) return;
+    modal.style.display = "none";
+    modal.setAttribute("aria-hidden","true");
+    if(lastFocus && lastFocus.focus) lastFocus.focus();
+  }
+
+  if(closeBtn) closeBtn.addEventListener("click", closeModal);
+  if(back) back.addEventListener("click", closeModal);
+  document.addEventListener("keydown", (e)=>{
+    if(modal && modal.getAttribute("aria-hidden")==="false" && e.key==="Escape") closeModal();
+  });
+
+  if(buyBtn) buyBtn.addEventListener("click", ()=>{
+    if(!current) return;
+    try{
+      if(window.populateInlineCheckout) window.populateInlineCheckout(current);
+      if(window.updateResumo) window.updateResumo();
+      closeModal();
+      const ck = document.getElementById("checkout");
+      if(ck) ck.scrollIntoView({behavior:"smooth"});
+    }catch(e){}
+  });
+
+  // Open modal when clicking a product card (except on buy button)
+  document.addEventListener("click", (e)=>{
+    const forbidden = e.target.closest("button.buy, #vvPBuy, #vvBtnCreate, #vvBtnCheck, #vvBtnWpp, #vvThemeBtn, #vvLangBtn, #vvSettingsBtn, #vvRetryCatalog, #vvCatalogRetry");
+    if(forbidden) return;
+
+    const card = e.target.closest("#productsGrid .card");
+    if(!card) return;
+
+    const btn = card.querySelector("button.buy[data-payload]");
+    if(!btn) return;
+    try{
+      const p = JSON.parse(btn.getAttribute("data-payload")||"{}");
+      if(p && (p.id || p.name)) openModal(p);
+    }catch(err){}
+  });
+
+  // Improve WhatsApp message
+  const wppBtn = $id("vvBtnWpp");
+  if(wppBtn){
+    wppBtn.addEventListener("click", (e)=>{
+      try{
+        const oid = (($id("vvOrderIdBox")?.textContent)||"").trim();
+        const p = window.__vvSelected || {};
+        const user = (($id("vvCkUser")?.value)||"").trim();
+        const msg = [
+          "Olá! Vim pelo site ViralVault.",
+          oid ? ("Order ID: " + oid) : "",
+          (p && (p.name||p.id)) ? ("Produto: " + (p.name||p.id)) : "",
+          user ? ("User: " + user) : "",
+          "Segue comprovante:"
+        ].filter(Boolean).join("\n");
+        window.__vvOpenWpp(msg);
+        e.preventDefault();
+      }catch(err){}
+    }, true);
+  }
+})();
+</script>
+
+
+  <!-- ===== Mini Cart Drawer ===== -->
+  <div id="vvCart" aria-hidden="true" role="dialog" aria-modal="true"
+       style="position:fixed; inset:0; z-index:2100; display:none;">
+    <div id="vvCartBackdrop" style="position:absolute; inset:0; background:rgba(0,0,0,.55)"></div>
+    <div class="card" id="vvCartPanel"
+         style="position:absolute; right:12px; top:12px; bottom:12px; width:min(520px, calc(100% - 24px)); overflow:auto">
+      <div class="krow" style="justify-content:space-between; align-items:center; gap:10px">
+        <h3 class="title" style="margin:0">Carrinho</h3>
+        <button class="totalBtn btnGhost" id="vvCartClose" type="button" style="justify-content:center">Fechar</button>
+      </div>
+
+      <div class="desc" style="margin-top:6px; line-height:1.6">
+        O checkout é <b>1 pedido por vez</b>. Se quiser comprar mais de 1 item, faça pedidos separados.
+      </div>
+
+      <div id="vvCartList" style="margin-top:12px">—</div>
+
+      <div class="card" style="margin-top:12px; background:rgba(11,11,16,.20)">
+        <div class="krow" style="justify-content:space-between; gap:10px; flex-wrap:wrap">
+          <div>
+            <div class="currency">Subtotal</div>
+            <div style="font-size:22px; font-weight:1000" id="vvCartSubtotal">R$ 0,00</div>
+          </div>
+          <button class="totalBtn btnPrimary" id="vvCartGoCheckout" type="button" style="justify-content:center">Ir pro checkout</button>
+        </div>
+      </div>
+
+      <div class="desc" style="margin-top:12px; line-height:1.6">
+        🔒 <b>Pagamento seguro:</b> confira o destinatário no seu banco e valide o <b>Order ID</b> antes de pagar.
+      </div>
+    </div>
+  </div>
+
+
+// ===== Strong validation (Roblox user) =====
+(function(){
+  window.__vvIsValidUser = function(u){
+    const s = String(u||"").trim();
+    // Roblox username: 3-20, letters/numbers/underscore, no spaces
+    return /^[A-Za-z0-9_]{3,20}$/.test(s);
+  };
+})();
+
+
+<script>
+/* ===== Shopify-level UX: Mini-cart + Checkout steps ===== */
+(function(){
+  const $id = (id)=>document.getElementById(id);
+  const moneyBR = (v)=> (window.moneyBR ? window.moneyBR(v) : (Number(v||0)).toLocaleString("pt-BR",{minimumFractionDigits:2, maximumFractionDigits:2}));
+
+  // ---- Cart state (localStorage) ----
+  function loadCart(){
+    try{
+      const raw = localStorage.getItem("vv_cart")||"[]";
+      const arr = JSON.parse(raw);
+      return Array.isArray(arr) ? arr : [];
+    }catch(e){ return []; }
+  }
+  function saveCart(arr){
+    try{ localStorage.setItem("vv_cart", JSON.stringify(arr)); }catch(e){}
+  }
+  function setCount(n){
+    const el = $id("vvCartCount");
+    if(el) el.textContent = String(n||0);
+  }
+  function renderCart(){
+    const list = $id("vvCartList");
+    const sub = $id("vvCartSubtotal");
+    const arr = loadCart();
+    setCount(arr.length);
+    if(!list || !sub) return;
+    if(!arr.length){
+      list.innerHTML = `<div class="card" style="background:rgba(11,11,16,.18)"><b>Seu carrinho está vazio.</b><div class="desc" style="margin-top:6px">Volte no catálogo e toque em “Comprar” para adicionar.</div></div>`;
+      sub.textContent = "R$ 0,00";
+      return;
+    }
+    const subtotal = arr.reduce((a,p)=>a + Number(p.price||0), 0);
+    sub.textContent = "R$ " + moneyBR(subtotal);
+
+    list.innerHTML = arr.map((p,i)=>`
+      <div class="card" style="background:rgba(11,11,16,.18); margin-top:10px">
+        <div class="krow" style="justify-content:space-between; gap:10px; flex-wrap:wrap">
+          <div>
+            <b>${(p.name||p.id||"Produto")}</b>
+            <div class="desc" style="margin-top:4px">${(p.description||"")}</div>
+          </div>
+          <div style="text-align:right">
+            <div class="currency">Preço</div>
+            <div style="font-weight:1000">R$ ${moneyBR(p.price||0)}</div>
+          </div>
+        </div>
+        <div style="margin-top:10px; display:flex; gap:10px; flex-wrap:wrap">
+          <button class="totalBtn btnPrimary" type="button" data-cart-use="${i}" style="justify-content:center">Usar no checkout</button>
+          <button class="totalBtn btnGhost" type="button" data-cart-del="${i}" style="justify-content:center">Remover</button>
+        </div>
+      </div>
+    `).join("");
+  }
+
+  function openCart(){
+    const m = $id("vvCart");
+    if(!m) return;
+    m.style.display = "block";
+    m.setAttribute("aria-hidden","false");
+    renderCart();
+    $id("vvCartClose")?.focus();
+  }
+  function closeCart(){
+    const m = $id("vvCart");
+    if(!m) return;
+    m.style.display = "none";
+    m.setAttribute("aria-hidden","true");
+  }
+
+  $id("vvCartBtn")?.addEventListener("click", openCart);
+  $id("vvFabCart")?.addEventListener("click", openCart);
+  $id("vvCartClose")?.addEventListener("click", closeCart);
+  $id("vvCartBackdrop")?.addEventListener("click", closeCart);
+
+  $id("vvCartList")?.addEventListener("click", (e)=>{
+    const use = e.target.closest("[data-cart-use]");
+    const del = e.target.closest("[data-cart-del]");
+    const arr = loadCart();
+    if(use){
+      const i = Number(use.getAttribute("data-cart-use"));
+      const p = arr[i];
+      if(p){
+        window.__vvSelected = p;
+        try{ window.populateInlineCheckout && window.populateInlineCheckout(p); }catch(e){}
+        try{ window.updateResumo && window.updateResumo(); }catch(e){}
+        closeCart();
+        document.getElementById("checkout")?.scrollIntoView({behavior:"smooth"});
+        setStep(2);
+      }
+    }
+    if(del){
+      const i = Number(del.getAttribute("data-cart-del"));
+      arr.splice(i,1);
+      saveCart(arr);
+      renderCart();
+    }
+  });
+
+  $id("vvCartGoCheckout")?.addEventListener("click", ()=>{
+    closeCart();
+    document.getElementById("checkout")?.scrollIntoView({behavior:"smooth"});
+  });
+
+  // ---- Intercept "Comprar" to ADD to cart + open modal for details still works via click elsewhere
+  // We tag buy buttons with payload; use it.
+  document.addEventListener("click", (e)=>{
+    const buy = e.target.closest("button.buy[data-payload]");
+    if(!buy) return;
+    e.preventDefault();
+    e.stopPropagation();
+    try{
+      const p = JSON.parse(buy.getAttribute("data-payload")||"{}");
+      if(!p || !(p.id||p.name)) return;
+      const arr = loadCart();
+      arr.unshift(p);
+      const next = arr.slice(0, 10); // cap
+      saveCart(next);
+      renderCart();
+      openCart();
+    }catch(err){}
+  }, true);
+
+  // ---- Checkout steps ----
+  let step = 1;
+  const hint = $id("vvStepHint");
+  const s1 = $id("vvStep1"), s2 = $id("vvStep2"), s3 = $id("vvStep3");
+  const prev = $id("vvPrevStep"), next = $id("vvNextStep");
+
+  function paint(){
+    const on = (el, active)=>{
+      if(!el) return;
+      el.style.borderColor = active ? "rgba(255,210,74,.28)" : "rgba(255,255,255,.12)";
+      el.style.background = active ? "rgba(255,210,74,.12)" : "rgba(11,11,16,.18)";
+    };
+    on(s1, step===1); on(s2, step===2); on(s3, step===3);
+    if(hint){
+      if(step===1) hint.textContent = "Escolha um item no catálogo ou no carrinho.";
+      if(step===2) hint.textContent = "Digite seu user do Roblox e (se quiser) use cupom.";
+      if(step===3) hint.textContent = "Gere o pedido, copie o PIX e depois verifique o Order ID.";
+    }
+    if(prev) prev.disabled = (step===1);
+    if(next) next.textContent = (step===3) ? "Finalizar ✅" : "Próximo →";
+  }
+
+  function setStep(n){
+    step = Math.max(1, Math.min(3, Number(n||1)));
+    paint();
+    // focus helpful element
+    if(step===1) document.getElementById("produtos")?.scrollIntoView({behavior:"smooth"});
+    if(step===2) $id("vvCkUser")?.focus();
+    if(step===3) $id("vvBtnCreate")?.focus();
+  }
+  window.__vvSetStep = setStep;
+  paint();
+
+  prev?.addEventListener("click", ()=>setStep(step-1));
+  next?.addEventListener("click", ()=>{
+    // validation per step
+    if(step===1){
+      if(!window.__vvSelected){
+        // try use cart first item
+        const arr = loadCart();
+        if(arr[0]){
+          window.__vvSelected = arr[0];
+          try{ window.populateInlineCheckout && window.populateInlineCheckout(arr[0]); }catch(e){}
+          try{ window.updateResumo && window.updateResumo(); }catch(e){}
+        } else {
+          window.vvToast ? window.vvToast("Selecione um item") : null;
+          return;
+        }
+      }
+      setStep(2);
+      document.getElementById("checkout")?.scrollIntoView({behavior:"smooth"});
+      return;
+    }
+    if(step===2){
+      const user = ($id("vvCkUser")?.value||"").trim();
+      const ok = window.__vvIsValidUser ? window.__vvIsValidUser(user) : /^[A-Za-z0-9_]{3,20}$/.test(user);
+      if(!ok){
+        ($id("vvCkStatus")||{}).textContent = "⚠️ user inválido (3-20 letras/números/_).";
+        return;
+      }
+      setStep(3);
+      return;
+    }
+    if(step===3){
+      // just scroll to pay area / create order button
+      document.getElementById("checkout")?.scrollIntoView({behavior:"smooth"});
+      // optional: auto click if valid
+      const btn = $id("vvBtnCreate");
+      if(btn && !btn.disabled) btn.click();
+    }
+  });
+
+  // init count
+  setCount(loadCart().length);
+})();
+</script>
 
 </body>
 </html>
