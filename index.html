@@ -767,7 +767,105 @@
     </div>
 
     
-    <div class="footerArea" id="sobre">
+    
+    <!-- ===== CHECKOUT (INLINE) ===== -->
+    <div class="sectionTitle" id="checkout" style="margin-top:18px">
+      <h2>Checkout (PIX)</h2>
+      <small>gerar pedido, copiar PIX e enviar comprovante</small>
+    </div>
+
+    <div class="grid" style="grid-template-columns:1.1fr .9fr">
+      <div class="card">
+        <div class="krow">
+          <div class="chip prem"><i></i> PIX</div>
+          <div class="chip"><i style="background:var(--red)"></i> Anti-golpe</div>
+        </div>
+        <h3 class="title" id="vvCkName">Selecione um produto</h3>
+        <p class="desc" id="vvCkDesc">Clique em “Comprar” em algum item do catálogo pra carregar aqui.</p>
+
+        <div style="display:flex; justify-content:space-between; align-items:flex-end; gap:10px; margin-top:10px">
+          <div>
+            <div class="currency">Total</div>
+            <div class="price" id="vvCkPrice">—</div>
+          </div>
+          <div class="currency">Entrega: <b>até 24h</b></div>
+        </div>
+
+        <div style="margin-top:12px">
+          <div class="currency" style="margin-bottom:6px">Seu user do Roblox (obrigatório)</div>
+          <input id="vvCkUser" class="input" placeholder="Ex: Darlan0786" autocomplete="off"
+                 style="width:100%; padding:12px 12px; border-radius:16px; border:1px solid rgba(255,255,255,.12); background:rgba(11,11,16,.35); color:#fff; outline:none; font-weight:800;">
+        </div>
+
+        <div style="display:flex; gap:10px; flex-wrap:wrap; margin-top:12px">
+          <button class="totalBtn" id="vvBtnCreate" style="flex:1; justify-content:center">Gerar pedido + PIX</button>
+          <button class="totalBtn" id="vvBtnWpp" style="flex:1; justify-content:center; opacity:.6" disabled>Enviar comprovante no WhatsApp</button>
+        </div>
+
+        <div class="currency" id="vvCkStatus" style="margin-top:10px">—</div>
+      </div>
+
+      <div class="card">
+        <h3 class="title" style="margin-bottom:6px">PIX Copia e Cola</h3>
+        <p class="desc">Depois de gerar o pedido, copie o PIX e pague no seu banco.</p>
+
+        <div class="currency" style="margin-top:10px">Order ID</div>
+        <div class="input mono" id="vvOrderIdBox" style="padding:12px 12px; border-radius:16px; border:1px solid rgba(255,255,255,.12); background:rgba(11,11,16,.35); font-weight:900; word-break:break-all;">—</div>
+
+        <div class="currency" style="margin-top:10px">PIX (copia e cola)</div>
+        <textarea id="vvPixBox" class="mono" readonly
+          style="width:100%; min-height:120px; padding:12px 12px; border-radius:16px; border:1px solid rgba(255,255,255,.12); background:rgba(11,11,16,.35); color:#fff; outline:none; font-weight:900; resize:vertical;"
+          placeholder="Vai aparecer aqui..."></textarea>
+
+        <div style="display:flex; gap:10px; flex-wrap:wrap; margin-top:10px">
+          <button class="totalBtn" id="vvCopyPix" style="flex:1; justify-content:center; opacity:.6" disabled>Copiar PIX</button>
+          <button class="totalBtn" id="vvCopyOrder" style="flex:1; justify-content:center; opacity:.6" disabled>Copiar Order ID</button>
+        </div>
+      </div>
+    </div>
+
+
+
+    <!-- ===== STATUS DO PEDIDO (INLINE) ===== -->
+    <div class="sectionTitle" id="pedido" style="margin-top:18px">
+      <h2>Status do pedido (Order ID)</h2>
+      <small>verifique se é oficial e veja o andamento</small>
+    </div>
+
+    <div class="card">
+      <div class="krow">
+        <div class="chip"><i></i> Verificação</div>
+        <div class="chip"><i style="background:var(--yellow)"></i> Oficial</div>
+      </div>
+
+      <div style="display:flex; gap:10px; flex-wrap:wrap; margin-top:10px; align-items:center">
+        <input id="vvCheckOrderId" class="input mono" placeholder="Cole o Order ID aqui"
+               style="flex:1; padding:12px 12px; border-radius:16px; border:1px solid rgba(255,255,255,.12); background:rgba(11,11,16,.35); color:#fff; outline:none; font-weight:900;">
+        <button class="totalBtn" id="vvBtnCheck" style="justify-content:center">Verificar</button>
+      </div>
+
+      <div class="currency" id="vvCheckOut" style="margin-top:10px">—</div>
+
+      <div id="vvTimeline" style="display:none; margin-top:12px; display:grid; gap:10px;">
+        <div class="card" style="background:rgba(11,11,16,.25)">
+          <b>Timeline</b>
+          <div class="desc" style="margin-top:6px">
+            <span id="vvT1">🧾 Criado</span> → <span id="vvT2">✅ Pago</span> → <span id="vvT3">📦 Entregue</span>
+          </div>
+        </div>
+        <div class="card" style="background:rgba(11,11,16,.25)">
+          <b>Detalhes</b>
+          <div class="desc" style="margin-top:6px; line-height:1.5">
+            Status: <b id="vvKStatus">—</b><br>
+            Produto: <b id="vvKProd">—</b><br>
+            User: <b id="vvKUser">—</b>
+          </div>
+        </div>
+      </div>
+    </div>
+
+
+<div class="footerArea" id="sobre">
       <div class="footerGrid">
         <div>
           <h4>Sobre</h4>
@@ -986,18 +1084,10 @@
 
     // ====== CHECKOUT ======
     function openCheckout(p){
-      currentProduct = p;
-      $('mProd').textContent = p.name || p.id;
-      $('mPrice').textContent = brl(p.price);
-      $('mDesc').textContent = p.description || 'Entrega 100% digital • em até 24h';
-      $('mUser').value = '';
-      $('mOrderId').textContent = '—';
-      $('mPix').value = '';
-      $('mStatus').textContent = '—';
-      $('mHint').textContent = 'Depois de pagar, guarde o Order ID.';
-      $('overlay').classList.add('show');
-      $('overlay').setAttribute('aria-hidden','false');
-      setTimeout(()=>$('mUser').focus(), 120);
+      // Seleciona produto e joga pro checkout inline
+      window.__vvSelected = p;
+      try{ populateInlineCheckout(p); }catch(e){}
+      document.getElementById("checkout")?.scrollIntoView({behavior:"smooth"});
     }
 
     function closeCheckout(){
@@ -1371,6 +1461,17 @@
 
       hookCategories();
       renderProducts();
+      // Inline checkout hooks
+      document.getElementById('vvBtnCreate')?.addEventListener('click', createOrderInline);
+      document.getElementById('vvBtnCheck')?.addEventListener('click', checkOrderInline);
+      document.getElementById('vvCopyPix')?.addEventListener('click', async ()=>{
+        const v = (document.getElementById('vvPixBox')?.value||'').trim();
+        if(v){ const ok = await copyText(v); document.getElementById('vvCkStatus').textContent = ok ? '✅ PIX copiado!' : '❌ não deu pra copiar.'; }
+      });
+      document.getElementById('vvCopyOrder')?.addEventListener('click', async ()=>{
+        const v = (document.getElementById('vvOrderIdBox')?.textContent||'').trim();
+        if(v && v!=='—'){ const ok = await copyText(v); document.getElementById('vvCkStatus').textContent = ok ? '✅ Order ID copiado!' : '❌ não deu pra copiar.'; }
+      });
     })();
   (function(){
 
