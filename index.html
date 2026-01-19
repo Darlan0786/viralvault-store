@@ -852,24 +852,16 @@ button:active, .btn:active{ transform: translateY(1px) scale(.99); }
               <span class="chip"><b>FPS</b> <span id="sandFps">—</span></span>
             </div>
           </div>
-
-          <div class="lab-card">
-            <h3 id="futureTitle">Future Note</h3>
-            <p id="futureLead">Escreva uma mensagem para você mesmo e escolha uma data. Desbloqueia automaticamente.</p>
-            <div class="field">
-              <label for="futureDate">Desbloquear em</label>
-              <input id="futureDate" type="date" />
-            </div>
             <div class="field" style="margin-top:8px">
-              <label for="futureMsg">Mensagem</label>
-              <textarea id="futureMsg" placeholder="Escreva aqui…"></textarea>
+              <label for="futureMsg_removed">Mensagem</label>
+              <textarea id="futureMsg_removed" placeholder="Escreva aqui…"></textarea>
             </div>
             <div class="row">
-              <button class="btn vv-endless primary" id="futureSave" type="button">Salvar</button>
-              <button class="btn vv-endless" id="futureOpen" type="button">Ver</button>
-              <button class="btn vv-endless" id="futureDel" type="button">Apagar</button>
+              <button class="btn vv-endless primary" id="futureSave_removed" type="button">Salvar</button>
+              <button class="btn vv-endless" id="futureOpen_removed" type="button">Ver</button>
+              <button class="btn vv-endless" id="futureDel_removed" type="button">Apagar</button>
             </div>
-            <div class="note" id="futureOut" style="margin-top:10px"></div>
+            <div class="note" id="futureOut_removed" style="margin-top:10px"></div>
           </div>
 
           <div class="lab-card">
@@ -1762,29 +1754,29 @@ button:active, .btn:active{ transform: translateY(1px) scale(.99); }
 
     const futureRender = () => {
       const f = loadFuture();
-      if (!f) { $('#futureOut').textContent = 'Sem mensagem salva.'; return; }
+      if (!f) { $('#futureOut_removed').textContent = 'Sem mensagem salva.'; return; }
       const now = new Date();
       const unlock = new Date(f.unlock || 0);
       const unlocked = now >= unlock;
       const when = unlock.toLocaleDateString('pt-BR');
       if (!unlocked) {
-        $('#futureOut').textContent = `Guardada. Desbloqueia em ${when}.`;
+        $('#futureOut_removed').textContent = `Guardada. Desbloqueia em ${when}.`;
       } else {
-        $('#futureOut').textContent = `Desbloqueada (${when}): ${f.msg || ''}`;
+        $('#futureOut_removed').textContent = `Desbloqueada (${when}): ${f.msg || ''}`;
       }
     };
 
-    $('#futureSave').addEventListener('click', () => {
-      const d = $('#futureDate').value;
-      const msg = ($('#futureMsg').value || '').trim();
+    $('#futureSave_removed').addEventListener('click', () => {
+      const d = $('#futureDate_removed').value;
+      const msg = ($('#futureMsg_removed').value || '').trim();
       if (!d) return toast('Escolha uma data.');
       if (!msg) return toast('Escreva a mensagem.');
       saveFuture({ unlock: d, msg });
       toast('Salvo.');
       futureRender();
     });
-    $('#futureOpen').addEventListener('click', () => { futureRender(); toast('Ok.'); });
-    $('#futureDel').addEventListener('click', () => { delFuture(); $('#futureMsg').value=''; $('#futureDate').value=''; futureRender(); toast('Apagado.'); });
+    $('#futureOpen_removed').addEventListener('click', () => { futureRender(); toast('Ok.'); });
+    $('#futureDel_removed').addEventListener('click', () => { delFuture(); $('#futureMsg_removed').value=''; $('#futureDate_removed').value=''; futureRender(); toast('Apagado.'); });
 
     // ========= LAB: RANDOM TIP =========
     const tips = [
@@ -1831,7 +1823,7 @@ button:active, .btn:active{ transform: translateY(1px) scale(.99); }
       // UX: set default date for future note
       const dt = new Date();
       dt.setDate(dt.getDate()+7);
-      $('#futureDate').value = dt.toISOString().slice(0,10);
+      $('#futureDate_removed').value = dt.toISOString().slice(0,10);
       futureRender();
 
       // Quick metrics
