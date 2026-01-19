@@ -236,8 +236,8 @@
       border-color: rgba(124,108,255,.35);
       background: linear-gradient(135deg, rgba(124,108,255,.26), rgba(77,211,255,.12));
     }
-    .adminOnly{display:none}
-  body.admin .adminOnly{display:block}
+    .adminOnly{display:none !important}
+  body.admin .adminOnly{display:none !important}
 </style>
 </head>
 <body>
@@ -247,7 +247,7 @@
         <div class="logo" aria-hidden="true">VV</div>
         <div class="t">
           <b>ViralVault Store</b>
-          <span id="envLine">Conectando ao backend…</span>
+          <span id="envLine">Conectando ao sistema…</span>
         </div>
       </div>
 
@@ -367,7 +367,7 @@
         <div class="section pane" id="paneFaq" role="tabpanel" aria-labelledby="tabFaq">
           <h3>FAQ</h3>
           <div class="list">
-            <div class="item"><div class="meta"><b>Como sei que é oficial?</b><span>Use “Pedido” e verifique o status no Worker oficial.</span></div></div>
+            <div class="item"><div class="meta"><b>Como sei que é oficial?</b><span>Use “Pedido” e verifique o status no sistema oficial.</span></div></div>
             <div class="item"><div class="meta"><b>Quanto tempo para entrega?</b><span>Depende do produto. Prioridade (24h) entrega primeiro.</span></div></div>
             <div class="item">
               <div class="meta"><b>Suporte</b><span>Entre no Discord e abra um ticket/DM.</span></div>
@@ -376,7 +376,6 @@
           </div>
 
           <div class="line"></div>
-          <div class="small adminOnly">Backend: <span class="mono" id="backendLine">—</span></div>
         </div>
       </section>
 
@@ -386,8 +385,6 @@
           <div class="small">Status + ações rápidas</div>
 
           <div class="line"></div>
-
-          <div class="small adminOnly">API: <span class="mono" id="apiUrl">—</span></div>
           <div class="small">Suporte: Discord</div>
 
           <div style="margin-top:12px; display:flex; gap:10px; flex-wrap:wrap">
@@ -525,7 +522,7 @@
   }
 
   async function loadCatalog(){
-    $("productList").innerHTML = '<div class="item"><div class="meta"><b>Carregando…</b><span>Buscando catálogo no Worker.</span></div></div>';
+    $("productList").innerHTML = '<div class="item"><div class="meta"><b>Carregando…</b><span>Buscando catálogo no sistema.</span></div></div>';
     try{
       const data = await api("/catalog", { method:"GET" });
       PRODUCTS = Array.isArray(data.products) ? data.products : [];
@@ -565,7 +562,7 @@
       if(orderId) s.myOrders.unshift({ orderId, user, productId:first.id, productName:first.name, price:first.price, createdAt: Date.now(), status:"created" });
       setStore(s);
       if(orderId) $("orderId").value = orderId;
-      $("pixBox").value = pix || "PIX não configurado no Worker (PIX_COPIA_COLA).";
+      $("pixBox").value = pix || "PIX não configurado no sistema.";
       openPane("paneCheckout");
     }catch(e){
       alert("Erro: " + e.message);
@@ -635,11 +632,9 @@
     if (ADMIN_MODE) {
     document.body.classList.add("admin");
       $("apiUrl").textContent = CONFIG.API_BASE;
-      $("backendLine").textContent = CONFIG.API_BASE;
-    } else {
+} else {
       $("apiUrl").textContent = "";
-      $("backendLine").textContent = "";
-    }
+}
     const s = getStore();
     if(s.lang) $("lang").value = s.lang;
     applyLang($("lang").value);
@@ -650,7 +645,7 @@
       const home = await api("/", { method:"GET" });
       $("envLine").textContent = "Sistema online";
     }catch{
-      $("envLine").textContent = "Sistema offline • tente novamente";
+      $("envLine").textContent = "Conexão instável • tente novamente";
     }
     await loadCatalog();
   })();
