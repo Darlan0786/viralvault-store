@@ -1,1574 +1,502 @@
 <!doctype html>
 <html lang="pt-BR">
 <head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
-  <meta name="theme-color" content="#0b0f1a" />
-  <meta name="color-scheme" content="dark" />
-
-  <title>ViralVault Store — Checkout PIX + Verificação por Order ID</title>
-  <meta name="description" content="ViralVault: checkout PIX com etapas, catálogo dinâmico e verificação anti-golpe por Order ID." />
-  <meta name="robots" content="index,follow" />
-  <link rel="canonical" href="https://viralvault-store.vercel.app/" />
-
-  <!-- Open Graph / Discord preview -->
-  <meta property="og:title" content="ViralVault Store" />
-  <meta property="og:description" content="Checkout PIX + verificação por Order ID. Catálogo dinâmico e fluxo simples." />
-  <meta property="og:type" content="website" />
-  <meta property="og:url" content="https://viralvault-store.vercel.app/" />
-  <meta property="og:image" content="data:image/svg+xml;utf8,<?xml version='1.0' encoding='UTF-8'?><svg xmlns='http://www.w3.org/2000/svg' width='1200' height='630'><defs><linearGradient id='g' x1='0' y1='0' x2='1' y2='1'><stop offset='0' stop-color='%230b0f1a'/><stop offset='1' stop-color='%23112b66'/></linearGradient></defs><rect width='1200' height='630' fill='url(%23g)'/><circle cx='260' cy='315' r='120' fill='%236ea8ff' opacity='0.9'/><text x='420' y='310' fill='white' font-size='68' font-family='Arial,Helvetica,sans-serif' font-weight='700'>ViralVault Store</text><text x='420' y='380' fill='white' opacity='0.78' font-size='34' font-family='Arial,Helvetica,sans-serif'>Checkout PIX • Verificação por Order ID</text></svg>" />
-
-  <!-- Twitter -->
-  <meta name="twitter:card" content="summary_large_image" />
-  <meta name="twitter:title" content="ViralVault Store" />
-  <meta name="twitter:description" content="Checkout PIX + verificação por Order ID." />
-
-  <!-- JSON-LD (WebSite) -->
-  <script type="application/ld+json">
-  {
-    "@context": "https://schema.org",
-    "@type": "WebSite",
-    "name": "ViralVault Store",
-    "url": "https://viralvault-store.vercel.app/",
-    "potentialAction": {
-      "@type": "SearchAction",
-      "target": "https://viralvault-store.vercel.app/?q={search_term_string}",
-      "query-input": "required name=search_term_string"
-    }
-  }
-  </script>
-
-  <!-- PWA (manifest via data URI) -->
-  <link rel="manifest" href="data:application/manifest+json,{\
-    %22name%22:%22ViralVault%20Store%22,\
-    %22short_name%22:%22ViralVault%22,\
-    %22start_url%22:%22.%2F%22,\
-    %22display%22:%22standalone%22,\
-    %22background_color%22:%22%230b0f1a%22,\
-    %22theme_color%22:%22%230b0f1a%22,\
-    %22icons%22:[\
-      {\
-        %22src%22:%22data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='512' height='512'><rect width='512' height='512' rx='120' fill='%230b0f1a'/><circle cx='256' cy='256' r='160' fill='%236ea8ff'/><text x='256' y='292' text-anchor='middle' font-family='Arial,Helvetica,sans-serif' font-size='140' font-weight='800' fill='%230b0f1a'>VV</text></svg>%22,\
-        %22sizes%22:%22512x512%22,\
-        %22type%22:%22image/svg+xml%22,\
-        %22purpose%22:%22any%20maskable%22\
-      }\
-    ]\
-  }" />
-
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"/>
+  <title>ViralVault Store</title>
+  <meta name="description" content="ViralVault Store — catálogo, checkout PIX e suporte oficial via Discord."/>
+  <meta name="theme-color" content="#0b0b0f"/>
   <style>
     :root{
-      --bg:#0b0f1a;
-      --bg2:#0b1838;
-      --card: rgba(255,255,255,.06);
-      --card2: rgba(255,255,255,.085);
-      --stroke: rgba(255,255,255,.12);
-      --text: rgba(255,255,255,.92);
-      --muted: rgba(255,255,255,.68);
-      --muted2: rgba(255,255,255,.55);
-      --brand:#6ea8ff;
-      --brand2:#9b7bff;
-      --good:#35d07f;
-      --warn:#ffcc66;
-      --bad:#ff6b6b;
+      --bg:#07080c; --panel:#0c0e16;
+      --text:#f2f4ff; --muted:rgba(242,244,255,.7);
+      --line:rgba(255,255,255,.10);
+      --yellow:#ffd11a; --red:#ff3b30; --green:#22c55e;
       --shadow: 0 18px 60px rgba(0,0,0,.55);
-      --r: 20px;
-      --r2: 28px;
-      --max: 1120px;
-      --safe-top: env(safe-area-inset-top);
-      --safe-bottom: env(safe-area-inset-bottom);
-      --safe-left: env(safe-area-inset-left);
-      --safe-right: env(safe-area-inset-right);
+      --r:18px;
     }
-
     *{box-sizing:border-box}
     html,body{height:100%}
     body{
       margin:0;
+      font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Arial;
       color:var(--text);
-      background: radial-gradient(1200px 800px at 20% 10%, rgba(110,168,255,.18), transparent 60%),
-                  radial-gradient(900px 650px at 80% 20%, rgba(155,123,255,.14), transparent 60%),
-                  radial-gradient(1200px 900px at 50% 100%, rgba(17,43,102,.25), transparent 60%),
-                  linear-gradient(180deg, var(--bg), #070a12);
-      font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial;
+      background:
+        radial-gradient(900px 600px at 20% -10%, rgba(255,209,26,.16), transparent 55%),
+        radial-gradient(900px 600px at 90% 10%, rgba(255,59,48,.12), transparent 55%),
+        radial-gradient(1100px 700px at 60% 120%, rgba(34,197,94,.10), transparent 60%),
+        var(--bg);
       overflow-x:hidden;
     }
-
     a{color:inherit; text-decoration:none}
-    button, input, select, textarea{font:inherit}
-    .wrap{max-width:var(--max); margin:0 auto; padding: 18px calc(18px + var(--safe-left)) calc(110px + var(--safe-bottom)) calc(18px + var(--safe-right));}
-
-    /* Topbar */
-    .topbar{
+    .wrap{max-width:1120px; margin:0 auto; padding:24px 16px 80px}
+    header{
       position:sticky; top:0; z-index:50;
-      padding: calc(14px + var(--safe-top)) calc(18px + var(--safe-left)) 14px calc(18px + var(--safe-right));
-      background: linear-gradient(180deg, rgba(11,15,26,.86), rgba(11,15,26,.55));
-      backdrop-filter: blur(14px);
-      border-bottom: 1px solid rgba(255,255,255,.07);
+      background:linear-gradient(to bottom, rgba(7,8,12,.92), rgba(7,8,12,.64));
+      backdrop-filter: blur(10px);
+      border-bottom:1px solid var(--line);
     }
-    .topbar-inner{max-width:var(--max); margin:0 auto; display:flex; align-items:center; gap:12px;}
-    .brand{display:flex; align-items:center; gap:10px; min-width: 0;}
+    .topbar{max-width:1120px; margin:0 auto; padding:12px 16px; display:flex; align-items:center; gap:12px}
+    .brand{display:flex; align-items:center; gap:10px; min-width:240px}
     .logo{
-      width:42px; height:42px; border-radius: 14px;
-      background: radial-gradient(circle at 35% 30%, rgba(110,168,255,1), rgba(155,123,255,.9));
-      box-shadow: 0 14px 40px rgba(110,168,255,.18);
-      display:grid; place-items:center;
-      border: 1px solid rgba(255,255,255,.14);
+      width:34px; height:34px; border-radius:12px;
+      background: radial-gradient(circle at 30% 30%, rgba(255,209,26,.95), rgba(255,59,48,.65) 55%, rgba(0,0,0,.0) 70%),
+                  linear-gradient(135deg, rgba(255,209,26,.35), rgba(255,59,48,.2));
+      border:1px solid rgba(255,255,255,.16);
+      box-shadow: 0 10px 35px rgba(0,0,0,.35);
     }
-    .logo span{font-weight:900; color:#0b0f1a; letter-spacing:.5px}
-    .brand-title{display:flex; flex-direction:column; min-width:0}
-    .brand-title strong{font-size:14px; line-height:1.1; letter-spacing:.2px}
-    .brand-title small{font-size:12px; color:var(--muted2); white-space:nowrap; overflow:hidden; text-overflow:ellipsis}
-
+    .brand h1{font-size:14px; margin:0; letter-spacing:.6px; text-transform:uppercase}
+    .brand .sub{font-size:12px; color:var(--muted)}
     .spacer{flex:1}
-
+    .pillbar{display:flex; gap:10px; align-items:center}
     .pill{
       display:inline-flex; align-items:center; gap:10px;
-      padding:10px 12px;
+      height:42px; padding:0 14px; border-radius:999px;
       background: rgba(255,255,255,.06);
-      border: 1px solid rgba(255,255,255,.10);
-      border-radius: 999px;
-      box-shadow: 0 12px 40px rgba(0,0,0,.25);
-    }
-    .pill select{
-      background: transparent;
-      border: none;
-      color: var(--text);
-      outline: none;
-      padding: 2px 2px;
+      border:1px solid rgba(255,255,255,.12);
+      box-shadow: 0 10px 30px rgba(0,0,0,.22);
       cursor:pointer;
+      user-select:none;
+      transition: transform .12s ease, background .12s ease, border-color .12s ease;
     }
-
+    .pill:hover{transform: translateY(-1px); background: rgba(255,255,255,.08); border-color: rgba(255,255,255,.18)}
+    .pill:active{transform: translateY(0px) scale(.98)}
+    .icon{width:18px; height:18px; opacity:.9}
+    .grid{display:grid; grid-template-columns: 1.2fr .8fr; gap:16px; align-items:start}
+    @media (max-width: 920px){ .grid{grid-template-columns:1fr} .brand{min-width:auto} }
+    .card{
+      background: linear-gradient(180deg, rgba(255,255,255,.08), rgba(255,255,255,.04));
+      border:1px solid rgba(255,255,255,.12);
+      border-radius: var(--r);
+      box-shadow: var(--shadow);
+      overflow:hidden;
+    }
+    .card .hd{
+      padding:16px 16px 12px;
+      display:flex; align-items:flex-start; justify-content:space-between; gap:12px;
+      border-bottom: 1px solid rgba(255,255,255,.08);
+    }
+    .title{margin:0; font-size:16px; letter-spacing:.2px}
+    .muted{color:var(--muted); font-size:13px; line-height:1.35}
+    .tag{
+      font-size:12px; padding:6px 10px; border-radius:999px;
+      border:1px solid rgba(255,255,255,.12);
+      background: rgba(0,0,0,.18);
+      white-space:nowrap;
+    }
+    .body{padding:16px}
+    .row{display:flex; gap:10px; flex-wrap:wrap}
     .btn{
-      appearance:none;
-      border: 1px solid rgba(255,255,255,.12);
+      display:inline-flex; align-items:center; justify-content:center; gap:10px;
+      height:44px; padding:0 14px; border-radius:14px;
+      border:1px solid rgba(255,255,255,.12);
       background: rgba(255,255,255,.06);
-      color: var(--text);
-      padding: 12px 14px;
-      border-radius: 14px;
+      color:var(--text);
       cursor:pointer;
       transition: transform .12s ease, background .12s ease, border-color .12s ease;
-      box-shadow: 0 18px 50px rgba(0,0,0,.25);
-      user-select:none;
     }
-    .btn:hover{background: rgba(255,255,255,.09); border-color: rgba(255,255,255,.18)}
-    .btn:active{transform: translateY(1px) scale(.99)}
+    .btn:hover{transform: translateY(-1px); background: rgba(255,255,255,.08); border-color: rgba(255,255,255,.18)}
+    .btn:active{transform: translateY(0px) scale(.99)}
     .btn.primary{
-      border: 1px solid rgba(110,168,255,.45);
-      background: linear-gradient(135deg, rgba(110,168,255,.95), rgba(155,123,255,.95));
-      color:#0b0f1a;
-      font-weight:800;
+      background: linear-gradient(90deg, rgba(255,209,26,.95), rgba(255,59,48,.75));
+      border:1px solid rgba(255,255,255,.22);
+      color:#101015;
+      font-weight:700;
     }
-    .btn.primary:hover{filter: brightness(1.02)}
-
-    /* Cinematic hero */
-    .hero{
-      position:relative;
-      padding: 18px 0 0;
-    }
-    .scene{
-      position:relative;
-      border-radius: var(--r2);
-      overflow:hidden;
-      border: 1px solid rgba(255,255,255,.10);
-      background:
-        radial-gradient(1100px 800px at 15% 30%, rgba(110,168,255,.22), transparent 60%),
-        radial-gradient(900px 700px at 80% 10%, rgba(155,123,255,.18), transparent 60%),
-        linear-gradient(180deg, rgba(255,255,255,.05), rgba(255,255,255,.02));
-      box-shadow: var(--shadow);
-      min-height: 360px;
-    }
-    .scene::before{
-      content:"";
-      position:absolute; inset:-2px;
-      background:
-        radial-gradient(800px 300px at 30% 20%, rgba(255,255,255,.09), transparent 55%),
-        radial-gradient(900px 300px at 70% 0%, rgba(255,255,255,.06), transparent 60%);
-      pointer-events:none;
-    }
-    .scene::after{
-      content:"";
-      position:absolute; inset:0;
-      background: linear-gradient(90deg, rgba(0,0,0,.12), transparent 30%, transparent 70%, rgba(0,0,0,.18));
-      pointer-events:none;
-      mix-blend-mode: overlay;
-    }
-
-    .hero-grid{display:grid; grid-template-columns: 1.2fr .8fr; gap:18px; padding: 22px; position:relative}
-    @media (max-width: 880px){ .hero-grid{grid-template-columns:1fr; padding:18px} }
-
-    .kicker{
-      display:inline-flex; align-items:center; gap:10px;
-      padding: 10px 12px;
-      border: 1px solid rgba(255,255,255,.12);
-      background: rgba(0,0,0,.20);
-      border-radius: 999px;
-      width: fit-content;
-    }
-    .dot{width:10px; height:10px; border-radius: 99px; background: var(--good); box-shadow: 0 0 0 6px rgba(53,208,127,.12)}
-    h1{margin: 14px 0 10px; font-size: clamp(34px, 4.4vw, 56px); line-height: 1.02; letter-spacing: -.6px}
-    .lead{margin:0; color: var(--muted); font-size: 15px; line-height:1.55; max-width: 56ch}
-
-    .cta-row{display:flex; gap:10px; flex-wrap:wrap; margin-top:16px}
-
-    .glass{
-      border-radius: var(--r2);
-      background: rgba(0,0,0,.20);
-      border: 1px solid rgba(255,255,255,.10);
-      box-shadow: 0 18px 60px rgba(0,0,0,.25);
-      backdrop-filter: blur(14px);
-      overflow:hidden;
-    }
-
-    .quick{
-      padding: 14px 14px 12px;
-      display:flex;
-      flex-direction:column;
-      gap:10px;
-      min-height: 220px;
-    }
-    .quick strong{font-size: 14px}
-    .metric{display:flex; align-items:center; justify-content:space-between; gap:10px;}
-    .metric span{color:var(--muted2); font-size:12px}
-    .bar{height:10px; border-radius: 999px; background: rgba(255,255,255,.08); overflow:hidden; border:1px solid rgba(255,255,255,.10)}
-    .bar > i{display:block; height:100%; width:40%; background: linear-gradient(90deg, rgba(110,168,255,.95), rgba(155,123,255,.95)); border-radius:999px}
-
-    .hint{font-size:12px; color:var(--muted2); line-height:1.4}
-
-    /* Sections */
-    .section{margin-top: 18px}
-    .card{padding: 18px; border-radius: var(--r2); border: 1px solid rgba(255,255,255,.10); background: rgba(255,255,255,.05); box-shadow: var(--shadow); backdrop-filter: blur(14px)}
-    .card h2{margin:0 0 6px; font-size: 22px; letter-spacing: -.2px}
-    .card p{margin:0; color:var(--muted); line-height:1.55}
-
-    .grid2{display:grid; grid-template-columns: 1fr 1fr; gap:14px}
-    @media (max-width: 900px){ .grid2{grid-template-columns:1fr} }
-
-    .tabs{
-      position:sticky;
-      bottom: calc(10px + var(--safe-bottom));
-      left:0; right:0;
-      z-index:60;
-      padding: 0 calc(14px + var(--safe-left)) 0 calc(14px + var(--safe-right));
-    }
-    .tabbar{
-      max-width: var(--max);
-      margin: 0 auto;
-      display:flex;
-      gap:10px;
-      background: rgba(11,15,26,.72);
-      border: 1px solid rgba(255,255,255,.10);
-      border-radius: 999px;
-      padding: 10px;
-      box-shadow: 0 18px 70px rgba(0,0,0,.55);
-      backdrop-filter: blur(14px);
-    }
-    .tab{
-      flex:1;
-      display:flex; align-items:center; justify-content:center;
-      gap:10px;
-      padding: 12px 12px;
-      border-radius: 999px;
-      border: 1px solid transparent;
-      background: transparent;
-      color: var(--muted);
-      cursor:pointer;
-      user-select:none;
-      transition: background .12s ease, border-color .12s ease, color .12s ease;
-    }
-    .tab.active{color: var(--text); background: rgba(255,255,255,.06); border-color: rgba(255,255,255,.10)}
-
-    .chip{display:inline-flex; align-items:center; gap:8px; padding:8px 10px; border-radius:999px; border:1px solid rgba(255,255,255,.10); background: rgba(255,255,255,.05); color:var(--muted); font-size:12px}
-    .chip b{color:var(--text)}
-
-    /* Catalog */
-    .catalog-controls{display:flex; gap:10px; flex-wrap:wrap; align-items:center; margin-top:12px}
-    .search{
-      flex: 1;
-      min-width: 220px;
-      display:flex; align-items:center; gap:10px;
-      padding: 12px 12px;
-      border-radius: 14px;
-      border: 1px solid rgba(255,255,255,.10);
-      background: rgba(0,0,0,.18);
-    }
-    .search input{width:100%; background:transparent; border:none; outline:none; color:var(--text)}
-
-    .products{display:grid; grid-template-columns: repeat(3, 1fr); gap:12px; margin-top:14px}
-    @media (max-width: 980px){ .products{grid-template-columns: repeat(2,1fr)} }
-    @media (max-width: 560px){ .products{grid-template-columns: 1fr} }
-
-    .product{
-      border-radius: 18px;
-      border: 1px solid rgba(255,255,255,.10);
-      background: rgba(255,255,255,.05);
-      padding: 14px;
-      box-shadow: 0 16px 50px rgba(0,0,0,.35);
-      display:flex; flex-direction:column; gap:10px;
-      min-height: 152px;
-    }
-    .product .top{display:flex; align-items:flex-start; justify-content:space-between; gap:10px}
-    .product strong{font-size: 14px; line-height:1.2}
-    .product small{color:var(--muted2)}
-    .price{font-weight:900; letter-spacing:.2px}
-    .product .actions{display:flex; gap:10px; margin-top:auto}
-    .qty{display:flex; align-items:center; gap:8px; padding: 8px 10px; border-radius: 14px; border:1px solid rgba(255,255,255,.10); background: rgba(0,0,0,.18)}
-    .qty button{width:28px; height:28px; border-radius: 10px; border:1px solid rgba(255,255,255,.10); background: rgba(255,255,255,.06); color: var(--text); cursor:pointer}
-    .qty input{width:34px; text-align:center; background:transparent; border:none; color:var(--text); outline:none}
-
-    /* Checkout */
-    .steps{display:flex; gap:10px; flex-wrap:wrap; margin-top:12px}
-    .step{flex:1; min-width: 160px; padding: 12px 12px; border-radius: 16px; border:1px solid rgba(255,255,255,.10); background: rgba(0,0,0,.18)}
-    .step b{display:block; font-size:12px; color:var(--muted2); margin-bottom:4px}
-    .step span{display:block; font-size:14px}
-
-    .form{display:grid; grid-template-columns: 1fr 1fr; gap:10px; margin-top:12px}
-    @media (max-width: 720px){ .form{grid-template-columns:1fr} }
-    .field{display:flex; flex-direction:column; gap:6px}
-    .field label{font-size:12px; color:var(--muted2)}
-    .field input, .field textarea{
-      padding: 12px 12px;
-      border-radius: 14px;
-      border: 1px solid rgba(255,255,255,.10);
-      background: rgba(0,0,0,.18);
-      color: var(--text);
+    .btn.ghost{background:transparent}
+    input,select{
+      width:100%;
+      height:44px;
+      border-radius:14px;
+      border:1px solid rgba(255,255,255,.14);
+      background: rgba(0,0,0,.25);
+      color:var(--text);
+      padding:0 12px;
       outline:none;
     }
-    .field textarea{min-height: 86px; resize: vertical}
-    .row{display:flex; gap:10px; flex-wrap:wrap; align-items:center; margin-top:12px}
-    .note{font-size:12px; color:var(--muted2); line-height:1.45}
-
-    .panel{
-      border-radius: var(--r2);
-      border: 1px solid rgba(255,255,255,.10);
+    input:focus,select:focus{border-color: rgba(255,209,26,.55)}
+    .products{display:grid; grid-template-columns: repeat(2, minmax(0,1fr)); gap:12px}
+    @media (max-width:560px){ .products{grid-template-columns:1fr} }
+    .prod{
+      border-radius:16px;
+      border:1px solid rgba(255,255,255,.12);
       background: rgba(0,0,0,.22);
-      padding: 14px;
+      padding:12px;
+      display:flex; flex-direction:column; gap:8px;
     }
-
-    /* Lab */
-    .lab-grid{display:grid; grid-template-columns: 1.05fr .95fr; gap:14px; margin-top:12px}
-    @media (max-width: 980px){ .lab-grid{grid-template-columns:1fr} }
-
-    .lab-card{padding: 14px; border-radius: 22px; border:1px solid rgba(255,255,255,.10); background: rgba(255,255,255,.05)}
-    .lab-card h3{margin:0 0 8px; font-size:16px}
-    .lab-card p{margin:0 0 10px; color:var(--muted); font-size:13px; line-height:1.5}
-
-    .slider{display:flex; align-items:center; gap:10px; margin-top:10px}
-    .slider input{flex:1}
-
-    .sand{
-      width:100%;
-      height: 240px;
-      border-radius: 18px;
-      border:1px solid rgba(255,255,255,.10);
-      background: radial-gradient(600px 260px at 30% 20%, rgba(110,168,255,.12), transparent 60%), rgba(0,0,0,.22);
-      display:block;
-    }
-
-    .toast{
-      position: fixed;
-      left: 50%;
-      transform: translateX(-50%);
-      bottom: calc(90px + var(--safe-bottom));
-      background: rgba(0,0,0,.72);
-      border: 1px solid rgba(255,255,255,.12);
-      border-radius: 999px;
-      padding: 10px 12px;
-      box-shadow: 0 20px 70px rgba(0,0,0,.65);
-      backdrop-filter: blur(14px);
-      z-index: 80;
-      display:none;
-      max-width: min(92vw, 720px);
-      color: var(--text);
-      font-size: 13px;
-    }
-
-    /* Scroll micro-interactions */
-    .reveal{opacity:0; transform: translateY(10px); transition: opacity .35s ease, transform .35s ease}
-    .reveal.on{opacity:1; transform: translateY(0)}
-
-    @media (prefers-reduced-motion: reduce){
-      .reveal{transition:none}
-      .btn{transition:none}
-      .tab{transition:none}
-    }
-
-    /* Hide any sensitive technical labels */
-    [data-private]{display:none !important}
+    .prod h3{margin:0; font-size:14px}
+    .price{font-weight:800; letter-spacing:.2px}
+    .badges{display:flex; gap:8px; flex-wrap:wrap}
+    .badge{font-size:11px; padding:5px 9px; border-radius:999px; border:1px solid rgba(255,255,255,.12); background: rgba(255,255,255,.06)}
+    .badge.y{border-color: rgba(255,209,26,.4); background: rgba(255,209,26,.10)}
+    .badge.r{border-color: rgba(255,59,48,.45); background: rgba(255,59,48,.10)}
+    .badge.g{border-color: rgba(34,197,94,.45); background: rgba(34,197,94,.10)}
+    .mini{font-size:12px; color:var(--muted); line-height:1.3}
+    .hr{height:1px; background:rgba(255,255,255,.08); margin:12px 0}
+    /* Support modal */
+    .backdrop{position:fixed; inset:0; background:rgba(0,0,0,.62); display:none; z-index:1000; padding:18px}
+    .modal{max-width:560px; margin:6vh auto; background:rgba(10,11,16,.95); border:1px solid rgba(255,255,255,.14); border-radius:20px; box-shadow:var(--shadow); overflow:hidden}
+    .modal .mhd{display:flex; align-items:center; justify-content:space-between; gap:10px; padding:14px 14px; border-bottom:1px solid rgba(255,255,255,.10)}
+    .close{width:40px; height:40px; border-radius:12px; border:1px solid rgba(255,255,255,.12); background: rgba(255,255,255,.06); cursor:pointer}
+    .chat{height:340px; overflow:auto; padding:14px; background: rgba(0,0,0,.20)}
+    .msg{border:1px solid rgba(255,255,255,.10); border-radius:16px; padding:10px 10px; margin:10px 0; background: rgba(255,255,255,.04)}
+    .msg.you{background: rgba(255,209,26,.08); border-color: rgba(255,209,26,.22)}
+    .msg .who{font-size:11px; opacity:.75; margin-bottom:6px}
+    .composer{display:flex; gap:10px; padding:12px; border-top:1px solid rgba(255,255,255,.10)}
+    .composer input{flex:1}
+    .hint{font-size:12px; color:var(--muted); padding:0 14px 12px}
+    footer{margin-top:18px; color:var(--muted); font-size:12px}
   </style>
 </head>
 <body>
-  <header class="topbar">
-    <div class="topbar-inner">
-      <div class="brand" role="button" tabindex="0" id="goHome">
-        <div class="logo" aria-hidden="true"><span>VV</span></div>
-        <div class="brand-title">
-          <strong>ViralVault Store</strong>
-          <small id="sysStatus">Checando sistema…</small>
-        </div>
+<header>
+  <div class="topbar">
+    <div class="brand">
+      <div class="logo" aria-hidden="true"></div>
+      <div>
+        <h1>ViralVault</h1>
+        <div class="sub">Loja digital — checkout PIX • status oficial</div>
       </div>
-
-      <div class="spacer"></div>
-
-      <div class="pill" title="Idioma">
-        <span aria-hidden="true">🌐</span>
-        <select id="langSel" aria-label="Idioma">
-          <option value="pt-BR">PT-BR</option>
-          <option value="en">EN</option>
-          <option value="es">ES</option>
-        </select>
-      </div>
-
-      <button class="btn" id="discordBtn" type="button" aria-label="Abrir Discord">Discord</button>
-      <button class="btn" id="installBtn" type="button" style="display:none" aria-label="Instalar app">Instalar</button>
     </div>
-  </header>
-
-  <main class="wrap">
-    <section class="hero reveal" id="sec-home">
-      <div class="scene" id="scene">
-        <div class="hero-grid">
-          <div>
-            <div class="kicker"><span class="dot" aria-hidden="true"></span><span id="kickerText">Checkout PIX • Verificação Order ID • Anti-golpe</span></div>
-            <h1 id="heroTitle">Organize seus itens do Roblox com um checkout sério.</h1>
-            <p class="lead" id="heroLead">Catálogo dinâmico + pedido com PIX + verificação por Order ID. Fluxo rápido, sem confusão. Suporte via Discord.</p>
-
-            <div class="cta-row">
-              <button class="btn primary" id="ctaCatalog" type="button">Ver catálogo</button>
-              <button class="btn" id="ctaCheckout" type="button">Ir pro checkout</button>
-              <button class="btn" id="ctaOrder" type="button">Ver pedido</button>
-            </div>
-
-            <div class="catalog-controls" style="margin-top:14px">
-              <span class="chip" id="chipWorker"><b>Worker</b> <span id="chipWorkerState">…</span></span>
-              <span class="chip"><b>Cache</b> <span id="chipCache">local</span></span>
-              <span class="chip"><b>Modo</b> <span id="chipMode">PWA</span></span>
-            </div>
-          </div>
-
-          <aside class="glass quick" aria-label="Painel rápido">
-            <strong id="quickTitle">Painel</strong>
-            <div class="metric"><span id="m1">Catálogo</span><span id="m1v">—</span></div>
-            <div class="bar" aria-hidden="true"><i id="m1b"></i></div>
-            <div class="metric"><span id="m2">Carrinho</span><span id="m2v">0 itens</span></div>
-            <div class="bar" aria-hidden="true"><i id="m2b" style="width:0%"></i></div>
-            <div class="metric"><span id="m3">Último pedido</span><span id="m3v">—</span></div>
-            <div class="hint" id="quickHint">Dica: finalize o pedido e guarde seu <b>Order ID</b> para acompanhar.</div>
-
-            <div class="row" style="margin-top: 10px">
-              <button class="btn" id="reloadCatalog" type="button">Recarregar catálogo</button>
-              <button class="btn" id="resetLocal" type="button">Reset local</button>
-            </div>
-          </aside>
-        </div>
-      </div>
-    </section>
-
-    <section class="section reveal" id="sec-catalog">
-      <div class="card">
-        <h2 id="catTitle">Catálogo</h2>
-        <p id="catLead">Busque, selecione quantidades e adicione ao carrinho. Tudo salva localmente.</p>
-
-        <div class="catalog-controls">
-          <div class="search" role="search">
-            <span aria-hidden="true">🔎</span>
-            <input id="searchInput" placeholder="Buscar produto…" autocomplete="off" />
-          </div>
-          <button class="btn" id="viewCart" type="button">Ver carrinho</button>
-          <button class="btn" id="toCheckout" type="button">Ir pro checkout</button>
-        </div>
-
-        <div class="products" id="products"></div>
-      </div>
-    </section>
-
-    <section class="section reveal" id="sec-checkout">
-      <div class="card">
-        <h2 id="coTitle">Checkout (PIX)</h2>
-        <p id="coLead">Finalize em etapas. Você gera o pedido, paga via PIX e acompanha pelo Order ID.</p>
-
-        <div class="steps" aria-label="Etapas">
-          <div class="step"><b>1</b><span id="s1">Dados</span></div>
-          <div class="step"><b>2</b><span id="s2">Revisão</span></div>
-          <div class="step"><b>3</b><span id="s3">PIX</span></div>
-        </div>
-
-        <div class="grid2" style="margin-top:14px">
-          <div class="panel">
-            <div class="form">
-              <div class="field">
-                <label for="robloxUser" id="lblUser">Seu user do Roblox (obrigatório)</label>
-                <input id="robloxUser" placeholder="Ex: MeuUser_123" inputmode="text" autocomplete="username" />
-              </div>
-              <div class="field">
-                <label for="coupon" id="lblCoupon">Cupom (opcional)</label>
-                <input id="coupon" placeholder="Ex: VV10" inputmode="text" autocomplete="off" />
-              </div>
-              <div class="field" style="grid-column: 1 / -1">
-                <label for="notes" id="lblNotes">Observações (opcional)</label>
-                <textarea id="notes" placeholder="Ex: Entregar no horário X…"></textarea>
-              </div>
-            </div>
-
-            <div class="row">
-              <button class="btn" id="reviewBtn" type="button">Revisar pedido</button>
-              <button class="btn primary" id="createOrderBtn" type="button">Gerar Order ID + PIX</button>
-            </div>
-            <div class="note" id="coHint">Você precisa ter itens no carrinho para gerar pedido.</div>
-          </div>
-
-          <div class="panel">
-            <div style="display:flex; align-items:center; justify-content:space-between; gap:10px">
-              <strong id="cartTitle">Carrinho</strong>
-              <span class="chip"><b>Total</b> <span id="cartTotal">R$ 0,00</span></span>
-            </div>
-
-            <div id="cartList" style="margin-top:10px"></div>
-
-            <div class="row">
-              <button class="btn" id="clearCart" type="button">Limpar carrinho</button>
-              <button class="btn" id="saveCart" type="button">Salvar</button>
-            </div>
-          </div>
-        </div>
-
-        <div class="panel" style="margin-top:14px" id="pixPanel">
-          <strong id="pixTitle">PIX</strong>
-          <p class="note" id="pixLead">Após gerar o pedido, o PIX aparece aqui. Guarde seu Order ID.</p>
-          <div class="row">
-            <button class="btn" id="copyPix" type="button" disabled>Copiar PIX</button>
-            <button class="btn" id="copyOrderId" type="button" disabled>Copiar Order ID</button>
-          </div>
-          <div class="note" id="pixOut" style="margin-top:10px"></div>
-        </div>
-      </div>
-    </section>
-
-    <section class="section reveal" id="sec-order">
-      <div class="card">
-        <h2 id="orderTitle">Pedido</h2>
-        <p id="orderLead">Cole seu Order ID para validar se é oficial e ver andamento.</p>
-
-        <div class="grid2" style="margin-top:12px">
-          <div class="panel">
-            <div class="field">
-              <label for="orderIdIn" id="lblOrderId">Cole o Order ID</label>
-              <input id="orderIdIn" placeholder="Ex: VV-2026-…" autocomplete="off" inputmode="text" />
-            </div>
-            <div class="row">
-              <button class="btn primary" id="checkOrderBtn" type="button">Verificar</button>
-              <button class="btn" id="useLastOrder" type="button">Usar último</button>
-            </div>
-            <div class="note" id="orderOut" style="margin-top:10px"></div>
-          </div>
-
-          <div class="panel">
-            <strong id="purchasesTitle">Minhas Compras</strong>
-            <p class="note" id="purchasesLead" style="margin-top:6px">Lista local + (se disponível) histórico real do Worker pelo seu user.</p>
-            <div class="row" style="margin-top:10px">
-              <button class="btn" id="loadPurchases" type="button">Carregar por user</button>
-              <button class="btn" id="clearPurchases" type="button">Limpar histórico</button>
-            </div>
-            <div id="purchases" style="margin-top:10px"></div>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <section class="section reveal" id="sec-lab">
-      <div class="card">
-        <h2 id="labTitle">ViralVault Lab</h2>
-        <p id="labLead">Um toque “único”: ferramentas leves e divertidas, sem atrapalhar o checkout.</p>
-
-        <div class="lab-grid">
-          <div class="lab-card">
-            <h3 id="ambTitle">Ambient Mixer (anti-ruído)</h3>
-            <p id="ambLead">Misture som suave (gerado localmente) para foco. Não usa arquivos externos.</p>
-
-            <div class="row" style="margin-top:8px">
-              <button class="btn" id="ambToggle" type="button">Ativar</button>
-              <span class="chip"><b>Status</b> <span id="ambState">off</span></span>
-            </div>
-
-            <div class="slider"><span style="width:80px;color:var(--muted2)">Ruído</span><input id="ambNoise" type="range" min="0" max="100" value="18" /><span id="ambNoiseV" style="width:34px;text-align:right;color:var(--muted2)">18</span></div>
-            <div class="slider"><span style="width:80px;color:var(--muted2)">Brisa</span><input id="ambWind" type="range" min="0" max="100" value="10" /><span id="ambWindV" style="width:34px;text-align:right;color:var(--muted2)">10</span></div>
-            <div class="slider"><span style="width:80px;color:var(--muted2)">Ping</span><input id="ambPing" type="range" min="0" max="100" value="6" /><span id="ambPingV" style="width:34px;text-align:right;color:var(--muted2)">6</span></div>
-
-            <div class="note" id="ambNote" style="margin-top:8px">Dica: se o navegador bloquear áudio, toque em “Ativar” novamente após interagir.</div>
-          </div>
-
-          <div class="lab-card">
-            <h3 id="sandTitle">This is Sand (mini)</h3>
-            <p id="sandLead">Toque/arraste para “despejar” areia digital. Funciona offline.</p>
-            <canvas class="sand" id="sandCanvas" width="900" height="480" aria-label="Areia digital"></canvas>
-            <div class="row">
-              <button class="btn" id="sandClear" type="button">Limpar</button>
-              <button class="btn" id="sandPause" type="button">Pausar</button>
-              <span class="chip"><b>FPS</b> <span id="sandFps">—</span></span>
-            </div>
-          </div>
-
-          <div class="lab-card">
-            <h3 id="futureTitle">Future Note</h3>
-            <p id="futureLead">Escreva uma mensagem para você mesmo e escolha uma data. Desbloqueia automaticamente.</p>
-            <div class="field">
-              <label for="futureDate">Desbloquear em</label>
-              <input id="futureDate" type="date" />
-            </div>
-            <div class="field" style="margin-top:8px">
-              <label for="futureMsg">Mensagem</label>
-              <textarea id="futureMsg" placeholder="Escreva aqui…"></textarea>
-            </div>
-            <div class="row">
-              <button class="btn primary" id="futureSave" type="button">Salvar</button>
-              <button class="btn" id="futureOpen" type="button">Ver</button>
-              <button class="btn" id="futureDel" type="button">Apagar</button>
-            </div>
-            <div class="note" id="futureOut" style="margin-top:10px"></div>
-          </div>
-
-          <div class="lab-card">
-            <h3 id="randomTitle">Useless-ish Button</h3>
-            <p id="randomLead">Um botão “aleatório”, mas sempre útil: alterna entre dicas rápidas do site.</p>
-            <div class="row">
-              <button class="btn" id="randomTip" type="button">Me dá uma dica</button>
-              <span class="chip"><b>Modo</b> <span id="tipMode">prod</span></span>
-            </div>
-            <div class="note" id="tipOut" style="margin-top:10px">—</div>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <section class="section reveal" id="sec-faq">
-      <div class="card">
-        <h2 id="faqTitle">FAQ</h2>
-        <p id="faqLead">Rápido e direto.</p>
-
-        <div class="panel" style="margin-top:12px">
-          <details>
-            <summary id="faq1" style="cursor:pointer; padding:10px;">Como sei que é oficial?</summary>
-            <div class="note" id="faq1a" style="padding: 0 10px 10px;">Use a aba <b>Pedido</b> e verifique o status. Se o Order ID aparecer como válido, é oficial.</div>
-          </details>
-          <details>
-            <summary id="faq2" style="cursor:pointer; padding:10px;">Quanto tempo para entrega?</summary>
-            <div class="note" id="faq2a" style="padding: 0 10px 10px;">Depende do produto. Prioridade (24h) é entregue primeiro.</div>
-          </details>
-          <details>
-            <summary id="faq3" style="cursor:pointer; padding:10px;">Suporte</summary>
-            <div class="note" style="padding: 0 10px 10px;">Entre no Discord e abra um ticket/DM.</div>
-            <div class="row" style="padding: 0 10px 10px;">
-              <button class="btn primary" id="discordBtn2" type="button">Abrir Discord</button>
-            </div>
-          </details>
-        </div>
-
-      </div>
-    </section>
-
-    <!-- Technical hints kept private -->
-    <div data-private id="apiBase"></div>
-  </main>
-
-  <div class="tabs" aria-label="Navegação">
-    <nav class="tabbar">
-      <button class="tab active" data-go="home" type="button">🛍️ <span id="tCat">Catálogo</span></button>
-      <button class="tab" data-go="checkout" type="button">🧾 <span id="tCheckout">Checkout</span></button>
-      <button class="tab" data-go="order" type="button">📦 <span id="tOrder">Pedido</span></button>
-      <button class="tab" data-go="faq" type="button">❓ <span id="tFAQ">FAQ</span></button>
-    </nav>
+    <div class="spacer"></div>
+    <div class="pillbar">
+      <a class="pill" id="discordTop" href="https://discord.gg/fWAWquBu" target="_blank" rel="noopener">
+        <svg class="icon" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+          <path d="M8.7 8.3c.2 0 .4.2.4.4s-.2.4-.4.4-.4-.2-.4-.4.2-.4.4-.4Zm6.6 0c.2 0 .4.2.4.4s-.2.4-.4.4-.4-.2-.4-.4.2-.4.4-.4Z" fill="currentColor"/>
+          <path d="M16.6 6.2A14 14 0 0 0 14 5.6a9 9 0 0 0-.4.9c-1.2-.2-2.4-.2-3.6 0a9 9 0 0 0-.4-.9 14 14 0 0 0-2.6.6A12.8 12.8 0 0 0 5 16.2c1 .8 2.2 1.4 3.4 1.8.3-.4.6-.8.8-1.2-.4-.2-.9-.4-1.3-.6l.3-.2c2.5 1.2 5.2 1.2 7.7 0l.3.2c-.4.2-.8.5-1.3.6.2.4.5.8.8 1.2 1.2-.4 2.4-1 3.4-1.8a12.8 12.8 0 0 0-2.3-10Z" stroke="currentColor" stroke-width="1.4" opacity=".9"/>
+        </svg>
+        <strong>Discord</strong>
+      </a>
+      <button class="pill" id="supportBtn" type="button" title="Suporte (chat)">
+        <svg class="icon" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+          <path d="M7 18.5c-1.1 0-2-.9-2-2V7.8c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2v8.7c0 1.1-.9 2-2 2H10l-3.2 2.2c-.5.3-1.1 0-1.1-.6V18.5Z" stroke="currentColor" stroke-width="1.4" opacity=".9"/>
+          <path d="M8 10h8M8 13h6" stroke="currentColor" stroke-width="1.4" opacity=".9"/>
+        </svg>
+        <strong>Suporte</strong>
+      </button>
+    </div>
   </div>
+</header>
 
-  <div class="toast" id="toast" role="status" aria-live="polite"></div>
-
-  <script>
-  (() => {
-    'use strict';
-
-    // ========= CONFIG =========
-    // Keep API base hidden from UI (not rendered). Still accessible from code.
-    const API_BASE = 'https://viralvault-sign.darlanana06.workers.dev';
-    const DISCORD_INVITE = 'https://discord.gg/fWAWquBu';
-
-    const $ = (s, el=document) => el.querySelector(s);
-    const $$ = (s, el=document) => Array.from(el.querySelectorAll(s));
-
-    const fmtBRL = (n) => {
-      const v = Number(n || 0);
-      return v.toLocaleString('pt-BR', { style:'currency', currency:'BRL' });
-    };
-
-    const store = {
-      get(k, d=null){ try{ const v = localStorage.getItem(k); return v ? JSON.parse(v) : d; }catch{ return d; } },
-      set(k, v){ try{ localStorage.setItem(k, JSON.stringify(v)); }catch{} },
-      del(k){ try{ localStorage.removeItem(k); }catch{} }
-    };
-
-    // ========= UI HELPERS =========
-    const toast = (msg) => {
-      const t = $('#toast');
-      t.textContent = msg;
-      t.style.display = 'block';
-      clearTimeout(toast._t);
-      toast._t = setTimeout(() => { t.style.display = 'none'; }, 2600);
-    };
-
-    const safeOpen = (url) => {
-      try{
-        const w = window.open(url, '_blank', 'noopener,noreferrer');
-        if (!w) window.location.href = url;
-      }catch{ window.location.href = url; }
-    };
-
-    // ========= PWA / SW =========
-    // Inline service worker (no extra files)
-    const SW_CODE = `
-      const CACHE = 'vv-cache-v15';
-      const CORE = ['.'];
-      self.addEventListener('install', (e)=>{
-        e.waitUntil((async()=>{
-          const c = await caches.open(CACHE);
-          await c.addAll(CORE);
-          self.skipWaiting();
-        })());
-      });
-      self.addEventListener('activate', (e)=>{
-        e.waitUntil((async()=>{
-          const keys = await caches.keys();
-          await Promise.all(keys.filter(k=>k!==CACHE).map(k=>caches.delete(k)));
-          self.clients.claim();
-        })());
-      });
-      self.addEventListener('fetch', (e)=>{
-        const req = e.request;
-        const url = new URL(req.url);
-        if (req.method !== 'GET') return;
-        // Only cache same-origin navigations/static. Let API pass-through.
-        if (url.origin !== self.location.origin) return;
-        e.respondWith((async()=>{
-          const cache = await caches.open(CACHE);
-          const cached = await cache.match(req);
-          if (cached) return cached;
-          const res = await fetch(req);
-          // Cache successful HTML/CSS/JS and navigations.
-          if (res && res.ok && (req.mode === 'navigate' || /text\/html|text\/css|javascript/.test(res.headers.get('content-type')||''))) {
-            cache.put(req, res.clone());
-          }
-          return res;
-        })().catch(()=> caches.match('.')));
-      });
-    `;
-
-    const registerSW = async () => {
-      if (!('serviceWorker' in navigator)) return;
-      try{
-        const blob = new Blob([SW_CODE], {type:'text/javascript'});
-        const url = URL.createObjectURL(blob);
-        const reg = await navigator.serviceWorker.register(url, { scope: './' });
-        URL.revokeObjectURL(url);
-        return reg;
-      }catch{}
-    };
-
-    // Install prompt
-    let deferredPrompt = null;
-    window.addEventListener('beforeinstallprompt', (e) => {
-      e.preventDefault();
-      deferredPrompt = e;
-      $('#installBtn').style.display = '';
-    });
-
-    $('#installBtn').addEventListener('click', async () => {
-      if (!deferredPrompt) return toast('Instalação indisponível agora.');
-      deferredPrompt.prompt();
-      const choice = await deferredPrompt.userChoice;
-      deferredPrompt = null;
-      $('#installBtn').style.display = 'none';
-      toast(choice && choice.outcome === 'accepted' ? 'Instalado ✅' : 'Ok.');
-    });
-
-    // ========= SCROLL / NAV =========
-    const sections = {
-      home: $('#sec-home'),
-      catalog: $('#sec-catalog'),
-      checkout: $('#sec-checkout'),
-      order: $('#sec-order'),
-      faq: $('#sec-faq')
-    };
-
-    const go = (key) => {
-      const el = sections[key] || sections.home;
-      el.scrollIntoView({behavior:'smooth', block:'start'});
-      $$('.tab').forEach(t => t.classList.toggle('active', t.dataset.go === key || (key==='home' && t.dataset.go==='home')));
-    };
-
-    $$('.tab').forEach(t => t.addEventListener('click', () => {
-      const k = t.dataset.go;
-      if (k === 'home') return go('catalog'); // UX: first tab lands on catalog
-      go(k);
-    }));
-
-    $('#ctaCatalog').addEventListener('click', () => go('catalog'));
-    $('#ctaCheckout').addEventListener('click', () => go('checkout'));
-    $('#ctaOrder').addEventListener('click', () => go('order'));
-    $('#goHome').addEventListener('click', () => window.scrollTo({top:0, behavior:'smooth'}));
-
-    // Reveal on scroll
-    const io = new IntersectionObserver((entries) => {
-      entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('on'); });
-    }, { threshold: 0.08 });
-    $$('.reveal').forEach(el => io.observe(el));
-
-    // Cinematic parallax (lightweight)
-    const scene = $('#scene');
-    let raf = 0;
-    const parallax = (x, y) => {
-      if (matchMedia('(prefers-reduced-motion: reduce)').matches) return;
-      cancelAnimationFrame(raf);
-      raf = requestAnimationFrame(() => {
-        const dx = (x - window.innerWidth/2) / window.innerWidth;
-        const dy = (y - 180) / 420;
-        scene.style.transform = `translate3d(${dx * -10}px, ${dy * -6}px, 0)`;
-      });
-    };
-    scene.addEventListener('pointermove', (e) => parallax(e.clientX, e.clientY));
-    scene.addEventListener('pointerleave', () => { scene.style.transform = 'translate3d(0,0,0)'; });
-
-    // ========= DISCORD =========
-    const openDiscord = () => safeOpen(DISCORD_INVITE);
-    $('#discordBtn').addEventListener('click', openDiscord);
-    $('#discordBtn2').addEventListener('click', openDiscord);
-
-    // ========= API =========
-    const api = async (path, opts={}) => {
-      const url = API_BASE + path;
-      const headers = Object.assign({ 'content-type':'application/json' }, opts.headers || {});
-      const res = await fetch(url, Object.assign({ headers, mode:'cors' }, opts));
-      const txt = await res.text();
-      let data = null;
-      try{ data = txt ? JSON.parse(txt) : null; }catch{ data = { raw: txt }; }
-      if (!res.ok) {
-        const msg = (data && (data.error || data.message)) ? (data.error || data.message) : `HTTP ${res.status}`;
-        throw new Error(msg);
-      }
-      return data;
-    };
-
-    const setStatus = (ok, extra='') => {
-      const el = $('#sysStatus');
-      if (ok) {
-        el.textContent = 'Sistema online' + (extra ? ` • ${extra}` : '');
-        $('#chipWorkerState').textContent = 'ok';
-        $('#chipWorkerState').style.color = 'var(--good)';
-        $('#chipWorkerState').style.fontWeight = '800';
-        $('#chipWorkerState').style.letterSpacing = '.2px';
-      } else {
-        el.textContent = 'Sistema offline' + (extra ? ` • ${extra}` : '');
-        $('#chipWorkerState').textContent = 'offline';
-        $('#chipWorkerState').style.color = 'var(--warn)';
-      }
-    };
-
-    const healthCheck = async () => {
-      try{
-        const h = await api('/health', { method:'GET' });
-        setStatus(true, 'Worker OK');
-        return h;
-      }catch(err){
-        setStatus(false, 'tentando cache');
-        return null;
-      }
-    };
-
-    // ========= CATALOG / CART =========
-    const state = {
-      products: [],
-      cart: store.get('vv_cart', {}),
-      lastOrderId: store.get('vv_last_order', ''),
-      purchases: store.get('vv_purchases', [])
-    };
-
-    const cartCount = () => Object.values(state.cart).reduce((a, it) => a + (it.qty || 0), 0);
-    const cartTotal = () => Object.values(state.cart).reduce((a, it) => a + (Number(it.price||0) * (it.qty||0)), 0);
-
-    const renderCart = () => {
-      const el = $('#cartList');
-      const entries = Object.values(state.cart);
-      $('#m2v').textContent = `${cartCount()} itens`;
-      $('#m2b').style.width = Math.min(100, cartCount()*12) + '%';
-      $('#cartTotal').textContent = fmtBRL(cartTotal());
-
-      if (!entries.length) {
-        el.innerHTML = `<div class="note">Carrinho vazio.</div>`;
-        return;
-      }
-
-      el.innerHTML = entries.map(it => {
-        return `
-          <div style="display:flex; align-items:center; justify-content:space-between; gap:10px; padding:10px; border-radius:16px; border:1px solid rgba(255,255,255,.10); background: rgba(0,0,0,.14); margin-bottom:10px;">
-            <div style="min-width:0">
-              <div style="font-weight:800; font-size:13px; white-space:nowrap; overflow:hidden; text-overflow:ellipsis">${escapeHtml(it.name||'Item')}</div>
-              <div style="color:var(--muted2); font-size:12px">${fmtBRL(it.price)} • qnt: ${it.qty}</div>
-            </div>
-            <div style="display:flex; gap:8px; align-items:center;">
-              <button class="btn" style="padding:10px 12px" data-dec="${it.id}">-</button>
-              <button class="btn" style="padding:10px 12px" data-inc="${it.id}">+</button>
-              <button class="btn" style="padding:10px 12px" data-rem="${it.id}">Remover</button>
-            </div>
-          </div>
-        `;
-      }).join('');
-
-      $$('[data-inc]', el).forEach(b => b.addEventListener('click', () => setQty(b.dataset.inc, (state.cart[b.dataset.inc]?.qty||0)+1)));
-      $$('[data-dec]', el).forEach(b => b.addEventListener('click', () => setQty(b.dataset.dec, Math.max(0,(state.cart[b.dataset.dec]?.qty||0)-1))));
-      $$('[data-rem]', el).forEach(b => b.addEventListener('click', () => setQty(b.dataset.rem, 0)));
-    };
-
-    const setQty = (id, qty) => {
-      const p = state.products.find(x => x.id === id) || state.cart[id];
-      if (!p) return;
-      if (qty <= 0) delete state.cart[id];
-      else state.cart[id] = { id, name: p.name, price: p.price, qty };
-      store.set('vv_cart', state.cart);
-      renderCart();
-      renderProducts($('#searchInput').value || '');
-    };
-
-    const renderProducts = (q='') => {
-      const el = $('#products');
-      const query = (q||'').trim().toLowerCase();
-      const list = state.products.filter(p => !query || (p.name||'').toLowerCase().includes(query) || (p.id||'').toLowerCase().includes(query));
-
-      $('#m1v').textContent = `${list.length} itens`;
-      $('#m1b').style.width = Math.min(100, (list.length / Math.max(1,state.products.length)) * 100) + '%';
-
-      if (!list.length) {
-        el.innerHTML = `<div class="note">Nenhum produto encontrado.</div>`;
-        return;
-      }
-
-      el.innerHTML = list.map(p => {
-        const curQty = state.cart[p.id]?.qty || 0;
-        return `
-          <article class="product">
-            <div class="top">
-              <div style="min-width:0">
-                <strong title="${escapeHtml(p.name)}">${escapeHtml(p.name)}</strong>
-                <div><small>${escapeHtml(p.description||'')}</small></div>
-              </div>
-              <div style="text-align:right">
-                <div class="price">${fmtBRL(p.price)}</div>
-                <div><small>${escapeHtml(p.badge||'')}</small></div>
-              </div>
-            </div>
-            <div class="actions">
-              <div class="qty" aria-label="Quantidade">
-                <button type="button" data-qdec="${p.id}">-</button>
-                <input value="${curQty}" readonly aria-label="Quantidade atual" />
-                <button type="button" data-qinc="${p.id}">+</button>
-              </div>
-              <button class="btn primary" type="button" data-add="${p.id}">${curQty ? 'Atualizar' : 'Adicionar'}</button>
-            </div>
-          </article>
-        `;
-      }).join('');
-
-      $$('[data-qinc]', el).forEach(b => b.addEventListener('click', () => {
-        const id = b.dataset.qinc;
-        setQty(id, (state.cart[id]?.qty||0) + 1);
-      }));
-      $$('[data-qdec]', el).forEach(b => b.addEventListener('click', () => {
-        const id = b.dataset.qdec;
-        setQty(id, Math.max(0, (state.cart[id]?.qty||0) - 1));
-      }));
-      $$('[data-add]', el).forEach(b => b.addEventListener('click', () => {
-        const id = b.dataset.add;
-        const cur = state.cart[id]?.qty || 0;
-        if (!cur) setQty(id, 1);
-        toast('Carrinho atualizado.');
-      }));
-    };
-
-    const loadCatalog = async ({ force=false } = {}) => {
-      const cached = store.get('vv_catalog_cache', null);
-      const cachedAt = store.get('vv_catalog_cache_at', 0);
-      const fresh = (Date.now() - cachedAt) < (10*60*1000);
-
-      if (cached && fresh && !force) {
-        state.products = normalizeProducts(cached);
-        renderProducts($('#searchInput').value || '');
-        toast('Catálogo (cache)');
-        return;
-      }
-
-      try{
-        const data = await api('/catalog', { method:'GET' });
-        const products = (data && (data.products || data.items)) ? (data.products || data.items) : [];
-        state.products = normalizeProducts(products);
-        store.set('vv_catalog_cache', products);
-        store.set('vv_catalog_cache_at', Date.now());
-        renderProducts($('#searchInput').value || '');
-        toast('Catálogo atualizado.');
-      }catch(err){
-        if (cached) {
-          state.products = normalizeProducts(cached);
-          renderProducts($('#searchInput').value || '');
-          toast('Sem rede: usando cache.');
-        } else {
-          $('#products').innerHTML = `<div class="note">Falha ao carregar catálogo: ${escapeHtml(err.message||'erro')}</div>`;
-        }
-      }
-    };
-
-    const normalizeProducts = (arr) => {
-      const out = Array.isArray(arr) ? arr : [];
-      return out.map((p, idx) => {
-        const id = String(p.id || p.sku || `p_${idx}`);
-        const name = String(p.name || p.title || id);
-        const price = Number(p.price || p.value || 0);
-        const description = String(p.description || '');
-        const badge = String(p.badge || '');
-        return { id, name, price, description, badge };
-      });
-    };
-
-    const escapeHtml = (s) => String(s).replace(/[&<>"']/g, m => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m]));
-
-    // Search
-    $('#searchInput').addEventListener('input', () => renderProducts($('#searchInput').value || ''));
-
-    // Cart buttons
-    $('#viewCart').addEventListener('click', () => { go('checkout'); toast('Carrinho no checkout.'); });
-    $('#toCheckout').addEventListener('click', () => go('checkout'));
-    $('#clearCart').addEventListener('click', () => {
-      state.cart = {};
-      store.set('vv_cart', state.cart);
-      renderCart();
-      renderProducts($('#searchInput').value || '');
-      toast('Carrinho limpo.');
-    });
-    $('#saveCart').addEventListener('click', () => { store.set('vv_cart', state.cart); toast('Salvo.'); });
-
-    // ========= CREATE ORDER =========
-    const validateUser = (u) => /^[A-Za-z0-9_]{3,20}$/.test(u || '');
-
-    const buildOrderPayload = () => {
-      const user = ($('#robloxUser').value || '').trim();
-      const coupon = ($('#coupon').value || '').trim();
-      const notes = ($('#notes').value || '').trim();
-      if (!validateUser(user)) throw new Error('User obrigatório (3-20, letras/números/_)');
-      const items = Object.values(state.cart).map(it => ({ id: it.id, qty: it.qty }));
-      if (!items.length) throw new Error('Carrinho vazio');
-      return { user, coupon, notes, items };
-    };
-
-    const showPix = (order) => {
-      const orderId = order?.orderId || order?.id || '';
-      const pix = order?.pix || order?.pixCopiaCola || order?.pix_copia_cola || '';
-      const total = order?.total ?? null;
-
-      $('#pixOut').innerHTML = `
-        <div style="display:flex; flex-wrap:wrap; gap:10px; align-items:center; margin-top:8px">
-          <span class="chip"><b>Order ID</b> <span id="orderIdView">${escapeHtml(orderId || '—')}</span></span>
-          <span class="chip"><b>Total</b> <span>${total != null ? fmtBRL(total) : fmtBRL(cartTotal())}</span></span>
-          <span class="chip"><b>Status</b> <span>${escapeHtml(order?.status || 'created')}</span></span>
+<div class="wrap">
+  <div class="grid">
+    <section class="card">
+      <div class="hd">
+        <div>
+          <h2 class="title">Catálogo</h2>
+          <div class="muted">Produtos carregados do seu Worker. Suporte oficial: Discord.</div>
         </div>
-        <div class="note" style="margin-top:10px">PIX copia e cola:</div>
-        <div style="margin-top:8px; padding:12px; border-radius:16px; border:1px solid rgba(255,255,255,.10); background: rgba(0,0,0,.18); word-break: break-all;">${escapeHtml(pix || 'PIX indisponível')}</div>
-      `;
+        <span class="tag" id="catalogTag">Carregando…</span>
+      </div>
+      <div class="body">
+        <div class="products" id="products"></div>
 
-      $('#copyPix').disabled = !pix;
-      $('#copyOrderId').disabled = !orderId;
+        <div class="hr"></div>
 
-      const save = { orderId, when: Date.now(), user: ($('#robloxUser').value||'').trim(), items: Object.values(state.cart) };
-      if (orderId) {
-        state.lastOrderId = orderId;
-        store.set('vv_last_order', orderId);
-        $('#m3v').textContent = orderId;
-        // local purchases log
-        state.purchases.unshift(save);
-        state.purchases = state.purchases.slice(0, 50);
-        store.set('vv_purchases', state.purchases);
-        renderPurchases(state.purchases);
-      }
+        <h2 class="title" style="margin:0 0 8px">Criar pedido (PIX)</h2>
+        <div class="muted" style="margin-bottom:10px">Selecione um produto, informe seu usuário e gere o PIX + Order ID.</div>
 
-      toast('Pedido criado.');
-    };
-
-    $('#reviewBtn').addEventListener('click', () => {
-      try{
-        const payload = buildOrderPayload();
-        toast(`Ok: ${payload.items.length} item(ns) para ${payload.user}`);
-      }catch(err){ toast(err.message || 'Erro'); }
-    });
-
-    $('#createOrderBtn').addEventListener('click', async () => {
-      try{
-        const payload = buildOrderPayload();
-        $('#createOrderBtn').disabled = true;
-        toast('Gerando pedido…');
-        const order = await api('/create-order', { method:'POST', body: JSON.stringify(payload) });
-        showPix(order);
-      }catch(err){
-        toast(err.message || 'Falha');
-        $('#pixOut').textContent = err.message || 'Falha.';
-      }finally{
-        $('#createOrderBtn').disabled = false;
-      }
-    });
-
-    $('#copyPix').addEventListener('click', async () => {
-      const text = $('#pixOut').innerText || '';
-      const m = text.match(/PIX copia e cola:\s*([\s\S]*)/i);
-      const pix = m ? m[1].trim() : '';
-      if (!pix) return toast('PIX indisponível.');
-      try{ await navigator.clipboard.writeText(pix); toast('PIX copiado.'); }catch{ toast('Não deu. Copie manualmente.'); }
-    });
-
-    $('#copyOrderId').addEventListener('click', async () => {
-      const el = $('#orderIdView');
-      const id = el ? el.textContent.trim() : state.lastOrderId;
-      if (!id) return toast('Sem Order ID.');
-      try{ await navigator.clipboard.writeText(id); toast('Order ID copiado.'); }catch{ toast('Não deu. Copie manualmente.'); }
-    });
-
-    // ========= ORDER STATUS / PURCHASES =========
-    const renderOrderStatus = (data) => {
-      const ok = data?.ok !== false;
-      const status = data?.status || data?.order?.status || '—';
-      const orderId = data?.orderId || data?.order?.orderId || '';
-      const paid = data?.paid ?? data?.order?.paid ?? null;
-      const delivered = data?.delivered ?? data?.order?.delivered ?? null;
-
-      const lines = [
-        ok ? `<span class="chip"><b>Válido</b> <span style="color:var(--good);font-weight:900">sim</span></span>` : `<span class="chip"><b>Válido</b> <span style="color:var(--bad);font-weight:900">não</span></span>`,
-        `<span class="chip"><b>Status</b> <span>${escapeHtml(status)}</span></span>`,
-        orderId ? `<span class="chip"><b>Order</b> <span>${escapeHtml(orderId)}</span></span>` : '',
-        paid != null ? `<span class="chip"><b>Pago</b> <span>${paid ? 'sim' : 'não'}</span></span>` : '',
-        delivered != null ? `<span class="chip"><b>Entregue</b> <span>${delivered ? 'sim' : 'não'}</span></span>` : ''
-      ].filter(Boolean);
-
-      $('#orderOut').innerHTML = lines.join(' ');
-    };
-
-    $('#checkOrderBtn').addEventListener('click', async () => {
-      const id = ($('#orderIdIn').value || '').trim() || state.lastOrderId;
-      if (!id) return toast('Cole um Order ID.');
-      try{
-        toast('Consultando…');
-        const data = await api(`/order-status?orderId=${encodeURIComponent(id)}`, { method:'GET' });
-        renderOrderStatus(data);
-      }catch(err){
-        $('#orderOut').textContent = err.message || 'Falha.';
-        toast(err.message || 'Falha');
-      }
-    });
-
-    $('#useLastOrder').addEventListener('click', () => {
-      if (!state.lastOrderId) return toast('Sem último pedido.');
-      $('#orderIdIn').value = state.lastOrderId;
-      toast('Ok.');
-    });
-
-    const renderPurchases = (list) => {
-      const el = $('#purchases');
-      if (!list || !list.length) {
-        el.innerHTML = `<div class="note">Sem histórico.</div>`;
-        return;
-      }
-      el.innerHTML = list.slice(0, 20).map(p => {
-        const when = new Date(p.when || Date.now()).toLocaleString('pt-BR');
-        const cnt = (p.items || []).reduce((a,it)=>a+(it.qty||0),0);
-        return `
-          <div style="padding:10px; border-radius:16px; border:1px solid rgba(255,255,255,.10); background: rgba(0,0,0,.14); margin-bottom:10px;">
-            <div style="display:flex; justify-content:space-between; gap:10px; align-items:center;">
-              <div style="min-width:0">
-                <div style="font-weight:900; font-size:13px; white-space:nowrap; overflow:hidden; text-overflow:ellipsis">${escapeHtml(p.orderId || '—')}</div>
-                <div style="color:var(--muted2); font-size:12px">${escapeHtml(p.user || '—')} • ${when}</div>
-              </div>
-              <span class="chip"><b>Itens</b> <span>${cnt}</span></span>
-            </div>
+        <div class="row" style="margin-bottom:10px">
+          <div style="flex:1; min-width:220px">
+            <label class="mini">Produto</label>
+            <select id="productSelect"></select>
           </div>
-        `;
-      }).join('');
-    };
+          <div style="flex:1; min-width:220px">
+            <label class="mini">Usuário (Roblox)</label>
+            <input id="userInput" placeholder="ex: James" autocomplete="username"/>
+          </div>
+        </div>
 
-    $('#loadPurchases').addEventListener('click', async () => {
-      const user = ($('#robloxUser').value || '').trim();
-      if (!validateUser(user)) return toast('Digite seu user (3-20).');
-      toast('Carregando…');
+        <div class="row">
+          <button class="btn primary" id="createOrderBtn" type="button">Gerar Pedido + PIX</button>
+          <button class="btn" id="copyPixBtn" type="button" disabled>Copiar PIX</button>
+          <button class="btn ghost" id="openDiscordBtn" type="button">Abrir Discord</button>
+        </div>
 
-      // Start with local
-      const local = state.purchases.filter(p => (p.user||'').toLowerCase() === user.toLowerCase());
-      renderPurchases(local.length ? local : state.purchases);
+        <div class="hr"></div>
 
-      // Try worker (if route exists)
-      try{
-        const data = await api(`/order-user?user=${encodeURIComponent(user)}`, { method:'GET' });
-        const orders = data?.orders || data?.items || [];
-        if (Array.isArray(orders) && orders.length) {
-          const mapped = orders.map(o => ({ orderId: o.orderId || o.id || '—', when: o.createdAt || o.ts || Date.now(), user }));
-          renderPurchases(mapped.concat(local));
-          toast('Histórico atualizado.');
-        } else {
-          toast('Sem histórico no servidor.');
-        }
-      }catch{
-        toast('Servidor não retornou histórico.');
-      }
+        <h2 class="title" style="margin:0 0 8px">Pedido (Status Oficial)</h2>
+        <div class="row" style="margin-bottom:10px">
+          <div style="flex:1; min-width:240px">
+            <label class="mini">Order ID</label>
+            <input id="orderIdInput" placeholder="vv_..." autocomplete="off"/>
+          </div>
+          <div style="display:flex; gap:10px; align-items:end">
+            <button class="btn" id="checkStatusBtn" type="button">Ver Status</button>
+          </div>
+        </div>
+
+        <pre id="statusBox" style="margin:0; padding:12px; border-radius:16px; background:rgba(0,0,0,.22); border:1px solid rgba(255,255,255,.12); color:rgba(242,244,255,.88); overflow:auto; max-height:280px"></pre>
+      </div>
+    </section>
+
+    <aside class="card">
+      <div class="hd">
+        <div>
+          <h2 class="title">Suporte</h2>
+          <div class="muted">Discord é o canal oficial. O chat do site é um assistente automático (grátis).</div>
+        </div>
+        <span class="tag">Discord-only</span>
+      </div>
+      <div class="body">
+        <div class="row">
+          <a class="btn primary" href="https://discord.gg/fWAWquBu" target="_blank" rel="noopener">Entrar no Discord</a>
+          <button class="btn" id="supportBtn2" type="button">Abrir Chat</button>
+        </div>
+
+        <div class="hr"></div>
+
+        <h2 class="title" style="margin:0 0 8px">Minhas Compras</h2>
+        <div class="muted" style="margin-bottom:10px">Busca pelo usuário (rota <code>/my-orders?user=</code>).</div>
+        <div class="row" style="margin-bottom:10px">
+          <div style="flex:1; min-width:220px">
+            <label class="mini">Usuário (Roblox)</label>
+            <input id="historyUser" placeholder="ex: James" autocomplete="username"/>
+          </div>
+          <div style="display:flex; align-items:end">
+            <button class="btn" id="loadHistoryBtn" type="button">Buscar</button>
+          </div>
+        </div>
+        <pre id="historyBox" style="margin:0; padding:12px; border-radius:16px; background:rgba(0,0,0,.22); border:1px solid rgba(255,255,255,.12); color:rgba(242,244,255,.88); overflow:auto; max-height:320px"></pre>
+
+        <footer>
+          <div>© <span id="yy"></span> ViralVault. Status e pedidos são verificados pelo sistema.</div>
+        </footer>
+      </div>
+    </aside>
+  </div>
+</div>
+
+<div class="backdrop" id="supportBackdrop" role="dialog" aria-modal="true" aria-label="Suporte ViralVault">
+  <div class="modal">
+    <div class="mhd">
+      <div>
+        <div class="title" style="margin:0">Suporte (Assistente)</div>
+        <div class="muted" style="font-size:12px">Para humano: Discord oficial.</div>
+      </div>
+      <button class="close" id="supportClose" type="button" aria-label="Fechar">✕</button>
+    </div>
+    <div class="chat" id="chatLog"></div>
+    <div class="composer">
+      <input id="chatInput" placeholder="Ex: paguei pix e não atualizou" autocomplete="off"/>
+      <button class="btn primary" id="chatSend" type="button">Enviar</button>
+    </div>
+    <div class="hint" id="chatHint"></div>
+  </div>
+</div>
+
+<script>
+(() => {
+  const API_BASE = "https://viralvault-sign.darlanana06.workers.dev";
+  const DISCORD = "https://discord.gg/fWAWquBu";
+  const $ = (id) => document.getElementById(id);
+  $("yy").textContent = new Date().getFullYear();
+
+  const esc = (s) => String(s).replace(/[&<>"']/g, c => ({ "&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#039;" }[c]));
+  const pretty = (obj) => JSON.stringify(obj, null, 2);
+
+  async function api(path, opts = {}) {
+    const r = await fetch(API_BASE + path, {
+      ...opts,
+      headers: { "Content-Type": "application/json", ...(opts.headers || {}) }
     });
+    const data = await r.json().catch(() => ({}));
+    if (!r.ok) throw new Error(data?.error || ("HTTP " + r.status));
+    return data;
+  }
 
-    $('#clearPurchases').addEventListener('click', () => {
-      state.purchases = [];
-      store.set('vv_purchases', state.purchases);
-      renderPurchases(state.purchases);
-      toast('Histórico limpo.');
-    });
+  // ---------- Catalog ----------
+  let products = [];
+  async function loadCatalog() {
+    try {
+      $("catalogTag").textContent = "Carregando…";
+      const data = await api("/catalog", { method: "GET", headers: {} });
+      products = Array.isArray(data?.products) ? data.products : [];
+      $("catalogTag").textContent = products.length ? (products.length + " itens") : "Vazio";
 
-    // ========= LAB: AMBIENT MIXER (WebAudio) =========
-    let audio = { ctx:null, master:null, noise:null, wind:null, ping:null, pingT:null, on:false };
-
-    const createNoise = (ctx) => {
-      const buf = ctx.createBuffer(1, ctx.sampleRate * 2, ctx.sampleRate);
-      const data = buf.getChannelData(0);
-      for (let i=0; i<data.length; i++) data[i] = (Math.random()*2 - 1) * 0.35;
-      const src = ctx.createBufferSource();
-      src.buffer = buf;
-      src.loop = true;
-      const gain = ctx.createGain();
-      gain.gain.value = 0.18;
-      src.connect(gain);
-      src.start();
-      return { src, gain };
-    };
-
-    const createWind = (ctx) => {
-      const osc = ctx.createOscillator();
-      osc.type = 'sine';
-      osc.frequency.value = 110;
-      const lfo = ctx.createOscillator();
-      lfo.type = 'sine';
-      lfo.frequency.value = 0.12;
-      const lfoGain = ctx.createGain();
-      lfoGain.gain.value = 38;
-      lfo.connect(lfoGain);
-      lfoGain.connect(osc.frequency);
-      const gain = ctx.createGain();
-      gain.gain.value = 0.10;
-      osc.connect(gain);
-      osc.start();
-      lfo.start();
-      return { osc, gain, lfo, lfoGain };
-    };
-
-    const schedulePing = () => {
-      if (!audio.on || !audio.ctx) return;
-      const ctx = audio.ctx;
-      const t = ctx.currentTime + 0.05;
-      const o = ctx.createOscillator();
-      o.type = 'triangle';
-      o.frequency.value = 660 + Math.random()*110;
-      const g = ctx.createGain();
-      g.gain.setValueAtTime(0.0001, t);
-      g.gain.exponentialRampToValueAtTime(0.06, t + 0.02);
-      g.gain.exponentialRampToValueAtTime(0.0001, t + 0.18);
-      o.connect(g);
-      g.connect(audio.master);
-      o.start(t);
-      o.stop(t + 0.22);
-
-      const base = 2800;
-      const density = Number($('#ambPing').value || 6);
-      const wait = Math.max(650, base - density*20) + Math.random()*700;
-      audio.pingT = setTimeout(schedulePing, wait);
-    };
-
-    const setAudioVolumes = () => {
-      if (!audio.ctx) return;
-      const nv = Number($('#ambNoise').value||0) / 100;
-      const wv = Number($('#ambWind').value||0) / 100;
-      audio.noise.gain.gain.value = 0.40 * nv;
-      audio.wind.gain.gain.value = 0.20 * wv;
-      $('#ambNoiseV').textContent = String($('#ambNoise').value);
-      $('#ambWindV').textContent = String($('#ambWind').value);
-      $('#ambPingV').textContent = String($('#ambPing').value);
-    };
-
-    const toggleAmbient = async () => {
-      try{
-        if (!audio.ctx) {
-          audio.ctx = new (window.AudioContext || window.webkitAudioContext)();
-          audio.master = audio.ctx.createGain();
-          audio.master.gain.value = 0.9;
-          audio.master.connect(audio.ctx.destination);
-
-          audio.noise = createNoise(audio.ctx);
-          audio.wind = createWind(audio.ctx);
-          audio.noise.gain.connect(audio.master);
-          audio.wind.gain.connect(audio.master);
-        }
-
-        if (audio.ctx.state === 'suspended') await audio.ctx.resume();
-
-        audio.on = !audio.on;
-        $('#ambState').textContent = audio.on ? 'on' : 'off';
-        $('#ambToggle').textContent = audio.on ? 'Desativar' : 'Ativar';
-
-        if (audio.on) {
-          setAudioVolumes();
-          clearTimeout(audio.pingT);
-          schedulePing();
-          toast('Mixer ligado.');
-        } else {
-          clearTimeout(audio.pingT);
-          toast('Mixer desligado.');
-        }
-      }catch{
-        toast('Áudio indisponível.');
+      const select = $("productSelect");
+      select.innerHTML = "";
+      for (const p of products) {
+        const opt = document.createElement("option");
+        opt.value = p.id;
+        opt.textContent = `${p.name} — R$ ${Number(p.price).toFixed(2)}`;
+        select.appendChild(opt);
       }
-    };
 
-    $('#ambToggle').addEventListener('click', toggleAmbient);
-    ['ambNoise','ambWind','ambPing'].forEach(id => $('#'+id).addEventListener('input', () => setAudioVolumes()));
+      const list = $("products");
+      list.innerHTML = products.map(p => `
+        <div class="prod">
+          <div class="badges">
+            <span class="badge y">Categoria</span>
+            ${p.badge ? `<span class="badge r">${esc(p.badge)}</span>` : `<span class="badge g">Oficial</span>`}
+          </div>
+          <h3>${esc(p.name)}</h3>
+          <div class="mini">${esc(p.description || "Produto digital • entrega conforme pedido")}</div>
+          <div class="row" style="justify-content:space-between; align-items:center; margin-top:6px">
+            <div class="price">R$ ${Number(p.price).toFixed(2)}</div>
+            <button class="btn" type="button" data-pid="${esc(p.id)}">Selecionar</button>
+          </div>
+        </div>
+      `).join("");
 
-    // ========= LAB: SAND =========
-    const sand = (() => {
-      const canvas = $('#sandCanvas');
-      const ctx = canvas.getContext('2d', { alpha: true });
-      let w=canvas.width, h=canvas.height;
-      const dpr = Math.min(2, window.devicePixelRatio || 1);
+      list.addEventListener("click", (e) => {
+        const b = e.target.closest("button[data-pid]");
+        if (!b) return;
+        $("productSelect").value = b.getAttribute("data-pid");
+        window.scrollTo({ top: 0, behavior: "smooth" });
+      }, { passive: true });
 
-      const resize = () => {
-        const rect = canvas.getBoundingClientRect();
-        const cw = Math.max(320, Math.floor(rect.width));
-        const ch = Math.max(180, Math.floor(rect.height));
-        canvas.width = Math.floor(cw * dpr);
-        canvas.height = Math.floor(ch * dpr);
-        w = canvas.width;
-        h = canvas.height;
-        ctx.setTransform(dpr,0,0,dpr,0,0);
-      };
+    } catch (e) {
+      $("catalogTag").textContent = "Erro";
+      $("products").innerHTML = `<div class="muted">Falha ao carregar catálogo. Verifique o Worker.</div>`;
+    }
+  }
 
-      const parts = [];
-      const maxParts = 5500;
-      let pouring = false;
-      let px = 0, py = 0;
-      let paused = false;
-      let last = performance.now();
-      let frames = 0;
+  // ---------- Create order ----------
+  let lastPix = "";
+  function toast(msg){ $("statusBox").textContent = msg; }
 
-      const color = () => {
-        const pal = [
-          [110,168,255],
-          [155,123,255],
-          [53,208,127],
-          [255,204,102],
-          [255,107,107]
-        ];
-        const c = pal[Math.floor(Math.random()*pal.length)];
-        return `rgba(${c[0]},${c[1]},${c[2]},0.85)`;
-      };
+  $("createOrderBtn").addEventListener("click", async () => {
+    $("copyPixBtn").disabled = true;
+    lastPix = "";
+    toast("Gerando pedido…");
+    try {
+      const productId = $("productSelect").value;
+      const user = $("userInput").value.trim();
+      if (!productId) throw new Error("Selecione um produto.");
+      if (!user) throw new Error("Informe seu usuário (Roblox).");
 
-      const add = (x,y) => {
-        for (let i=0;i<12;i++){
-          if (parts.length >= maxParts) parts.shift();
-          parts.push({
-            x: x + (Math.random()*10-5),
-            y: y + (Math.random()*10-5),
-            vx: (Math.random()*0.8-0.4),
-            vy: Math.random()*0.5,
-            r: 1 + Math.random()*1.3,
-            c: color()
-          });
-        }
-      };
-
-      const step = (dt) => {
-        for (let i=0;i<parts.length;i++){
-          const p = parts[i];
-          p.vy += 0.07;
-          p.x += p.vx;
-          p.y += p.vy;
-          p.vx *= 0.995;
-
-          // floor
-          if (p.y > (h/dpr) - p.r - 2) {
-            p.y = (h/dpr) - p.r - 2;
-            p.vy *= -0.18;
-            p.vx *= 0.86;
-          }
-          // walls
-          if (p.x < p.r) { p.x = p.r; p.vx *= -0.4; }
-          if (p.x > (w/dpr)-p.r) { p.x = (w/dpr)-p.r; p.vx *= -0.4; }
-
-          // slight damping
-          p.vy *= 0.998;
-        }
-      };
-
-      const draw = () => {
-        ctx.clearRect(0,0,w/dpr,h/dpr);
-        // subtle glow
-        ctx.fillStyle = 'rgba(110,168,255,0.04)';
-        ctx.fillRect(0,0,w/dpr,h/dpr);
-
-        for (let i=0;i<parts.length;i++){
-          const p = parts[i];
-          ctx.beginPath();
-          ctx.fillStyle = p.c;
-          ctx.arc(p.x,p.y,p.r,0,Math.PI*2);
-          ctx.fill();
-        }
-      };
-
-      const loop = (t) => {
-        if (paused) return;
-        const dt = Math.min(34, t-last);
-        last = t;
-        if (pouring) add(px,py);
-        step(dt);
-        draw();
-
-        frames++;
-        if (frames % 24 === 0) {
-          const fps = Math.round(1000 / (dt || 16));
-          $('#sandFps').textContent = String(fps);
-        }
-
-        requestAnimationFrame(loop);
-      };
-
-      const pos = (e) => {
-        const rect = canvas.getBoundingClientRect();
-        const x = (e.clientX - rect.left);
-        const y = (e.clientY - rect.top);
-        return { x, y };
-      };
-
-      const onDown = (e) => { pouring = true; const p = pos(e); px=p.x; py=p.y; canvas.setPointerCapture?.(e.pointerId); };
-      const onMove = (e) => { if (!pouring) return; const p = pos(e); px=p.x; py=p.y; };
-      const onUp = () => { pouring = false; };
-
-      canvas.addEventListener('pointerdown', onDown);
-      canvas.addEventListener('pointermove', onMove);
-      window.addEventListener('pointerup', onUp);
-
-      const clear = () => { parts.length = 0; draw(); toast('Limpo.'); };
-      const toggle = () => {
-        paused = !paused;
-        $('#sandPause').textContent = paused ? 'Retomar' : 'Pausar';
-        if (!paused) { last = performance.now(); requestAnimationFrame(loop); }
-        toast(paused ? 'Pausado.' : 'Rodando.');
-      };
-
-      $('#sandClear').addEventListener('click', clear);
-      $('#sandPause').addEventListener('click', toggle);
-
-      // Pause when hidden to save battery
-      document.addEventListener('visibilitychange', () => {
-        if (document.hidden) { paused = true; $('#sandPause').textContent = 'Retomar'; }
+      const data = await api("/create-order", {
+        method: "POST",
+        body: JSON.stringify({ productId, user })
       });
 
-      // Start
-      resize();
-      new ResizeObserver(resize).observe(canvas);
-      requestAnimationFrame(loop);
+      const orderId = data?.orderId || data?.order?.orderId;
+      const pix = String(data?.pixCopiaECola || "").trim();
+      lastPix = pix;
 
-      return { clear, toggle };
-    })();
+      if (orderId) $("orderIdInput").value = orderId;
 
-    // ========= LAB: FUTURE NOTE =========
-    const futureKey = 'vv_future_note';
+      toast(pretty({
+        ok: true,
+        orderId,
+        order: data?.order || null,
+        pixCopiaECola: pix ? "(disponível — use Copiar PIX)" : "(não configurado no Worker)"
+      }));
 
-    const loadFuture = () => store.get(futureKey, null);
-    const saveFuture = (obj) => store.set(futureKey, obj);
-    const delFuture = () => store.del(futureKey);
+      $("copyPixBtn").disabled = !pix;
 
-    const futureRender = () => {
-      const f = loadFuture();
-      if (!f) { $('#futureOut').textContent = 'Sem mensagem salva.'; return; }
-      const now = new Date();
-      const unlock = new Date(f.unlock || 0);
-      const unlocked = now >= unlock;
-      const when = unlock.toLocaleDateString('pt-BR');
-      if (!unlocked) {
-        $('#futureOut').textContent = `Guardada. Desbloqueia em ${when}.`;
-      } else {
-        $('#futureOut').textContent = `Desbloqueada (${when}): ${f.msg || ''}`;
+    } catch (e) {
+      toast("Erro: " + e.message);
+    }
+  });
+
+  $("copyPixBtn").addEventListener("click", async () => {
+    if (!lastPix) return;
+    try {
+      await navigator.clipboard.writeText(lastPix);
+      toast("PIX copiado ✅ Cole no app do banco.");
+    } catch {
+      const ta = document.createElement("textarea");
+      ta.value = lastPix;
+      document.body.appendChild(ta);
+      ta.select();
+      document.execCommand("copy");
+      ta.remove();
+      toast("PIX copiado ✅ (compatibilidade)");
+    }
+  });
+
+  $("checkStatusBtn").addEventListener("click", async () => {
+    toast("Consultando status…");
+    try {
+      const orderId = $("orderIdInput").value.trim();
+      if (!orderId) throw new Error("Informe o Order ID.");
+      const data = await api("/order-status?orderId=" + encodeURIComponent(orderId), { method: "GET", headers: {} });
+      toast(pretty(data));
+    } catch (e) {
+      toast("Erro: " + e.message);
+    }
+  });
+
+  // ---------- History ----------
+  $("loadHistoryBtn").addEventListener("click", async () => {
+    $("historyBox").textContent = "Buscando…";
+    try {
+      const user = $("historyUser").value.trim();
+      if (!user) throw new Error("Informe o usuário (Roblox).");
+      const data = await api("/my-orders?user=" + encodeURIComponent(user), { method: "GET", headers: {} });
+      $("historyBox").textContent = pretty(data);
+    } catch (e) {
+      $("historyBox").textContent = "Erro: " + e.message;
+    }
+  });
+
+  // ---------- Discord ----------
+  $("openDiscordBtn").addEventListener("click", () => window.open(DISCORD, "_blank", "noopener,noreferrer"));
+
+  // ---------- Support modal ----------
+  const backdrop = $("supportBackdrop");
+  const chatLog = $("chatLog");
+  const chatInput = $("chatInput");
+  const chatHint = $("chatHint");
+
+  function addMsg(who, text){
+    const div = document.createElement("div");
+    div.className = "msg " + (who === "you" ? "you" : "bot");
+    div.innerHTML = `<div class="who">${who === "you" ? "Você" : "Suporte"}</div><div style="white-space:pre-wrap;line-height:1.35">${esc(text)}</div>`;
+    chatLog.appendChild(div);
+    chatLog.scrollTop = chatLog.scrollHeight;
+  }
+
+  function openSupport(){
+    backdrop.style.display = "block";
+    if (chatLog.childElementCount === 0){
+      addMsg("bot", "Olá! Me diga sua dúvida em 1 frase. Ex: “paguei pix e não atualizou”.");
+      addMsg("bot", "Para humano: Discord oficial.");
+    }
+    setTimeout(() => chatInput.focus(), 50);
+  }
+  function closeSupport(){ backdrop.style.display = "none"; chatHint.textContent = ""; }
+
+  $("supportBtn").addEventListener("click", openSupport);
+  $("supportBtn2").addEventListener("click", openSupport);
+  $("supportClose").addEventListener("click", closeSupport);
+  backdrop.addEventListener("click", (e) => { if (e.target === backdrop) closeSupport(); });
+  document.addEventListener("keydown", (e) => { if (e.key === "Escape") closeSupport(); });
+
+  async function sendSupport(){
+    const msg = chatInput.value.trim();
+    if (!msg) return;
+    chatInput.value = "";
+    addMsg("you", msg);
+    chatHint.textContent = "Digitando…";
+    try {
+      const r = await fetch(API_BASE + "/support", {
+        method:"POST",
+        headers:{ "Content-Type":"application/json" },
+        body: JSON.stringify({ message: msg })
+      });
+      const data = await r.json().catch(() => ({}));
+      if (!r.ok || !data?.ok) {
+        chatHint.textContent = "";
+        addMsg("bot", (data && data.error) ? data.error : "Falha. Tente novamente ou use o Discord.");
+        return;
       }
-    };
+      chatHint.textContent = "";
+      addMsg("bot", data.answer || "Ok.");
+    } catch (e) {
+      chatHint.textContent = "";
+      addMsg("bot", "Sem conexão. Use o Discord: " + DISCORD);
+    }
+  }
 
-    $('#futureSave').addEventListener('click', () => {
-      const d = $('#futureDate').value;
-      const msg = ($('#futureMsg').value || '').trim();
-      if (!d) return toast('Escolha uma data.');
-      if (!msg) return toast('Escreva a mensagem.');
-      saveFuture({ unlock: d, msg });
-      toast('Salvo.');
-      futureRender();
-    });
-    $('#futureOpen').addEventListener('click', () => { futureRender(); toast('Ok.'); });
-    $('#futureDel').addEventListener('click', () => { delFuture(); $('#futureMsg').value=''; $('#futureDate').value=''; futureRender(); toast('Apagado.'); });
+  $("chatSend").addEventListener("click", sendSupport);
+  chatInput.addEventListener("keydown", (e) => { if (e.key === "Enter") sendSupport(); });
 
-    // ========= LAB: RANDOM TIP =========
-    const tips = [
-      'Guarde seu Order ID: ele é a chave do acompanhamento.',
-      'Se o catálogo estiver vazio, toque em “Recarregar catálogo”.',
-      'Sem rede? O app continua com cache/offline para navegar.',
-      'Use o campo cupom apenas se você recebeu um cupom válido.',
-      'No “Minhas Compras”, coloque seu user e tente carregar histórico.'
-    ];
-    $('#randomTip').addEventListener('click', () => {
-      const t = tips[Math.floor(Math.random()*tips.length)];
-      $('#tipOut').textContent = t;
-      toast('Dica pronta.');
-    });
-
-    // ========= TOOLING =========
-    $('#reloadCatalog').addEventListener('click', () => loadCatalog({force:true}));
-    $('#resetLocal').addEventListener('click', () => {
-      store.del('vv_cart');
-      store.del('vv_catalog_cache');
-      store.del('vv_catalog_cache_at');
-      store.del('vv_last_order');
-      store.del('vv_purchases');
-      state.cart = {};
-      state.lastOrderId = '';
-      state.purchases = [];
-      renderCart();
-      renderPurchases(state.purchases);
-      toast('Reset ok.');
-    });
-
-    // ========= INIT =========
-    const init = async () => {
-      registerSW();
-      await healthCheck();
-
-      // catalog
-      await loadCatalog();
-      renderCart();
-      renderPurchases(state.purchases);
-
-      if (state.lastOrderId) $('#m3v').textContent = state.lastOrderId;
-
-      // UX: set default date for future note
-      const dt = new Date();
-      dt.setDate(dt.getDate()+7);
-      $('#futureDate').value = dt.toISOString().slice(0,10);
-      futureRender();
-
-      // Quick metrics
-      $('#m1b').style.width = '42%';
-      $('#m2b').style.width = Math.min(100, cartCount()*12) + '%';
-
-      // hide worker chip details if you want later: keep only "ok/offline".
-      // chip is already minimal.
-    };
-
-    init();
-
-  })();
-  </script>
+  // init
+  loadCatalog();
+})();
+</script>
 </body>
 </html>
