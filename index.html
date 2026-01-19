@@ -871,6 +871,14 @@
     }
     @keyframes vvSk{ to{ transform: translateX(60%); } }
 
+
+    /* Reduced motion manual toggle */
+    html.reduce-motion *{
+      animation: none !important;
+      transition: none !important;
+      scroll-behavior: auto !important;
+    }
+
 </style>
 <script type="application/ld+json">{"@context": "https://schema.org", "@graph": [{"@type": "Organization", "@id": "https://viralvault-store.vercel.app/#org", "name": "ViralVault Store", "url": "https://viralvault-store.vercel.app/", "logo": "https://viralvault-store.vercel.app/og.png", "sameAs": []}, {"@type": "WebSite", "@id": "https://viralvault-store.vercel.app/#website", "url": "https://viralvault-store.vercel.app/", "name": "ViralVault Store", "publisher": {"@id": "https://viralvault-store.vercel.app/#org"}, "inLanguage": "pt-BR", "potentialAction": {"@type": "SearchAction", "target": "https://viralvault-store.vercel.app/?q={search_term_string}", "query-input": "required name=search_term_string"}}]}</script>
 </head>
@@ -914,6 +922,7 @@
       <p class="desc" style="max-width:760px; font-size:14px; opacity:.92">
         <span data-i18n="heroDesc">Loja digital com checkout via PIX e verificação por <b>Order ID</b>. Se não for oficial, não cai. Simples, rápido e com suporte no WhatsApp.</span>
       </p>
+      <div class="currency" style="margin-top:10px; opacity:.85">Atalhos: <b>/</b> buscar • <b>g</b>+<b>k</b> catálogo • <b>g</b>+<b>c</b> checkout • <b>g</b>+<b>p</b> pedido</div>
 
       <div style="display:flex; gap:10px; flex-wrap:wrap; margin-top:14px">
         <button class="totalBtn" type="button" id="vvHeroGoCat" style="justify-content:center">🛒 Ver catálogo</button>
@@ -944,6 +953,7 @@
           <a class="chip" href="#faq" style="text-decoration:none"><i></i> FAQ</a>
           <button class="chip" id="vvThemeBtn" type="button" style="cursor:pointer"><i style="background:var(--yellow)"></i> Tema</button>
           <button class="chip" id="vvLangBtn" type="button" style="cursor:pointer"><i></i> PT</button>
+          <button class="chip" id="vvSettingsBtn" type="button" style="cursor:pointer"><i></i> ⚙️</button>
         </div>
 
       <div class="card" id="vvHistoryCard" style="margin-top:12px; background:rgba(11,11,16,.25)">
@@ -1138,6 +1148,9 @@
         <div class="krow"><div class="chip prem"><i></i> Catálogo</div></div>
         <h3 class="title" id="vvStatCatalogTitle">—</h3>
         <p class="desc" id="vvStatCatalogDesc">—</p>
+        <div style="margin-top:10px; display:flex; gap:10px; flex-wrap:wrap">
+          <button class="totalBtn" id="vvRetryCatalog" type="button" style="justify-content:center">🔄 Recarregar catálogo</button>
+        </div>
       </div>
       <div class="card" id="vvStatOrders">
         <div class="krow"><div class="chip custom"><i></i> Pedidos</div></div>
@@ -1639,7 +1652,8 @@
       if(countEl) countEl.textContent = `${items.length} produto(s) encontrado(s)`;
 
       if(!items.length){
-        grid.innerHTML = `<div class="card"><h3 class="title">Nada aqui 😕</h3><p class="desc">Tenta mudar o filtro ou limpar a busca.</p></div>`;
+        grid.innerHTML = `<div class="card"><h3 class="title">Nada aqui 😕</h3><p class="desc">Tenta mudar o filtro ou limpar a busca.</p><div style="margin-top:10px; display:flex; gap:10px; flex-wrap:wrap"><button class="totalBtn" id="vvCatalogRetry" type="button" style="justify-content:center">🔄 Recarregar catálogo</button></div></div>`;
+        setTimeout(()=>{ document.getElementById("vvCatalogRetry")?.addEventListener("click", ()=>window.__vvReloadCatalog && window.__vvReloadCatalog()); }, 0);
         return;
       }
 
@@ -2101,9 +2115,11 @@
       }
       const s = document.getElementById("vvSearch");
       if(s){
+        let __vvSearchT;
         s.addEventListener("input", ()=>{
           window.__vvSearch = s.value || "";
-          renderProducts();
+          clearTimeout(__vvSearchT);
+          __vvSearchT = setTimeout(()=>renderProducts(), 90);
         });
       }
       document.getElementById("vvClear")?.addEventListener("click", ()=>{
@@ -2376,6 +2392,7 @@ if(adminDelivered) adminDelivered.addEventListener('click', async ()=>{
         💬 WhatsApp
       </button>
       <button id="vvFabTheme" class="totalBtn" type="button" style="justify-content:center">🌓 Tema</button>
+      <button id="vvFabSettings" class="totalBtn" type="button" style="justify-content:center">⚙️ Ajustes</button>
     </div>
   </div>
 
@@ -2384,7 +2401,62 @@ if(adminDelivered) adminDelivered.addEventListener('click', async ()=>{
        background:rgba(18,18,26,.92); border:1px solid rgba(255,255,255,.12); padding:10px 12px; border-radius:16px;
        box-shadow:0 18px 50px rgba(0,0,0,.55); display:none; max-width:min(720px, calc(100% - 24px));"></div>
 
-  <!-- ===== Legal Modal ===== -->
+  
+  <!-- ===== Settings Modal ===== -->
+  <div id="vvSettings" aria-hidden="true" role="dialog" aria-modal="true"
+       style="position:fixed; inset:0; z-index:1950; display:none; align-items:center; justify-content:center; padding:14px;">
+    <div id="vvSettingsBackdrop" style="position:absolute; inset:0; background:rgba(0,0,0,.55)"></div>
+    <div class="card" style="position:relative; max-width:760px; width:100%; max-height:80vh; overflow:auto">
+      <div class="krow" style="justify-content:space-between; gap:10px; align-items:center">
+        <h3 class="title" style="margin:0">Ajustes</h3>
+        <button class="totalBtn" type="button" id="vvSettingsClose" style="justify-content:center">Fechar</button>
+      </div>
+
+      <div class="grid" style="grid-template-columns:repeat(2,minmax(0,1fr)); gap:12px; margin-top:12px">
+        <div class="card" style="background:rgba(11,11,16,.22)">
+          <b>Tema</b>
+          <div class="desc" style="margin-top:6px">Escolha escuro/claro.</div>
+          <div style="display:flex; gap:10px; flex-wrap:wrap; margin-top:10px">
+            <button class="totalBtn" id="vvSetDark" type="button" style="justify-content:center">🌑 Escuro</button>
+            <button class="totalBtn" id="vvSetLight" type="button" style="justify-content:center">🌕 Claro</button>
+          </div>
+        </div>
+
+        <div class="card" style="background:rgba(11,11,16,.22)">
+          <b>Idioma</b>
+          <div class="desc" style="margin-top:6px">Português / English</div>
+          <div style="display:flex; gap:10px; flex-wrap:wrap; margin-top:10px">
+            <button class="totalBtn" id="vvSetPT" type="button" style="justify-content:center">🇧🇷 PT</button>
+            <button class="totalBtn" id="vvSetEN" type="button" style="justify-content:center">🇺🇸 EN</button>
+          </div>
+        </div>
+
+        <div class="card" style="background:rgba(11,11,16,.22)">
+          <b>Performance</b>
+          <div class="desc" style="margin-top:6px">Reduzir animações (mais leve no celular).</div>
+          <div style="display:flex; gap:10px; flex-wrap:wrap; margin-top:10px">
+            <button class="totalBtn" id="vvReduceMotionOn" type="button" style="justify-content:center">✅ Reduzir</button>
+            <button class="totalBtn" id="vvReduceMotionOff" type="button" style="justify-content:center">✨ Normal</button>
+          </div>
+        </div>
+
+        <div class="card" style="background:rgba(11,11,16,.22)">
+          <b>Privacidade</b>
+          <div class="desc" style="margin-top:6px">Limpar dados locais (tema, idioma, histórico).</div>
+          <div style="display:flex; gap:10px; flex-wrap:wrap; margin-top:10px">
+            <button class="totalBtn" id="vvClearLocal" type="button" style="justify-content:center">🧹 Limpar</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="desc" style="margin-top:12px; line-height:1.7">
+        Dica: se o site estiver lento, ative <b>Reduzir animações</b>. Isso melhora em aparelhos fracos.
+      </div>
+    </div>
+  </div>
+
+
+<!-- ===== Legal Modal ===== -->
   <div id="vvLegal" aria-hidden="true" role="dialog" aria-modal="true"
        style="position:fixed; inset:0; z-index:1900; display:none; align-items:center; justify-content:center; padding:14px;">
     <div id="vvLegalBackdrop" style="position:absolute; inset:0; background:rgba(0,0,0,.55)"></div>
