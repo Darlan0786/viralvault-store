@@ -627,9 +627,226 @@
       cursor:pointer;
     }
 
+
+    /* Turbo product cards */
+    .pMedia{
+      height:92px;
+      border-radius:16px;
+      border:1px solid rgba(255,255,255,.10);
+      background:
+        radial-gradient(700px 220px at 20% 0%, rgba(255,210,74,.28), transparent 55%),
+        radial-gradient(700px 240px at 85% 10%, rgba(255,59,74,.18), transparent 55%),
+        rgba(11,11,16,.35);
+      margin-bottom:10px;
+      overflow:hidden;
+      position:relative;
+    }
+    .pMedia::after{
+      content:"";
+      position:absolute; inset:0;
+      background: linear-gradient(180deg, transparent 0%, rgba(0,0,0,.28) 100%);
+      pointer-events:none;
+    }
+    .badgeRow{display:flex; gap:8px; flex-wrap:wrap; margin-bottom:10px}
+    .badge{
+      display:inline-flex; align-items:center; gap:8px;
+      padding:7px 10px; border-radius:999px;
+      border:1px solid rgba(255,255,255,.12);
+      background: rgba(11,11,16,.30);
+      font-size:12px; color: var(--muted); font-weight:900;
+    }
+    .badge b{color:#fff}
+    .badge .dot{width:8px; height:8px; border-radius:50%; background: var(--yellow)}
+    .badge.red .dot{background: var(--red)}
+    .badge.green .dot{background: #3ef08f}
+    .card:hover{transform: translateY(-1px); transition: .15s ease}
+
+
+    /* ===== UI Upgrade Pack (turbo) ===== */
+    :root{
+      --glass: rgba(18,18,26,.62);
+      --glass2: rgba(11,11,16,.30);
+      --stroke2: rgba(255,255,255,.14);
+      --shadow3: 0 24px 70px rgba(0,0,0,.55);
+    }
+    html{scroll-behavior:smooth}
+    body{letter-spacing:.2px}
+
+    /* nicer headings */
+    .sectionTitle h2{
+      font-size: 22px;
+      letter-spacing: .2px;
+    }
+    .sectionTitle small{
+      display:block;
+      margin-top:6px;
+      opacity:.86;
+    }
+
+    /* subtle section divider */
+    .sectionTitle{
+      position:relative;
+      padding-top: 2px;
+    }
+    .sectionTitle::after{
+      content:"";
+      position:absolute;
+      left:0; right:0; bottom:-10px;
+      height:1px;
+      background: linear-gradient(90deg, transparent, rgba(255,255,255,.10), transparent);
+      pointer-events:none;
+    }
+
+    /* upgraded cards */
+    .card{
+      border-color: var(--stroke2);
+      background: linear-gradient(180deg, rgba(18,18,26,.84), rgba(18,18,26,.55));
+      transition: transform .16s ease, border-color .16s ease, box-shadow .16s ease, background .16s ease;
+      box-shadow: var(--shadow2);
+    }
+    .card:hover{
+      border-color: rgba(255,210,74,.22);
+      box-shadow: var(--shadow3);
+    }
+
+    /* upgraded chips */
+    .chip{
+      border-color: rgba(255,255,255,.14);
+      background: rgba(11,11,16,.28);
+      transition: transform .14s ease, border-color .14s ease, background .14s ease;
+      user-select:none;
+    }
+    .chip:hover{
+      border-color: rgba(255,210,74,.22);
+      transform: translateY(-1px);
+    }
+
+    /* upgraded buy button / totalBtn */
+    .buy, .totalBtn{
+      border: 1px solid rgba(255,255,255,.14);
+      background: rgba(11,11,16,.25);
+      transition: transform .14s ease, filter .14s ease, border-color .14s ease, box-shadow .14s ease;
+      box-shadow: 0 10px 22px rgba(0,0,0,.25);
+    }
+    .buy:hover, .totalBtn:hover{
+      border-color: rgba(255,210,74,.28);
+      transform: translateY(-1px);
+      filter: brightness(1.03);
+    }
+    .buy:active, .totalBtn:active{
+      transform: translateY(0px) scale(.99);
+    }
+
+    /* make primary actions pop */
+    .totalBtn{
+      font-weight: 950;
+      letter-spacing: .25px;
+    }
+
+    /* grid spacing */
+    .grid{gap:14px}
+    @media (max-width:860px){
+      .grid{gap:12px}
+      #vvFab{bottom:10px}
+      #vvFab .totalBtn{flex:1}
+    }
+
+    /* improved pMedia shimmer */
+    .pMedia{
+      background:
+        radial-gradient(700px 240px at 20% 0%, rgba(255,210,74,.34), transparent 55%),
+        radial-gradient(700px 260px at 85% 10%, rgba(255,59,74,.22), transparent 55%),
+        rgba(11,11,16,.35);
+    }
+    .pMedia::before{
+      content:"";
+      position:absolute; inset:-40% -60%;
+      transform: translateX(-60%);
+      background: linear-gradient(90deg, transparent, rgba(255,255,255,.08), transparent);
+      animation: vvShimmer 1.4s infinite;
+      pointer-events:none;
+    }
+    @keyframes vvShimmer{ to{ transform: translateX(60%); } }
+
+    /* nicer inputs */
+    input, textarea{
+      transition: border-color .14s ease, box-shadow .14s ease;
+    }
+    input:focus, textarea:focus{
+      box-shadow: 0 0 0 4px rgba(255,210,74,.10);
+    }
+
+    /* details accordion polish */
+    details summary{
+      list-style:none;
+    }
+    details summary::-webkit-details-marker{display:none}
+    details[open]{
+      border-color: rgba(255,210,74,.20) !important;
+    }
+
+    /* reduce motion preference */
+    @media (prefers-reduced-motion: reduce){
+      *{animation:none !important; transition:none !important; scroll-behavior:auto !important;}
+    }
+
 </style>
 </head>
 <body>
+
+    <!-- ===== HERO UPGRADE ===== -->
+    <div class="card" id="vvHero" style="margin-top:14px; padding:18px; overflow:hidden; position:relative">
+      <div style="position:absolute; inset:-60px -80px auto auto; width:260px; height:260px; border-radius:60px;
+           background: radial-gradient(circle at 30% 30%, rgba(255,210,74,.55), transparent 60%),
+                      radial-gradient(circle at 70% 70%, rgba(255,59,74,.38), transparent 60%);
+           filter: blur(6px); opacity:.75; pointer-events:none;"></div>
+
+      <div class="krow" style="justify-content:space-between; gap:10px; flex-wrap:wrap">
+        <div class="krow" style="gap:10px">
+          <div class="chip prem"><i></i> Checkout PIX</div>
+          <div class="chip"><i style="background:var(--yellow)"></i> Verificação Order ID</div>
+          <div class="chip"><i style="background:var(--red)"></i> Anti-golpe</div>
+        </div>
+        <div class="chip"><i></i> Entrega até <b>24h</b></div>
+      </div>
+
+      <h1 style="margin:14px 0 6px; font-size:30px; letter-spacing:.2px">ViralVault Store</h1>
+      <p class="desc" style="max-width:760px; font-size:14px; opacity:.92">
+        Loja digital com checkout via PIX e verificação por <b>Order ID</b>.
+        Se não for oficial, não cai. Simples, rápido e com suporte no WhatsApp.
+      </p>
+
+      <div style="display:flex; gap:10px; flex-wrap:wrap; margin-top:14px">
+        <button class="totalBtn" type="button" id="vvHeroGoCat" style="justify-content:center">🛒 Ver catálogo</button>
+        <button class="totalBtn" type="button" id="vvHeroGoCheckout" style="justify-content:center">🧾 Ir pro checkout</button>
+        <button class="totalBtn" type="button" id="vvHeroGoPedido" style="justify-content:center">🔎 Ver pedido</button>
+      </div>
+    </div>
+
+
+  <!-- ===== Sticky Mini Header ===== -->
+  <div id="vvSticky" style="position:sticky; top:0; z-index:1500; margin:10px 0 0;">
+    <div style="max-width:980px; margin:0 auto; padding:0 12px;">
+      <div style="display:flex; gap:10px; align-items:center; justify-content:space-between;
+           padding:10px 12px; border-radius:20px; border:1px solid rgba(255,255,255,.12);
+           background:rgba(10,10,14,.68); backdrop-filter: blur(14px); -webkit-backdrop-filter: blur(14px);
+           box-shadow:0 18px 44px rgba(0,0,0,.45);">
+        <div style="display:flex; gap:10px; align-items:center; font-weight:900;">
+          <div style="width:34px;height:34px;border-radius:14px;background:linear-gradient(135deg, rgba(255,210,74,1), rgba(255,59,74,1)); box-shadow:0 10px 18px rgba(0,0,0,.35)"></div>
+          <span>ViralVault</span>
+          <span style="opacity:.65; font-weight:800; font-size:12px">Store</span>
+        </div>
+
+        <div style="display:flex; gap:8px; flex-wrap:wrap; justify-content:flex-end">
+          <a class="chip" href="#produtos" style="text-decoration:none"><i></i> Catálogo</a>
+          <a class="chip" href="#checkout" style="text-decoration:none"><i style="background:var(--yellow)"></i> Checkout</a>
+          <a class="chip" href="#pedido" style="text-decoration:none"><i style="background:var(--red)"></i> Pedido</a>
+          <a class="chip" href="#faq" style="text-decoration:none"><i></i> FAQ</a>
+        </div>
+      </div>
+    </div>
+  </div>
+>
   <div class="wrap">
     <div class="topbar">
       <div class="brand">
@@ -753,6 +970,29 @@
       <small>escolha 1 item e pague via PIX</small>
     </div>
 
+
+    <div class="card" id="vvFilters" style="margin-top:10px">
+      <div class="krow" style="justify-content:space-between; gap:10px; flex-wrap:wrap">
+        <div class="krow" style="gap:8px; flex-wrap:wrap">
+          <button class="chip" type="button" data-filter="all" id="vvFAll"><i></i> Todos</button>
+          <button class="chip prem" type="button" data-filter="robux"><i></i> Robux</button>
+          <button class="chip custom" type="button" data-filter="conta"><i></i> Contas</button>
+          <button class="chip" type="button" data-filter="itens"><i></i> Itens</button>
+          <button class="chip" type="button" data-filter="promo"><i style="background:var(--red)"></i> Promo</button>
+          <button class="chip" type="button" data-filter="top"><i style="background:var(--yellow)"></i> Mais vendidos</button>
+        </div>
+
+        <div style="display:flex; gap:10px; flex-wrap:wrap; align-items:center; min-width:min(420px, 100%)">
+          <input id="vvSearch" placeholder="Buscar produto..." autocomplete="off"
+                 style="flex:1; padding:12px 12px; border-radius:16px; border:1px solid rgba(255,255,255,.12);
+                        background:rgba(11,11,16,.35); color:#fff; outline:none; font-weight:800;">
+          <button class="totalBtn" id="vvClear" type="button" style="justify-content:center">Limpar</button>
+        </div>
+      </div>
+      <div class="currency" id="vvCount" style="margin-top:10px">—</div>
+    </div>
+
+
     <div class="grid" id="productsGrid"></div>
 
     <div class="sectionTitle" id="como">
@@ -768,7 +1008,86 @@
 
     
     
-    <!-- ===== CHECKOUT (INLINE) ===== -->
+    
+    <!-- ===== Trust / Provas ===== -->
+    <div class="sectionTitle" id="provas" style="margin-top:18px">
+      <h2>Por que a ViralVault?</h2>
+      <small>confiança + velocidade + anti-golpe</small>
+    </div>
+
+    <div class="grid" style="grid-template-columns:repeat(3, minmax(0,1fr)); gap:12px">
+      <div class="card">
+        <div class="krow"><div class="chip prem"><i></i> Entrega</div></div>
+        <h3 class="title">Rápido</h3>
+        <p class="desc">Entrega digital em até 24h (muitas vezes em minutos).</p>
+      </div>
+      <div class="card">
+        <div class="krow"><div class="chip"><i style="background:var(--red)"></i> Anti-golpe</div></div>
+        <h3 class="title">Verificação por Order ID</h3>
+        <p class="desc">Confirme no site se o pedido é oficial. Se não bateu, não cai.</p>
+      </div>
+      <div class="card">
+        <div class="krow"><div class="chip custom"><i></i> Suporte</div></div>
+        <h3 class="title">WhatsApp</h3>
+        <p class="desc">Suporte direto no WhatsApp pra dúvidas e comprovantes.</p>
+      </div>
+    </div>
+
+    <!-- ===== Mini Depoimentos ===== -->
+    <div class="sectionTitle" id="depoimentos" style="margin-top:18px">
+      <h2>O que a galera fala</h2>
+      <small>exemplos (você pode editar depois)</small>
+    </div>
+
+    <div class="grid" style="grid-template-columns:repeat(3, minmax(0,1fr)); gap:12px">
+      <div class="card">
+        <div class="badgeRow"><span class="badge"><span class="dot"></span> <b>5/5</b></span></div>
+        <p class="desc">“Chegou rápido demais. Site brabo e o Order ID ajuda muito.”</p>
+        <div class="currency">— Cliente</div>
+      </div>
+      <div class="card">
+        <div class="badgeRow"><span class="badge"><span class="dot"></span> <b>5/5</b></span></div>
+        <p class="desc">“Paguei no PIX, mandei comprovante e já resolveram no WhatsApp.”</p>
+        <div class="currency">— Cliente</div>
+      </div>
+      <div class="card">
+        <div class="badgeRow"><span class="badge"><span class="dot"></span> <b>5/5</b></span></div>
+        <p class="desc">“Curti o visual e os filtros. Dá pra achar o produto fácil.”</p>
+        <div class="currency">— Cliente</div>
+      </div>
+    </div>
+
+    <!-- ===== FAQ ===== -->
+    <div class="sectionTitle" id="faq" style="margin-top:18px">
+      <h2>FAQ</h2>
+      <small>perguntas rápidas</small>
+    </div>
+
+    <div class="card">
+      <details style="border:1px solid rgba(255,255,255,.10); border-radius:16px; padding:12px; background:rgba(11,11,16,.25)">
+        <summary style="cursor:pointer; font-weight:900;">Como comprar?</summary>
+        <div class="desc" style="margin-top:8px; line-height:1.6">
+          Escolha um item no catálogo → clique em Comprar → desça pro Checkout → gere o pedido + PIX → pague → envie o comprovante no WhatsApp.
+        </div>
+      </details>
+      <div style="height:10px"></div>
+      <details style="border:1px solid rgba(255,255,255,.10); border-radius:16px; padding:12px; background:rgba(11,11,16,.25)">
+        <summary style="cursor:pointer; font-weight:900;">E se eu cair em golpe?</summary>
+        <div class="desc" style="margin-top:8px; line-height:1.6">
+          Use o verificador: cole o Order ID em “Status do pedido”. Se não aparecer como oficial, não finalize.
+        </div>
+      </details>
+      <div style="height:10px"></div>
+      <details style="border:1px solid rgba(255,255,255,.10); border-radius:16px; padding:12px; background:rgba(11,11,16,.25)">
+        <summary style="cursor:pointer; font-weight:900;">Qual o prazo?</summary>
+        <div class="desc" style="margin-top:8px; line-height:1.6">
+          Até 24h. Em horários de pico pode demorar mais, mas o suporte acompanha.
+        </div>
+      </details>
+    </div>
+
+
+<!-- ===== CHECKOUT (INLINE) ===== -->
     <div class="sectionTitle" id="checkout" style="margin-top:18px">
       <h2>Checkout (PIX)</h2>
       <small>gerar pedido, copiar PIX e enviar comprovante</small>
@@ -791,6 +1110,51 @@
           <div class="currency">Entrega: <b>até 24h</b></div>
         </div>
 
+        
+        <div id="vvResumo" style="margin-top:12px; padding:12px; border-radius:18px; border:1px solid rgba(255,255,255,.10); background:rgba(11,11,16,.22)">
+          <div class="krow" style="justify-content:space-between; gap:10px; flex-wrap:wrap">
+            <div class="currency">Resumo do pedido</div>
+            <div class="chip" id="vvValidChip"><i></i> preencha o user</div>
+          </div>
+          <div class="desc" style="margin-top:8px; line-height:1.55">
+            Produto: <b id="vvResumoProd">—</b><br>
+            User: <b id="vvResumoUser">—</b><br>
+            Total: <b id="vvResumoTotal">—</b>
+          </div>
+
+            <div style="margin-top:10px; display:flex; gap:10px; flex-wrap:wrap; align-items:center; justify-content:space-between">
+              <div class="currency">Quantidade</div>
+              <div style="display:flex; gap:10px; align-items:center">
+                <button class="totalBtn" id="vvQtyMinus" type="button" style="justify-content:center; width:46px; padding:10px 0">−</button>
+                <div id="vvQty" style="min-width:44px; text-align:center; font-weight:1000; padding:10px 12px; border-radius:16px; border:1px solid rgba(255,255,255,.12); background:rgba(11,11,16,.35)">1</div>
+                <button class="totalBtn" id="vvQtyPlus" type="button" style="justify-content:center; width:46px; padding:10px 0">+</button>
+              </div>
+              <div class="currency" style="opacity:.85">Obs: acima de 1, faça pedidos separados.</div>
+            </div>
+
+            <div style="margin-top:10px; display:grid; gap:10px">
+              <div class="krow" style="justify-content:space-between; gap:10px; flex-wrap:wrap">
+                <div class="currency">Entrega</div>
+                <div class="chip"><i style="background:var(--yellow)"></i> Digital • R$ <b id="vvShip">0,00</b></div>
+              </div>
+
+              <div class="krow" style="justify-content:space-between; gap:10px; flex-wrap:wrap">
+                <div class="currency">Cupom</div>
+                <div style="display:flex; gap:10px; flex-wrap:wrap; width:min(520px,100%)">
+                  <input id="vvCoupon" placeholder="EX: VV10" autocomplete="off"
+                         style="flex:1; padding:12px 12px; border-radius:16px; border:1px solid rgba(255,255,255,.12);
+                                background:rgba(11,11,16,.35); color:#fff; outline:none; font-weight:900; text-transform:uppercase;">
+                  <button class="totalBtn" id="vvApplyCoupon" type="button" style="justify-content:center">Aplicar</button>
+                </div>
+              </div>
+
+              <div class="currency" id="vvCouponMsg" style="opacity:.9">—</div>
+            </div>
+
+
+        </div>
+
+
         <div style="margin-top:12px">
           <div class="currency" style="margin-bottom:6px">Seu user do Roblox (obrigatório)</div>
           <input id="vvCkUser" class="input" placeholder="Ex: Darlan0786" autocomplete="off"
@@ -798,11 +1162,20 @@
         </div>
 
         <div style="display:flex; gap:10px; flex-wrap:wrap; margin-top:12px">
-          <button class="totalBtn" id="vvBtnCreate" style="flex:1; justify-content:center">Gerar pedido + PIX</button>
+          <button class="totalBtn" id="vvBtnCreate" style="flex:1; justify-content:center; opacity:.6" disabled>Gerar pedido + PIX</button>
           <button class="totalBtn" id="vvBtnWpp" style="flex:1; justify-content:center; opacity:.6" disabled>Enviar comprovante no WhatsApp</button>
         </div>
 
         <div class="currency" id="vvCkStatus" style="margin-top:10px">—</div>
+
+        <div id="vvProgressWrap" style="display:none; margin-top:12px">
+          <div class="currency">Progresso do pedido</div>
+          <div style="margin-top:8px; height:10px; border-radius:999px; background:rgba(255,255,255,.10); overflow:hidden">
+            <div id="vvProgressBar" style="height:100%; width:33%; background:linear-gradient(90deg, rgba(255,210,74,1), rgba(255,59,74,1)); border-radius:999px"></div>
+          </div>
+          <div class="desc" id="vvProgressText" style="margin-top:8px">🧾 criado</div>
+        </div>
+
       </div>
 
       <div class="card">
@@ -1049,33 +1422,115 @@
       return {t:'Digital', cls:''};
     }
 
+    
+    function inferTags(p){
+      const name = String(p.name||p.id||"").toLowerCase();
+      const desc = String(p.description||"").toLowerCase();
+      const s = name + " " + desc;
+
+      const tags = new Set();
+      if(/robux|rbx|roupa|roupas|gamepass/.test(s)) tags.add("robux");
+      if(/conta|account|premium|lvl|level|rare/.test(s)) tags.add("conta");
+      if(/item|itens|pass|passe|service|serviço|boost|farm/.test(s)) tags.add("itens");
+      if(/promo|sale|desconto|off|black/.test(s) || (Number(p.price||0) > 0 && Number(p.price||0) < 10)) tags.add("promo");
+
+      return Array.from(tags);
+    }
+
+    function isTop(p){
+      // heurística simples: produtos mais baratos + com "robux" costumam vender mais (ajuste depois)
+      const tags = inferTags(p);
+      const price = Number(p.price||0);
+      return tags.includes("robux") || price <= 19.9;
+    }
+
+    function moneyBR(v){
+      const n = Number(v||0);
+      return n.toLocaleString("pt-BR", {minimumFractionDigits:2, maximumFractionDigits:2});
+    }
+
     function renderProducts(){
-      const g = $('productsGrid');
-      g.innerHTML = '';
-      PRODUCTS.forEach((p, idx)=>{
-        const c = document.createElement('div');
-        c.className = 'card';
-        c.style.animationDelay = (idx*35)+'ms';
-        const chip = chipLabel(p);
-        const subtitle = p.description ? p.description : 'Entrega 100% digital • em até 24h';
-        c.innerHTML = `
-          <div class="krow">
-            <div class="chip ${chip.cls}"><i></i> ${chip.t} • 💾 Digital</div>
-            <div class="chip" title="Pagamento via PIX"><i style="background:var(--yellow)"></i> PIX</div>
-          </div>
-          <h3 class="title">${escapeHtml(p.name||p.id)}</h3>
-          <p class="desc">${escapeHtml(subtitle)}</p>
-          <div class="priceRow">
-            <div>
-              <div class="currency">Preço</div>
-              <div class="price">${brl(p.price)}</div>
+      const grid = document.getElementById("productsGrid");
+      if(!grid) return;
+
+      const q = (window.__vvSearch||"").toLowerCase().trim();
+      const f = window.__vvFilter || "all";
+
+      let items = (window.__products||[]).slice();
+
+      // sort: "top" primeiro se filtro top, senão mantém
+      if(f==="top"){
+        items.sort((a,b)=> (isTop(b)?1:0) - (isTop(a)?1:0));
+      }
+
+      // filter
+      items = items.filter(p=>{
+        const tags = inferTags(p);
+        const text = (String(p.name||"") + " " + String(p.description||"") + " " + String(p.id||"")).toLowerCase();
+
+        const okSearch = !q || text.includes(q);
+        if(!okSearch) return false;
+
+        if(f==="all") return true;
+        if(f==="top") return isTop(p);
+        if(f==="robux") return tags.includes("robux");
+        if(f==="conta") return tags.includes("conta");
+        if(f==="itens") return tags.includes("itens");
+        if(f==="promo") return tags.includes("promo");
+        return true;
+      });
+
+      const countEl = document.getElementById("vvCount");
+      if(countEl) countEl.textContent = `${items.length} produto(s) encontrado(s)`;
+
+      if(!items.length){
+        grid.innerHTML = `<div class="card"><h3 class="title">Nada aqui 😕</h3><p class="desc">Tenta mudar o filtro ou limpar a busca.</p></div>`;
+        return;
+      }
+
+      grid.innerHTML = items.map(p=>{
+        const tags = inferTags(p);
+        const top = isTop(p);
+        const price = Number(p.price||0);
+
+        const badges = [];
+        if(top) badges.push(`<span class="badge"><span class="dot"></span> <b>Mais vendido</b></span>`);
+        if(tags.includes("promo")) badges.push(`<span class="badge red"><span class="dot"></span> <b>Promo</b></span>`);
+        badges.push(`<span class="badge green"><span class="dot"></span> <b>Entrega</b> até 24h</span>`);
+
+        const catLabel =
+          tags.includes("robux") ? "Robux" :
+          tags.includes("conta") ? "Conta" :
+          tags.includes("itens") ? "Itens" : "Digital";
+
+        return `
+          <div class="card">
+            <div class="pMedia" aria-hidden="true"></div>
+            <div class="badgeRow">${badges.join("")}</div>
+            <div class="krow">
+              <div class="chip ${catLabel==="Robux" ? "prem" : (catLabel==="Conta" ? "custom" : "")}"><i></i> ${catLabel}</div>
+              <div class="chip"><i style="background:var(--yellow)"></i> PIX</div>
             </div>
-            <button class="buy" type="button">Comprar agora</button>
+            <h3 class="title">${escapeHtml(p.name || p.id || "Produto")}</h3>
+            <p class="desc">${escapeHtml(p.description || "Produto digital.")}</p>
+            <div class="priceRow">
+              <div>
+                <div class="currency">Preço</div>
+                <div class="price">R$ ${moneyBR(price)}</div>
+              </div>
+              <button class="buy" type="button" data-buy="1" data-payload='${encodeJson(p)}'>Comprar</button>
+            </div>
           </div>
         `;
-        c.querySelector('.buy').addEventListener('click', ()=>openCheckout(p));
-        g.appendChild(c);
-      });
+      }).join("");
+    }
+);
+    }
+
+    
+    function encodeJson(obj){
+      // Safe stringify for inline onclick
+      return JSON.stringify(obj).replace(/</g,"\\u003c").replace(/>/g,"\\u003e");
     }
 
     function escapeHtml(s){
@@ -1086,7 +1541,7 @@
     function openCheckout(p){
       // Seleciona produto e joga pro checkout inline
       window.__vvSelected = p;
-      try{ populateInlineCheckout(p); }catch(e){}
+      try{ populateInlineCheckout(p); updateResumo(); }catch(e){}
       document.getElementById("checkout")?.scrollIntoView({behavior:"smooth"});
     }
 
@@ -1460,9 +1915,54 @@
     }
 
       hookCategories();
+      
+      // ===== Filters/Search =====
+      window.__vvFilter = "all";
+      window.__vvSearch = "";
+      const fwrap = document.getElementById("vvFilters");
+      if(fwrap){
+        fwrap.querySelectorAll("[data-filter]").forEach(btn=>{
+          btn.addEventListener("click", ()=>{
+            window.__vvFilter = btn.getAttribute("data-filter") || "all";
+            fwrap.querySelectorAll("[data-filter]").forEach(b=>b.classList.remove("prem"));
+            // mark active
+            btn.classList.add("prem");
+            renderProducts();
+
+      // Delegation: comprar sem inline onclick (mais seguro)
+      document.getElementById("productsGrid")?.addEventListener("click", (e)=>{
+        const btn = e.target.closest("button.buy[data-buy]");
+        if(!btn) return;
+        try{
+          const p = JSON.parse(btn.getAttribute("data-payload")||"{}");
+          openCheckout(p);
+        }catch{}
+      });
+
+          });
+        });
+      }
+      const s = document.getElementById("vvSearch");
+      if(s){
+        s.addEventListener("input", ()=>{
+          window.__vvSearch = s.value || "";
+          renderProducts();
+        });
+      }
+      document.getElementById("vvClear")?.addEventListener("click", ()=>{
+        window.__vvSearch = "";
+        if(s) s.value = "";
+        window.__vvFilter = "all";
+        // reset active btn
+        document.getElementById("vvFAll")?.classList.add("prem");
+        renderProducts();
+      });
+
       renderProducts();
       // Inline checkout hooks
       document.getElementById('vvBtnCreate')?.addEventListener('click', createOrderInline);
+      document.getElementById('vvCkUser')?.addEventListener('input', updateResumo);
+      updateResumo();
       document.getElementById('vvBtnCheck')?.addEventListener('click', checkOrderInline);
       document.getElementById('vvCopyPix')?.addEventListener('click', async ()=>{
         const v = (document.getElementById('vvPixBox')?.value||'').trim();
@@ -1605,7 +2105,27 @@ if(adminDelivered) adminDelivered.addEventListener('click', async ()=>{
     </div>
   </div>
 
+
+  <!-- ===== Floating Quick Actions ===== -->
+  <div id="vvFab" style="position:fixed; left:50%; transform:translateX(-50%); bottom:14px; z-index:1400;
+       width:min(980px, calc(100% - 24px)); padding:10px;
+       border-radius:22px; border:1px solid rgba(255,255,255,.12);
+       background:rgba(10,10,14,.70); backdrop-filter: blur(14px); -webkit-backdrop-filter: blur(14px);
+       box-shadow:0 18px 50px rgba(0,0,0,.55);">
+    <div style="display:flex; gap:10px; flex-wrap:wrap; align-items:center; justify-content:space-between;">
+      <div style="display:flex; gap:10px; flex-wrap:wrap;">
+        <button id="vvGoCheckout" class="totalBtn" style="justify-content:center">🧾 Checkout</button>
+        <button id="vvGoPedido" class="totalBtn" style="justify-content:center">🔎 Ver Pedido</button>
+      </div>
+      <button id="vvGoWpp" class="totalBtn" style="justify-content:center; background:linear-gradient(180deg, rgba(62,240,143,1), rgba(42,204,110,1)); color:#08110c;">
+        💬 WhatsApp
+      </button>
+    </div>
+  </div>
+
+
+  <div id="vvToast" style="position:fixed; left:50%; transform:translateX(-50%); bottom:80px; z-index:1600;
+       background:rgba(18,18,26,.92); border:1px solid rgba(255,255,255,.12); padding:10px 12px; border-radius:16px;
+       box-shadow:0 18px 50px rgba(0,0,0,.55); display:none; max-width:min(720px, calc(100% - 24px));"></div>
 </body>
 </html>
-
-})();
