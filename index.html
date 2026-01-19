@@ -619,6 +619,11 @@ button:active, .btn:active{ transform: translateY(1px) scale(.99); }
   filter: brightness(1.02);
 }
 
+
+/* Ambient Mixer upgrades */
+.ambviz{position:relative; border-radius:18px; overflow:hidden; border:1px solid rgba(255,255,255,.08); background:linear-gradient(180deg, rgba(255,255,255,.04), rgba(0,0,0,.06));}
+#ambViz{width:100%; height:160px; display:block;}
+
 </style>
 
 <style>
@@ -826,20 +831,36 @@ button:active, .btn:active{ transform: translateY(1px) scale(.99); }
         <p id="labLead">Um toque “único”: ferramentas leves e divertidas, sem atrapalhar o checkout.</p>
 
         <div class="lab-grid">
-          <div class="lab-card">
-            <h3 id="ambTitle">Ambient Mixer (anti-ruído)</h3>
-            <p id="ambLead">Misture som suave (gerado localmente) para foco. Não usa arquivos externos.</p>
+          <div class="lab-card" id="lab-mixer">
+            <h3 id="ambTitle">Ambient Mixer</h3>
+            <p id="ambLead">Um mixer sonoro “pro” (gerado localmente) com transições suaves, presets e visualizador. Não baixa arquivos.</p>
 
-            <div class="row" style="margin-top:8px">
+            <div class="row" style="margin-top:10px; flex-wrap:wrap">
               <button class="btn vv-endless" id="ambToggle" type="button">Ativar</button>
+              <button class="btn vv-endless" id="ambPresetFocus" type="button">Preset: Focus</button>
+              <button class="btn vv-endless" id="ambPresetRain" type="button">Preset: Rain</button>
+              <button class="btn vv-endless" id="ambPresetChill" type="button">Preset: Chill</button>
               <span class="chip"><b>Status</b> <span id="ambState">off</span></span>
             </div>
 
-            <div class="slider"><span style="width:80px;color:var(--muted2)">Ruído</span><input id="ambNoise" type="range" min="0" max="100" value="18" /><span id="ambNoiseV" style="width:34px;text-align:right;color:var(--muted2)">18</span></div>
-            <div class="slider"><span style="width:80px;color:var(--muted2)">Brisa</span><input id="ambWind" type="range" min="0" max="100" value="10" /><span id="ambWindV" style="width:34px;text-align:right;color:var(--muted2)">10</span></div>
-            <div class="slider"><span style="width:80px;color:var(--muted2)">Ping</span><input id="ambPing" type="range" min="0" max="100" value="6" /><span id="ambPingV" style="width:34px;text-align:right;color:var(--muted2)">6</span></div>
+            <div class="slider" style="margin-top:8px"><span style="width:92px;color:var(--muted2)">Ruído</span><input id="ambNoise" type="range" min="0" max="100" value="18" /><span id="ambNoiseV" style="width:34px;text-align:right;color:var(--muted2)">18</span></div>
+            <div class="slider"><span style="width:92px;color:var(--muted2)">Chuva</span><input id="ambRain" type="range" min="0" max="100" value="0" /><span id="ambRainV" style="width:34px;text-align:right;color:var(--muted2)">0</span></div>
+            <div class="slider"><span style="width:92px;color:var(--muted2)">Brisa</span><input id="ambWind" type="range" min="0" max="100" value="10" /><span id="ambWindV" style="width:34px;text-align:right;color:var(--muted2)">10</span></div>
+            <div class="slider"><span style="width:92px;color:var(--muted2)">Café</span><input id="ambCafe" type="range" min="0" max="100" value="0" /><span id="ambCafeV" style="width:34px;text-align:right;color:var(--muted2)">0</span></div>
+            <div class="slider"><span style="width:92px;color:var(--muted2)">Ping</span><input id="ambPing" type="range" min="0" max="100" value="6" /><span id="ambPingV" style="width:34px;text-align:right;color:var(--muted2)">6</span></div>
+            <div class="slider"><span style="width:92px;color:var(--muted2)">Reverb</span><input id="ambVerb" type="range" min="0" max="100" value="18" /><span id="ambVerbV" style="width:34px;text-align:right;color:var(--muted2)">18</span></div>
 
-            <div class="note" id="ambNote" style="margin-top:8px">Dica: se o navegador bloquear áudio, toque em “Ativar” novamente após interagir.</div>
+            <div class="row" style="margin-top:10px">
+              <span class="chip"><b>Modo</b> <span id="ambMode">cinematic</span></span>
+              <span class="chip"><b>Proteção</b> limiter + ramp</span>
+              <span class="chip"><b>Viz</b> <span id="ambVizState">on</span></span>
+            </div>
+
+            <div class="ambviz" style="margin-top:10px">
+              <canvas id="ambViz" width="900" height="160" aria-label="Visualizador de áudio"></canvas>
+            </div>
+
+            <div class="note" id="ambNote" style="margin-top:10px">Se o navegador bloquear áudio, toque em “Ativar” novamente após qualquer interação.</div>
           </div>
 
           <div class="lab-card">
@@ -852,19 +873,7 @@ button:active, .btn:active{ transform: translateY(1px) scale(.99); }
               <span class="chip"><b>FPS</b> <span id="sandFps">—</span></span>
             </div>
           </div>
-            <div class="field" style="margin-top:8px">
-              <label for="futureMsg_removed">Mensagem</label>
-              <textarea id="futureMsg_removed" placeholder="Escreva aqui…"></textarea>
-            </div>
-            <div class="row">
-              <button class="btn vv-endless primary" id="futureSave_removed" type="button">Salvar</button>
-              <button class="btn vv-endless" id="futureOpen_removed" type="button">Ver</button>
-              <button class="btn vv-endless" id="futureDel_removed" type="button">Apagar</button>
-            </div>
-            <div class="note" id="futureOut_removed" style="margin-top:10px"></div>
-          </div>
-
-          <div class="lab-card">
+<div class="lab-card">
             <h3 id="randomTitle">Useless-ish Button</h3>
             <p id="randomLead">Um botão “aleatório”, mas sempre útil: alterna entre dicas rápidas do site.</p>
             <div class="row">
@@ -1493,111 +1502,360 @@ button:active, .btn:active{ transform: translateY(1px) scale(.99); }
       toast('Histórico limpo.');
     });
 
-    // ========= LAB: AMBIENT MIXER (WebAudio) =========
-    let audio = { ctx:null, master:null, noise:null, wind:null, ping:null, pingT:null, on:false };
+    // ========= LAB: AMBIENT MIXER (PRO WebAudio + Visualizer) =========
+    const amb = (() => {
+      const $noise = $('#ambNoise');
+      const $wind = $('#ambWind');
+      const $rain = $('#ambRain');
+      const $cafe = $('#ambCafe');
+      const $pings = $('#ambPing');
+      const $reverb = $('#ambReverb');
+      const $state = $('#ambState');
+      const $btn = $('#ambToggle');
+      const $viz = $('#ambViz');
+      const vctx = $viz.getContext('2d');
 
-    const createNoise = (ctx) => {
-      const buf = ctx.createBuffer(1, ctx.sampleRate * 2, ctx.sampleRate);
-      const data = buf.getChannelData(0);
-      for (let i=0; i<data.length; i++) data[i] = (Math.random()*2 - 1) * 0.35;
-      const src = ctx.createBufferSource();
-      src.buffer = buf;
-      src.loop = true;
-      const gain = ctx.createGain();
-      gain.gain.value = 0.18;
-      src.connect(gain);
-      src.start();
-      return { src, gain };
-    };
+      const fmt = (n) => String(Math.round(n));
+      const setLabel = (id, v) => { const el = $('#'+id); if (el) el.textContent = fmt(v); };
 
-    const createWind = (ctx) => {
-      const osc = ctx.createOscillator();
-      osc.type = 'sine';
-      osc.frequency.value = 110;
-      const lfo = ctx.createOscillator();
-      lfo.type = 'sine';
-      lfo.frequency.value = 0.12;
-      const lfoGain = ctx.createGain();
-      lfoGain.gain.value = 38;
-      lfo.connect(lfoGain);
-      lfoGain.connect(osc.frequency);
-      const gain = ctx.createGain();
-      gain.gain.value = 0.10;
-      osc.connect(gain);
-      osc.start();
-      lfo.start();
-      return { osc, gain, lfo, lfoGain };
-    };
+      let ctx, master, limiter, analyser;
+      let on = false;
+      let drawRaf = 0;
 
-    const schedulePing = () => {
-      if (!audio.on || !audio.ctx) return;
-      const ctx = audio.ctx;
-      const t = ctx.currentTime + 0.05;
-      const o = ctx.createOscillator();
-      o.type = 'triangle';
-      o.frequency.value = 660 + Math.random()*110;
-      const g = ctx.createGain();
-      g.gain.setValueAtTime(0.0001, t);
-      g.gain.exponentialRampToValueAtTime(0.06, t + 0.02);
-      g.gain.exponentialRampToValueAtTime(0.0001, t + 0.18);
-      o.connect(g);
-      g.connect(audio.master);
-      o.start(t);
-      o.stop(t + 0.22);
+      // Nodes
+      let noiseSrc, noiseGain, noiseHP, noiseLP;
+      let windOsc, windGain, windLfo, windLfoGain;
+      let rainSrc, rainGain, rainHP, rainBP, rainMod;
+      let cafeSrc, cafeGain, cafeBP, cafeLfo, cafeLfoGain;
+      let subOsc, subGain;
+      let wet, dry, convolver;
+      let pingTimer = 0;
 
-      const base = 2800;
-      const density = Number($('#ambPing').value || 6);
-      const wait = Math.max(650, base - density*20) + Math.random()*700;
-      audio.pingT = setTimeout(schedulePing, wait);
-    };
+      const ramp = (param, value, time=0.12) => {
+        const t = ctx.currentTime;
+        try{
+          param.cancelScheduledValues(t);
+          param.setTargetAtTime(value, t, time);
+        }catch{}
+      };
 
-    const setAudioVolumes = () => {
-      if (!audio.ctx) return;
-      const nv = Number($('#ambNoise').value||0) / 100;
-      const wv = Number($('#ambWind').value||0) / 100;
-      audio.noise.gain.gain.value = 0.40 * nv;
-      audio.wind.gain.gain.value = 0.20 * wv;
-      $('#ambNoiseV').textContent = String($('#ambNoise').value);
-      $('#ambWindV').textContent = String($('#ambWind').value);
-      $('#ambPingV').textContent = String($('#ambPing').value);
-    };
-
-    const toggleAmbient = async () => {
-      try{
-        if (!audio.ctx) {
-          audio.ctx = new (window.AudioContext || window.webkitAudioContext)();
-          audio.master = audio.ctx.createGain();
-          audio.master.gain.value = 0.9;
-          audio.master.connect(audio.ctx.destination);
-
-          audio.noise = createNoise(audio.ctx);
-          audio.wind = createWind(audio.ctx);
-          audio.noise.gain.connect(audio.master);
-          audio.wind.gain.connect(audio.master);
+      const mkImpulse = (ctx, seconds=1.6, decay=3.2) => {
+        const rate = ctx.sampleRate;
+        const len = Math.floor(rate * seconds);
+        const ir = ctx.createBuffer(2, len, rate);
+        for (let ch=0; ch<2; ch++) {
+          const d = ir.getChannelData(ch);
+          for (let i=0; i<len; i++) {
+            const x = i/len;
+            // dense early reflections + smooth tail
+            const n = (Math.random()*2-1);
+            d[i] = n * Math.pow(1 - x, decay);
+          }
         }
+        return ir;
+      };
 
-        if (audio.ctx.state === 'suspended') await audio.ctx.resume();
+      const mkNoise = (ctx, seconds=2.0) => {
+        const rate = ctx.sampleRate;
+        const len = Math.floor(rate * seconds);
+        const buf = ctx.createBuffer(1, len, rate);
+        const data = buf.getChannelData(0);
+        for (let i=0;i<len;i++) data[i] = (Math.random()*2 - 1);
+        const src = ctx.createBufferSource();
+        src.buffer = buf;
+        src.loop = true;
+        return src;
+      };
 
-        audio.on = !audio.on;
-        $('#ambState').textContent = audio.on ? 'on' : 'off';
-        $('#ambToggle').textContent = audio.on ? 'Desativar' : 'Ativar';
+      const mkPinkish = (ctx) => {
+        // Pink-ish noise via simple filtering of white noise
+        const src = mkNoise(ctx, 3.0);
+        const lp = ctx.createBiquadFilter();
+        lp.type = 'lowpass';
+        lp.frequency.value = 1200;
+        const hp = ctx.createBiquadFilter();
+        hp.type = 'highpass';
+        hp.frequency.value = 60;
+        src.connect(lp);
+        lp.connect(hp);
+        return { src, hp, lp };
+      };
 
-        if (audio.on) {
-          setAudioVolumes();
-          clearTimeout(audio.pingT);
-          schedulePing();
-          toast('Mixer ligado.');
-        } else {
-          clearTimeout(audio.pingT);
-          toast('Mixer desligado.');
+      const ensure = async () => {
+        if (ctx) return;
+        ctx = new (window.AudioContext || window.webkitAudioContext)();
+
+        // Master chain
+        master = ctx.createGain();
+        dry = ctx.createGain();
+        wet = ctx.createGain();
+        limiter = ctx.createDynamicsCompressor();
+        analyser = ctx.createAnalyser();
+        analyser.fftSize = 2048;
+
+        // tasteful default
+        master.gain.value = 0.85;
+        dry.gain.value = 0.9;
+        wet.gain.value = 0.25;
+        limiter.threshold.value = -14;
+        limiter.knee.value = 24;
+        limiter.ratio.value = 6;
+        limiter.attack.value = 0.01;
+        limiter.release.value = 0.18;
+
+        convolver = ctx.createConvolver();
+        convolver.buffer = mkImpulse(ctx, 1.8, 3.4);
+
+        // routing
+        master.connect(dry);
+        master.connect(wet);
+        wet.connect(convolver);
+        convolver.connect(limiter);
+        dry.connect(limiter);
+        limiter.connect(analyser);
+        analyser.connect(ctx.destination);
+
+        // --- Base Noise (air / anti-ruído) ---
+        const pn = mkPinkish(ctx);
+        noiseSrc = pn.src;
+        noiseHP = pn.hp;
+        noiseLP = pn.lp;
+        noiseGain = ctx.createGain();
+        noiseGain.gain.value = 0.0;
+        noiseHP.connect(noiseGain);
+        noiseGain.connect(master);
+        noiseSrc.start();
+
+        // --- Wind (wide, slow) ---
+        windOsc = ctx.createOscillator();
+        windOsc.type = 'sine';
+        windOsc.frequency.value = 110;
+        windGain = ctx.createGain();
+        windGain.gain.value = 0.0;
+        windLfo = ctx.createOscillator();
+        windLfo.type = 'sine';
+        windLfo.frequency.value = 0.10;
+        windLfoGain = ctx.createGain();
+        windLfoGain.gain.value = 42;
+        windLfo.connect(windLfoGain);
+        windLfoGain.connect(windOsc.frequency);
+        windOsc.connect(windGain);
+        windGain.connect(master);
+        windOsc.start();
+        windLfo.start();
+
+        // --- Rain (sparkly high noise w/ movement) ---
+        rainSrc = mkNoise(ctx, 2.5);
+        rainHP = ctx.createBiquadFilter();
+        rainHP.type = 'highpass';
+        rainHP.frequency.value = 1200;
+        rainBP = ctx.createBiquadFilter();
+        rainBP.type = 'bandpass';
+        rainBP.frequency.value = 4200;
+        rainBP.Q.value = 0.9;
+        rainGain = ctx.createGain();
+        rainGain.gain.value = 0.0;
+        // light amplitude motion
+        rainMod = ctx.createOscillator();
+        rainMod.type = 'sine';
+        rainMod.frequency.value = 0.35;
+        const rainModG = ctx.createGain();
+        rainModG.gain.value = 0.12;
+        rainMod.connect(rainModG);
+        rainModG.connect(rainGain.gain);
+
+        rainSrc.connect(rainHP);
+        rainHP.connect(rainBP);
+        rainBP.connect(rainGain);
+        rainGain.connect(master);
+        rainSrc.start();
+        rainMod.start();
+
+        // --- Cafe (mid band chatter illusion) ---
+        cafeSrc = mkNoise(ctx, 3.0);
+        cafeBP = ctx.createBiquadFilter();
+        cafeBP.type = 'bandpass';
+        cafeBP.frequency.value = 900;
+        cafeBP.Q.value = 0.7;
+        cafeGain = ctx.createGain();
+        cafeGain.gain.value = 0.0;
+        cafeLfo = ctx.createOscillator();
+        cafeLfo.type = 'sine';
+        cafeLfo.frequency.value = 0.06;
+        cafeLfoGain = ctx.createGain();
+        cafeLfoGain.gain.value = 250;
+        cafeLfo.connect(cafeLfoGain);
+        cafeLfoGain.connect(cafeBP.frequency);
+        cafeSrc.connect(cafeBP);
+        cafeBP.connect(cafeGain);
+        cafeGain.connect(master);
+        cafeSrc.start();
+        cafeLfo.start();
+
+        // --- Sub (calm hum) ---
+        subOsc = ctx.createOscillator();
+        subOsc.type = 'sine';
+        subOsc.frequency.value = 44;
+        subGain = ctx.createGain();
+        subGain.gain.value = 0.0;
+        subOsc.connect(subGain);
+        subGain.connect(master);
+        subOsc.start();
+
+        fitViz();
+        window.addEventListener('resize', fitViz, { passive:true });
+      };
+
+      const fitViz = () => {
+        const rect = $viz.getBoundingClientRect();
+        const dpr = Math.min(2, window.devicePixelRatio || 1);
+        $viz.width = Math.floor(rect.width * dpr);
+        $viz.height = Math.floor(rect.height * dpr);
+        vctx.setTransform(dpr,0,0,dpr,0,0);
+      };
+
+      const draw = () => {
+        if (!on || !analyser) return;
+        const rect = $viz.getBoundingClientRect();
+        const W = rect.width, H = rect.height;
+        vctx.clearRect(0,0,W,H);
+
+        const data = new Uint8Array(analyser.frequencyBinCount);
+        analyser.getByteFrequencyData(data);
+
+        // soft glow spectrum
+        const bars = 44;
+        const step = Math.floor(data.length / bars);
+        const bw = W / bars;
+        for (let i=0;i<bars;i++) {
+          const v = data[i*step] / 255;
+          const h = Math.max(2, v * H);
+          const x = i*bw;
+          const y = H - h;
+          vctx.globalAlpha = 0.18 + v*0.55;
+          vctx.fillStyle = 'rgba(140, 170, 255, 1)';
+          vctx.fillRect(x + bw*0.18, y, bw*0.62, h);
+          vctx.globalAlpha = 0.10;
+          vctx.fillRect(x + bw*0.05, y, bw*0.90, Math.min(10, h));
         }
-      }catch{
-        toast('Áudio indisponível.');
-      }
-    };
+        vctx.globalAlpha = 1;
 
-    $('#ambToggle').addEventListener('click', toggleAmbient);
-    ['ambNoise','ambWind','ambPing'].forEach(id => $('#'+id).addEventListener('input', () => setAudioVolumes()));
+        drawRaf = requestAnimationFrame(draw);
+      };
+
+      const schedulePings = () => {
+        if (!on || !ctx) return;
+        const density = Number($pings.value||18);
+        const base = 3200;
+        const wait = Math.max(650, base - density*55) + Math.random()*520;
+
+        // little "glass" ping
+        const t = ctx.currentTime + 0.03;
+        const o1 = ctx.createOscillator();
+        const o2 = ctx.createOscillator();
+        o1.type = 'triangle';
+        o2.type = 'sine';
+        const f = 520 + Math.random()*260;
+        o1.frequency.setValueAtTime(f, t);
+        o2.frequency.setValueAtTime(f*2.01, t);
+        const g = ctx.createGain();
+        g.gain.setValueAtTime(0.0001, t);
+        g.gain.exponentialRampToValueAtTime(0.055, t+0.02);
+        g.gain.exponentialRampToValueAtTime(0.0001, t+0.22);
+        o1.connect(g);
+        o2.connect(g);
+        g.connect(master);
+        o1.start(t); o2.start(t);
+        o1.stop(t+0.24); o2.stop(t+0.24);
+
+        pingTimer = setTimeout(schedulePings, wait);
+      };
+
+      const apply = () => {
+        if (!ctx) return;
+        const n = Number($noise.value)/100;
+        const w = Number($wind.value)/100;
+        const r = Number($rain.value)/100;
+        const c = Number($cafe.value)/100;
+        const p = Number($pings.value);
+        const rv = Number($reverb.value)/100;
+
+        // Smooth gains
+        ramp(noiseGain.gain, 0.42*n, 0.10);
+        ramp(windGain.gain, 0.18*w, 0.12);
+        ramp(rainGain.gain, 0.28*r, 0.10);
+        ramp(cafeGain.gain, 0.22*c, 0.14);
+        ramp(subGain.gain, 0.07*(0.35*n + 0.65*w), 0.16);
+
+        ramp(wet.gain, 0.08 + 0.55*rv, 0.12);
+        ramp(dry.gain, 1.0 - 0.22*rv, 0.12);
+
+        setLabel('ambNoiseV', $noise.value);
+        setLabel('ambWindV', $wind.value);
+        setLabel('ambRainV', $rain.value);
+        setLabel('ambCafeV', $cafe.value);
+        setLabel('ambPingV', p);
+        setLabel('ambReverbV', $reverb.value);
+      };
+
+      const preset = async (name) => {
+        await ensure();
+        const presets = {
+          focus:  { noise: 38, wind: 18, rain: 22, cafe: 0,  ping: 10, reverb: 22 },
+          chuva:  { noise: 26, wind: 12, rain: 60, cafe: 0,  ping: 14, reverb: 30 },
+          cafe:   { noise: 10, wind: 6,  rain: 0,  cafe: 62, ping: 8,  reverb: 18 },
+          noite:  { noise: 22, wind: 26, rain: 10, cafe: 0,  ping: 22, reverb: 44 },
+        };
+        const p = presets[name] || presets.focus;
+        $noise.value = p.noise;
+        $wind.value = p.wind;
+        $rain.value = p.rain;
+        $cafe.value = p.cafe;
+        $pings.value = p.ping;
+        $reverb.value = p.reverb;
+        apply();
+        toast('Preset aplicado.');
+      };
+
+      const toggle = async () => {
+        try{
+          await ensure();
+          if (ctx.state === 'suspended') await ctx.resume();
+          on = !on;
+          $state.textContent = on ? 'on' : 'off';
+          $btn.textContent = on ? 'Desativar' : 'Ativar';
+
+          if (on) {
+            apply();
+            clearTimeout(pingTimer);
+            schedulePings();
+            cancelAnimationFrame(drawRaf);
+            draw();
+            toast('Mixer ligado.');
+          } else {
+            clearTimeout(pingTimer);
+            cancelAnimationFrame(drawRaf);
+            // fade out
+            ramp(noiseGain.gain, 0.0, 0.20);
+            ramp(windGain.gain, 0.0, 0.20);
+            ramp(rainGain.gain, 0.0, 0.20);
+            ramp(cafeGain.gain, 0.0, 0.20);
+            ramp(subGain.gain, 0.0, 0.20);
+            toast('Mixer desligado.');
+          }
+        }catch{
+          toast('Áudio indisponível.');
+        }
+      };
+
+      // Wiring
+      $btn.addEventListener('click', toggle);
+      [$noise,$wind,$rain,$cafe,$pings,$reverb].forEach(el => el.addEventListener('input', () => { if (ctx) apply(); }));
+      $$('#lab-mixer .chip[data-amb-preset]').forEach(btn => btn.addEventListener('click', () => preset(btn.dataset.ambPreset)));
+
+      return { preset };
+    })();
+
 
     // ========= LAB: SAND =========
     const sand = (() => {
