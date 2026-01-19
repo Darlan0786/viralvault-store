@@ -4,8 +4,45 @@
   <meta charset="utf-8"/>
   <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"/>
   <title>ViralVault Store</title>
-  <meta name="description" content="ViralVault Store — catálogo, checkout PIX e suporte oficial via Discord."/>
+
+  <meta name="description" content="ViralVault Store — catálogo, checkout PIX, status oficial e suporte via Discord."/>
+  <meta name="keywords" content="ViralVault, robux, roblox, loja, pix, checkout, itens, conta"/>
+  <meta name="robots" content="index,follow"/>
+  <link rel="canonical" href="https://viralvault-store.vercel.app/"/>
+
+  <!-- OpenGraph -->
+  <meta property="og:title" content="ViralVault Store"/>
+  <meta property="og:description" content="Catálogo, checkout PIX e status oficial."/>
+  <meta property="og:type" content="website"/>
+  <meta property="og:url" content="https://viralvault-store.vercel.app/"/>
+  <meta property="og:image" content="data:image/svg+xml;utf8,<?xml version='1.0' encoding='UTF-8'?><svg xmlns='http://www.w3.org/2000/svg' width='1200' height='630'><defs><linearGradient id='g' x1='0' y1='0' x2='1' y2='1'><stop stop-color='%230b0b0f'/><stop offset='0.5' stop-color='%23ffd11a'/><stop offset='1' stop-color='%23ff3b30'/></linearGradient></defs><rect width='1200' height='630' fill='%2307080c'/><rect x='40' y='40' width='1120' height='550' rx='48' fill='url(%23g)' opacity='0.22'/><text x='90' y='240' font-family='Arial' font-size='88' fill='white' font-weight='800'>ViralVault</text><text x='90' y='330' font-family='Arial' font-size='40' fill='white' opacity='0.9'>Checkout PIX • Status oficial • Discord</text><circle cx='1020' cy='310' r='120' fill='%23ffd11a' opacity='0.35'/><circle cx='1060' cy='350' r='120' fill='%23ff3b30' opacity='0.25'/></svg>"/>
+  <meta name="twitter:card" content="summary_large_image"/>
+  <meta name="twitter:title" content="ViralVault Store"/>
+  <meta name="twitter:description" content="Catálogo, checkout PIX e status oficial."/>
+  <meta name="twitter:image" content="data:image/svg+xml;utf8,<?xml version='1.0' encoding='UTF-8'?><svg xmlns='http://www.w3.org/2000/svg' width='1200' height='630'><defs><linearGradient id='g' x1='0' y1='0' x2='1' y2='1'><stop stop-color='%230b0b0f'/><stop offset='0.5' stop-color='%23ffd11a'/><stop offset='1' stop-color='%23ff3b30'/></linearGradient></defs><rect width='1200' height='630' fill='%2307080c'/><rect x='40' y='40' width='1120' height='550' rx='48' fill='url(%23g)' opacity='0.22'/><text x='90' y='240' font-family='Arial' font-size='88' fill='white' font-weight='800'>ViralVault</text><text x='90' y='330' font-family='Arial' font-size='40' fill='white' opacity='0.9'>Checkout PIX • Status oficial • Discord</text><circle cx='1020' cy='310' r='120' fill='%23ffd11a' opacity='0.35'/><circle cx='1060' cy='350' r='120' fill='%23ff3b30' opacity='0.25'/></svg>"/>
+
   <meta name="theme-color" content="#0b0b0f"/>
+  <meta name="apple-mobile-web-app-capable" content="yes"/>
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent"/>
+
+  <!-- JSON-LD -->
+  <script type="application/ld+json">
+  {
+    "@context":"https://schema.org",
+    "@type":"WebSite",
+    "name":"ViralVault Store",
+    "url":"https://viralvault-store.vercel.app/",
+    "potentialAction":{
+      "@type":"SearchAction",
+      "target":"https://viralvault-store.vercel.app/?q={search_term_string}",
+      "query-input":"required name=search_term_string"
+    }
+  }
+  </script>
+
+  <!-- Manifest injected -->
+  <link rel="manifest" href="data:application/manifest+json,{&quot;name&quot;:&quot;ViralVault Store&quot;,&quot;short_name&quot;:&quot;ViralVault&quot;,&quot;start_url&quot;:&quot;/&quot;,&quot;display&quot;:&quot;standalone&quot;,&quot;background_color&quot;:&quot;%2307080c&quot;,&quot;theme_color&quot;:&quot;%230b0b0f&quot;,&quot;icons&quot;:[{&quot;src&quot;:&quot;data:image/svg+xml;utf8,%3Csvg xmlns='http://www.w3.org/2000/svg' width='512' height='512'%3E%3Cdefs%3E%3CradialGradient id='rg' cx='30%25' cy='30%25'%3E%3Cstop offset='0%25' stop-color='%23ffd11a'/%3E%3Cstop offset='55%25' stop-color='%23ff3b30'/%3E%3Cstop offset='100%25' stop-color='%2307080c'/%3E%3C/radialGradient%3E%3C/defs%3E%3Crect width='512' height='512' rx='140' fill='url(%23rg)'/%3E%3Ctext x='50%25' y='57%25' text-anchor='middle' font-family='Arial' font-size='210' font-weight='800' fill='white'%3EVV%3C/text%3E%3C/svg%3E&quot;,&quot;sizes&quot;:&quot;512x512&quot;,&quot;type&quot;:&quot;image/svg+xml&quot;}]}"/>
+
   <style>
     :root{
       --bg:#07080c; --panel:#0c0e16;
@@ -160,14 +197,14 @@
     </div>
     <div class="spacer"></div>
     <div class="pillbar">
-      <a class="pill" id="discordTop" href="https://discord.gg/fWAWquBu" target="_blank" rel="noopener">
+      <a class="pill" href="https://discord.gg/fWAWquBu" target="_blank" rel="noopener">
         <svg class="icon" viewBox="0 0 24 24" fill="none" aria-hidden="true">
           <path d="M8.7 8.3c.2 0 .4.2.4.4s-.2.4-.4.4-.4-.2-.4-.4.2-.4.4-.4Zm6.6 0c.2 0 .4.2.4.4s-.2.4-.4.4-.4-.2-.4-.4.2-.4.4-.4Z" fill="currentColor"/>
           <path d="M16.6 6.2A14 14 0 0 0 14 5.6a9 9 0 0 0-.4.9c-1.2-.2-2.4-.2-3.6 0a9 9 0 0 0-.4-.9 14 14 0 0 0-2.6.6A12.8 12.8 0 0 0 5 16.2c1 .8 2.2 1.4 3.4 1.8.3-.4.6-.8.8-1.2-.4-.2-.9-.4-1.3-.6l.3-.2c2.5 1.2 5.2 1.2 7.7 0l.3.2c-.4.2-.8.5-1.3.6.2.4.5.8.8 1.2 1.2-.4 2.4-1 3.4-1.8a12.8 12.8 0 0 0-2.3-10Z" stroke="currentColor" stroke-width="1.4" opacity=".9"/>
         </svg>
         <strong>Discord</strong>
       </a>
-      <button class="pill" id="supportBtn" type="button" title="Suporte (chat)">
+      <button class="pill" id="supportBtn" type="button">
         <svg class="icon" viewBox="0 0 24 24" fill="none" aria-hidden="true">
           <path d="M7 18.5c-1.1 0-2-.9-2-2V7.8c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2v8.7c0 1.1-.9 2-2 2H10l-3.2 2.2c-.5.3-1.1 0-1.1-.6V18.5Z" stroke="currentColor" stroke-width="1.4" opacity=".9"/>
           <path d="M8 10h8M8 13h6" stroke="currentColor" stroke-width="1.4" opacity=".9"/>
@@ -184,7 +221,7 @@
       <div class="hd">
         <div>
           <h2 class="title">Catálogo</h2>
-          <div class="muted">Produtos carregados do seu Worker. Suporte oficial: Discord.</div>
+          <div class="muted">Produtos do Worker • checkout PIX • status oficial.</div>
         </div>
         <span class="tag" id="catalogTag">Carregando…</span>
       </div>
@@ -194,7 +231,6 @@
         <div class="hr"></div>
 
         <h2 class="title" style="margin:0 0 8px">Criar pedido (PIX)</h2>
-        <div class="muted" style="margin-bottom:10px">Selecione um produto, informe seu usuário e gere o PIX + Order ID.</div>
 
         <div class="row" style="margin-bottom:10px">
           <div style="flex:1; min-width:220px">
@@ -203,23 +239,22 @@
           </div>
           <div style="flex:1; min-width:220px">
             <label class="mini">Usuário (Roblox)</label>
-            <input id="userInput" placeholder="ex: James" autocomplete="username"/>
+            <input id="userInput" placeholder="ex: James"/>
           </div>
         </div>
 
         <div class="row">
           <button class="btn primary" id="createOrderBtn" type="button">Gerar Pedido + PIX</button>
           <button class="btn" id="copyPixBtn" type="button" disabled>Copiar PIX</button>
-          <button class="btn ghost" id="openDiscordBtn" type="button">Abrir Discord</button>
         </div>
 
         <div class="hr"></div>
 
-        <h2 class="title" style="margin:0 0 8px">Pedido (Status Oficial)</h2>
+        <h2 class="title" style="margin:0 0 8px">Pedido (Status)</h2>
         <div class="row" style="margin-bottom:10px">
           <div style="flex:1; min-width:240px">
             <label class="mini">Order ID</label>
-            <input id="orderIdInput" placeholder="vv_..." autocomplete="off"/>
+            <input id="orderIdInput" placeholder="vv_..."/>
           </div>
           <div style="display:flex; gap:10px; align-items:end">
             <button class="btn" id="checkStatusBtn" type="button">Ver Status</button>
@@ -234,7 +269,7 @@
       <div class="hd">
         <div>
           <h2 class="title">Suporte</h2>
-          <div class="muted">Discord é o canal oficial. O chat do site é um assistente automático (grátis).</div>
+          <div class="muted">Discord é o canal oficial. Chat do site: assistente automático grátis.</div>
         </div>
         <span class="tag">Discord-only</span>
       </div>
@@ -247,11 +282,11 @@
         <div class="hr"></div>
 
         <h2 class="title" style="margin:0 0 8px">Minhas Compras</h2>
-        <div class="muted" style="margin-bottom:10px">Busca pelo usuário (rota <code>/my-orders?user=</code>).</div>
+        <div class="muted" style="margin-bottom:10px">Busca: <code>/my-orders?user=</code></div>
         <div class="row" style="margin-bottom:10px">
           <div style="flex:1; min-width:220px">
             <label class="mini">Usuário (Roblox)</label>
-            <input id="historyUser" placeholder="ex: James" autocomplete="username"/>
+            <input id="historyUser" placeholder="ex: James"/>
           </div>
           <div style="display:flex; align-items:end">
             <button class="btn" id="loadHistoryBtn" type="button">Buscar</button>
@@ -259,26 +294,24 @@
         </div>
         <pre id="historyBox" style="margin:0; padding:12px; border-radius:16px; background:rgba(0,0,0,.22); border:1px solid rgba(255,255,255,.12); color:rgba(242,244,255,.88); overflow:auto; max-height:320px"></pre>
 
-        <footer>
-          <div>© <span id="yy"></span> ViralVault. Status e pedidos são verificados pelo sistema.</div>
-        </footer>
+        <footer>© <span id="yy"></span> ViralVault</footer>
       </div>
     </aside>
   </div>
 </div>
 
-<div class="backdrop" id="supportBackdrop" role="dialog" aria-modal="true" aria-label="Suporte ViralVault">
+<div class="backdrop" id="supportBackdrop">
   <div class="modal">
     <div class="mhd">
       <div>
         <div class="title" style="margin:0">Suporte (Assistente)</div>
-        <div class="muted" style="font-size:12px">Para humano: Discord oficial.</div>
+        <div class="muted" style="font-size:12px">Suporte humano: Discord.</div>
       </div>
-      <button class="close" id="supportClose" type="button" aria-label="Fechar">✕</button>
+      <button class="close" id="supportClose" type="button">✕</button>
     </div>
     <div class="chat" id="chatLog"></div>
     <div class="composer">
-      <input id="chatInput" placeholder="Ex: paguei pix e não atualizou" autocomplete="off"/>
+      <input id="chatInput" placeholder="Ex: paguei pix e não atualizou"/>
       <button class="btn primary" id="chatSend" type="button">Enviar</button>
     </div>
     <div class="hint" id="chatHint"></div>
@@ -291,7 +324,6 @@
   const DISCORD = "https://discord.gg/fWAWquBu";
   const $ = (id) => document.getElementById(id);
   $("yy").textContent = new Date().getFullYear();
-
   const esc = (s) => String(s).replace(/[&<>"']/g, c => ({ "&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#039;" }[c]));
   const pretty = (obj) => JSON.stringify(obj, null, 2);
 
@@ -305,7 +337,7 @@
     return data;
   }
 
-  // ---------- Catalog ----------
+  // catalog
   let products = [];
   async function loadCatalog() {
     try {
@@ -352,7 +384,7 @@
     }
   }
 
-  // ---------- Create order ----------
+  // create order
   let lastPix = "";
   function toast(msg){ $("statusBox").textContent = msg; }
 
@@ -377,15 +409,8 @@
 
       if (orderId) $("orderIdInput").value = orderId;
 
-      toast(pretty({
-        ok: true,
-        orderId,
-        order: data?.order || null,
-        pixCopiaECola: pix ? "(disponível — use Copiar PIX)" : "(não configurado no Worker)"
-      }));
-
+      toast(pretty({ ok:true, orderId, order:data?.order||null, pixCopiaECola: pix ? "(disponível)" : "(não configurado)" }));
       $("copyPixBtn").disabled = !pix;
-
     } catch (e) {
       toast("Erro: " + e.message);
     }
@@ -395,20 +420,18 @@
     if (!lastPix) return;
     try {
       await navigator.clipboard.writeText(lastPix);
-      toast("PIX copiado ✅ Cole no app do banco.");
+      toast("PIX copiado ✅");
     } catch {
       const ta = document.createElement("textarea");
       ta.value = lastPix;
       document.body.appendChild(ta);
-      ta.select();
-      document.execCommand("copy");
-      ta.remove();
-      toast("PIX copiado ✅ (compatibilidade)");
+      ta.select(); document.execCommand("copy"); ta.remove();
+      toast("PIX copiado ✅");
     }
   });
 
   $("checkStatusBtn").addEventListener("click", async () => {
-    toast("Consultando status…");
+    toast("Consultando…");
     try {
       const orderId = $("orderIdInput").value.trim();
       if (!orderId) throw new Error("Informe o Order ID.");
@@ -419,23 +442,20 @@
     }
   });
 
-  // ---------- History ----------
+  // history
   $("loadHistoryBtn").addEventListener("click", async () => {
     $("historyBox").textContent = "Buscando…";
     try {
       const user = $("historyUser").value.trim();
-      if (!user) throw new Error("Informe o usuário (Roblox).");
-      const data = await api("/my-orders?user=" + encodeURIComponent(user), { method: "GET", headers: {} });
+      if (!user) throw new Error("Informe o usuário.");
+      const data = await api("/my-orders?user=" + encodeURIComponent(user), { method:"GET", headers:{} });
       $("historyBox").textContent = pretty(data);
     } catch (e) {
       $("historyBox").textContent = "Erro: " + e.message;
     }
   });
 
-  // ---------- Discord ----------
-  $("openDiscordBtn").addEventListener("click", () => window.open(DISCORD, "_blank", "noopener,noreferrer"));
-
-  // ---------- Support modal ----------
+  // support modal
   const backdrop = $("supportBackdrop");
   const chatLog = $("chatLog");
   const chatInput = $("chatInput");
@@ -453,7 +473,7 @@
     backdrop.style.display = "block";
     if (chatLog.childElementCount === 0){
       addMsg("bot", "Olá! Me diga sua dúvida em 1 frase. Ex: “paguei pix e não atualizou”.");
-      addMsg("bot", "Para humano: Discord oficial.");
+      addMsg("bot", "Humano: Discord — " + DISCORD);
     }
     setTimeout(() => chatInput.focus(), 50);
   }
@@ -480,22 +500,54 @@
       const data = await r.json().catch(() => ({}));
       if (!r.ok || !data?.ok) {
         chatHint.textContent = "";
-        addMsg("bot", (data && data.error) ? data.error : "Falha. Tente novamente ou use o Discord.");
+        addMsg("bot", (data && data.error) ? data.error : "Falha. Use o Discord.");
         return;
       }
       chatHint.textContent = "";
       addMsg("bot", data.answer || "Ok.");
-    } catch (e) {
+    } catch {
       chatHint.textContent = "";
-      addMsg("bot", "Sem conexão. Use o Discord: " + DISCORD);
+      addMsg("bot", "Sem conexão. Discord: " + DISCORD);
     }
   }
-
   $("chatSend").addEventListener("click", sendSupport);
   chatInput.addEventListener("keydown", (e) => { if (e.key === "Enter") sendSupport(); });
 
+  // PWA Service Worker injected
+  async function registerSW(){
+    try{
+      const swCode = `
+        const CACHE='vv-pwa-v1';
+        const ASSETS=['/'];
+        self.addEventListener('install', e=>{
+          e.waitUntil(caches.open(CACHE).then(c=>c.addAll(ASSETS)).then(()=>self.skipWaiting()));
+        });
+        self.addEventListener('activate', e=>{
+          e.waitUntil(caches.keys().then(keys=>Promise.all(keys.map(k=>k!==CACHE?caches.delete(k):null))).then(()=>self.clients.claim()));
+        });
+        self.addEventListener('fetch', e=>{
+          const req=e.request;
+          if(req.method!=='GET') return;
+          e.respondWith(
+            caches.match(req).then(cached=>cached || fetch(req).then(res=>{
+              const copy=res.clone();
+              caches.open(CACHE).then(c=>c.put(req,copy)).catch(()=>{});
+              return res;
+            }).catch(()=>cached || new Response('Offline',{status:200,headers:{'content-type':'text/plain'}})))
+          );
+        });
+      `;
+      const blob = new Blob([swCode], { type:'text/javascript' });
+      const swUrl = URL.createObjectURL(blob);
+      if('serviceWorker' in navigator){
+        await navigator.serviceWorker.register(swUrl, { scope:'/' });
+      }
+    }catch(e){}
+  }
+
   // init
   loadCatalog();
+  registerSW();
 })();
 </script>
 </body>
