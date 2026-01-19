@@ -236,7 +236,9 @@
       border-color: rgba(124,108,255,.35);
       background: linear-gradient(135deg, rgba(124,108,255,.26), rgba(77,211,255,.12));
     }
-  </style>
+    .adminOnly{display:none}
+  body.admin .adminOnly{display:block}
+</style>
 </head>
 <body>
   <div class="topbar">
@@ -374,7 +376,7 @@
           </div>
 
           <div class="line"></div>
-          <div class="small">Backend: <span class="mono" id="backendLine">—</span></div>
+          <div class="small adminOnly">Backend: <span class="mono" id="backendLine">—</span></div>
         </div>
       </section>
 
@@ -385,7 +387,7 @@
 
           <div class="line"></div>
 
-          <div class="small">API: <span class="mono" id="apiUrl">—</span></div>
+          <div class="small adminOnly">API: <span class="mono" id="apiUrl">—</span></div>
           <div class="small">Suporte: Discord</div>
 
           <div style="margin-top:12px; display:flex; gap:10px; flex-wrap:wrap">
@@ -408,11 +410,14 @@
 
   <script>
   const CONFIG = {
-    API_BASE: "https://viralvault-sign.darlanana06.workers.dev",
+    API_BASE: "",
     DISCORD_INVITE: "https://discord.gg/fWAWquBu",
     STORAGE_KEY: "viralvault:v10",
     CURRENCY: "BRL"
   };
+
+  const ADMIN_MODE = new URLSearchParams(location.search).has('admin') || localStorage.getItem('vv_admin') === '1';
+  if (ADMIN_MODE) document.body.classList.add('admin');
 
   const I18N = {
     "pt-BR": {},
@@ -627,8 +632,14 @@
   $("lang").addEventListener("change", (e)=> applyLang(e.target.value));
 
   (async function init(){
-    $("apiUrl").textContent = CONFIG.API_BASE;
-    $("backendLine").textContent = CONFIG.API_BASE;
+    if (ADMIN_MODE) {
+    document.body.classList.add("admin");
+      $("apiUrl").textContent = CONFIG.API_BASE;
+      $("backendLine").textContent = CONFIG.API_BASE;
+    } else {
+      $("apiUrl").textContent = "";
+      $("backendLine").textContent = "";
+    }
     const s = getStore();
     if(s.lang) $("lang").value = s.lang;
     applyLang($("lang").value);
@@ -637,10 +648,9 @@
     renderCartLine();
     try{
       const home = await api("/", { method:"GET" });
-      $("envLine").textContent = "Worker OK";
-      if(home && home.origin_allowed) $("envLine").textContent += " • origin: " + home.origin_allowed;
+      $("envLine").textContent = "Sistema online";
     }catch{
-      $("envLine").textContent = "Worker OFF • verifique o link/configuração";
+      $("envLine").textContent = "Sistema offline • tente novamente";
     }
     await loadCatalog();
   })();
