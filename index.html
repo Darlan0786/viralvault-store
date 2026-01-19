@@ -22,6 +22,11 @@
   <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;600;700&display=swap" rel="stylesheet">
 
   <title>ViralVault Store</title>
+
+  <meta name="color-scheme" content="dark light" />
+  <meta name="mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+
   <style>
     :root{
       --bg:#0b0b10;
@@ -790,9 +795,49 @@
       *{animation:none !important; transition:none !important; scroll-behavior:auto !important;}
     }
 
+
+    /* ===== Theme: Light Mode (toggle) ===== */
+    html[data-theme="light"]{
+      --bg:#f6f7fb;
+      --panel:#ffffff;
+      --panel2:#f1f2f6;
+      --txt:#101218;
+      --muted:rgba(16,18,24,.70);
+      --stroke:rgba(16,18,24,.10);
+      --stroke2:rgba(16,18,24,.12);
+      --glass: rgba(255,255,255,.74);
+      --glass2: rgba(255,255,255,.55);
+      --shadow2: 0 12px 30px rgba(16,18,24,.12);
+      --shadow3: 0 22px 60px rgba(16,18,24,.16);
+    }
+    html[data-theme="light"] body{
+      background:
+        radial-gradient(1200px 700px at 20% -10%, rgba(255,210,74,.22), transparent 55%),
+        radial-gradient(1100px 750px at 90% 10%, rgba(255,59,74,.14), transparent 55%),
+        var(--bg);
+    }
+    html[data-theme="light"] .pMedia::before{opacity:.55}
+
 </style>
 </head>
 <body>
+
+  <!-- ===== Status Banner ===== -->
+  <div id="vvBanner" style="display:none; position:sticky; top:0; z-index:1700;">
+    <div style="max-width:980px; margin:0 auto; padding:10px 12px 0;">
+      <div style="display:flex; gap:10px; flex-wrap:wrap; align-items:center; justify-content:space-between;
+           padding:10px 12px; border-radius:18px; border:1px solid rgba(255,255,255,.12);
+           background:rgba(255,59,74,.14); backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px);
+           box-shadow:0 18px 44px rgba(0,0,0,.35);">
+        <div style="display:flex; gap:10px; align-items:center; font-weight:950;">
+          <span style="width:10px;height:10px;border-radius:50%;background:var(--red);display:inline-block"></span>
+          <span id="vvBannerText">Serviço instável. Tente novamente em alguns minutos.</span>
+        </div>
+        <button class="totalBtn" id="vvBannerRetry" type="button" style="justify-content:center">Tentar de novo</button>
+      </div>
+    </div>
+  </div>
+
 
     <!-- ===== HERO UPGRADE ===== -->
     <div class="card" id="vvHero" style="margin-top:14px; padding:18px; overflow:hidden; position:relative">
@@ -842,6 +887,7 @@
           <a class="chip" href="#checkout" style="text-decoration:none"><i style="background:var(--yellow)"></i> Checkout</a>
           <a class="chip" href="#pedido" style="text-decoration:none"><i style="background:var(--red)"></i> Pedido</a>
           <a class="chip" href="#faq" style="text-decoration:none"><i></i> FAQ</a>
+          <button class="chip" id="vvThemeBtn" type="button" style="cursor:pointer"><i style="background:var(--yellow)"></i> Tema</button>
         </div>
       </div>
     </div>
@@ -2062,6 +2108,104 @@ if(adminDelivered) adminDelivered.addEventListener('click', async ()=>{
   if(r) printAdmin(r);
 });
 
+
+// ===== Health Check + Theme (Infinity Upgrade) =====
+(function(){
+  const API_BASE = "https://viralvault-sign.darlanana06.workers.dev";
+
+  function setTheme(mode){
+    const root = document.documentElement;
+    if(mode === "light") root.setAttribute("data-theme","light");
+    else root.removeAttribute("data-theme");
+    try{ localStorage.setItem("vv_theme", mode); }catch(e){}
+  }
+  function initTheme(){
+    let saved = "";
+    try{ saved = localStorage.getItem("vv_theme")||""; }catch(e){}
+    if(saved==="light" || saved==="dark"){
+      setTheme(saved);
+      return;
+    }
+    // auto from system
+    try{
+      const prefersLight = window.matchMedia && window.matchMedia("(prefers-color-scheme: light)").matches;
+      if(prefersLight) setTheme("light");
+    }catch(e){}
+  }
+
+  function toast(msg){
+    const t = document.getElementById("vvToast");
+    if(!t) return;
+    t.textContent = msg;
+    t.style.display = "block";
+    clearTimeout(window.__vvToastT);
+    window.__vvToastT = setTimeout(()=>{ t.style.display="none"; }, 2200);
+  }
+
+  function banner(show, text){
+    const b = document.getElementById("vvBanner");
+    const t = document.getElementById("vvBannerText");
+    if(!b || !t) return;
+    if(show){
+      t.textContent = text || "Serviço instável. Tente novamente.";
+      b.style.display = "block";
+    } else {
+      b.style.display = "none";
+    }
+  }
+
+  async function ping(){
+    // timeout 3.5s
+    const ctrl = new AbortController();
+    const to = setTimeout(()=>ctrl.abort(), 3500);
+    try{
+      const res = await fetch(API_BASE + "/health", {signal: ctrl.signal});
+      clearTimeout(to);
+      if(!res.ok) return false;
+      const data = await res.json().catch(()=>({}));
+      return data && data.ok === true;
+    }catch(e){
+      clearTimeout(to);
+      return false;
+    }
+  }
+
+  async function refreshHealth(){
+    const ok = await ping();
+    window.__vvApiOk = !!ok;
+    banner(!ok, "Serviço instável. Checkout pode falhar — tente novamente em alguns minutos.");
+    // if we have the checkout button, disable when down
+    const btn = document.getElementById("vvBtnCreate");
+    if(btn){
+      const can = !btn.disabled; // keep validation logic, but if down force off
+      if(!ok){
+        btn.disabled = true;
+        btn.style.opacity = ".6";
+      } else {
+        // let validation drive it
+        try{ updateResumo(); }catch(e){}
+      }
+    }
+    if(!ok) toast("API instável ⚠️");
+  }
+
+  // theme toggles
+  function toggleTheme(){
+    const isLight = document.documentElement.getAttribute("data-theme")==="light";
+    setTheme(isLight ? "dark" : "light");
+    toast(isLight ? "Tema: escuro" : "Tema: claro");
+  }
+
+  document.getElementById("vvThemeBtn")?.addEventListener("click", toggleTheme);
+  document.getElementById("vvFabTheme")?.addEventListener("click", toggleTheme);
+  document.getElementById("vvBannerRetry")?.addEventListener("click", refreshHealth);
+
+  initTheme();
+  // run now + every 45s
+  refreshHealth();
+  setInterval(refreshHealth, 45000);
+})();
+
 </script>
 
   <!-- ===== Admin Panel (token no site) ===== -->
@@ -2120,6 +2264,7 @@ if(adminDelivered) adminDelivered.addEventListener('click', async ()=>{
       <button id="vvGoWpp" class="totalBtn" style="justify-content:center; background:linear-gradient(180deg, rgba(62,240,143,1), rgba(42,204,110,1)); color:#08110c;">
         💬 WhatsApp
       </button>
+      <button id="vvFabTheme" class="totalBtn" type="button" style="justify-content:center">🌓 Tema</button>
     </div>
   </div>
 
