@@ -588,6 +588,37 @@ button:active, .btn:active{ transform: translateY(1px) scale(.99); }
   .vv-endless::after{ animation:none !important; }
 }
 
+
+/* === FLUID MOTION UPGRADE (V2) === */
+:root{
+  --vvEase: cubic-bezier(.2,.9,.2,1);
+}
+.vv-endless{
+  transform: translateZ(0);
+  backface-visibility: hidden;
+  -webkit-font-smoothing: antialiased;
+  transition: transform .22s var(--vvEase), filter .22s var(--vvEase), box-shadow .22s var(--vvEase);
+}
+@keyframes vvFloat {
+  0% { transform: translateZ(0) translateY(0px) scale(1); }
+  50% { transform: translateZ(0) translateY(-1.6px) scale(1.025); }
+  100% { transform: translateZ(0) translateY(0px) scale(1); }
+}
+.vv-endless{
+  animation:
+    vvFloat 1.65s var(--vvEase) infinite,
+    vvGlowShift 2.25s var(--vvEase) infinite,
+    vvSheen 2.0s linear infinite;
+}
+.vv-endless:hover{
+  transform: translateZ(0) translateY(-2px) scale(1.035);
+  filter: brightness(1.10) saturate(1.15);
+}
+.vv-endless:active{
+  transform: translateZ(0) translateY(0px) scale(.995);
+  filter: brightness(1.02);
+}
+
 </style>
 
 <style>
