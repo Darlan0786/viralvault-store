@@ -5,12 +5,25 @@
 
   <meta charset="utf-8"/>
   <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"/>
-  <meta name="theme-color" content="#7b61ff"/>
+  
+  <!-- Performance hints -->
+  <meta http-equiv="x-dns-prefetch-control" content="on">
+  <meta name="format-detection" content="telephone=no">
+  <meta name="color-scheme" content="dark light">
+  <link rel="dns-prefetch" href="//viralvault-sign.darlanana06.workers.dev">
+  <link rel="preconnect" href="https://viralvault-sign.darlanana06.workers.dev" crossorigin>
+  <link rel="dns-prefetch" href="//discord.gg">
+  <link rel="dns-prefetch" href="//cdn.discordapp.com">
+<meta name="theme-color" content="#7b61ff"/>
   <meta name="description" content="Loja digital com checkout via PIX e verificação por Order ID. Anti-golpe, simples e rápida."/>
   <meta name="robots" content="index,follow"/>
   <link rel="canonical" href="https://viralvault-store.vercel.app/"/>
 
-  <!-- Open Graph -->
+  
+  <!-- Robots / Sitemap (HTML-level) -->
+  <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1">
+  <link rel="sitemap" type="application/xml" title="Sitemap" href="/sitemap.xml">
+<!-- Open Graph -->
   <meta property="og:site_name" content="ViralVault Store"/>
   <meta property="og:title" content="ViralVault Store"/>
   <meta property="og:description" content="Checkout via PIX, verificação por Order ID e proteção anti-golpe."/>
@@ -33,7 +46,13 @@
 
 <meta charset="utf-8" />
   <title><span data-i18n="brand_name">ViralVault Store</span></title>
-  <meta property="og:title" content="<span data-i18n="brand_name">ViralVault Store</span>" />
+
+  <!-- Extra SEO / App -->
+  <meta name="application-name" content="ViralVault">
+  <meta name="apple-mobile-web-app-title" content="ViralVault">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="mobile-web-app-capable" content="yes">
+<meta property="og:title" content="<span data-i18n="brand_name">ViralVault Store</span>" />
   <meta property="og:description" content="Checkout PIX + verificação por Order ID + suporte no WhatsApp." />
   <meta property="og:type" content="website" />
   <style>
@@ -1584,11 +1603,9 @@ window.vvRenderPurchases = vvRenderPurchases;
 (() => {
   try {
     if ('serviceWorker' in navigator) {
-      const swCode = "
-const CACHE_NAME = 'viralvault-v1';
-const CORE = [
-  './'
-];
+      const swCode = `
+const CACHE_NAME = 'viralvault-lh-2026-01-19';
+const CORE = ['./'];
 
 self.addEventListener('install', (event) => {
   event.waitUntil((async () => {
@@ -1601,45 +1618,63 @@ self.addEventListener('install', (event) => {
 self.addEventListener('activate', (event) => {
   event.waitUntil((async () => {
     const keys = await caches.keys();
-    await Promise.all(keys.map((k) => (k !== CACHE_NAME ? caches.delete(k) : null)));
-    self.clients.claim();
+    await Promise.all(keys.map((k) => (k !== CACHE_NAME ? caches.delete(k) : Promise.resolve())));
+    await self.clients.claim();
   })());
 });
+
+async function cacheFirst(req) {
+  const cache = await caches.open(CACHE_NAME);
+  const cached = await cache.match(req, { ignoreSearch: true });
+  if (cached) return cached;
+  const fresh = await fetch(req);
+  if (fresh && fresh.ok) cache.put(req, fresh.clone());
+  return fresh;
+}
+
+async function staleWhileRevalidate(req) {
+  const cache = await caches.open(CACHE_NAME);
+  const cached = await cache.match(req, { ignoreSearch: true });
+  const fetchPromise = fetch(req).then((fresh) => {
+    if (fresh && fresh.ok) cache.put(req, fresh.clone());
+    return fresh;
+  }).catch(() => null);
+  return cached || (await fetchPromise) || Response.error();
+}
+
+async function networkFirst(req) {
+  const cache = await caches.open(CACHE_NAME);
+  try {
+    const fresh = await fetch(req);
+    if (fresh && fresh.ok) cache.put(req, fresh.clone());
+    return fresh;
+  } catch (e) {
+    const cached = await cache.match(req, { ignoreSearch: true });
+    return cached || (await cache.match('./')) || Response.error();
+  }
+}
 
 self.addEventListener('fetch', (event) => {
   const req = event.request;
   const url = new URL(req.url);
 
-  // only cache GET
+  if (url.origin !== self.location.origin) return;
   if (req.method !== 'GET') return;
 
-  // Network-first for API endpoints
-  if (url.pathname.startsWith('/api') || url.pathname.startsWith('/admin') || url.pathname.startsWith('/order')) {
-    event.respondWith((async () => {
-      try {
-        const fresh = await fetch(req);
-        return fresh;
-      } catch (e) {
-        const cache = await caches.open(CACHE_NAME);
-        const cached = await cache.match(req);
-        return cached || Response.error();
-      }
-    })());
+  if (req.mode === 'navigate') {
+    event.respondWith(networkFirst(req));
     return;
   }
 
-  // Cache-first for everything else
-  event.respondWith((async () => {
-    const cache = await caches.open(CACHE_NAME);
-    const cached = await cache.match(req);
-    if (cached) return cached;
-    const fresh = await fetch(req);
-    // cache only ok
-    if (fresh && fresh.ok) cache.put(req, fresh.clone());
-    return fresh;
-  })());
+  const dest = req.destination;
+  if (dest === 'style' || dest === 'script' || dest === 'image' || dest === 'font') {
+    event.respondWith(staleWhileRevalidate(req));
+    return;
+  }
+
+  event.respondWith(cacheFirst(req));
 });
-";
+`;
       const blob = new Blob([swCode], { type: 'text/javascript' });
       const swUrl = URL.createObjectURL(blob);
       navigator.serviceWorker.register(swUrl).catch(() => {});
