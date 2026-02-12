@@ -641,6 +641,38 @@ button:active, .btn:active{ transform: translateY(1px) scale(.99); }
   opacity: .55 !important;
 }
 
+
+/* === Settings (VV) === */
+.vv-modal{position:fixed;inset:0;display:none;align-items:center;justify-content:center;padding:18px;z-index:9999;background:rgba(0,0,0,.55);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px)}
+.vv-modal[aria-hidden="false"]{display:flex}
+.vv-modal-card{width:min(720px,100%);max-height:min(82vh,860px);overflow:auto;border-radius:22px;border:1px solid rgba(255,255,255,.14);background:rgba(14,20,40,.82);box-shadow:0 20px 60px rgba(0,0,0,.45)}
+.vv-modal-head{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:16px 16px 12px}
+.vv-modal-title{font-size:18px;font-weight:800;letter-spacing:.2px}
+.vv-modal-close{appearance:none;border:0;border-radius:14px;padding:10px 12px;background:rgba(255,255,255,.08);color:var(--text);cursor:pointer}
+.vv-modal-body{padding:0 16px 16px;display:grid;gap:12px}
+.vv-setting{display:flex;align-items:center;justify-content:space-between;gap:14px;padding:12px 12px;border-radius:18px;border:1px solid rgba(255,255,255,.10);background:rgba(255,255,255,.05)}
+.vv-setting strong{font-size:14px}
+.vv-setting small{display:block;opacity:.75;margin-top:2px}
+.vv-toggle{display:inline-flex;align-items:center;gap:10px}
+.vv-switch{width:50px;height:30px;border-radius:999px;position:relative;background:rgba(255,255,255,.14);border:1px solid rgba(255,255,255,.14);cursor:pointer;flex:0 0 auto}
+.vv-switch::after{content:"";position:absolute;top:3px;left:3px;width:24px;height:24px;border-radius:50%;background:rgba(255,255,255,.85);transition:transform .22s ease}
+.vv-switch[data-on="1"]{background:rgba(90,167,255,.35);border-color:rgba(90,167,255,.55)}
+.vv-switch[data-on="1"]::after{transform:translateX(20px)}
+.vv-modal-actions{display:flex;flex-wrap:wrap;gap:10px;justify-content:flex-end;padding-top:6px}
+.vv-action{appearance:none;border:0;border-radius:16px;padding:10px 12px;background:rgba(255,255,255,.08);color:var(--text);cursor:pointer}
+.vv-action.primary{background:linear-gradient(135deg,rgba(90,167,255,.95),rgba(168,118,255,.88));color:#0b0f1a;font-weight:800}
+html.reduced-motion *{animation:none !important;transition:none !important;scroll-behavior:auto !important}
+html.compact .card{padding:14px !important}
+html.compact .section{gap:10px !important}
+html.vivid{filter:saturate(1.15) contrast(1.02)}
+
+html[data-vv-lite="1"] .glass, html[data-vv-lite="1"] .card, html[data-vv-lite="1"] .panel{
+  backdrop-filter: blur(10px) !important;
+  -webkit-backdrop-filter: blur(10px) !important;
+  box-shadow: var(--vv-shadow, 0 10px 30px rgba(0,0,0,.28)) !important;
+}
+html[data-vv-lite="1"] .vv-endless{animation-duration:3.2s !important}
+
 </style>
 
 <style>
@@ -737,6 +769,7 @@ button:active, .btn:active{ transform: translateY(1px) scale(.99); }
       </div>
 
       <button class="btn vv-endless" id="discordBtn" type="button" aria-label="Abrir Discord">Discord</button>
+      <button class="btn vv-endless" id="settingsBtn" type="button" aria-label="Configurações">⚙️</button>
       <button class="btn vv-endless" id="installBtn" type="button" style="display:none" aria-label="Instalar app">Instalar</button>
     </div>
   </header>
@@ -2020,6 +2053,183 @@ button:active, .btn:active{ transform: translateY(1px) scale(.99); }
     }, clamp(350 + Math.random()*350, 250, 900));
   });
 
+
+  /* ===== VV Settings + perf helpers ===== */
+  var VV_SETTINGS_KEY = 'vv_settings_v1';
+  var vvSettings = {
+    reducedMotion: false,
+    lowPerf: true,
+    vivid: true,
+    compact: false,
+    clickSound: false,
+    haptics: false
+  };
+
+  function vvLoadSettings(){
+    try{
+      var raw = localStorage.getItem(VV_SETTINGS_KEY);
+      if(raw){ vvSettings = Object.assign(vvSettings, JSON.parse(raw)||{}); }
+    }catch(e){}
+  }
+  function vvSaveSettings(){
+    try{ localStorage.setItem(VV_SETTINGS_KEY, JSON.stringify(vvSettings)); }catch(e){}
+  }
+  function vvApplySettings(){
+    var htmlEl = document.documentElement;
+    htmlEl.classList.toggle('reduced-motion', !!vvSettings.reducedMotion);
+    htmlEl.classList.toggle('compact', !!vvSettings.compact);
+    htmlEl.classList.toggle('vivid', !!vvSettings.vivid);
+
+    // Low-perf: kill heavy effects by flipping CSS variables (if present) and a class hook
+    htmlEl.dataset.vvLite = vvSettings.lowPerf ? "1" : "0";
+    if (vvSettings.lowPerf){
+      // aggressively reduce blur via inline style variable fallback
+      htmlEl.style.setProperty('--vv-blur', '10px');
+      htmlEl.style.setProperty('--vv-shadow', '0 10px 30px rgba(0,0,0,.28)');
+    } else {
+      htmlEl.style.removeProperty('--vv-blur');
+      htmlEl.style.removeProperty('--vv-shadow');
+    }
+  }
+
+  // micro SFX (no external files)
+  var vvAudio = null;
+  function vvClickSfx(){
+    if(!vvSettings.clickSound) return;
+    try{
+      if(!vvAudio) vvAudio = new (window.AudioContext||window.webkitAudioContext)();
+      var ctx = vvAudio;
+      var o = ctx.createOscillator();
+      var g = ctx.createGain();
+      o.type = 'sine';
+      o.frequency.value = 520;
+      g.gain.value = 0.0001;
+      o.connect(g); g.connect(ctx.destination);
+      o.start();
+      // tiny envelope
+      var t = ctx.currentTime;
+      g.gain.setValueAtTime(0.0001, t);
+      g.gain.exponentialRampToValueAtTime(0.06, t+0.01);
+      g.gain.exponentialRampToValueAtTime(0.0001, t+0.08);
+      o.stop(t+0.09);
+    }catch(e){}
+  }
+  function vvHaptic(ms){
+    if(!vvSettings.haptics) return;
+    try{ if(navigator.vibrate) navigator.vibrate(ms||12); }catch(e){}
+  }
+
+  function vvBindGlobalFeedback(){
+    document.addEventListener('click', function(ev){
+      var t = ev.target;
+      if(!t) return;
+      // only for buttons/links (avoid noisy)
+      if(t.closest && (t.closest('button') || t.closest('a'))){
+        vvClickSfx(); vvHaptic(10);
+      }
+    }, {passive:true});
+  }
+
+  function vvOpenSettings(){
+    var m = document.getElementById('vvSettings');
+    if(!m) return;
+    m.setAttribute('aria-hidden','false');
+    // sync switches
+    m.querySelectorAll('.vv-switch').forEach(function(sw){
+      var key = sw.getAttribute('data-key');
+      sw.dataset.on = vvSettings[key] ? "1" : "0";
+    });
+  }
+  function vvCloseSettings(){
+    var m = document.getElementById('vvSettings');
+    if(!m) return;
+    m.setAttribute('aria-hidden','true');
+  }
+
+  function vvToggleKey(key){
+    vvSettings[key] = !vvSettings[key];
+    vvApplySettings();
+    var sw = document.querySelector('.vv-switch[data-key="'+key+'"]');
+    if(sw) sw.dataset.on = vvSettings[key] ? "1" : "0";
+  }
+
+  function vvInitSettingsUI(){
+    vvLoadSettings();
+    // if user prefers reduced motion, default on (only first run)
+    try{
+      if(!localStorage.getItem(VV_SETTINGS_KEY) && window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches){
+        vvSettings.reducedMotion = true;
+      }
+    }catch(e){}
+    vvApplySettings();
+    vvBindGlobalFeedback();
+
+    var btn = document.getElementById('settingsBtn');
+    if(btn) btn.addEventListener('click', vvOpenSettings, {passive:true});
+
+    var close = document.getElementById('vvSettingsClose');
+    var done = document.getElementById('vvSettingsDone');
+    if(close) close.addEventListener('click', vvCloseSettings, {passive:true});
+    if(done) done.addEventListener('click', function(){ vvSaveSettings(); vvCloseSettings(); }, {passive:true});
+
+    var modal = document.getElementById('vvSettings');
+    if(modal){
+      modal.addEventListener('click', function(e){
+        if(e.target === modal) vvCloseSettings();
+      });
+      modal.querySelectorAll('.vv-switch').forEach(function(sw){
+        sw.addEventListener('click', function(){
+          vvToggleKey(sw.getAttribute('data-key'));
+        });
+      });
+    }
+
+    // Clear local
+    var clearBtn = document.getElementById('vvClearLocal');
+    if(clearBtn) clearBtn.addEventListener('click', function(){
+      try{
+        var keep = localStorage.getItem(VV_SETTINGS_KEY);
+        localStorage.clear();
+        if(keep) localStorage.setItem(VV_SETTINGS_KEY, keep);
+      }catch(e){}
+      try{ if(window.location) window.location.reload(); }catch(e){}
+    });
+
+    // Quick benchmark: measure main thread jank for ~2s
+    var benchBtn = document.getElementById('vvBenchmark');
+    if(benchBtn) benchBtn.addEventListener('click', function(){
+      var start = performance.now();
+      var frames = 0, worst = 0, last = start;
+      function tick(now){
+        var dt = now - last; last = now;
+        worst = Math.max(worst, dt);
+        frames++;
+        if(now - start < 2000){
+          requestAnimationFrame(tick);
+        }else{
+          var avg = (2000/frames).toFixed(1);
+          alert('Teste rápido\\nFrames: '+frames+'\\nMédia aprox: '+avg+'ms/frame\\nMaior travada: '+worst.toFixed(1)+'ms\\n\\nDica: ative "Modo desempenho" e "Reduzir animações" se a travada for alta.');
+        }
+      }
+      requestAnimationFrame(tick);
+    });
+
+    // Keybind: press "g" to open settings
+    document.addEventListener('keydown', function(e){
+      if(e.key === 'g' && (e.ctrlKey||e.metaKey)){
+        e.preventDefault(); vvOpenSettings();
+      }
+      if(e.key === 'Escape'){ vvCloseSettings(); }
+    });
+  }
+
+  // Defer non-critical init
+  if('requestIdleCallback' in window){
+    requestIdleCallback(vvInitSettingsUI, {timeout: 1200});
+  } else {
+    setTimeout(vvInitSettingsUI, 250);
+  }
+
 })();
 </script>
 <script>
@@ -2225,6 +2435,183 @@ Posso te ajudar com pedido, entrega, reembolso e checkout.');
     if(e.key==='Enter' && !e.shiftKey){ e.preventDefault(); onSend(); }
   });
 
+
+  /* ===== VV Settings + perf helpers ===== */
+  var VV_SETTINGS_KEY = 'vv_settings_v1';
+  var vvSettings = {
+    reducedMotion: false,
+    lowPerf: true,
+    vivid: true,
+    compact: false,
+    clickSound: false,
+    haptics: false
+  };
+
+  function vvLoadSettings(){
+    try{
+      var raw = localStorage.getItem(VV_SETTINGS_KEY);
+      if(raw){ vvSettings = Object.assign(vvSettings, JSON.parse(raw)||{}); }
+    }catch(e){}
+  }
+  function vvSaveSettings(){
+    try{ localStorage.setItem(VV_SETTINGS_KEY, JSON.stringify(vvSettings)); }catch(e){}
+  }
+  function vvApplySettings(){
+    var htmlEl = document.documentElement;
+    htmlEl.classList.toggle('reduced-motion', !!vvSettings.reducedMotion);
+    htmlEl.classList.toggle('compact', !!vvSettings.compact);
+    htmlEl.classList.toggle('vivid', !!vvSettings.vivid);
+
+    // Low-perf: kill heavy effects by flipping CSS variables (if present) and a class hook
+    htmlEl.dataset.vvLite = vvSettings.lowPerf ? "1" : "0";
+    if (vvSettings.lowPerf){
+      // aggressively reduce blur via inline style variable fallback
+      htmlEl.style.setProperty('--vv-blur', '10px');
+      htmlEl.style.setProperty('--vv-shadow', '0 10px 30px rgba(0,0,0,.28)');
+    } else {
+      htmlEl.style.removeProperty('--vv-blur');
+      htmlEl.style.removeProperty('--vv-shadow');
+    }
+  }
+
+  // micro SFX (no external files)
+  var vvAudio = null;
+  function vvClickSfx(){
+    if(!vvSettings.clickSound) return;
+    try{
+      if(!vvAudio) vvAudio = new (window.AudioContext||window.webkitAudioContext)();
+      var ctx = vvAudio;
+      var o = ctx.createOscillator();
+      var g = ctx.createGain();
+      o.type = 'sine';
+      o.frequency.value = 520;
+      g.gain.value = 0.0001;
+      o.connect(g); g.connect(ctx.destination);
+      o.start();
+      // tiny envelope
+      var t = ctx.currentTime;
+      g.gain.setValueAtTime(0.0001, t);
+      g.gain.exponentialRampToValueAtTime(0.06, t+0.01);
+      g.gain.exponentialRampToValueAtTime(0.0001, t+0.08);
+      o.stop(t+0.09);
+    }catch(e){}
+  }
+  function vvHaptic(ms){
+    if(!vvSettings.haptics) return;
+    try{ if(navigator.vibrate) navigator.vibrate(ms||12); }catch(e){}
+  }
+
+  function vvBindGlobalFeedback(){
+    document.addEventListener('click', function(ev){
+      var t = ev.target;
+      if(!t) return;
+      // only for buttons/links (avoid noisy)
+      if(t.closest && (t.closest('button') || t.closest('a'))){
+        vvClickSfx(); vvHaptic(10);
+      }
+    }, {passive:true});
+  }
+
+  function vvOpenSettings(){
+    var m = document.getElementById('vvSettings');
+    if(!m) return;
+    m.setAttribute('aria-hidden','false');
+    // sync switches
+    m.querySelectorAll('.vv-switch').forEach(function(sw){
+      var key = sw.getAttribute('data-key');
+      sw.dataset.on = vvSettings[key] ? "1" : "0";
+    });
+  }
+  function vvCloseSettings(){
+    var m = document.getElementById('vvSettings');
+    if(!m) return;
+    m.setAttribute('aria-hidden','true');
+  }
+
+  function vvToggleKey(key){
+    vvSettings[key] = !vvSettings[key];
+    vvApplySettings();
+    var sw = document.querySelector('.vv-switch[data-key="'+key+'"]');
+    if(sw) sw.dataset.on = vvSettings[key] ? "1" : "0";
+  }
+
+  function vvInitSettingsUI(){
+    vvLoadSettings();
+    // if user prefers reduced motion, default on (only first run)
+    try{
+      if(!localStorage.getItem(VV_SETTINGS_KEY) && window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches){
+        vvSettings.reducedMotion = true;
+      }
+    }catch(e){}
+    vvApplySettings();
+    vvBindGlobalFeedback();
+
+    var btn = document.getElementById('settingsBtn');
+    if(btn) btn.addEventListener('click', vvOpenSettings, {passive:true});
+
+    var close = document.getElementById('vvSettingsClose');
+    var done = document.getElementById('vvSettingsDone');
+    if(close) close.addEventListener('click', vvCloseSettings, {passive:true});
+    if(done) done.addEventListener('click', function(){ vvSaveSettings(); vvCloseSettings(); }, {passive:true});
+
+    var modal = document.getElementById('vvSettings');
+    if(modal){
+      modal.addEventListener('click', function(e){
+        if(e.target === modal) vvCloseSettings();
+      });
+      modal.querySelectorAll('.vv-switch').forEach(function(sw){
+        sw.addEventListener('click', function(){
+          vvToggleKey(sw.getAttribute('data-key'));
+        });
+      });
+    }
+
+    // Clear local
+    var clearBtn = document.getElementById('vvClearLocal');
+    if(clearBtn) clearBtn.addEventListener('click', function(){
+      try{
+        var keep = localStorage.getItem(VV_SETTINGS_KEY);
+        localStorage.clear();
+        if(keep) localStorage.setItem(VV_SETTINGS_KEY, keep);
+      }catch(e){}
+      try{ if(window.location) window.location.reload(); }catch(e){}
+    });
+
+    // Quick benchmark: measure main thread jank for ~2s
+    var benchBtn = document.getElementById('vvBenchmark');
+    if(benchBtn) benchBtn.addEventListener('click', function(){
+      var start = performance.now();
+      var frames = 0, worst = 0, last = start;
+      function tick(now){
+        var dt = now - last; last = now;
+        worst = Math.max(worst, dt);
+        frames++;
+        if(now - start < 2000){
+          requestAnimationFrame(tick);
+        }else{
+          var avg = (2000/frames).toFixed(1);
+          alert('Teste rápido\\nFrames: '+frames+'\\nMédia aprox: '+avg+'ms/frame\\nMaior travada: '+worst.toFixed(1)+'ms\\n\\nDica: ative "Modo desempenho" e "Reduzir animações" se a travada for alta.');
+        }
+      }
+      requestAnimationFrame(tick);
+    });
+
+    // Keybind: press "g" to open settings
+    document.addEventListener('keydown', function(e){
+      if(e.key === 'g' && (e.ctrlKey||e.metaKey)){
+        e.preventDefault(); vvOpenSettings();
+      }
+      if(e.key === 'Escape'){ vvCloseSettings(); }
+    });
+  }
+
+  // Defer non-critical init
+  if('requestIdleCallback' in window){
+    requestIdleCallback(vvInitSettingsUI, {timeout: 1200});
+  } else {
+    setTimeout(vvInitSettingsUI, 250);
+  }
+
 })();
 </script>
 
@@ -2267,7 +2654,230 @@ Posso te ajudar com pedido, entrega, reembolso e checkout.');
     var link = document.getElementById('vv-manifest');
     if (link) link.setAttribute('href', url);
   }catch(e){}
+
+  /* ===== VV Settings + perf helpers ===== */
+  var VV_SETTINGS_KEY = 'vv_settings_v1';
+  var vvSettings = {
+    reducedMotion: false,
+    lowPerf: true,
+    vivid: true,
+    compact: false,
+    clickSound: false,
+    haptics: false
+  };
+
+  function vvLoadSettings(){
+    try{
+      var raw = localStorage.getItem(VV_SETTINGS_KEY);
+      if(raw){ vvSettings = Object.assign(vvSettings, JSON.parse(raw)||{}); }
+    }catch(e){}
+  }
+  function vvSaveSettings(){
+    try{ localStorage.setItem(VV_SETTINGS_KEY, JSON.stringify(vvSettings)); }catch(e){}
+  }
+  function vvApplySettings(){
+    var htmlEl = document.documentElement;
+    htmlEl.classList.toggle('reduced-motion', !!vvSettings.reducedMotion);
+    htmlEl.classList.toggle('compact', !!vvSettings.compact);
+    htmlEl.classList.toggle('vivid', !!vvSettings.vivid);
+
+    // Low-perf: kill heavy effects by flipping CSS variables (if present) and a class hook
+    htmlEl.dataset.vvLite = vvSettings.lowPerf ? "1" : "0";
+    if (vvSettings.lowPerf){
+      // aggressively reduce blur via inline style variable fallback
+      htmlEl.style.setProperty('--vv-blur', '10px');
+      htmlEl.style.setProperty('--vv-shadow', '0 10px 30px rgba(0,0,0,.28)');
+    } else {
+      htmlEl.style.removeProperty('--vv-blur');
+      htmlEl.style.removeProperty('--vv-shadow');
+    }
+  }
+
+  // micro SFX (no external files)
+  var vvAudio = null;
+  function vvClickSfx(){
+    if(!vvSettings.clickSound) return;
+    try{
+      if(!vvAudio) vvAudio = new (window.AudioContext||window.webkitAudioContext)();
+      var ctx = vvAudio;
+      var o = ctx.createOscillator();
+      var g = ctx.createGain();
+      o.type = 'sine';
+      o.frequency.value = 520;
+      g.gain.value = 0.0001;
+      o.connect(g); g.connect(ctx.destination);
+      o.start();
+      // tiny envelope
+      var t = ctx.currentTime;
+      g.gain.setValueAtTime(0.0001, t);
+      g.gain.exponentialRampToValueAtTime(0.06, t+0.01);
+      g.gain.exponentialRampToValueAtTime(0.0001, t+0.08);
+      o.stop(t+0.09);
+    }catch(e){}
+  }
+  function vvHaptic(ms){
+    if(!vvSettings.haptics) return;
+    try{ if(navigator.vibrate) navigator.vibrate(ms||12); }catch(e){}
+  }
+
+  function vvBindGlobalFeedback(){
+    document.addEventListener('click', function(ev){
+      var t = ev.target;
+      if(!t) return;
+      // only for buttons/links (avoid noisy)
+      if(t.closest && (t.closest('button') || t.closest('a'))){
+        vvClickSfx(); vvHaptic(10);
+      }
+    }, {passive:true});
+  }
+
+  function vvOpenSettings(){
+    var m = document.getElementById('vvSettings');
+    if(!m) return;
+    m.setAttribute('aria-hidden','false');
+    // sync switches
+    m.querySelectorAll('.vv-switch').forEach(function(sw){
+      var key = sw.getAttribute('data-key');
+      sw.dataset.on = vvSettings[key] ? "1" : "0";
+    });
+  }
+  function vvCloseSettings(){
+    var m = document.getElementById('vvSettings');
+    if(!m) return;
+    m.setAttribute('aria-hidden','true');
+  }
+
+  function vvToggleKey(key){
+    vvSettings[key] = !vvSettings[key];
+    vvApplySettings();
+    var sw = document.querySelector('.vv-switch[data-key="'+key+'"]');
+    if(sw) sw.dataset.on = vvSettings[key] ? "1" : "0";
+  }
+
+  function vvInitSettingsUI(){
+    vvLoadSettings();
+    // if user prefers reduced motion, default on (only first run)
+    try{
+      if(!localStorage.getItem(VV_SETTINGS_KEY) && window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches){
+        vvSettings.reducedMotion = true;
+      }
+    }catch(e){}
+    vvApplySettings();
+    vvBindGlobalFeedback();
+
+    var btn = document.getElementById('settingsBtn');
+    if(btn) btn.addEventListener('click', vvOpenSettings, {passive:true});
+
+    var close = document.getElementById('vvSettingsClose');
+    var done = document.getElementById('vvSettingsDone');
+    if(close) close.addEventListener('click', vvCloseSettings, {passive:true});
+    if(done) done.addEventListener('click', function(){ vvSaveSettings(); vvCloseSettings(); }, {passive:true});
+
+    var modal = document.getElementById('vvSettings');
+    if(modal){
+      modal.addEventListener('click', function(e){
+        if(e.target === modal) vvCloseSettings();
+      });
+      modal.querySelectorAll('.vv-switch').forEach(function(sw){
+        sw.addEventListener('click', function(){
+          vvToggleKey(sw.getAttribute('data-key'));
+        });
+      });
+    }
+
+    // Clear local
+    var clearBtn = document.getElementById('vvClearLocal');
+    if(clearBtn) clearBtn.addEventListener('click', function(){
+      try{
+        var keep = localStorage.getItem(VV_SETTINGS_KEY);
+        localStorage.clear();
+        if(keep) localStorage.setItem(VV_SETTINGS_KEY, keep);
+      }catch(e){}
+      try{ if(window.location) window.location.reload(); }catch(e){}
+    });
+
+    // Quick benchmark: measure main thread jank for ~2s
+    var benchBtn = document.getElementById('vvBenchmark');
+    if(benchBtn) benchBtn.addEventListener('click', function(){
+      var start = performance.now();
+      var frames = 0, worst = 0, last = start;
+      function tick(now){
+        var dt = now - last; last = now;
+        worst = Math.max(worst, dt);
+        frames++;
+        if(now - start < 2000){
+          requestAnimationFrame(tick);
+        }else{
+          var avg = (2000/frames).toFixed(1);
+          alert('Teste rápido\\nFrames: '+frames+'\\nMédia aprox: '+avg+'ms/frame\\nMaior travada: '+worst.toFixed(1)+'ms\\n\\nDica: ative "Modo desempenho" e "Reduzir animações" se a travada for alta.');
+        }
+      }
+      requestAnimationFrame(tick);
+    });
+
+    // Keybind: press "g" to open settings
+    document.addEventListener('keydown', function(e){
+      if(e.key === 'g' && (e.ctrlKey||e.metaKey)){
+        e.preventDefault(); vvOpenSettings();
+      }
+      if(e.key === 'Escape'){ vvCloseSettings(); }
+    });
+  }
+
+  // Defer non-critical init
+  if('requestIdleCallback' in window){
+    requestIdleCallback(vvInitSettingsUI, {timeout: 1200});
+  } else {
+    setTimeout(vvInitSettingsUI, 250);
+  }
+
 })();
 </script>
+
+  <!-- Settings Modal -->
+  <div class="vv-modal" id="vvSettings" aria-hidden="true" role="dialog" aria-label="Configurações">
+    <div class="vv-modal-card">
+      <div class="vv-modal-head">
+        <div>
+          <div class="vv-modal-title">Configurações</div>
+          <div class="muted" style="margin-top:2px;font-size:12px">Ajustes locais (salvos no seu aparelho). Feito para reduzir travadas.</div>
+        </div>
+        <button class="vv-modal-close" id="vvSettingsClose" type="button" aria-label="Fechar">✕</button>
+      </div>
+      <div class="vv-modal-body">
+        <div class="vv-setting">
+          <div><strong>Reduzir animações</strong><small>Melhor para celulares fracos e economiza bateria.</small></div>
+          <div class="vv-toggle"><span class="muted" style="font-size:12px">Motion</span><button class="vv-switch" data-key="reducedMotion" type="button" aria-label="Alternar reduzir animações"></button></div>
+        </div>
+        <div class="vv-setting">
+          <div><strong>Modo desempenho</strong><small>Menos blur/sombras; renderização mais leve.</small></div>
+          <div class="vv-toggle"><span class="muted" style="font-size:12px">Lite</span><button class="vv-switch" data-key="lowPerf" type="button" aria-label="Alternar modo desempenho"></button></div>
+        </div>
+        <div class="vv-setting">
+          <div><strong>Cores mais vibrantes</strong><small>Aumenta saturação/contraste sem pesar.</small></div>
+          <div class="vv-toggle"><span class="muted" style="font-size:12px">Vivid</span><button class="vv-switch" data-key="vivid" type="button" aria-label="Alternar cores vibrantes"></button></div>
+        </div>
+        <div class="vv-setting">
+          <div><strong>Layout compacto</strong><small>Mais conteúdo na tela, menos espaçamento.</small></div>
+          <div class="vv-toggle"><span class="muted" style="font-size:12px">Compact</span><button class="vv-switch" data-key="compact" type="button" aria-label="Alternar layout compacto"></button></div>
+        </div>
+        <div class="vv-setting">
+          <div><strong>Som de clique</strong><small>Feedback leve (sem arquivos; usa WebAudio).</small></div>
+          <div class="vv-toggle"><span class="muted" style="font-size:12px">SFX</span><button class="vv-switch" data-key="clickSound" type="button" aria-label="Alternar som de clique"></button></div>
+        </div>
+        <div class="vv-setting">
+          <div><strong>Vibração</strong><small>Feedback (se seu aparelho suportar).</small></div>
+          <div class="vv-toggle"><span class="muted" style="font-size:12px">Haptics</span><button class="vv-switch" data-key="haptics" type="button" aria-label="Alternar vibração"></button></div>
+        </div>
+
+        <div class="vv-modal-actions">
+          <button class="vv-action" id="vvClearLocal" type="button">Limpar dados locais</button>
+          <button class="vv-action" id="vvBenchmark" type="button">Teste rápido</button>
+          <button class="vv-action primary" id="vvSettingsDone" type="button">Salvar</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
 </body>
 </html>
