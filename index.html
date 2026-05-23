@@ -1,70 +1,90 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="pt">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>NEXUS • Digital Realm</title>
+    <title>NEXUS • O Véu Digital</title>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r134/three.min.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css">
     <style>
         :root {
             --neon-cyan: #00f5ff;
             --neon-purple: #c026d3;
-            --neon-pink: #ff00aa;
+            --neon-pink: #ff0088;
+            --glass: rgba(10, 10, 25, 0.72);
         }
 
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-
+        * { margin: 0; padding: 0; box-sizing: border-box; }
         body {
-            font-family: 'Inter', system-ui, sans-serif;
-            background: #0a0a0a;
-            color: #e0e0e0;
+            font-family: 'Inter', system-ui, -apple-system, sans-serif;
+            background: #05050a;
+            color: #e0e0ff;
             overflow-x: hidden;
+            line-height: 1.6;
         }
 
-        canvas {
-            position: fixed;
-            top: 0;
-            left: 0;
-            z-index: -1;
+        canvas { 
+            position: fixed; 
+            top: 0; 
+            left: 0; 
+            z-index: -1; 
+            touch-action: none;
         }
 
         .header {
             position: fixed;
-            top: 0;
-            width: 100%;
-            padding: 1.5rem 5%;
+            top: 0; left: 0; right: 0;
+            padding: 1.6rem 6%;
             display: flex;
             justify-content: space-between;
             align-items: center;
-            z-index: 1000;
-            backdrop-filter: blur(12px);
-            border-bottom: 1px solid rgba(255,255,255,0.08);
+            z-index: 10000;
+            backdrop-filter: blur(20px);
+            border-bottom: 1px solid rgba(0, 245, 255, 0.12);
+            transition: all 0.4s ease;
         }
 
         .logo {
-            font-size: 1.8rem;
+            font-size: 2.35rem;
             font-weight: 900;
-            background: linear-gradient(90deg, var(--neon-cyan), var(--neon-purple));
+            letter-spacing: -3.5px;
+            background: linear-gradient(90deg, var(--neon-cyan), var(--neon-purple), var(--neon-pink));
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
-            letter-spacing: -2px;
+            text-shadow: 0 0 30px rgba(0, 245, 255, 0.5);
+        }
+
+        .nav {
+            display: flex;
+            gap: 2.8rem;
         }
 
         .nav a {
             color: #ddd;
             text-decoration: none;
-            margin-left: 2rem;
             font-weight: 500;
-            transition: all 0.3s ease;
+            position: relative;
+            transition: 0.4s;
+        }
+
+        .nav a::after {
+            content: '';
+            position: absolute;
+            width: 0;
+            height: 2px;
+            bottom: -4px;
+            left: 0;
+            background: var(--neon-cyan);
+            transition: width 0.4s ease;
+        }
+
+        .nav a:hover::after {
+            width: 100%;
         }
 
         .nav a:hover {
             color: var(--neon-cyan);
-            text-shadow: 0 0 10px var(--neon-cyan);
+            text-shadow: 0 0 15px var(--neon-cyan);
         }
 
         .hero {
@@ -77,59 +97,88 @@
         }
 
         .hero-content {
-            max-width: 900px;
-            padding: 0 20px;
+            max-width: 980px;
+            padding: 2.5rem 2rem;
             z-index: 10;
+            background: var(--glass);
+            backdrop-filter: blur(24px);
+            border: 1px solid rgba(255,255,255,0.1);
+            border-radius: 28px;
+            box-shadow: 0 25px 60px rgba(0, 0, 0, 0.6);
         }
 
         .hero h1 {
-            font-size: clamp(3.5rem, 8vw, 7rem);
+            font-size: clamp(4.2rem, 11vw, 8.5rem);
             font-weight: 900;
-            line-height: 1.05;
-            margin-bottom: 1.5rem;
-            background: linear-gradient(90deg, #ffffff, var(--neon-cyan), var(--neon-purple));
+            line-height: 0.92;
+            margin-bottom: 1.8rem;
+            background: linear-gradient(90deg, #fff, var(--neon-cyan), var(--neon-purple));
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
-            animation: glow 3s ease-in-out infinite alternate;
+            animation: titleGlow 5s ease-in-out infinite alternate;
         }
 
         .hero p {
-            font-size: 1.4rem;
-            margin-bottom: 3rem;
-            opacity: 0.85;
-            max-width: 600px;
-            margin-left: auto;
-            margin-right: auto;
+            font-size: 1.65rem;
+            max-width: 720px;
+            margin: 0 auto 3.2rem;
+            opacity: 0.92;
+            font-weight: 400;
         }
 
         .cta-button {
-            padding: 1.1rem 3rem;
-            font-size: 1.1rem;
-            font-weight: 600;
+            padding: 1.45rem 4rem;
+            font-size: 1.3rem;
+            font-weight: 700;
             border: none;
             border-radius: 9999px;
-            background: linear-gradient(45deg, var(--neon-cyan), var(--neon-purple));
+            background: linear-gradient(45deg, var(--neon-cyan), var(--neon-purple), var(--neon-pink));
             color: white;
             cursor: pointer;
-            box-shadow: 0 0 30px rgba(0, 245, 255, 0.5);
-            transition: all 0.4s cubic-bezier(0.23, 1, 0.32, 1);
+            box-shadow: 0 0 45px rgba(0, 245, 255, 0.7);
+            transition: all 0.5s cubic-bezier(0.23, 1, 0.32, 1);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .cta-button::before {
+            content: '';
+            position: absolute;
+            top: 0; left: -100%;
+            width: 40%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.4), transparent);
+            transition: 0.7s;
+        }
+
+        .cta-button:hover::before {
+            left: 200%;
         }
 
         .cta-button:hover {
-            transform: translateY(-4px) scale(1.05);
-            box-shadow: 0 0 50px rgba(0, 245, 255, 0.8);
+            transform: translateY(-10px) scale(1.06);
+            box-shadow: 0 0 80px rgba(0, 245, 255, 0.95);
         }
 
-        @keyframes glow {
-            from { filter: drop-shadow(0 0 20px var(--neon-cyan)); }
-            to { filter: drop-shadow(0 0 40px var(--neon-purple)); }
+        @keyframes titleGlow {
+            from { filter: drop-shadow(0 0 30px var(--neon-cyan)); }
+            to { filter: drop-shadow(0 0 65px var(--neon-purple)); }
         }
 
-        .glass-card {
-            background: rgba(255,255,255,0.05);
-            backdrop-filter: blur(16px);
-            border: 1px solid rgba(255,255,255,0.1);
-            border-radius: 20px;
+        /* Scroll indicator */
+        .scroll-down {
+            position: absolute;
+            bottom: 5vh;
+            left: 50%;
+            transform: translateX(-50%);
+            color: var(--neon-cyan);
+            font-size: 0.9rem;
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 0.4; }
+            50% { opacity: 1; }
         }
     </style>
 </head>
@@ -139,94 +188,105 @@
     <header class="header">
         <div class="logo">NEXUS</div>
         <nav class="nav">
-            <a href="#">Manifesto</a>
-            <a href="#">Universe</a>
-            <a href="#">Connect</a>
+            <a href="#manifesto">Manifesto</a>
+            <a href="#universo">Universo</a>
+            <a href="#conectar">Conectar</a>
+            <a href="#contato">Contato</a>
         </nav>
     </header>
 
     <section class="hero">
         <div class="hero-content">
-            <h1>ENTER THE<br>DIGITAL VEIL</h1>
-            <p>A breathtaking fusion of art, technology, and consciousness. Built with pure HTML, CSS &amp; Three.js.</p>
-            <button class="cta-button" onclick="alert('Welcome to the future ✨')">EXPLORE THE VOID</button>
+            <h1>ENTRE NO<br>VEU DIGITAL</h1>
+            <p>Uma experiência 3D imersiva com partículas neon que dançam ao seu toque. Cyberpunk puro. Futuro agora.</p>
+            <button class="cta-button" onclick="alert('🌌 O véu foi rompido. Bem-vindo ao NEXUS.')">
+                <i class="fas fa-rocket"></i> INICIAR TRANSMISSÃO
+            </button>
+        </div>
+        <div class="scroll-down">
+            <i class="fas fa-chevron-down"></i> Role para explorar
+        </div>
+    </section>
+
+    <!-- Placeholder sections for future expansion -->
+    <section id="manifesto" style="height: 100vh; padding: 120px 6%; background: rgba(5,5,10,0.98); display: flex; align-items: center;">
+        <div style="max-width: 800px; margin: 0 auto; text-align: center;">
+            <h2 style="font-size: 3.5rem; margin-bottom: 2rem; color: var(--neon-cyan);">O Manifesto</h2>
+            <p style="font-size: 1.4rem; opacity: 0.9;">Nós não construímos sites. Nós criamos portais para o futuro.</p>
         </div>
     </section>
 
     <script>
-        // Three.js Interactive Particle Web
-        let scene, camera, renderer;
-        let particles, particlePositions, lines;
+        let scene, camera, renderer, particles, linesGroup;
         let mouse = { x: 0, y: 0 };
         let targetMouse = { x: 0, y: 0 };
+        let frameCount = 0;
 
         function init() {
             const canvas = document.getElementById('bg');
-            
-            // Scene setup
             scene = new THREE.Scene();
-            camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
+            camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 250);
             renderer = new THREE.WebGLRenderer({ 
-                canvas: canvas, 
+                canvas, 
                 antialias: true, 
-                alpha: true 
+                alpha: true,
+                powerPreference: "high-performance"
             });
             
             renderer.setSize(window.innerWidth, window.innerHeight);
-            renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
-            camera.position.z = 45;
+            renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2.8));
+            camera.position.z = 52;
 
-            // Particle system
-            const particleCount = 1800;
-            const geometry = new THREE.BufferGeometry();
-            particlePositions = new Float32Array(particleCount * 3);
-            const colors = new Float32Array(particleCount * 3);
+            // Particles - more refined
+            const count = 2600;
+            const positions = new Float32Array(count * 3);
+            const colors = new Float32Array(count * 3);
 
-            for (let i = 0; i < particleCount * 3; i += 3) {
-                const radius = 60;
+            for (let i = 0; i < count * 3; i += 3) {
+                const radius = 72 + Math.random() * 8;
                 const theta = Math.random() * Math.PI * 2;
                 const phi = Math.acos(2 * Math.random() - 1);
-                
-                particlePositions[i]     = radius * Math.sin(phi) * Math.cos(theta);
-                particlePositions[i + 1] = radius * Math.sin(phi) * Math.sin(theta);
-                particlePositions[i + 2] = radius * Math.cos(phi);
 
-                // Neon colors
-                colors[i]     = 0.2 + Math.random() * 0.8;
-                colors[i + 1] = 0.9;
-                colors[i + 2] = 0.95;
+                positions[i]     = radius * Math.sin(phi) * Math.cos(theta);
+                positions[i + 1] = radius * Math.sin(phi) * Math.sin(theta) * 0.75;
+                positions[i + 2] = radius * Math.cos(phi) * 0.9;
+
+                const intensity = 0.6 + Math.random() * 0.4;
+                colors[i]     = intensity * 0.3;
+                colors[i + 1] = intensity * 0.9;
+                colors[i + 2] = intensity * 1.0;
             }
 
-            geometry.setAttribute('position', new THREE.BufferAttribute(particlePositions, 3));
+            const geometry = new THREE.BufferGeometry();
+            geometry.setAttribute('position', new THREE.BufferAttribute(positions, 3));
             geometry.setAttribute('color', new THREE.BufferAttribute(colors, 3));
 
             const material = new THREE.PointsMaterial({
-                size: 0.18,
+                size: 0.165,
                 vertexColors: true,
                 transparent: true,
-                opacity: 0.85,
-                blending: THREE.AdditiveBlending
+                opacity: 0.96,
+                blending: THREE.AdditiveBlending,
+                depthTest: false
             });
 
             particles = new THREE.Points(geometry, material);
             scene.add(particles);
 
-            // Connection lines
-            const lineMaterial = new THREE.LineBasicMaterial({
-                color: 0x00f5ff,
-                transparent: true,
-                opacity: 0.12,
-                blending: THREE.AdditiveBlending
-            });
+            // Connection lines group
+            linesGroup = new THREE.Group();
+            scene.add(linesGroup);
 
-            lines = new THREE.Group();
-            scene.add(lines);
+            // Mouse + Touch support
+            const handlePointer = (e) => {
+                const clientX = e.touches ? e.touches[0].clientX : e.clientX;
+                const clientY = e.touches ? e.touches[0].clientY : e.clientY;
+                targetMouse.x = (clientX / window.innerWidth) * 2 - 1;
+                targetMouse.y = -(clientY / window.innerHeight) * 2 + 1;
+            };
 
-            // Mouse interaction
-            window.addEventListener('mousemove', (e) => {
-                targetMouse.x = (e.clientX / window.innerWidth) * 2 - 1;
-                targetMouse.y = -(e.clientY / window.innerHeight) * 2 + 1;
-            });
+            window.addEventListener('mousemove', handlePointer);
+            window.addEventListener('touchmove', handlePointer, { passive: true });
 
             window.addEventListener('resize', () => {
                 camera.aspect = window.innerWidth / window.innerHeight;
@@ -238,32 +298,32 @@
         }
 
         function updateConnections() {
-            // Clear old lines
-            while (lines.children.length > 0) {
-                lines.remove(lines.children[0]);
-            }
+            while (linesGroup.children.length > 80) linesGroup.remove(linesGroup.children[0]);
 
-            const positions = particles.geometry.attributes.position.array;
-            const maxDistance = 12;
+            const pos = particles.geometry.attributes.position.array;
+            const maxDist = 14.5;
+            let connections = 0;
 
-            for (let i = 0; i < positions.length; i += 3) {
-                for (let j = i + 3; j < positions.length; j += 3) {
-                    const dx = positions[i] - positions[j];
-                    const dy = positions[i + 1] - positions[j + 1];
-                    const dz = positions[i + 2] - positions[j + 2];
-                    const distance = Math.sqrt(dx*dx + dy*dy + dz*dz);
+            for (let i = 0; i < pos.length && connections < 220; i += 9) {
+                for (let j = i + 9; j < pos.length && connections < 280; j += 9) {
+                    const dx = pos[i] - pos[j];
+                    const dy = pos[i+1] - pos[j+1];
+                    const dz = pos[i+2] - pos[j+2];
+                    const dist = Math.hypot(dx, dy, dz);
 
-                    if (distance < maxDistance) {
-                        const geometry = new THREE.BufferGeometry().setFromPoints([
-                            new THREE.Vector3(positions[i], positions[i+1], positions[i+2]),
-                            new THREE.Vector3(positions[j], positions[j+1], positions[j+2])
+                    if (dist < maxDist && dist > 2) {
+                        const lineGeo = new THREE.BufferGeometry().setFromPoints([
+                            new THREE.Vector3(pos[i], pos[i+1], pos[i+2]),
+                            new THREE.Vector3(pos[j], pos[j+1], pos[j+2])
                         ]);
-                        const line = new THREE.Line(geometry, new THREE.LineBasicMaterial({
-                            color: 0x00f5ff,
+                        const opacity = (maxDist - dist) / maxDist * 0.26;
+                        const line = new THREE.Line(lineGeo, new THREE.LineBasicMaterial({
+                            color: 0x00eeff,
                             transparent: true,
-                            opacity: (maxDistance - distance) / maxDistance * 0.18
+                            opacity: opacity
                         }));
-                        lines.add(line);
+                        linesGroup.add(line);
+                        connections++;
                     }
                 }
             }
@@ -271,30 +331,25 @@
 
         function animate() {
             requestAnimationFrame(animate);
+            frameCount++;
 
-            // Smooth mouse follow
-            mouse.x = mouse.x * 0.92 + targetMouse.x * 0.08;
-            mouse.y = mouse.y * 0.92 + targetMouse.y * 0.08;
+            mouse.x = mouse.x * 0.88 + targetMouse.x * 0.12;
+            mouse.y = mouse.y * 0.88 + targetMouse.y * 0.12;
 
-            // Gentle rotation + mouse influence
-            particles.rotation.y += 0.0008;
-            particles.rotation.x = mouse.y * 0.15;
-            particles.rotation.z = mouse.x * 0.1;
+            // Smooth rotation with mouse influence
+            particles.rotation.y += 0.00055;
+            particles.rotation.x = mouse.y * 0.26;
+            particles.rotation.z = mouse.x * 0.14;
 
-            // Very subtle particle movement
-            const positions = particles.geometry.attributes.position.array;
-            for (let i = 0; i < positions.length; i += 3) {
-                positions[i + 1] += Math.sin(Date.now() * 0.0005 + i) * 0.008;
-            }
-            particles.geometry.attributes.position.needsUpdate = true;
+            // Floating animation
+            particles.position.y = Math.sin(Date.now() * 0.0007) * 2.2;
 
-            // Update connections every 8 frames for performance
-            if (Math.random() < 0.125) updateConnections();
+            // Performance optimized connections
+            if (frameCount % 7 === 0) updateConnections();
 
             renderer.render(scene, camera);
         }
 
-        // Initialize everything
         window.onload = init;
     </script>
 </body>
