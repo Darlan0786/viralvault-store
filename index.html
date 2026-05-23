@@ -1,733 +1,301 @@
-<!doctype html>
-<html lang="pt-BR">
+<!DOCTYPE html>
+<html lang="en">
 <head>
-  <meta charset="utf-8"/>
-  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"/>
-  <meta name="theme-color" content="#0b1220"/>
-  <meta name="color-scheme" content="dark light"/>
-  <title>ViralVault Store — Melhore sua conta Roblox em minutos</title>
-  <meta name="description" content="ViralVault Store: catálogo dinâmico, checkout PIX, Order ID e suporte via Discord. Experiência rápida e segura."/>
-  <meta name="robots" content="index,follow"/>
-  <meta property="og:title" content="ViralVault Store"/>
-  <meta property="og:description" content="Melhore sua conta Roblox em minutos. Checkout PIX • Order ID • Suporte Discord."/>
-  <meta property="og:type" content="website"/>
-  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg%20xmlns%3D%27http%3A//www.w3.org/2000/svg%27%20width%3D%2764%27%20height%3D%2764%27%20viewBox%3D%270%200%2064%2064%27%3E%3Cdefs%3E%3CradialGradient%20id%3D%27g%27%20cx%3D%2730%25%27%20cy%3D%2725%25%27%20r%3D%2785%25%27%3E%3Cstop%20offset%3D%270%25%27%20stop-color%3D%27%23ffffff%27/%3E%3Cstop%20offset%3D%2755%25%27%20stop-color%3D%27%237bd1ff%27/%3E%3Cstop%20offset%3D%27100%25%27%20stop-color%3D%27%230a0f1c%27/%3E%3C/radialGradient%3E%3C/defs%3E%3Crect%20x%3D%276%27%20y%3D%276%27%20width%3D%2752%27%20height%3D%2752%27%20rx%3D%2714%27%20fill%3D%27url%28%23g%29%27/%3E%3Cpath%20d%3D%27M21%2020h10l7%2024h-7l-1.4-6h-8.8L19.4%2044H13l8-24zm3%2014h5l-2.5-8-2.5%208z%27%20fill%3D%27%23081021%27%20opacity%3D%27.92%27/%3E%3Ccircle%20cx%3D%2747%27%20cy%3D%2722%27%20r%3D%276%27%20fill%3D%27%23081021%27%20opacity%3D%27.92%27/%3E%3Cpath%20d%3D%27M44.2%2022l2.1%202.3%204.2-4.8%27%20stroke%3D%27%237bd1ff%27%20stroke-width%3D%272.6%27%20stroke-linecap%3D%27round%27%20stroke-linejoin%3D%27round%27/%3E%3C/svg%3E"/>
-  <link rel="manifest" href="data:application/manifest+json,%7B%22name%22%3A%22ViralVault%20Store%22%2C%22short_name%22%3A%22ViralVault%22%2C%22start_url%22%3A%22./%22%2C%22display%22%3A%22standalone%22%2C%22background_color%22%3A%22%230b1220%22%2C%22theme_color%22%3A%22%230b1220%22%2C%22icons%22%3A%5B%7B%22src%22%3A%22data%3Aimage/svg%2Bxml%3Butf8%2C%253Csvg%2520xmlns%3D%27http%3A//www.w3.org/2000/svg%27%2520width%3D%27512%27%2520height%3D%27512%27%2520viewBox%3D%270%25200%2520512%2520512%27%253E%253Cdefs%253E%253CradialGradient%2520id%3D%27g%27%2520cx%3D%2730%2525%27%2520cy%3D%2725%2525%27%2520r%3D%2785%2525%27%253E%253Cstop%2520offset%3D%270%2525%27%2520stop-color%3D%27%23ffffff%27/%253E%253Cstop%2520offset%3D%2755%2525%27%2520stop-color%3D%27%237bd1ff%27/%253E%253Cstop%2520offset%3D%27100%2525%27%2520stop-color%3D%27%230a0f1c%27/%253E%253C/radialGradient%253E%253C/defs%253E%253Crect%2520x%3D%2744%27%2520y%3D%2744%27%2520width%3D%27424%27%2520height%3D%27424%27%2520rx%3D%27124%27%2520fill%3D%27url%28%23g%29%27/%253E%253Cpath%2520d%3D%27M170%2520170h90l64%2520190h-62l-12-44h-74l-12%252044h-58l64-190zm38%2520106h42l-21-64-21%252064z%27%2520fill%3D%27%23081021%27%2520opacity%3D%27.92%27/%253E%253Ccircle%2520cx%3D%27350%27%2520cy%3D%27190%27%2520r%3D%2746%27%2520fill%3D%27%23081021%27%2520opacity%3D%27.92%27/%253E%253Cpath%2520d%3D%27M332%2520190l20%252022%252040-46%27%2520stroke%3D%27%237bd1ff%27%2520stroke-width%3D%2718%27%2520stroke-linecap%3D%27round%27%2520stroke-linejoin%3D%27round%27/%253E%253C/svg%253E%22%2C%22sizes%22%3A%22512x512%22%2C%22type%22%3A%22image/svg%2Bxml%22%2C%22purpose%22%3A%22any%20maskable%22%7D%5D%7D"/>
-  <script type="application/ld+json">{"@context":"https://schema.org","@type":"WebSite","name":"ViralVault Store","url":"https://viralvault-store.vercel.app/","potentialAction":{"@type":"SearchAction","target":"https://viralvault-store.vercel.app/?q={search_term_string}","query-input":"required name=search_term_string"}}</script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NEXUS • Digital Realm</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r134/three.min.js"></script>
+    <style>
+        :root {
+            --neon-cyan: #00f5ff;
+            --neon-purple: #c026d3;
+            --neon-pink: #ff00aa;
+        }
 
-  <style>
-    :root{
-      --bg0:#050814; --bg1:#0b1220; --bg2:#0f1a33;
-      --card:rgba(255,255,255,.07); --stroke:rgba(255,255,255,.12);
-      --txt:rgba(255,255,255,.92); --muted:rgba(255,255,255,.62); --muted2:rgba(255,255,255,.46);
-      --blue:#7bd1ff; --indigo:#6f7cff; --ok:#28e07c; --warn:#ffd36b; --bad:#ff6b8b;
-      --r16:16px; --r20:20px; --r24:24px; --r28:28px;
-      --shadow: 0 20px 80px rgba(0,0,0,.42);
-      --shadow2: 0 10px 30px rgba(0,0,0,.35);
-      --max: 1120px;
-      --ease: cubic-bezier(.2,.8,.2,1);
-      --fast: 180ms var(--ease);
-    }
-    *{box-sizing:border-box}
-    html,body{height:100%}
-    body{
-      margin:0;
-      font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial;
-      color:var(--txt);
-      background:
-        radial-gradient(1100px 700px at 20% 10%, rgba(123,209,255,.20), transparent 60%),
-        radial-gradient(900px 600px at 90% 25%, rgba(111,124,255,.18), transparent 55%),
-        radial-gradient(800px 600px at 40% 90%, rgba(42,168,255,.14), transparent 55%),
-        linear-gradient(180deg, var(--bg0), var(--bg1) 50%, var(--bg0));
-      overflow-x:hidden;
-    }
-    .wrap{max-width:var(--max); margin:0 auto; padding:18px 16px 96px;}
-    .topbar{position:sticky; top:0; z-index:50; backdrop-filter:saturate(140%) blur(10px);
-      background: linear-gradient(180deg, rgba(7,11,24,.72), rgba(7,11,24,.35)); border-bottom:1px solid rgba(255,255,255,.08);}
-    .topbar .row{max-width:var(--max); margin:0 auto; padding:14px 16px; display:flex; align-items:center; justify-content:space-between; gap:12px;}
-    .brand{display:flex; align-items:center; gap:10px;}
-    .logo{width:42px; height:42px; border-radius:14px; display:grid; place-items:center;
-      background: radial-gradient(120% 120% at 30% 20%, #fff 0%, var(--blue) 55%, #081021 100%);
-      box-shadow: 0 12px 40px rgba(0,0,0,.35), inset 0 0 0 1px rgba(255,255,255,.22);}
-    .logo svg{width:26px; height:26px; filter: drop-shadow(0 8px 14px rgba(0,0,0,.35));}
-    .brand b{font-size:14px; letter-spacing:.2px;}
-    .brand span{display:block; color:var(--muted2); font-size:12px; margin-top:1px;}
-    .chipbar{display:flex; align-items:center; gap:10px; flex-wrap:wrap; justify-content:flex-end;}
-    .btn{border:1px solid rgba(255,255,255,.14); background: rgba(255,255,255,.07); color:var(--txt);
-      padding:10px 14px; border-radius:14px; cursor:pointer; transition: transform var(--fast), box-shadow var(--fast), background var(--fast), border-color var(--fast);
-      box-shadow: var(--shadow2); position:relative; overflow:hidden; -webkit-tap-highlight-color: transparent;}
-    .btn.primary{background: linear-gradient(135deg, rgba(123,209,255,.92), rgba(111,124,255,.85));
-      color:#081021; border-color: rgba(255,255,255,.24); font-weight:800;
-      box-shadow: 0 18px 60px rgba(123,209,255,.18), 0 18px 60px rgba(111,124,255,.10);}
-    .btn.ghost{background: rgba(255,255,255,.06);}
-    .btn:hover{border-color: rgba(123,209,255,.26);}
-    .btn:active{transform: scale(.985);}
-    .btn:focus-visible{outline:none; box-shadow: 0 0 0 3px rgba(123,209,255,.26), var(--shadow2);}
-    @keyframes floaty { 0%,100%{transform:translateY(0)} 50%{transform:translateY(-3px)}}
-    @keyframes sheen { 0%{transform:translateX(-120%) rotate(15deg)} 100%{transform:translateX(120%) rotate(15deg)}}
-    .endless{ animation: floaty 2.2s var(--ease) infinite; }
-    .endless::after{content:""; position:absolute; inset:-40% -30%;
-      background: linear-gradient(90deg, transparent, rgba(255,255,255,.28), transparent);
-      transform: translateX(-120%) rotate(15deg); opacity:.55; animation: sheen 2.9s linear infinite; pointer-events:none;}
-    .hero{margin-top:18px; display:grid; grid-template-columns: 1.25fr .9fr; gap:16px; align-items:stretch;}
-    @media (max-width: 980px){ .hero{grid-template-columns:1fr;} }
-    .card{background: linear-gradient(180deg, rgba(255,255,255,.08), rgba(255,255,255,.045));
-      border:1px solid rgba(255,255,255,.10); border-radius: 28px; box-shadow: var(--shadow); position:relative; overflow:hidden;}
-    .card::before{content:""; position:absolute; inset:-1px;
-      background: radial-gradient(700px 280px at 15% 0%, rgba(123,209,255,.22), transparent 60%),
-                  radial-gradient(700px 280px at 85% 10%, rgba(111,124,255,.18), transparent 60%);
-      opacity:.9; pointer-events:none;}
-    .card>*{position:relative; z-index:1;}
-    .heroLeft{padding:22px 18px 18px;}
-    .badgeRow{display:flex; gap:10px; flex-wrap:wrap; align-items:center; margin-bottom:14px;}
-    .badge{display:inline-flex; align-items:center; gap:10px; padding:10px 12px; border-radius:999px;
-      background: rgba(0,0,0,.22); border:1px solid rgba(255,255,255,.10); box-shadow: inset 0 0 0 1px rgba(123,209,255,.12);
-      color: rgba(255,255,255,.90); font-size:12px;}
-    .dot{width:10px; height:10px; border-radius:99px; background: var(--ok); box-shadow: 0 0 0 6px rgba(40,224,124,.12);}
-    h1{margin:10px 0 8px; font-size: clamp(34px, 5vw, 52px); line-height:1.02; letter-spacing:-.8px;}
-    .sub{color:var(--muted); font-size:15px; line-height:1.5; max-width:62ch;}
-    .ctaRow{margin-top:16px; display:flex; gap:10px; flex-wrap:wrap;}
-    .metaRow{margin-top:14px; display:flex; gap:10px; flex-wrap:wrap; align-items:center;}
-    .tag{padding:10px 12px; border-radius:999px; border:1px solid rgba(255,255,255,.10);
-      background: rgba(255,255,255,.055); color: rgba(255,255,255,.78); font-size:12px; display:flex; align-items:center; gap:10px;}
-    .tag b{color:rgba(255,255,255,.92)}
-    .heroRight{padding:16px; display:flex; flex-direction:column; gap:12px;}
-    .miniPanel{border-radius:22px; border:1px solid rgba(255,255,255,.10); background: rgba(0,0,0,.18);
-      padding:14px; box-shadow: inset 0 0 0 1px rgba(123,209,255,.08);}
-    .miniPanel h3{margin:0 0 10px; font-size:14px;}
-    .miniPanel .small{color:var(--muted2); font-size:12px; line-height:1.35}
-    .progress{margin-top:10px; height:10px; border-radius:99px; background: rgba(255,255,255,.06);
-      border:1px solid rgba(255,255,255,.10); overflow:hidden;}
-    .progress>i{display:block; height:100%; width:40%; background: linear-gradient(90deg, rgba(123,209,255,.95), rgba(111,124,255,.90));
-      border-radius:99px; box-shadow: 0 0 0 1px rgba(255,255,255,.16) inset; animation: prog 2.7s var(--ease) infinite;}
-    @keyframes prog{0%{transform:translateX(-20%)} 50%{transform:translateX(80%)} 100%{transform:translateX(-20%)}}
-    .section{margin-top:16px;}
-    .grid{display:grid; grid-template-columns: 1.05fr .95fr; gap:16px;}
-    @media (max-width: 980px){ .grid{grid-template-columns:1fr;} }
-    .pane{border-radius: 28px; border: 1px solid rgba(255,255,255,.10);
-      background: linear-gradient(180deg, rgba(255,255,255,.07), rgba(255,255,255,.045));
-      box-shadow: var(--shadow2); overflow:hidden; position:relative;}
-    .pane::before{content:""; position:absolute; inset:-1px;
-      background: radial-gradient(600px 220px at 25% 0%, rgba(42,168,255,.15), transparent 60%),
-                  radial-gradient(600px 220px at 80% 20%, rgba(111,124,255,.14), transparent 60%);
-      pointer-events:none; opacity:.95;}
-    .pane>*{position:relative; z-index:1;}
-    .paneHead{padding:16px 16px 10px; display:flex; align-items:center; justify-content:space-between; gap:10px;}
-    .paneHead h2{margin:0; font-size:14px;}
-    .paneHead .hint{color:var(--muted2); font-size:12px;}
-    .paneBody{padding: 0 16px 16px;}
-    .input{width:100%; border-radius: 16px; border:1px solid rgba(255,255,255,.12); background: rgba(0,0,0,.22);
-      color: rgba(255,255,255,.92); padding: 12px 12px; outline:none; transition: border-color var(--fast), box-shadow var(--fast);}
-    .input:focus{border-color: rgba(123,209,255,.28); box-shadow: 0 0 0 3px rgba(123,209,255,.16);}
-    .row2{display:flex; gap:10px; flex-wrap:wrap; align-items:center;}
-    .row2 .input{flex:1 1 220px;}
-    .muted{color:var(--muted2); font-size:12px;}
-    .hr{height:1px; background: rgba(255,255,255,.08); margin:12px 0;}
-    .list{display:grid; grid-template-columns: 1fr 1fr; gap:10px;}
-    @media (max-width: 520px){ .list{grid-template-columns:1fr;} }
-    .item{border-radius: 18px; border: 1px solid rgba(255,255,255,.10); background: rgba(0,0,0,.16);
-      padding: 12px; display:flex; justify-content:space-between; align-items:flex-start; gap:10px;
-      transition: transform var(--fast), border-color var(--fast), background var(--fast);}
-    .item:hover{transform: translateY(-1px); border-color: rgba(123,209,255,.18); background: rgba(0,0,0,.20);}
-    .item b{font-size:13px;}
-    .item small{display:block; color:var(--muted2); margin-top:2px;}
-    .qty{display:flex; align-items:center; gap:8px; background: rgba(255,255,255,.06);
-      border:1px solid rgba(255,255,255,.10); padding:6px 8px; border-radius: 999px;}
-    .iconBtn{width:30px; height:30px; border-radius: 12px; border:1px solid rgba(255,255,255,.12);
-      background: rgba(255,255,255,.06); color:rgba(255,255,255,.92); cursor:pointer; display:grid; place-items:center;
-      transition: transform var(--fast), border-color var(--fast), background var(--fast); -webkit-tap-highlight-color: transparent;}
-    .iconBtn:active{transform: scale(.97);}
-    .iconBtn:hover{border-color: rgba(123,209,255,.22); background: rgba(255,255,255,.08);}
-    .sum{display:flex; align-items:center; justify-content:space-between; gap:10px; padding: 12px 12px;
-      border-radius: 18px; background: rgba(0,0,0,.14); border:1px solid rgba(255,255,255,.10);}
-    .sum b{font-size:14px}
-    .sum span{color: var(--muted); font-size:12px}
-    .note{padding: 12px; border-radius: 18px; border:1px dashed rgba(123,209,255,.30);
-      background: rgba(123,209,255,.08); color: rgba(255,255,255,.82); font-size: 12px; line-height: 1.35;}
-    .bottomNav{position: fixed; left: 50%; transform: translateX(-50%); bottom: 14px; z-index: 60;
-      width: min(960px, calc(100vw - 18px)); border-radius: 26px; border:1px solid rgba(255,255,255,.10);
-      background: rgba(7,11,24,.62); backdrop-filter: blur(12px) saturate(140%);
-      box-shadow: 0 24px 80px rgba(0,0,0,.55); padding: 10px; display:flex; gap:8px; align-items:center; justify-content:space-between;}
-    .navBtn{flex: 1 1 auto; border-radius: 20px; border:1px solid transparent; background: transparent;
-      color: rgba(255,255,255,.78); padding: 10px 10px; display:flex; gap:10px; align-items:center; justify-content:center;
-      cursor:pointer; transition: background var(--fast), border-color var(--fast), transform var(--fast), color var(--fast);
-      -webkit-tap-highlight-color: transparent; white-space:nowrap; font-size: 13px;}
-    .navBtn.active{background: rgba(255,255,255,.08); border-color: rgba(123,209,255,.18);
-      color: rgba(255,255,255,.92); box-shadow: inset 0 0 0 1px rgba(123,209,255,.12);}
-    .navBtn:active{transform: scale(.985);}
-    .navBtn svg{width:18px; height:18px; opacity:.95}
-    @media (max-width: 520px){ .navBtn span{display:none} .navBtn{padding: 12px 8px;} }
-    .reduce-motion *{animation:none !important; transition:none !important; scroll-behavior:auto !important;}
-  </style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', system-ui, sans-serif;
+            background: #0a0a0a;
+            color: #e0e0e0;
+            overflow-x: hidden;
+        }
+
+        canvas {
+            position: fixed;
+            top: 0;
+            left: 0;
+            z-index: -1;
+        }
+
+        .header {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            padding: 1.5rem 5%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            z-index: 1000;
+            backdrop-filter: blur(12px);
+            border-bottom: 1px solid rgba(255,255,255,0.08);
+        }
+
+        .logo {
+            font-size: 1.8rem;
+            font-weight: 900;
+            background: linear-gradient(90deg, var(--neon-cyan), var(--neon-purple));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            letter-spacing: -2px;
+        }
+
+        .nav a {
+            color: #ddd;
+            text-decoration: none;
+            margin-left: 2rem;
+            font-weight: 500;
+            transition: all 0.3s ease;
+        }
+
+        .nav a:hover {
+            color: var(--neon-cyan);
+            text-shadow: 0 0 10px var(--neon-cyan);
+        }
+
+        .hero {
+            height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            position: relative;
+        }
+
+        .hero-content {
+            max-width: 900px;
+            padding: 0 20px;
+            z-index: 10;
+        }
+
+        .hero h1 {
+            font-size: clamp(3.5rem, 8vw, 7rem);
+            font-weight: 900;
+            line-height: 1.05;
+            margin-bottom: 1.5rem;
+            background: linear-gradient(90deg, #ffffff, var(--neon-cyan), var(--neon-purple));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            animation: glow 3s ease-in-out infinite alternate;
+        }
+
+        .hero p {
+            font-size: 1.4rem;
+            margin-bottom: 3rem;
+            opacity: 0.85;
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .cta-button {
+            padding: 1.1rem 3rem;
+            font-size: 1.1rem;
+            font-weight: 600;
+            border: none;
+            border-radius: 9999px;
+            background: linear-gradient(45deg, var(--neon-cyan), var(--neon-purple));
+            color: white;
+            cursor: pointer;
+            box-shadow: 0 0 30px rgba(0, 245, 255, 0.5);
+            transition: all 0.4s cubic-bezier(0.23, 1, 0.32, 1);
+        }
+
+        .cta-button:hover {
+            transform: translateY(-4px) scale(1.05);
+            box-shadow: 0 0 50px rgba(0, 245, 255, 0.8);
+        }
+
+        @keyframes glow {
+            from { filter: drop-shadow(0 0 20px var(--neon-cyan)); }
+            to { filter: drop-shadow(0 0 40px var(--neon-purple)); }
+        }
+
+        .glass-card {
+            background: rgba(255,255,255,0.05);
+            backdrop-filter: blur(16px);
+            border: 1px solid rgba(255,255,255,0.1);
+            border-radius: 20px;
+        }
+    </style>
 </head>
 <body>
-  <header class="topbar" role="banner">
-    <div class="row">
-      <div class="brand" aria-label="ViralVault Store">
-        <div class="logo" aria-hidden="true">
-          <svg viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
-            <path d="M20 18h10l7 28h-7l-1.4-6h-8.8L18.4 46H12l8-28zm3 16h5l-2.5-9-2.5 9z" fill="#081021" opacity=".92"/>
-            <circle cx="46" cy="22" r="6" fill="#081021" opacity=".92"/>
-            <path d="M43.2 22l2.1 2.3 4.2-4.8" stroke="#7bd1ff" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/>
-          </svg>
-        </div>
-        <div>
-          <b>ViralVault Store</b>
-          <span id="statusLine">Carregando…</span>
-        </div>
-      </div>
-      <div class="chipbar">
-        <button class="btn ghost endless" id="discordBtn" type="button">Discord</button>
-        <button class="btn" id="perfBtn" type="button" title="Modo leve">⚡</button>
-      </div>
-    </div>
-  </header>
+    <canvas id="bg"></canvas>
 
-  <main class="wrap" role="main">
-    <section class="hero" aria-label="ViralVault hero">
-      <div class="card heroLeft">
-        <div class="badgeRow">
-          <span class="badge"><span class="dot"></span> Checkout PIX • Order ID • Status</span>
-          <span class="badge" style="border-style:dashed; border-color: rgba(123,209,255,.28); background: rgba(123,209,255,.06);">Validação PIX (CRC) • UX fluida</span>
-        </div>
-        <h1>Melhore sua conta Roblox em minutos!</h1>
-        <p class="sub">
-          Catálogo dinâmico (do Worker), carrinho local, checkout PIX com cópia rápida e acompanhamento por Order ID.
-          Suporte oficial: Discord.
-        </p>
-        <div class="ctaRow">
-          <button class="btn primary endless" id="goCatalog" type="button">Ver catálogo</button>
-          <button class="btn ghost endless" id="goCheckout" type="button">Ir pro checkout</button>
-          <button class="btn ghost" id="goOrder" type="button">Ver pedido</button>
-        </div>
-        <div class="metaRow">
-          <span class="tag"><b>Worker</b> <span id="workerBadge" style="color:var(--warn)">testando…</span></span>
-          <span class="tag"><b>PWA</b> <span id="pwaBadge">—</span></span>
-          <span class="tag"><b>PIX</b> <span id="pixBadge">ok</span></span>
-        </div>
-      </div>
+    <header class="header">
+        <div class="logo">NEXUS</div>
+        <nav class="nav">
+            <a href="#">Manifesto</a>
+            <a href="#">Universe</a>
+            <a href="#">Connect</a>
+        </nav>
+    </header>
 
-      <aside class="card heroRight" aria-label="Painel">
-        <div class="miniPanel">
-          <h3>Painel</h3>
-          <div class="small">Carrinho</div>
-          <div class="progress" aria-hidden="true"><i id="cartProg"></i></div>
-          <div class="hr"></div>
-          <div class="row2" style="justify-content:space-between">
-            <div class="small">Itens</div>
-            <div class="small"><b id="cartCount">0</b></div>
-          </div>
-          <div class="hr"></div>
-          <div class="small">Último Order ID</div>
-          <div class="small" id="lastOrder">—</div>
+    <section class="hero">
+        <div class="hero-content">
+            <h1>ENTER THE<br>DIGITAL VEIL</h1>
+            <p>A breathtaking fusion of art, technology, and consciousness. Built with pure HTML, CSS &amp; Three.js.</p>
+            <button class="cta-button" onclick="alert('Welcome to the future ✨')">EXPLORE THE VOID</button>
         </div>
-        <div class="miniPanel">
-          <h3>Ações rápidas</h3>
-          <div class="row2">
-            <button class="btn" id="reloadCatalog" type="button">Recarregar</button>
-            <button class="btn" id="resetLocal" type="button">Reset local</button>
-          </div>
-          <p class="small" id="quickHint" style="margin-top:10px;color:var(--muted)">
-            Dica: para comprar, deixe o carrinho com <b>1 produto</b> por vez (o worker cria 1 order por produto).
-          </p>
-        </div>
-      </aside>
     </section>
 
-    <section class="section grid" aria-label="Conteúdo">
-      <div class="pane" id="viewCatalog">
-        <div class="paneHead">
-          <h2>Catálogo</h2>
-          <div class="hint">Puxado do seu Worker</div>
-        </div>
-        <div class="paneBody">
-          <div class="row2">
-            <input class="input" id="search" placeholder="Buscar produto..." autocomplete="off"/>
-            <button class="btn" id="openCart" type="button">Checkout</button>
-          </div>
-          <div class="hr"></div>
-          <div class="list" id="productList" aria-live="polite"></div>
-          <div class="hr"></div>
-          <div class="note">
-            Segurança: ViralVault nunca pede senha/2FA. Suporte oficial apenas via Discord.
-          </div>
-        </div>
-      </div>
+    <script>
+        // Three.js Interactive Particle Web
+        let scene, camera, renderer;
+        let particles, particlePositions, lines;
+        let mouse = { x: 0, y: 0 };
+        let targetMouse = { x: 0, y: 0 };
 
-      <div class="pane" id="viewCheckout" style="display:none">
-        <div class="paneHead">
-          <h2>Checkout (PIX)</h2>
-          <div class="hint">Gera o Order ID e copia o PIX</div>
-        </div>
-        <div class="paneBody">
-          <div class="sum">
-            <div>
-              <b>Total</b>
-              <span id="totalHint">Itens do carrinho</span>
-            </div>
-            <div style="text-align:right">
-              <b id="totalPrice">R$ 0,00</b><br/>
-              <span id="totalItems" class="muted">0 itens</span>
-            </div>
-          </div>
+        function init() {
+            const canvas = document.getElementById('bg');
+            
+            // Scene setup
+            scene = new THREE.Scene();
+            camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
+            renderer = new THREE.WebGLRenderer({ 
+                canvas: canvas, 
+                antialias: true, 
+                alpha: true 
+            });
+            
+            renderer.setSize(window.innerWidth, window.innerHeight);
+            renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+            camera.position.z = 45;
 
-          <div class="hr"></div>
+            // Particle system
+            const particleCount = 1800;
+            const geometry = new THREE.BufferGeometry();
+            particlePositions = new Float32Array(particleCount * 3);
+            const colors = new Float32Array(particleCount * 3);
 
-          <div class="row2">
-            <input class="input" id="robloxUser" placeholder="Seu usuário Roblox (obrigatório)" autocomplete="off"/>
-            <button class="btn primary" id="genOrder" type="button">Gerar Order ID</button>
-            <button class="btn" id="copyOrder" type="button">Copiar</button>
-          </div>
-          <p class="muted" style="margin:8px 0 0">Order ID: <b id="orderId">—</b></p>
+            for (let i = 0; i < particleCount * 3; i += 3) {
+                const radius = 60;
+                const theta = Math.random() * Math.PI * 2;
+                const phi = Math.acos(2 * Math.random() - 1);
+                
+                particlePositions[i]     = radius * Math.sin(phi) * Math.cos(theta);
+                particlePositions[i + 1] = radius * Math.sin(phi) * Math.sin(theta);
+                particlePositions[i + 2] = radius * Math.cos(phi);
 
-          <div class="hr"></div>
+                // Neon colors
+                colors[i]     = 0.2 + Math.random() * 0.8;
+                colors[i + 1] = 0.9;
+                colors[i + 2] = 0.95;
+            }
 
-          <label class="muted">PIX Copia e Cola</label>
-          <textarea class="input" id="pix" rows="4" placeholder="PIX vai aparecer aqui automaticamente..." style="resize:vertical"></textarea>
-          <p class="muted" id="pixValid" style="margin:8px 0 0">Validação: —</p>
+            geometry.setAttribute('position', new THREE.BufferAttribute(particlePositions, 3));
+            geometry.setAttribute('color', new THREE.BufferAttribute(colors, 3));
 
-          <div class="row2" style="margin-top:10px">
-            <button class="btn primary endless" id="copyPix" type="button">Copiar PIX</button>
-            <button class="btn ghost" id="afterPay" type="button">Já paguei</button>
-          </div>
+            const material = new THREE.PointsMaterial({
+                size: 0.18,
+                vertexColors: true,
+                transparent: true,
+                opacity: 0.85,
+                blending: THREE.AdditiveBlending
+            });
 
-          <div class="hr"></div>
-          <div class="note" id="checkoutNote">
-            Pagamento não é confirmado automaticamente (PIX não envia confirmação pública). Depois de pagar, acompanhe na aba <b>Pedido</b> usando seu Order ID.
-          </div>
-        </div>
-      </div>
+            particles = new THREE.Points(geometry, material);
+            scene.add(particles);
 
-      <div class="pane" id="viewOrder" style="display:none">
-        <div class="paneHead">
-          <h2>Pedido</h2>
-          <div class="hint">Status real no Worker</div>
-        </div>
-        <div class="paneBody">
-          <div class="row2">
-            <input class="input" id="orderLookup" placeholder="Cole o Order ID..." autocomplete="off"/>
-            <button class="btn primary" id="checkOrder" type="button">Verificar</button>
-            <button class="btn" id="discordHelp" type="button">Discord</button>
-          </div>
-          <div class="hr"></div>
-          <div class="note" id="orderStatus">—</div>
-          <div class="hr"></div>
-          <div class="note">
-            Se o status não mudar após um tempo, abra ticket no Discord com: Order ID + produto + comprovante.
-          </div>
-        </div>
-      </div>
+            // Connection lines
+            const lineMaterial = new THREE.LineBasicMaterial({
+                color: 0x00f5ff,
+                transparent: true,
+                opacity: 0.12,
+                blending: THREE.AdditiveBlending
+            });
 
-      <div class="pane" id="viewFaq" style="display:none">
-        <div class="paneHead">
-          <h2>FAQ</h2>
-          <div class="hint">Perguntas comuns</div>
-        </div>
-        <div class="paneBody" id="faqBody"></div>
-      </div>
-    </section>
-  </main>
+            lines = new THREE.Group();
+            scene.add(lines);
 
-  <nav class="bottomNav" aria-label="Navegação">
-    <button class="navBtn active" data-go="catalog" type="button">
-      <svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M6 7h12l-1 13H7L6 7Z" stroke="currentColor" stroke-width="2"/><path d="M9 7V5a3 3 0 0 1 6 0v2" stroke="currentColor" stroke-width="2"/></svg>
-      <span>Catálogo</span>
-    </button>
-    <button class="navBtn" data-go="checkout" type="button">
-      <svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M7 4h10v16H7V4Z" stroke="currentColor" stroke-width="2"/><path d="M9 8h6M9 12h6M9 16h4" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
-      <span>Checkout</span>
-    </button>
-    <button class="navBtn" data-go="order" type="button">
-      <svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M7 3h10v18l-5-3-5 3V3Z" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/></svg>
-      <span>Pedido</span>
-    </button>
-    <button class="navBtn" data-go="faq" type="button">
-      <svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M12 18h.01" stroke="currentColor" stroke-width="3" stroke-linecap="round"/><path d="M9.5 9.5a2.5 2.5 0 1 1 3.7 2.2c-.9.5-1.2 1-1.2 1.8v.4" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
-      <span>FAQ</span>
-    </button>
-  </nav>
+            // Mouse interaction
+            window.addEventListener('mousemove', (e) => {
+                targetMouse.x = (e.clientX / window.innerWidth) * 2 - 1;
+                targetMouse.y = -(e.clientY / window.innerHeight) * 2 + 1;
+            });
 
-  <script>
-    const SIGN_WORKER = "https://viralvault-sign.darlanana06.workers.dev";
-    const DISCORD = "https://discord.gg/fWAWquBu";
-    const PIX_FALLBACK = "00020101021126580014br.gov.bcb.pix0136851fee9f-0037-44f3-9361-e053c1faa7685204000053039865802BR5921DARLAN B R DOS SANTOS6009SAO PAULO62070503***63048DFF";
+            window.addEventListener('resize', () => {
+                camera.aspect = window.innerWidth / window.innerHeight;
+                camera.updateProjectionMatrix();
+                renderer.setSize(window.innerWidth, window.innerHeight);
+            });
 
-    const $ = (s, r=document)=>r.querySelector(s);
-    const $$ = (s, r=document)=>Array.from(r.querySelectorAll(s));
-    const store = {
-      get(k, d=null){ try{ const v=localStorage.getItem(k); return v===null?d:JSON.parse(v); }catch(e){ return d; } },
-      set(k, v){ try{ localStorage.setItem(k, JSON.stringify(v)); }catch(e){} }
-    };
-    const money = (v)=> (v||0).toLocaleString("pt-BR", {style:"currency", currency:"BRL"});
-    const safeText = (s)=> String(s||"").replace(/[<>]/g, "");
-
-    function pixCrc16(payload) {
-      let crc = 0xFFFF;
-      for (let i = 0; i < payload.length; i++) {
-        crc ^= payload.charCodeAt(i) << 8;
-        for (let j = 0; j < 8; j++) {
-          crc = (crc & 0x8000) ? ((crc << 1) ^ 0x1021) : (crc << 1);
-          crc &= 0xFFFF;
+            animate();
         }
-      }
-      return crc.toString(16).toUpperCase().padStart(4, "0");
-    }
-    function validarPixCopiaECola(emv) {
-      emv = String(emv || "").trim();
-      if (!emv) return { ok:false, error:"PIX vazio" };
-      if (!emv.startsWith("000201")) return { ok:false, error:"Formato inválido (não começa com 000201)" };
-      const idx = emv.lastIndexOf("6304");
-      if (idx < 0 || idx + 8 > emv.length) return { ok:false, error:"Campo CRC (6304) ausente" };
-      const informado = emv.slice(idx + 4, idx + 8).toUpperCase();
-      const semCrc = emv.slice(0, idx + 4);
-      const calculado = pixCrc16(semCrc);
-      if (informado !== calculado) return { ok:false, error:`CRC inválido (${informado} != ${calculado})` };
-      return { ok:true };
-    }
 
-    const state = {
-      products: [],
-      cart: store.get("vv_cart", {}),
-      lastOrder: store.get("vv_lastOrder", null),
-      perfLite: store.get("vv_perf_lite", false),
-    };
+        function updateConnections() {
+            // Clear old lines
+            while (lines.children.length > 0) {
+                lines.remove(lines.children[0]);
+            }
 
-    function applyPerf() {
-      document.documentElement.classList.toggle("reduce-motion", !!state.perfLite);
-      $("#statusLine").textContent = state.perfLite ? "Modo leve • fluido" : "Online • pronto";
-    }
+            const positions = particles.geometry.attributes.position.array;
+            const maxDistance = 12;
 
-    function cartCount(){ return Object.values(state.cart).reduce((a,n)=>a+n,0); }
-    function cartTotal(){ 
-      let t=0;
-      for(const [id, qty] of Object.entries(state.cart)) {
-        const p = state.products.find(x=>x.id===id);
-        if(p) t += (Number(p.price)||0) * qty;
-      }
-      return t;
-    }
-    function updatePanel() {
-      const c = cartCount();
-      $("#cartCount").textContent = String(c);
-      $("#cartProg").style.width = Math.min(100, Math.max(8, c*12)) + "%";
-      $("#totalItems").textContent = `${c} itens`;
-      $("#totalPrice").textContent = money(cartTotal());
-      $("#totalHint").textContent = c ? "Itens do carrinho" : "Adicione itens no catálogo";
-      $("#lastOrder").textContent = state.lastOrder?.orderId || "—";
-      $("#orderId").textContent = state.lastOrder?.orderId || "—";
-    }
-    function setCart(id, qty) {
-      if(qty<=0) delete state.cart[id];
-      else state.cart[id]=qty;
-      store.set("vv_cart", state.cart);
-      renderProducts();
-      updatePanel();
-    }
+            for (let i = 0; i < positions.length; i += 3) {
+                for (let j = i + 3; j < positions.length; j += 3) {
+                    const dx = positions[i] - positions[j];
+                    const dy = positions[i + 1] - positions[j + 1];
+                    const dz = positions[i + 2] - positions[j + 2];
+                    const distance = Math.sqrt(dx*dx + dy*dy + dz*dz);
 
-    const views = {
-      catalog: $("#viewCatalog"),
-      checkout: $("#viewCheckout"),
-      order: $("#viewOrder"),
-      faq: $("#viewFaq"),
-    };
-    function go(view) {
-      for(const [k, el] of Object.entries(views)) el.style.display = (k===view) ? "" : "none";
-      $$(".navBtn").forEach(b=>b.classList.toggle("active", b.dataset.go===view));
-      if(view==="checkout") refreshPixValidation();
-      if(view==="order") $("#orderLookup").value = state.lastOrder?.orderId || "";
-      window.scrollTo({top:0, behavior: state.perfLite ? "auto" : "smooth"});
-    }
-
-    async function apiGet(path) {
-      const u = SIGN_WORKER.replace(/\/$/,"") + path;
-      const r = await fetch(u, { method:"GET", headers:{"accept":"application/json"} });
-      if(!r.ok) throw new Error("HTTP " + r.status);
-      return await r.json();
-    }
-    async function apiPost(path, body) {
-      const u = SIGN_WORKER.replace(/\/$/,"") + path;
-      const r = await fetch(u, {
-        method:"POST",
-        headers:{"content-type":"application/json","accept":"application/json"},
-        body: JSON.stringify(body||{})
-      });
-      const t = await r.text();
-      let j = null;
-      try{ j = JSON.parse(t); }catch(e){}
-      if(!r.ok) throw new Error((j && j.error) ? j.error : ("HTTP " + r.status));
-      return j || {};
-    }
-
-    const fallbackCatalog = [
-      {id:"brainrot-pack", name:"Brainrot Pack", price:19.9, description:"Pacote rápido", badge:"Popular"},
-      {id:"brainrot-boost", name:"Brainrot Boost", price:39.9, description:"Prioridade", badge:"Prioridade"},
-      {id:"bloxfruits-kit", name:"Blox Fruits Kit", price:29.9, description:"Kit Pro", badge:"Top"},
-    ];
-
-    async function loadCatalog() {
-      $("#workerBadge").textContent = "testando…";
-      $("#workerBadge").style.color = "var(--warn)";
-      try {
-        const data = await apiGet("/catalog");
-        const products = Array.isArray(data?.products) ? data.products : [];
-        if(products.length) {
-          state.products = products.map(p=>({
-            id: String(p.id||"").trim(),
-            name: String(p.name||"").trim(),
-            price: Number(p.price)||0,
-            description: String(p.description||""),
-            badge: String(p.badge||"")
-          })).filter(p=>p.id && p.name);
-          $("#workerBadge").textContent = "ok";
-          $("#workerBadge").style.color = "var(--ok)";
-        } else {
-          state.products = fallbackCatalog;
-          $("#workerBadge").textContent = "fallback";
-          $("#workerBadge").style.color = "var(--warn)";
+                    if (distance < maxDistance) {
+                        const geometry = new THREE.BufferGeometry().setFromPoints([
+                            new THREE.Vector3(positions[i], positions[i+1], positions[i+2]),
+                            new THREE.Vector3(positions[j], positions[j+1], positions[j+2])
+                        ]);
+                        const line = new THREE.Line(geometry, new THREE.LineBasicMaterial({
+                            color: 0x00f5ff,
+                            transparent: true,
+                            opacity: (maxDistance - distance) / maxDistance * 0.18
+                        }));
+                        lines.add(line);
+                    }
+                }
+            }
         }
-      } catch(e) {
-        state.products = fallbackCatalog;
-        $("#workerBadge").textContent = "offline";
-        $("#workerBadge").style.color = "var(--bad)";
-      }
-      renderProducts();
-      updatePanel();
-    }
 
-    function renderProducts() {
-      const q = ($("#search").value||"").trim().toLowerCase();
-      const list = $("#productList");
-      const items = state.products.filter(p=>!q || (p.name+" "+p.description+" "+p.badge).toLowerCase().includes(q));
-      list.innerHTML = items.map(p=>{
-        const qty = state.cart[p.id] || 0;
-        const badge = p.badge ? ` • ${safeText(p.badge)}` : "";
-        return `
-          <div class="item" data-id="${safeText(p.id)}">
-            <div>
-              <b>${safeText(p.name)}</b>
-              <small>${safeText(p.description)}</small>
-              <small style="margin-top:6px;color:rgba(123,209,255,.88)">${money(p.price)}${badge}</small>
-            </div>
-            <div class="qty">
-              <button class="iconBtn" data-act="minus" type="button" aria-label="Remover">−</button>
-              <b style="min-width:16px;text-align:center">${qty}</b>
-              <button class="iconBtn" data-act="plus" type="button" aria-label="Adicionar">+</button>
-            </div>
-          </div>
-        `;
-      }).join("");
-    }
+        function animate() {
+            requestAnimationFrame(animate);
 
-    function getSingleProductInCart() {
-      const ids = Object.keys(state.cart).filter(id => (state.cart[id]||0) > 0);
-      if(ids.length === 0) return { ok:false, error:"Carrinho vazio" };
-      if(ids.length > 1) return { ok:false, error:"Deixe apenas 1 produto no carrinho por vez (o Worker cria 1 Order por produto)." };
-      const id = ids[0];
-      const qty = state.cart[id] || 0;
-      const product = state.products.find(p=>p.id===id);
-      if(!product) return { ok:false, error:"Produto inválido" };
-      return { ok:true, id, qty, product };
-    }
+            // Smooth mouse follow
+            mouse.x = mouse.x * 0.92 + targetMouse.x * 0.08;
+            mouse.y = mouse.y * 0.92 + targetMouse.y * 0.08;
 
-    async function generateOrder() {
-      const user = ($("#robloxUser").value||"").trim();
-      if(!user) throw new Error("Seu usuário Roblox é obrigatório.");
-      const single = getSingleProductInCart();
-      if(!single.ok) throw new Error(single.error);
+            // Gentle rotation + mouse influence
+            particles.rotation.y += 0.0008;
+            particles.rotation.x = mouse.y * 0.15;
+            particles.rotation.z = mouse.x * 0.1;
 
-      const res = await apiPost("/create-order", {
-        productId: single.id,
-        user: user + (single.qty>1 ? ` (qty:${single.qty})` : "")
-      });
+            // Very subtle particle movement
+            const positions = particles.geometry.attributes.position.array;
+            for (let i = 0; i < positions.length; i += 3) {
+                positions[i + 1] += Math.sin(Date.now() * 0.0005 + i) * 0.008;
+            }
+            particles.geometry.attributes.position.needsUpdate = true;
 
-      const orderId = res?.orderId || res?.order?.orderId;
-      const pix = (res?.pixCopiaECola && String(res.pixCopiaECola).trim()) ? String(res.pixCopiaECola).trim() : PIX_FALLBACK;
+            // Update connections every 8 frames for performance
+            if (Math.random() < 0.125) updateConnections();
 
-      state.lastOrder = {
-        orderId,
-        productId: single.id,
-        productName: single.product.name,
-        qty: single.qty,
-        price: single.product.price,
-        total: single.product.price * single.qty,
-        status: "created",
-        createdAt: Date.now()
-      };
-      store.set("vv_lastOrder", state.lastOrder);
-
-      $("#orderId").textContent = orderId || "—";
-      $("#orderLookup").value = orderId || "";
-      $("#pix").value = pix;
-      refreshPixValidation();
-      updatePanel();
-      return state.lastOrder;
-    }
-
-    async function checkOrderStatus(orderId) {
-      const data = await apiGet("/order-status?orderId=" + encodeURIComponent(orderId));
-      return data?.order || null;
-    }
-
-    function refreshPixValidation() {
-      const pix = ($("#pix").value||"").trim();
-      if(!pix) { $("#pixValid").textContent = "Validação: —"; $("#pixValid").style.color="var(--muted2)"; return; }
-      const v = validarPixCopiaECola(pix);
-      $("#pixValid").textContent = v.ok ? "Validação: PIX OK ✅" : ("Validação: " + v.error);
-      $("#pixValid").style.color = v.ok ? "var(--ok)" : "var(--warn)";
-    }
-
-    const faq = [
-      {q:"Como comprar?", a:"Escolha 1 produto, adicione ao carrinho, vá no Checkout, gere o Order ID, copie o PIX e pague. Depois acompanhe o status na aba Pedido."},
-      {q:"Como o status atualiza?", a:"O site consulta o Worker pelo Order ID. PIX não confirma automaticamente — o status depende do processamento/validação."},
-      {q:"Segurança", a:"ViralVault nunca pede senha/2FA. Use somente o site e o Discord oficial."},
-      {q:"Demorou / não atualizou", a:"Abra ticket no Discord com Order ID + produto + comprovante."},
-    ];
-    function renderFAQ() {
-      $("#faqBody").innerHTML = faq.map((x,i)=>`
-        <details class="note" style="margin-bottom:10px" ${i===0?"open":""}>
-          <summary style="cursor:pointer; font-weight:800">${safeText(x.q)}</summary>
-          <div style="margin-top:8px;color:rgba(255,255,255,.78);line-height:1.5">${safeText(x.a)}</div>
-        </details>
-      `).join("");
-    }
-
-    function setupPWA() {
-      $("#pwaBadge").textContent = window.matchMedia("(display-mode: standalone)").matches ? "PWA" : "Web";
-      if ("serviceWorker" in navigator) {
-        const sw = `
-          const CACHE = "vv-cache-v1";
-          self.addEventListener("install", (e)=>e.waitUntil((async()=>{
-            const c = await caches.open(CACHE);
-            await c.addAll(["./"]);
-            self.skipWaiting();
-          })()));
-          self.addEventListener("activate", (e)=>e.waitUntil((async()=>{
-            const keys = await caches.keys();
-            await Promise.all(keys.filter(k=>k!==CACHE).map(k=>caches.delete(k)));
-            self.clients.claim();
-          })()));
-          self.addEventListener("fetch", (e)=>{
-            const r = e.request;
-            if(r.url.includes(".workers.dev")) return;
-            e.respondWith((async()=>{
-              const c = await caches.open(CACHE);
-              const hit = await c.match(r);
-              if(hit) return hit;
-              try{
-                const net = await fetch(r);
-                if(net && net.ok && r.method==="GET") c.put(r, net.clone());
-                return net;
-              }catch(err){
-                return hit || new Response("Offline", {status:503});
-              }
-            })());
-          });
-        `;
-        const blob = new Blob([sw], {type:"text/javascript"});
-        const swUrl = URL.createObjectURL(blob);
-        navigator.serviceWorker.register(swUrl).catch(()=>{});
-      }
-    }
-
-    function bind() {
-      $("#discordBtn").onclick = ()=>window.open(DISCORD, "_blank", "noopener");
-      $("#discordHelp").onclick = ()=>window.open(DISCORD, "_blank", "noopener");
-      $("#perfBtn").onclick = ()=>{ state.perfLite = !state.perfLite; store.set("vv_perf_lite", state.perfLite); applyPerf(); };
-
-      $("#goCatalog").onclick = ()=>go("catalog");
-      $("#goCheckout").onclick = ()=>go("checkout");
-      $("#goOrder").onclick = ()=>go("order");
-      $("#openCart").onclick = ()=>go("checkout");
-
-      $$(".navBtn").forEach(b=> b.onclick = ()=>go(b.dataset.go));
-
-      $("#search").addEventListener("input", renderProducts, {passive:true});
-      $("#pix").addEventListener("input", refreshPixValidation, {passive:true});
-
-      $("#productList").addEventListener("click", (e)=>{
-        const btn = e.target.closest("button");
-        if(!btn) return;
-        const card = e.target.closest(".item");
-        if(!card) return;
-        const id = card.dataset.id;
-        const act = btn.dataset.act;
-        const cur = state.cart[id] || 0;
-        if(act==="plus") setCart(id, cur+1);
-        if(act==="minus") setCart(id, cur-1);
-      });
-
-      $("#reloadCatalog").onclick = ()=>loadCatalog();
-      $("#resetLocal").onclick = ()=>{
-        if(!confirm("Resetar carrinho e último pedido?")) return;
-        state.cart = {};
-        store.set("vv_cart", state.cart);
-        state.lastOrder = null;
-        store.set("vv_lastOrder", null);
-        $("#pix").value = "";
-        $("#orderLookup").value = "";
-        $("#orderStatus").textContent = "—";
-        renderProducts();
-        updatePanel();
-      };
-
-      $("#genOrder").onclick = async ()=>{
-        try{
-          $("#checkoutNote").textContent = "Gerando pedido…";
-          const rec = await generateOrder();
-          $("#checkoutNote").textContent = `Pedido criado: ${rec.orderId}. Copie o PIX e pague.`;
-        } catch(err) {
-          $("#checkoutNote").textContent = "Erro: " + (err?.message || err);
+            renderer.render(scene, camera);
         }
-      };
 
-      $("#copyOrder").onclick = async ()=>{
-        const id = ($("#orderId").textContent||"").trim();
-        if(!id || id==="—") return;
-        try{ await navigator.clipboard.writeText(id); $("#checkoutNote").textContent = "Order ID copiado ✅"; }
-        catch(e){ $("#checkoutNote").textContent = "Não consegui copiar. Copie manualmente."; }
-      };
-
-      $("#copyPix").onclick = async ()=>{
-        const pix = ($("#pix").value||"").trim();
-        if(!pix) return;
-        const v = validarPixCopiaECola(pix);
-        if(!v.ok) { $("#checkoutNote").textContent = "PIX inválido: " + v.error; return; }
-        try{ await navigator.clipboard.writeText(pix); $("#checkoutNote").textContent = "PIX copiado ✅"; }
-        catch(e){ $("#checkoutNote").textContent = "Não consegui copiar. Copie manualmente."; }
-      };
-
-      $("#afterPay").onclick = ()=>{ $("#checkoutNote").textContent = "Ok. Agora acompanhe na aba Pedido pelo Order ID."; go("order"); };
-
-      $("#checkOrder").onclick = async ()=>{
-        const id = ($("#orderLookup").value||"").trim();
-        if(!id) { $("#orderStatus").textContent = "Cole o Order ID."; return; }
-        $("#orderStatus").textContent = "Verificando…";
-        try{
-          const o = await checkOrderStatus(id);
-          if(!o) { $("#orderStatus").textContent = "Pedido não encontrado."; return; }
-          const st = safeText(o.status || "—");
-          const prod = safeText(o.productName || o.productId || "—");
-          const user = safeText(o.user || "—");
-          $("#orderStatus").innerHTML = `<b>Status:</b> ${st}<br/><b>Produto:</b> ${prod}<br/><b>User:</b> ${user}`;
-          state.lastOrder = { orderId: id, status: st, productName: prod };
-          store.set("vv_lastOrder", state.lastOrder);
-          updatePanel();
-        }catch(err){
-          $("#orderStatus").textContent = "Erro ao consultar: " + (err?.message || err);
-        }
-      };
-    }
-
-    function boot() {
-      renderFAQ();
-      bind();
-      applyPerf();
-      updatePanel();
-      setupPWA();
-      loadCatalog();
-      $("#statusLine").textContent = "Online • pronto";
-    }
-    boot();
-  </script>
+        // Initialize everything
+        window.onload = init;
+    </script>
 </body>
 </html>
